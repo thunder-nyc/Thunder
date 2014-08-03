@@ -19,5 +19,5 @@ However, for a very long time C++ already has a solution to this problem -- allo
 Using this idea, the storage class could be implemented as
 ```cpp
 template <typename T, typename Allocator>
-class thunder::storage{/* Implementation here */};
+class thunder::Storage{/* Implementation here */};
 ```
