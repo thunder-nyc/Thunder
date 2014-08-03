@@ -18,6 +18,22 @@ However, for a very long time C++ already has a solution to this problem -- allo
 
 Using this idea, the storage class could be implemented as
 ```cpp
-template <typename T, typename Allocator>
+template <typename T, typename Allocator = std::allocator<T> >
 class thunder::Storage{/* Implementation here */};
 ```
+
+Then, we can easily give typedefs like
+```cpp
+typedef thunder::Storage<float> thunder::FloatStorage;
+typedef thunder::Storage<float, thrust::system::cuda::allocator<float> > thunder::CudaFloatStorage;
+```
+
+As a result, we could implement the tensor library with
+```cpp
+template<typename Storage>
+class thunder::Tensor{/* Implementation here */};
+
+typedef thunder::Tensor<thunder::FloatStorage> thunder::FloatTensor;
+typedef thunder::Tensor<thunder::CudaFloatStorage> thunder::CudaFloatTensor;
+```
+
