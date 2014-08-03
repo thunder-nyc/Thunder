@@ -9,7 +9,7 @@ I chose to use C++ 11 because many new features it provides -- including but not
 
 The belief is that a well-designed tensor library for C++ could be used as easily as those in scripting languages, except for some rare cases where extremely fast prototyping is needed. The immediate advantage is also tremendous -- all the C++ libraries are available to us right after a data type conversion is provided. This is quite different from a scripting language based library -- to provide bridge to extra libraries, usually a complete interface must be designed and implemented. The possibility from this alone is quite exciting -- think about what you can do with OpenCV, Qt, Redis, Boost, std::thread, and many others!
 
-Design
+Managing Device Dependent Code
 ------
 
 One problem of th++ is that the storage class is templated and templated only on basic data types, therefore it is very difficult to manage device-dependent code. The reason is that in C++, device-dependent platforms such as CUDA and OpenCL use these basic data types (e.g., float and double) with no difference from CPU code. If there is no way to distinguish between devices using these tensor types, then it is very complicated to write device-dependent numerical computations and switch between them transparently.
@@ -39,5 +39,5 @@ typedef thunder::Tensor<thunder::CudaFloatStorage> thunder::CudaFloatTensor;
 
 As for device-dependent code, they can be easily implemented with tensor specializations as above.
 
-Type Conversion
+Type Conversion and Type Transparency
 ------
