@@ -38,6 +38,3 @@ typedef thunder::Tensor<thunder::CudaFloatStorage> thunder::CudaFloatTensor;
 ```
 
 As for device-dependent code, they can be easily implemented with tensor specializations as above.
-
-Type Conversion and Type Transparency
-------
