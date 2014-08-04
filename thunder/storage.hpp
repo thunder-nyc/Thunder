@@ -8,6 +8,7 @@ namespace thunder {
 template <typename T, typename Allocator = std::allocator<T> >
 class Storage {
  public:
+  // Typedefs from allocator
   typedef typename Allocator::value_type value_type;
   typedef typename Allocator::reference reference;
   typedef typename Allocator::const_reference const_reference;
@@ -35,11 +36,12 @@ class Storage {
   // Initializer list constructors
   Storage(std::initializer_list<T> init, const Allocator &alloc = Allocator())
 
-  virtual ~Storage() {};
+  // Destructor
+  ~Storage();
 
  private:
   Allocator alloc_;
-}
+};
 
 }  // namespace thunder
 
