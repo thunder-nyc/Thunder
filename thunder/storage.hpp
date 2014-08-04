@@ -66,44 +66,44 @@ class Storage {
   Storage &operator=(std::initializer_list<T> ilist);
   // Vector assignment operator
   template <typename VectorAllocator>
-  Storage &operator=(std::vector<T, VectorAllocator> vect);
+  Storage &operator=(const std::vector<T, VectorAllocator> vect);
+  template <typename VectorAllocator>
+  friend std::vector<T, VectorAllocator>
+  &operator=(std::vector<T, VectorAllocator> &vect,
+             const Storage &storage);
   // Valarray assignment operator
-  Storage &operator=(std::valarray<T> vala);
+  Storage &operator=(const std::valarray<T> vala);
+  friend std::valarray<T> &operator=(std::valarray<T> &vala,
+                                     const Storage &storage);
 
   // Asign with copy of count value
-  void assign(size_type count, const T &value);
+  void Assign(size_type count, const T &value);
   // Assign with iterator
   template< class InputIt>
-  void assign(InputIt first, InputIt last);
+  void Assign(InputIt first, InputIt last);
   // Assign to initializer list
-  void assign(std::initializer_list<T> ilist);
+  void Assign(std::initializer_list<T> ilist);
 
   // Get allocator associated with the storage
-  allocator_type get_allocator() const;
+  allocator_type GetAllocator() const;
 
   // Get reference at pos with bound checking.
-  reference at(size_type pos);
+  reference At(size_type pos);
   // Get const reference at pos with bound checking.
-  const_reference at(size_type pos) const;
+  const_reference At(size_type pos) const;
   // Get reference at pos without bound checking
   reference operator[](size_type pos);
   // Get const reference at pos without bound checking
   const_reference operator[](size_type pos);
 
-  // Get reference of first element
-  reference front();
-  // Get const reference of first element
-  const_reference front() const;
-  // Get reference of last element
-  reference back();
-  // Get const reference of last element
-  const_reference back() const;
-
   // Get raw pointer to data
-  pointer data();
+  pointer Data();
   // Get const raw pointer to data
-  const_pointer data() const;
+  const_pointer Data() const;
 
+  // begin() and end() functions does not follow style guide for a reason: they
+  // enables ranged for iterators like this:
+  // for(auto &val : storage) {/* Do something here with val */}
   // Get iterator to data
   iterator begin();
   // Get const iterator to data
@@ -114,34 +114,25 @@ class Storage {
   // Get const iterator passing the last element
   const_iterator end() const;
   const_iterator cend() const;
-  // Get reverse iterator pointing to last element
-  reverse_iterator rbegin();
-  // Get const reverse iterator pointing to the last element
-  const_reverse_iterator rbegin() const;
-  const_reverse_iterator crbegin() const;
-  // Get reverse iterator passing the first element
-  reverse_iterator rend();
-  // Get const reverse iterator passing the first element
-  const_reverse_iterator rend() const;
-  const_reverse_iterator crend() const;
 
   // Check whether the storage is empty
-  bool empty() const;
+  bool Empty() const;
   // Check the size of the storage
-  size_type size() const;
-  // Return max_size. This returns std::numeric_limits<size_type>::max().
-  size_type max_size() const;
+  size_type Size() const;
+  // This returns std::numeric_limits<size_type>::max().
+  size_type MaxSize() const;
   // Resize
-  void resize(std::size_t count);
+  void Resize(std::size_t count);
   // Resize with all elements using target value
-  void resize(std::size_t count, const T &value);
+  void Resize(std::size_t count, const T &value);
 
   // Swap contents with another storage
-  void swap(Storage &other);
+  void Swap(Storage &other);
 
 
  private:
   Allocator alloc_;
+  pointer data_;
 };
 
 }  // namespace thunder
