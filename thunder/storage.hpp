@@ -52,7 +52,7 @@ class Storage {
   template <typename VectorAllocator>
   Storage(std::vector<T, VectorAllocator> vect,
           const Allocator &alloc = Allocator());
-  // valarray constrctor
+  // Valarray constrctor
   Storage(std::valarray<T> vala, const Allocator &alloc = Allocator());
 
   // Destructor
@@ -64,6 +64,11 @@ class Storage {
   Storage &operator=(Storage && other);
   // Initializer list assignment operator
   Storage &operator=(std::initializer_list<T> ilist);
+  // Vector assignment operator
+  template <typename VectorAllocator>
+  Storage &operator=(std::vector<T, VectorAllocator> vect);
+  // Valarray assignment operator
+  Storage &operator=(std::valarray<T> vala);
 
   // Asign with copy of count value
   void assign(size_type count, const T &value);
