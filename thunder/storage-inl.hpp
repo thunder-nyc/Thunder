@@ -159,7 +159,6 @@ void Storage<T,A>::Resize(size_type count, const T &value) {
   }
 }
 
-// Check the size of the storage
 template <typename T, typename A >
 Storage<T,A>::size_type Storage<T,A>::Size() const {
   return size_;
