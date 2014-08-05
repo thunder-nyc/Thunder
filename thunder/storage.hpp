@@ -85,10 +85,12 @@ class Storage {
   // Copy from a different storage using static casts
   template<typename Other_T, typename Other_A>
   void Copy(const Storage<Other_T, Other_A> &other);
+
   // Resize. Data content will be lost.
   void Resize(size_type count);
   // Resize with all elements using target value
   void Resize(size_type count, const T &value);
+
   // Check the size of the storage
   size_type Size() const;
 
