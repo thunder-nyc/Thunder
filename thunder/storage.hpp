@@ -25,11 +25,6 @@
 
 namespace thunder {
 
-// Storage class declaration. If you find some member functions of this class
-// looks like std::vector and std::valarray, it is indeed so. However, what we
-// need is a std::valarray that supports customized allocator and iterators,
-// therefore we have to implement this. The questions is, why doesn't the C++
-// committee want std::valarray to be templated on an allocator?
 template <typename T, typename Allocator = std::allocator<T> >
 class Storage {
  public:
@@ -56,9 +51,6 @@ class Storage {
   // Constructor with given size and a default value
   explicit Storage(size_type count, const T &value,
                    const Allocator &alloc = Allocator());
-  // Constructor with given iterator
-  template <typename InputIt>
-  vector(InputIt first, InputIt last, const Allocator &alloc = Allocator());
   // Copy constructors
   Storage(const Storage &other);
   Storage(const Storage &other, const Allocator &alloc);
@@ -67,12 +59,6 @@ class Storage {
   Storage(Storage &&other, const Allocator &alloc);
   // Initializer list constructors
   Storage(std::initializer_list<T> init, const Allocator &alloc = Allocator());
-  // Vector constructor: does not need to use the same allocator.
-  template <typename VectorAllocator>
-  Storage(std::vector<T, VectorAllocator> vect,
-          const Allocator &alloc = Allocator());
-  // Valarray constrctor
-  Storage(std::valarray<T> vala, const Allocator &alloc = Allocator());
 
   // Destructor
   ~Storage();
@@ -83,25 +69,6 @@ class Storage {
   Storage &operator=(Storage && other);
   // Initializer list assignment operator
   Storage &operator=(std::initializer_list<T> ilist);
-  // Vector assignment operator
-  template <typename VectorAllocator>
-  Storage &operator=(const std::vector<T, VectorAllocator> vect);
-  template <typename VectorAllocator>
-  friend std::vector<T, VectorAllocator>
-  &operator=(std::vector<T, VectorAllocator> &vect,
-             const Storage &storage);
-  // Valarray assignment operator
-  Storage &operator=(const std::valarray<T> vala);
-  friend std::valarray<T> &operator=(std::valarray<T> &vala,
-                                     const Storage &storage);
-
-  // Asign with copy of count value
-  void Assign(size_type count, const T &value);
-  // Assign with iterator
-  template< class InputIt>
-  void Assign(InputIt first, InputIt last);
-  // Assign to initializer list
-  void Assign(std::initializer_list<T> ilist);
 
   // Get allocator associated with the storage
   allocator_type GetAllocator() const;
@@ -127,27 +94,20 @@ class Storage {
   iterator begin();
   // Get const iterator to data
   const_iterator begin() const;
-  const_iterator cbegin() const;
   // Get iterater pass the last element
   iterator end();
   // Get const iterator passing the last element
   const_iterator end() const;
-  const_iterator cend() const;
 
-  // Check whether the storage is empty
-  bool Empty() const;
-  // Check the size of the storage
-  size_type Size() const;
-  // This returns std::numeric_limits<size_type>::max().
-  size_type MaxSize() const;
+  // Copy from a different storage. Precision may be lost
+  template<typename Other_T, Other_Allocator>
+  void Copy(const Storage<Other_T, Other_Allocator> &storage);
   // Resize
   void Resize(std::size_t count);
   // Resize with all elements using target value
   void Resize(std::size_t count, const T &value);
-
-  // Swap contents with another storage
-  void Swap(Storage &other);
-
+  // Check the size of the storage
+  size_type Size() const;
 
  private:
   Allocator alloc_;
