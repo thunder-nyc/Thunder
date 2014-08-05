@@ -164,7 +164,6 @@ Storage<T,A>::size_type Storage<T,A>::Size() const {
   return size_;
 }
 
-
 }  // namespace thunder
 
 #endif  // THUNDER_STORAGE_INL_HPP

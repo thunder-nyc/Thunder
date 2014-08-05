@@ -69,9 +69,6 @@ class Storage {
   // Get const raw pointer to data
   const_pointer Data() const;
 
-  // begin() and end() functions does not follow style guide for a reason: they
-  // enables ranged for iterators like this:
-  // for(auto &val : storage) {/* Do something here with val */}
   // Get iterator to data
   iterator begin();
   // Get const iterator to data
