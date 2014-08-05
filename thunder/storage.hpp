@@ -29,8 +29,6 @@ template <typename T, typename Allocator = std::allocator<T> >
 class Storage {
  public:
   // Typedefs from allocator
-  typedef T value_type;
-  typedef Allocator allocator_type;
   typedef typename Allocator::reference reference;
   typedef typename Allocator::const_reference const_reference;
   typedef typename Allocator::difference_type difference_type;
@@ -41,8 +39,6 @@ class Storage {
   // Iterator definitions
   typedef pointer iterator;
   typedef const_pointer const_iterator;
-  typedef std::reverse_iterator<iterator> reverse_iterator;
-  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
   // Default Constructor
   explicit Storage(const Allocator &alloc = Allocator());
