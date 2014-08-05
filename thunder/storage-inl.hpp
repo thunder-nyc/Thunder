@@ -28,122 +28,125 @@
 
 namespace thunder {
 
-// Default constructor
-template <typename T, typename Allocator = std::allocator<T> >
-Storage <T, Allocator>::Storage(const Allocator &alloc = Allocator())
+template <typename T, typename A = ::std::allocator<T> >
+Storage <T, A>::Storage(const A &alloc = A())
     : alloc_(alloc), size_(0), data_(nullptr) {}
 
-// Constructor to default size
-template <typename T, typename Allocator = std::allocator<T> >
-Storage<T, Allocator>::Storage(size_type count,
-                               const Allocator &alloc = Allocator())
-    : alloc_(alloc), size_(count), data_(alloc_.allocate(size_)){}
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>::Storage(size_type count,
+                       const A &alloc = A())
+    : alloc_(alloc), size_(count),
+      data_(size_ == 0 ? nullptr : alloc_.allocate(size_)){}
 
-// Constructor with default value
-template <typename T, typename Allocator = std::allocator<T> >
-Storage<T, Allocator>::Storage(size_type count,
-                               const T& value,
-                               const Allocator &alloc = Allocator())
-    : alloc_(alloc), size_(count), data_(alloc_.allocate(size_)){
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>::Storage(size_type count,
+                       const T& value,
+                       const A &alloc = A())
+    : alloc_(alloc), size_(count),
+      data_(size_ == 0 ? nullptr : alloc_.allocate(size_)){
   for(size_type i = 0; i < size_; ++i) {
     data_[i] = value;
   }
 }
 
-// Copy constructor
-template <typename T, typename Allocator = std::allocator<T> >
-Storage<T, Allocator>::Storage(const Storage &other)
-    : alloc_(other.alloc_), size_(other.size_), data_(alloc_.allocate(size_)) {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>::Storage(const Storage &other)
+    : alloc_(other.alloc_), size_(other.size_),
+      data_(size_ == 0 ? nullptr : alloc_.allocate(size_)) {
   for(size_type i = 0; i < size_; ++i) {
     data_[i] = other.data_[i];
   }
 }
 
-// Move constructor
-template <typename T, typename Allocator = std::allocator<T> >
-Storage<T, Allocator>::Storage(Storage &&other)
-    : alloc_(std::move(other.alloc_)), size_(std::move(other.size_)),
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>::Storage(Storage &&other)
+    : alloc_(::std::move(other.alloc_)), size_(::std::move(other.size_)),
       data_(other.data_) {
   other.data_ = nullptr;
 }
 
-// Destructor
-template <typename T, typename Allocator = std::allocator<T> >
-Storage<T, Allocator>::~Storage() {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>::~Storage() {
   if (data_ != nullptr) {
     alloc_.deallocate(data_, size_);
   }
 }
 
-// Assignment operator
-Storage &operator=(const Storage &other) {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>& Storage<T,A>::operator=(const Storage &other) {
   Resize(other.size_);
   for(size_type i = 0; i < size_; ++i) {
     data_[i] = other.data_[i];
   }
+  return *this;
 }
 
-// Move assignment operator
-Storage &operator=(Storage && other) {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T, A>& Storage<T,A>::operator=(Storage && other) {
   if (data_ != nullptr) {
     alloc_.deallocate(data_, size_);
   }
-  size_ = std::move(other.size_);
+  size_ = ::std::move(other.size_);
   data_ = other.data_;
   other.data_ = nullptr;
+  return *this;
 }
 
-// Get reference at pos without bound checking
-reference operator[](size_type pos) {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::reference Storage<T,A>::operator[](size_type pos) {
   return data_[pos];
 }
 
-// Get const reference at pos without bound checking
-const_reference operator[](size_type pos) {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::const_reference Storage<T,A>::operator[](size_type pos) const {
   return data_[pos];
 }
 
-// Get raw pointer to data
-pointer Data() {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::pointer Storage<T,A>::Data() {
   return data_;
 }
 
-// Get const raw pointer to data
-const_pointer Data() const {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::const_pointer Storage<T,A>::Data() const {
   return data_;
 }
 
-// Get iterator to data
-iterator begin() {
-  return data_;
-}
-// Get const iterator to data
-const_iterator begin() const {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::iterator Storage<T,A>::begin() {
   return data_;
 }
 
-// Get iterater pass the last element
-iterator end() {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::const_iterator Storage<T,A>::begin() const {
+  return data_;
+}
+
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::iterator Storage<T,A>::end() {
   return data_ + size_;
 }
 
-// Get const iterator passing the last element
-const_iterator end() const {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::const_iterator Storage<T,A>::end() const {
   return data_ + size_;
 }
 
-// Copy from a different storage. Precision may be lost.
-template<typename Other_T, Other_Allocator>
-void Copy(const Storage<Other_T, Other_Allocator> &other) {
-  Resize(static_cast<size_type>(other.size_));
+template<typename T, typename A = ::std::allocator<T> >
+template<typename Other_T, typename Other_A>
+void Storage<T,A>::Copy(const Storage<Other_T, Other_A> &other) {
+  Resize(static_cast<size_type>(other.Size()));
   for(size_type i = 0; i < size_; ++i) {
-    data_[i] = static_cast<T> other[static_cast<other::size_type>(i)];
+    data_[i] = static_cast<T> (other[static_cast<other::size_type>(i)]);
   }
 }
 
-// Resize. Data content will be lost.
-void Resize(size_type count) {
-  pointer data = alloc_.allocate(count, data_);
+template <typename T, typename A = ::std::allocator<T> >
+void Storage<T,A>::Resize(size_type count) {
+  pointer data = nullptr;
+  if (count > 0) {
+    data = alloc_.allocate(count, data_);
+  }
   if (data_ != nullptr) {
     alloc_.deallocate(data_, size_);
   }
@@ -151,8 +154,8 @@ void Resize(size_type count) {
   data_ = data;
 }
 
-// Resize with all elements using target value
-void Resize(size_type count, const T &value) {
+template <typename T, typename A = ::std::allocator<T> >
+void Storage<T,A>::Resize(size_type count, const T &value) {
   Resize(count);
   for(size_type i = 0; i < size_; ++i) {
     data_[i] = value;
@@ -160,7 +163,8 @@ void Resize(size_type count, const T &value) {
 }
 
 // Check the size of the storage
-size_type Size() const {
+template <typename T, typename A = ::std::allocator<T> >
+Storage<T,A>::size_type Storage<T,A>::Size() const {
   return size_;
 }
 

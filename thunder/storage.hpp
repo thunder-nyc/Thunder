@@ -25,28 +25,28 @@
 
 namespace thunder {
 
-template <typename T, typename Allocator = std::allocator<T> >
+template <typename T, typename A = ::std::allocator<T> >
 class Storage {
  public:
   // Typedefs from allocator
-  typedef typename Allocator::reference reference;
-  typedef typename Allocator::const_reference const_reference;
-  typedef typename Allocator::difference_type difference_type;
-  typedef typename Allocator::size_type size_type;
-  typedef std::allocator_traits<Allocator>::pointer pointer;
-  typedef std::allocator_traits<Allocator>::const_pointer const_pointer;
+  typedef typename A::reference reference;
+  typedef typename A::const_reference const_reference;
+  typedef typename A::difference_type difference_type;
+  typedef typename A::size_type size_type;
+  typedef ::std::allocator_traits<A>::pointer pointer;
+  typedef ::std::allocator_traits<A>::const_pointer const_pointer;
 
   // Iterator definitions
   typedef pointer iterator;
   typedef const_pointer const_iterator;
 
   // Default Constructor
-  explicit Storage(const Allocator &alloc = Allocator());
+  explicit Storage(const A &alloc = A());
   // Constructor with given size
-  explicit Storage(size_type count, const Allocator &alloc = Allocator());
+  explicit Storage(size_type count, const A &alloc = A());
   // Constructor with given size and a default value
   explicit Storage(size_type count, const T &value,
-                   const Allocator &alloc = Allocator());
+                   const A &alloc = A());
   // Copy constructor
   Storage(const Storage &other);
   // Move constructor
@@ -63,7 +63,7 @@ class Storage {
   // Get reference at pos without bound checking
   reference operator[](size_type pos);
   // Get const reference at pos without bound checking
-  const_reference operator[](size_type pos);
+  const_reference operator[](size_type pos) const;
 
   // Get raw pointer to data
   pointer Data();
@@ -82,18 +82,18 @@ class Storage {
   // Get const iterator passing the last element
   const_iterator end() const;
 
-  // Copy from a different storage. Precision may be lost
-  template<typename Other_T, Other_Allocator>
-  void Copy(const Storage<Other_T, Other_Allocator> &other);
+  // Copy from a different storage using static casts
+  template<typename Other_T, typename Other_A>
+  void Copy(const Storage<Other_T, Other_A> &other);
   // Resize. Data content will be lost.
-  void Resize(std::size_t count);
+  void Resize(size_type count);
   // Resize with all elements using target value
-  void Resize(std::size_t count, const T &value);
+  void Resize(size_type count, const T &value);
   // Check the size of the storage
   size_type Size() const;
 
  private:
-  Allocator alloc_;
+  A alloc_;
   pointer data_;
   size_type size_;
 };
