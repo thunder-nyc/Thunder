@@ -96,7 +96,7 @@ Storage &operator=(Storage && other) {
 // Get reference at pos with bound checking.
 reference At(size_type pos) {
   if (pos >= size_) {
-    throw std::out_of_range("thunder::Storage::At(size_type) range check");
+    throw std::out_of_range("position out of range");
   }
   return data_[pos];
 }
@@ -104,7 +104,7 @@ reference At(size_type pos) {
 // Get const reference at pos with bound checking.
 const_reference At(size_type pos) const {
   if (pos >= size_) {
-    throw std::out_of_range("thunder::Storage::At(size_type) range check");
+    throw std::out_of_range("position out of range");
   }
   return data_[pos];
 }
