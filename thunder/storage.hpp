@@ -51,27 +51,18 @@ class Storage {
   // Constructor with given size and a default value
   explicit Storage(size_type count, const T &value,
                    const Allocator &alloc = Allocator());
-  // Copy constructors
+  // Copy constructor
   Storage(const Storage &other);
-  Storage(const Storage &other, const Allocator &alloc);
-  // Move constructors
+  // Move constructor
   Storage(Storage &&other);
-  Storage(Storage &&other, const Allocator &alloc);
-  // Initializer list constructors
-  Storage(std::initializer_list<T> init, const Allocator &alloc = Allocator());
 
   // Destructor
-  ~Storage();
+  virtual ~Storage();
 
   // Assignment operator
   Storage &operator=(const Storage &other);
   // Move assignment operator
   Storage &operator=(Storage && other);
-  // Initializer list assignment operator
-  Storage &operator=(std::initializer_list<T> ilist);
-
-  // Get allocator associated with the storage
-  allocator_type GetAllocator() const;
 
   // Get reference at pos with bound checking.
   reference At(size_type pos);
@@ -101,8 +92,8 @@ class Storage {
 
   // Copy from a different storage. Precision may be lost
   template<typename Other_T, Other_Allocator>
-  void Copy(const Storage<Other_T, Other_Allocator> &storage);
-  // Resize
+  void Copy(const Storage<Other_T, Other_Allocator> &other);
+  // Resize. Data content will be lost.
   void Resize(std::size_t count);
   // Resize with all elements using target value
   void Resize(std::size_t count, const T &value);
@@ -112,6 +103,7 @@ class Storage {
  private:
   Allocator alloc_;
   pointer data_;
+  size_type size_;
 };
 
 }  // namespace thunder
