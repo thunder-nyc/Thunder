@@ -1,7 +1,7 @@
 Thunder
 =======
 
-Since Facebook released [th++](http://example.com/), I wanted to program a similar library addressing some of its problems by more proper template design with C++11. Originally I thought I would name the library as 'th--' just for a humour. But then I wrote '--' as 'under' and it so happens that 'thunder' is a much cooler name! What a coincidence that I used to write a 'Thunder Neural Networks' library!
+Since Facebook released [th++](https://github.com/facebook/thpp), I wanted to program a similar library addressing some of its problems by more proper template design with C++11. Originally I thought I would name the library as 'th--' just for a humour. But then I wrote '--' as 'under' and it so happens that 'thunder' is a much cooler name! What a coincidence that I used to write a 'Thunder Neural Networks' library!
 
 The goal here to make a Torch-like tensor library that can easily manage device-dependent code using template specializations. That way, the user of this library could transfer data between devices easily, and run code on different hardwares transparently. The first stage will be for CPU and CUDA as a working proof of idea.
 
