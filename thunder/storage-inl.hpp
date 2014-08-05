@@ -33,15 +33,12 @@ Storage<T, A>::Storage(const A &alloc = A())
     : alloc_(alloc), size_(0), data_(nullptr) {}
 
 template <typename T, typename A >
-Storage<T, A>::Storage(size_type count,
-                       const A &alloc = A())
+Storage<T, A>::Storage(size_type count, const A &alloc = A())
     : alloc_(alloc), size_(count),
       data_(size_ == 0 ? nullptr : alloc_.allocate(size_)){}
 
 template <typename T, typename A >
-Storage<T, A>::Storage(size_type count,
-                       const T& value,
-                       const A &alloc = A())
+Storage<T, A>::Storage(size_type count, const T& value, const A &alloc = A())
     : alloc_(alloc), size_(count),
       data_(size_ == 0 ? nullptr : alloc_.allocate(size_)){
   for(size_type i = 0; i < size_; ++i) {
@@ -51,8 +48,8 @@ Storage<T, A>::Storage(size_type count,
 
 template <typename T, typename A >
 Storage<T, A>::Storage(const Storage &other)
-    : alloc_(other.alloc_), size_(other.size_),
-      data_(size_ == 0 ? nullptr : alloc_.allocate(size_)) {
+  : alloc_(other.alloc_), size_(other.size_),
+    data_(size_ == 0 ? nullptr : alloc_.allocate(size_)) {
   for(size_type i = 0; i < size_; ++i) {
     data_[i] = other.data_[i];
   }
