@@ -64,10 +64,6 @@ class Storage {
   // Move assignment operator
   Storage &operator=(Storage && other);
 
-  // Get reference at pos with bound checking.
-  reference At(size_type pos);
-  // Get const reference at pos with bound checking.
-  const_reference At(size_type pos) const;
   // Get reference at pos without bound checking
   reference operator[](size_type pos);
   // Get const reference at pos without bound checking

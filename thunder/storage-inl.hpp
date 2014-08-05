@@ -93,22 +93,6 @@ Storage &operator=(Storage && other) {
   other.data_ = nullptr;
 }
 
-// Get reference at pos with bound checking.
-reference At(size_type pos) {
-  if (pos >= size_) {
-    throw std::out_of_range("position out of range");
-  }
-  return data_[pos];
-}
-
-// Get const reference at pos with bound checking.
-const_reference At(size_type pos) const {
-  if (pos >= size_) {
-    throw std::out_of_range("position out of range");
-  }
-  return data_[pos];
-}
-
 // Get reference at pos without bound checking
 reference operator[](size_type pos) {
   return data_[pos];
