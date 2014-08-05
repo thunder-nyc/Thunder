@@ -57,7 +57,7 @@ class Storage {
   Storage(Storage &&other);
 
   // Destructor
-  virtual ~Storage();
+  ~Storage();
 
   // Assignment operator
   Storage &operator=(const Storage &other);
