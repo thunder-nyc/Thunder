@@ -49,7 +49,8 @@ class Storage {
   // Constructor with given size
   explicit Storage(size_type count, const A &alloc = A());
   // Constructor with given size and a default value
-  explicit Storage(size_type count, const_reference value, const A &alloc = A());
+  explicit Storage(size_type count, const_reference value,
+                   const A &alloc = A());
   // Copy constructor
   Storage(const Storage &other);
   // Move constructor
@@ -103,6 +104,6 @@ class Storage {
 }  // namespace thunder
 
 // Include the Implementation
-#include "thunder/storage-inl.hpp"
+#include "thunder/storage/storage-inl.hpp"
 
 #endif  // THUNDER_STORAGE_HPP_
