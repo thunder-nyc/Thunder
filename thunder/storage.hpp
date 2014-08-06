@@ -29,6 +29,8 @@ template <typename T, typename A = ::std::allocator<T> >
 class Storage {
  public:
   // Typedefs from allocator
+  typedef A allocator_type;
+  typedef typename A::value_type value_type;
   typedef typename A::reference reference;
   typedef typename A::const_reference const_reference;
   typedef typename A::difference_type difference_type;
@@ -39,13 +41,15 @@ class Storage {
   // Iterator definitions
   typedef pointer iterator;
   typedef const_pointer const_iterator;
+  typedef std::reverse_iterator<iterator> reverse_iterator;
+  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
   // Default Constructor
   explicit Storage(const A &alloc = A());
   // Constructor with given size
   explicit Storage(size_type count, const A &alloc = A());
   // Constructor with given size and a default value
-  explicit Storage(size_type count, const T &value, const A &alloc = A());
+  explicit Storage(size_type count, const_reference value, const A &alloc = A());
   // Copy constructor
   Storage(const Storage &other);
   // Move constructor
@@ -85,7 +89,7 @@ class Storage {
   // Resize. Data content will be lost.
   void Resize(size_type count);
   // Resize with all elements using target value
-  void Resize(size_type count, const T &value);
+  void Resize(size_type count, const_reference value);
 
   // Check the size of the storage
   size_type Size() const;
