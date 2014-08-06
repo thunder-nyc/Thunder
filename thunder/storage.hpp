@@ -37,13 +37,13 @@ class Storage {
   typedef typename A::size_type size_type;
   typedef typename ::std::allocator_traits<A>::pointer pointer;
   typedef typename ::std::allocator_traits<A>::const_pointer const_pointer;
-
+  
   // Iterator definitions
   typedef pointer iterator;
   typedef const_pointer const_iterator;
   typedef std::reverse_iterator<iterator> reverse_iterator;
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-
+  
   // Default Constructor
   explicit Storage(const A &alloc = A());
   // Constructor with given size
@@ -54,25 +54,25 @@ class Storage {
   Storage(const Storage &other);
   // Move constructor
   Storage(Storage &&other);
-
+  
   // Destructor
   ~Storage();
-
+  
   // Assignment operator
   Storage &operator=(const Storage &other);
   // Move assignment operator
   Storage &operator=(Storage && other);
-
+  
   // Get reference at pos without bound checking
   reference operator[](size_type pos);
   // Get const reference at pos without bound checking
   const_reference operator[](size_type pos) const;
-
+  
   // Get raw pointer to data
   pointer Data();
   // Get const raw pointer to data
   const_pointer Data() const;
-
+  
   // Get iterator to data
   iterator begin();
   // Get const iterator to data
@@ -81,11 +81,11 @@ class Storage {
   iterator end();
   // Get const iterator passing the last element
   const_iterator end() const;
-
+  
   // Copy from a different storage using static casts
   template<typename Other_T, typename Other_A>
   void Copy(const Storage<Other_T, Other_A> &other);
-
+  
   // Resize. Data content will be lost.
   void Resize(size_type count);
   // Resize with all elements using target value
@@ -93,7 +93,7 @@ class Storage {
 
   // Check the size of the storage
   size_type Size() const;
-
+  
  private:
   A alloc_;
   pointer data_;
