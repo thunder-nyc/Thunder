@@ -35,8 +35,8 @@ class Storage {
   typedef typename A::const_reference const_reference;
   typedef typename A::difference_type difference_type;
   typedef typename A::size_type size_type;
-  typedef ::std::allocator_traits<A>::pointer pointer;
-  typedef ::std::allocator_traits<A>::const_pointer const_pointer;
+  typedef typename ::std::allocator_traits<A>::pointer pointer;
+  typedef typename ::std::allocator_traits<A>::const_pointer const_pointer;
 
   // Iterator definitions
   typedef pointer iterator;
