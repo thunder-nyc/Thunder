@@ -21,7 +21,7 @@ $(targets) : % : %.cpp
 
 # This is the test rule
 test : $(patsubst %,%.test,$(targets))
-	@echo Testing successfully completed.
+	@echo Testing completed.
 
 # Clean simply cleans targets
 .PHONY : clean
