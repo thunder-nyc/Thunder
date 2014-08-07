@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_STORAGE_INL_HPP
-#define THUNDER_STORAGE_INL_HPP
+#ifndef THUNDER_STORAGE_STORAGE_INL_HPP
+#define THUNDER_STORAGE_STORAGE_INL_HPP
 
 #include "thunder/storage.hpp"
 
@@ -171,4 +171,4 @@ typename Storage<T, A>::size_type Storage<T, A>::Size() const {
 
 }  // namespace thunder
 
-#endif  // THUNDER_STORAGE_INL_HPP
+#endif  // THUNDER_STORAGE_STORAGE_INL_HPP
