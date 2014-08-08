@@ -23,4 +23,3 @@ clean :
 	-rm $(targets)
 
 $(targets) : % : %.cpp
-
