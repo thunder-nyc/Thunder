@@ -20,7 +20,6 @@
 #ifndef THUNDER_STORAGE_STORAGE_HPP_
 #define THUNDER_STORAGE_STORAGE_HPP_
 
-#include <initializer_list>
 #include <memory>
 
 namespace thunder {
