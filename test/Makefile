@@ -10,7 +10,13 @@ all: $(targets)
 
 .PHONY : test
 test : $(targets)
-	-for target in $(targets); do ./$$target; done
+	-num=0; \
+	for target in $(targets); do \
+		let num+=1; \
+		echo "Testing $$num/$(words $(targets)): $$target"; \
+		./$$target; \
+		echo; \
+	done \
 
 .PHONY : clean
 clean :

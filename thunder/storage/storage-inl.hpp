@@ -20,7 +20,7 @@
 #ifndef THUNDER_STORAGE_STORAGE_INL_HPP
 #define THUNDER_STORAGE_STORAGE_INL_HPP
 
-#include "thunder/storage.hpp"
+#include "thunder/storage/storage.hpp"
 
 #include <memory>
 #include <utility>
@@ -72,9 +72,9 @@ Storage<T, A>::~Storage() {
 
 template <typename T, typename A>
 Storage<T, A> &Storage<T, A>::operator=(Storage<T, A> other) {
-  std::swap(other.size_);
-  std::swap(other.data_);
-  std::swap(other.alloc_);
+  std::swap(size_, other.size_);
+  std::swap(data_, other.data_);
+  std::swap(alloc_, other.alloc_);
   return *this;
 }
 
@@ -123,24 +123,28 @@ typename Storage<T, A>::const_iterator Storage<T, A>::end() const {
 template<typename T, typename A>
 template<typename Other_T, typename Other_A>
 void Storage<T, A>::Copy(const Storage<Other_T, Other_A> &other) {
-  Resize(static_cast<size_type>(other.Size()));
-  for (size_type i = 0; i < size_; ++i) {
-    data_[i] = static_cast<T> (
-        other[static_cast<typename Storage<Other_T, Other_A>::size_type>(i)]);
+  if (this != reinterpret_cast<const Storage*> (&other)) {
+    Resize(static_cast<size_type>(other.Size()));
+    for (size_type i = 0; i < size_; ++i) {
+      data_[i] = static_cast<T> (
+          other[static_cast<typename Storage<Other_T, Other_A>::size_type>(i)]);
+    }
   }
 }
 
 template <typename T, typename A>
 void Storage<T, A>::Resize(Storage<T, A>::size_type count) {
-  pointer data = nullptr;
-  if (count > 0) {
-    data = alloc_.allocate(count, data_);
+  if (size_ != count) {
+    if (data_ != nullptr) {
+      alloc_.deallocate(data_, size_);
+    }
+    pointer data = nullptr;
+    if (count > 0) {
+      data = alloc_.allocate(count);
+    }
+    size_ = count;
+    data_ = data;
   }
-  if (data_ != nullptr) {
-    alloc_.deallocate(data_, size_);
-  }
-  size_ = count;
-  data_ = data;
 }
 
 template <typename T, typename A>
