@@ -22,8 +22,8 @@
 
 #include "thunder/storage.hpp"
 
-#include <initializer_list>
 #include <memory>
+#include <utility>
 
 namespace thunder {
 
@@ -71,22 +71,10 @@ Storage<T, A>::~Storage() {
 }
 
 template <typename T, typename A>
-Storage<T, A> &Storage<T, A>::operator=(const Storage<T, A> &other) {
-  Resize(other.size_);
-  for (size_type i = 0; i < size_; ++i) {
-    data_[i] = other.data_[i];
-  }
-  return *this;
-}
-
-template <typename T, typename A >
-Storage<T, A> &Storage<T, A>::operator=(Storage<T, A> && other) {
-  if (data_ != nullptr) {
-    alloc_.deallocate(data_, size_);
-  }
-  size_ = ::std::move(other.size_);
-  data_ = other.data_;
-  other.data_ = nullptr;
+Storage<T, A> &Storage<T, A>::operator=(Storage<T, A> other) {
+  std::swap(other.size_);
+  std::swap(other.data_);
+  std::swap(other.alloc_);
   return *this;
 }
 

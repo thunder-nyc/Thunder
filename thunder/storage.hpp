@@ -59,10 +59,8 @@ class Storage {
   // Destructor
   ~Storage();
 
-  // Assignment operator
-  Storage &operator=(const Storage &other);
-  // Move assignment operator
-  Storage &operator=(Storage && other);
+  // Assignment operator (using copy and swap idiom)
+  Storage &operator=(Storage other);
 
   // Get reference at pos without bound checking
   reference operator[](size_type pos);
