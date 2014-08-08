@@ -22,7 +22,7 @@
 
 namespace thunder {
 
-template < typename T, typename A = ::std::allocator<T>, int S = 0 >
+template < typename T, typename A = ::std::allocator<T> >
 class Storage {
  public:
   // Typedefs from allocator
@@ -79,8 +79,8 @@ class Storage {
   const_iterator end() const;
 
   // Copy from a different storage using static casts
-  template< typename Other_T, typename Other_A, int Other_S >
-  void Copy(const Storage< Other_T, Other_A, Other_S > &other);
+  template< typename Other_T, typename Other_A >
+  void Copy(const Storage< Other_T, Other_A > &other);
 
   // Resize. Data content will be lost.
   void Resize(size_type count);
