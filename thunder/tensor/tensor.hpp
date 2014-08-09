@@ -39,8 +39,8 @@ class Tensor {
   typedef typename S::const_pointer const_pointer;
 
   // Typedefs for tensor
-  typedef Storage< size_type, ::std::allocator< T > > size_storage;
-  typedef Storage< difference_type, ::std::allocator< T > > stride_storage;
+  typedef Storage< size_type > size_storage;
+  typedef Storage< difference_type > stride_storage;
   typedef ::std::shared_ptr< S > storage_pointer;
 
   // Declaration of iterator class
