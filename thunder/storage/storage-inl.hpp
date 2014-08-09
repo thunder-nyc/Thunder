@@ -62,6 +62,16 @@ Storage< T, A >::Storage(Storage &&other)
 }
 
 template < typename T, typename A >
+Storage< T, A >::Storage(::std::initializer_list< T > init, const A& alloc)
+    :alloc_(alloc), size_(init.size()),
+     data_(size_ == 0 ? nullptr : alloc_.allocate(size_)) {
+  size_t i = 0;
+  for (const T& value : init) {
+    data_[i++] = value;
+  }
+}
+
+template < typename T, typename A >
 Storage< T, A >::~Storage() {
   if (data_ != nullptr) {
     alloc_.deallocate(data_, size_);

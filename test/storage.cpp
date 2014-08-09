@@ -63,7 +63,7 @@ void ConstructorTest() {
   EXPECT_EQ(5, size_storage.Size());
   EXPECT_NE(nullptr, size_value_storage.Data());
   for (int i = 0; i < 5; ++i) {
-    EXPECT_EQ(3, size_value_storage.Data()[i]);
+    EXPECT_EQ((T)3, size_value_storage.Data()[i]);
   }
 
   // Copy construct a storage
@@ -72,6 +72,14 @@ void ConstructorTest() {
   EXPECT_NE(nullptr, copy_storage.Data());
   for (int i = 0; i < 5; ++i) {
     EXPECT_EQ(size_storage.Data()[i], copy_storage.Data()[i]);
+  }
+
+  // Initialzation list constructor
+  thunder::Storage<T> init_storage({3, 4, 5, 6, 7});
+  EXPECT_EQ(5, init_storage.Size());
+  EXPECT_NE(nullptr, init_storage.Data());
+  for (int i = 0; i < 5; ++i) {
+    EXPECT_EQ(static_cast<T>(i + 3), init_storage.Data()[i]);
   }
 }
 TEST_ALL_TYPES(ConstructorTest);

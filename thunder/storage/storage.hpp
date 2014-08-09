@@ -18,6 +18,7 @@
 #ifndef THUNDER_STORAGE_STORAGE_HPP_
 #define THUNDER_STORAGE_STORAGE_HPP_
 
+#include <initializer_list>
 #include <memory>
 
 namespace thunder {
@@ -52,6 +53,8 @@ class Storage {
   Storage(const Storage &other);
   // Move constructor
   Storage(Storage &&other);
+  // Constructor from initializer_list
+  Storage(::std::initializer_list< T > init, const A& alloc = A());
 
   // Destructor
   ~Storage();
