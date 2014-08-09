@@ -39,8 +39,8 @@ class Tensor {
   typedef typename S::const_pointer const_pointer;
 
   // Typedefs for tensor
-  typedef Storage< size_type, ::std::allocator< T > > tensor_size;
-  typedef Storage< difference_type, ::std::allocator< T > > tensor_stride;
+  typedef Storage< size_type, ::std::allocator< T > > size_storage;
+  typedef Storage< difference_type, ::std::allocator< T > > stride_storage;
   typedef ::std::shared_ptr< S > storage_pointer;
 
   // Declaration of iterator class
@@ -56,15 +56,15 @@ class Tensor {
                   const size_type &size2 = 0, const size_type &size3 = 0,
                   const size_type &size4 = 0, const size_type &size5 = 0,
                   const size_type &size6 = 0, const size_type &size7 = 0,
-                  const storage_pointer &storage = storage_pointer(new S())
+                  const storage_pointer &storage = storage_pointer(new S()),
                   const size_type offset = 0);
   // Explicit size constructor using storage class
-  explicit Tensor(const tensor_size &size,
-                  const storage_pointer &storage = storage_pointer(new S())
+  explicit Tensor(const size_storage &size,
+                  const storage_pointer &storage = storage_pointer(new S()),
                   const size_type offset = 0);
   // Explicit size and stride constructor using storage class
-  explicit Tensor(const tensor_size &size, const tensor_size &stride,
-                  const storage_pointer &storage = storage_pointer(new S())
+  explicit Tensor(const size_storage &size, const stride_storage &stride,
+                  const storage_pointer &storage = storage_pointer(new S()),
                   const size_type offset = 0);
 
   // Copy constructor
@@ -79,8 +79,8 @@ class Tensor {
   Tensor &operator=(Tensor other);
 
  private:
-  tensor_size size_;
-  tensor_stride stride_;
+  size_storage size_;
+  stride_storage stride_;
   storage_pointer storage_;
   size_type offset_;
 };
