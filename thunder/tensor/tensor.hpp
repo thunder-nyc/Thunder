@@ -76,7 +76,15 @@ class Tensor {
   virtual ~Tensor();
 
   // Assignment operator using copy and swap idiom
-  Tensor &operator=(Tensor other);
+  virtual Tensor &operator=(Tensor other);
+
+  // Index operators
+  virtual Tensor operator[](const size_type &index);
+  virtual Tensor operator[](const ::std::initializer_list< size_type > &index);
+
+  // Apply a lambda. lambda must return value_type or references to value_type.
+  template < typename L >
+  virtual Tensor& Apply(L &lambda);
 
  private:
   size_storage size_;
