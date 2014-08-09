@@ -25,7 +25,7 @@
 
 namespace thunder{
 
-template < typename S, typename I >
+template < typename S >
 class Tensor {
  public:
   // Typedefs from storage
@@ -38,20 +38,52 @@ class Tensor {
   typedef typename S::pointer pointer;
   typedef typename S::const_pointer const_pointer;
 
-  // Declaration of iterators
-  class iterator;
-  class const_iterator;
-  typedef std::reverse_iterator<iterator> reverse_iterator;
-  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+  // Typedefs for tensor
+  typedef Storage< size_type, ::std::allocator< T > > tensor_size;
+  typedef Storage< difference_type, ::std::allocator< T > > tensor_stride;
+  typedef ::std::shared_ptr< S > storage_pointer;
 
-  // Constructors
+  // Declaration of iterator class
+  class iterator;
+  // Declaration of const_iterator class
+  class const_iterator;
+
+  // Default constructor
+  explicit Tensor(const storage_pointer &storage = storage_pointer(new S()),
+                  const size_type offset = 0);
+  // Explicit size constructor support up to 8 dimensions
+  explicit Tensor(const size_type &size0, const size_type &size1 = 0,
+                  const size_type &size2 = 0, const size_type &size3 = 0,
+                  const size_type &size4 = 0, const size_type &size5 = 0,
+                  const size_type &size6 = 0, const size_type &size7 = 0,
+                  const storage_pointer &storage = storage_pointer(new S())
+                  const size_type offset = 0);
+  // Explicit size constructor using storage class
+  explicit Tensor(const tensor_size &size,
+                  const storage_pointer &storage = storage_pointer(new S())
+                  const size_type offset = 0);
+  // Explicit size and stride constructor using storage class
+  explicit Tensor(const tensor_size &size, const tensor_size &stride,
+                  const storage_pointer &storage = storage_pointer(new S())
+                  const size_type offset = 0);
+
+  // Copy constructor
+  Tensor(const Tensor &other);
+  // Move constructor
+  Tensor(Tensor &&other);
+
+  // Make destructor virtual for supporting polymorphism.
+  virtual ~Tensor();
+
+  // Assignment operator using copy and swap idiom
+  Tensor &operator=(Tensor other);
 
  private:
-  thunder::Storage< size_type, ::std::allocator<T> > size_;
-  thunder::Storage< size_type, ::std::allocator<T> > stride_;
-  ::std::shared_ptr< S > storage_;
+  tensor_size size_;
+  tensor_stride stride_;
+  storage_pointer storage_;
   size_type offset_;
-}
+};
 
 }  // namespace thunder
 
