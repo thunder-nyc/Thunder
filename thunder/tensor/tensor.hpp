@@ -46,17 +46,6 @@ class Tensor {
   typedef ::std::shared_ptr< S > storage_pointer;
   typedef size_storage::size_type dim_type;
 
-  // Iterators and their functions. Subtensor and value iterators.
-  class iterator;
-  class const_iterator;
-  class value_iterator;
-  iterator begin();
-  iterator end();
-  const_iterator begin() const;
-  const_iterator end() const;
-  value_iterator value_begin();
-  value_iterator value_end();
-
   // Constructors
   explicit Tensor(const storage_pointer &storage = storage_pointer(new S()),
                   size_type offset = 0);
@@ -83,6 +72,17 @@ class Tensor {
   virtual Tensor operator[](size_type pos_a, size_type pos_b) const;
   virtual Tensor operator[](const size_storage &pos_a,
                             const size_storage &pos_b) const;
+
+  // Iterators and their functions. Subtensor and value iterators.
+  class iterator;
+  class const_iterator;
+  class value_iterator;
+  iterator begin();
+  iterator end();
+  const_iterator begin() const;
+  const_iterator end() const;
+  value_iterator value_begin() const;
+  value_iterator value_end() const;
 
   // Property queries
   dim_type Dimension() const;
