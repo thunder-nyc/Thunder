@@ -121,19 +121,53 @@ class Tensor {
   Tensor Select(dim_type dim, size_type pos) const;
   Tensor View(const size_storage &size) const;
   template < typename Other_S >
-  Tensor ViewAs(const Tensor< Other_S > &other);
-  Tensor Transpose();
-  Tensor Transpose(dim_type dim0, dim_type dim1);
-  Tensor Unfold(dim_type dim, size_type size, size_type step);
+  Tensor ViewAs(const Tensor< Other_S > &other) const;
+  Tensor Transpose() const;
+  Tensor Transpose(dim_type dim0, dim_type dim1) const;
+  Tensor Unfold(dim_type dim, size_type size, size_type step) const;
 
-  // Apply a lambda. Returns reference to *this if it is a modifier.
+  // lambda applications
+  virtual const Tensor& Apply(
+      ::std::function< value_type(value_type) > &lambda) const;
+  virtual const Tensor& Apply(
+      ::std::function< value_type(const value_type&) > &lambda) const;
+  virtual const Tensor& Apply(
+      ::std::function< void(value_type&) > &lambda) const;
+  virtual const Tensor& Apply(
+      ::std::function< void(value_type*) > &lambda) const;
+
+  // Non-const lambda applications are delegated using const_cast
   virtual Tensor& Apply(::std::function< value_type(value_type) > &lambda);
-  virtual Tensor& Apply(::std::function< value_type(const value_type&) > &lambda);
+  virtual Tensor& Apply(
+      ::std::function< value_type(const value_type&) > &lambda);
   virtual Tensor& Apply(::std::function< void(value_type&) > &lambda);
   virtual Tensor& Apply(::std::function< void(value_type*) > &lambda);
-  virtual void Apply(::std::function< void(value_type) > &lambda) const;
-  virtual void Apply(::std::function< void(const value_type&) > &lambda) const;
-  virtual void Apply(::std::function< void(const value_type*) > &lambda) const;
+
+  // Static lambda applications are delegated
+  static Tensor Apply(const Tensor& t,
+                      ::std::function< value_type(value_type) > &lambda);
+  static Tensor Apply(const Tensor& t, 
+                      ::std::function< value_type(const value_type&) > &lambda);
+  static Tensor Apply(const Tensor& t,
+                      ::std::function< void(value_type&) > &lambda);
+  static Tensor Apply(const Tensor& t,
+                      ::std::function< void(value_type*) > &lambda);
+
+  // Reduction operations
+  virtual value_type Max() const;
+  virtual value_type Min() const;
+  virtual value_type Sum() const;
+  virtual value_type Mean() const;
+  virtual value_type Var() const;
+  virtual value_type Std() const;
+
+  // Static reduction operations are deligated
+  static value_type Max(const Tensor &t) const;
+  static value_type Min(const Tensor &t) const;
+  static value_type Sum(const Tensor &t) const;
+  static value_type Mean(const Tensor &t) const;
+  static value_type Var(const Tensor &t) const;
+  static value_type Std(const Tensor &t) const;
 
   // Constructor functions in which this stores the result.
   virtual Tensor& Cat(const Tensor& s, const Tensor& t, dim_type dim);
@@ -159,12 +193,57 @@ class Tensor {
   virtual Tensor& Zeros(size_type n0, size_type n1, size_type n2, size_type n3);
   virtual Tensor& Zeros(const size_storage &size);
 
-  // All random generators are either double or int. Static casts are used.
-  virtual Tensor& Rand();
+  // Static constructor functions are delegated
+  static Tensor Cat(const Tensor& s, const Tensor& t, dim_type dim);
+  static Tensor Diag(const Tensor& s);
+  static Tensor Eye(size_type n);
+  static Tensor Eye(size_type m, size_type n);
+  static Tensor Eye(const size_storage &size);
+  static Tensor LinSpace(const_reference x, const_reference y, size_type n);
+  static Tensor LogSpace(const_reference x, const_reference y, size_type n);
+  static Tensor Ones(size_type n);
+  static Tensor Ones(size_type m, size_type n);
+  static Tensor Ones(size_type n0, size_type n1, size_type n2);
+  static Tensor Ones(size_type n0, size_type n1, size_type n2, size_type n3);
+  static Tensor Ones(const size_storage &size);
+  static Tensor Range(const_reference x, const_reference y, reference step);
+  static Tensor Reshape(const Tensor& tensor, const size_storage size);
+  static Tensor TriL(const Tensor &s);
+  static Tensor TriU(const Tensor &s);
+  static Tensor Zeros(size_type n);
+  static Tensor Zeros(size_type m, size_type n);
+  static Tensor Zeros(size_type n0, size_type n1, size_type n2);
+  static Tensor Zeros(size_type n0, size_type n1, size_type n2, size_type n3);
+  static Tensor Zeros(const size_storage &size);
+
+  // All random generators are either double or int, using static_cast.
+  virtual const Tensor& Rand() const;
+  virtual const Tensor& Uniform(double a = 0.0, double b = 1.0) const;
+  virtual const Tensor& UniformReal(double a = 0.0, double b = 1.0) const;
+  virtual const Tensor& UniformInt(
+      int a = 0, int b = ::std::numeric_limits<IntType>::max()) const;
+  virtual const Tensor& Bernoulli(double p = 0.5) const;
+  virtual const Tensor& Binomial(int t = 1, double p = 0.5) const;
+  virtual const Tensor& NegativeBinomial(int k = 1, double p = 0.5) const;
+  virtual const Tensor& Geometric(double p = 0.5) const;
+  virtual const Tensor& Poisson(double mean = 1.0) const;
+  virtual const Tensor& Exponential(double lambda = 1.0) const;
+  virtual const Tensor& Gamma(double alpha = 1.0, double beta = 1.0) const;
+  virtual const Tensor& Weibull(double a = 1.0, double b = 1.0) const;
+  virtual const Tensor& ExtremeValue(double a = 0.0, double b = 1.0) const;
+  virtual const Tensor& Normal(double mean = 0.0, double stddev = 1.0) const;
+  virtual const Tensor& LogNormal(double m = 0.0, double s = 1.0) const;
+  virtual const Tensor& ChiSquared(double n = 1.0) const;
+  virtual const Tensor& Cauchy(double a = 0.0, double b = 1.0) const;
+  virtual const Tensor& FisherF(double m = 1.0, double n = 1.0) const;
+  virtual const Tensor& StudentT(double n = 1.0) const;
+
+  // All non-const random generators are delegated using const_cast.
+  virtual Tensor& Rand() const;
   virtual Tensor& Uniform(double a = 0.0, double b = 1.0);
   virtual Tensor& UniformReal(double a = 0.0, double b = 1.0);
-  virtual Tensor& UniformInt(int a = 0,
-                             int b = ::std::numeric_limits<IntType>::max())
+  virtual Tensor& UniformInt(
+      int a = 0, int b = ::std::numeric_limits<IntType>::max());
   virtual Tensor& Bernoulli(double p = 0.5);
   virtual Tensor& Binomial(int t = 1, double p = 0.5);
   virtual Tensor& NegativeBinomial(int k = 1, double p = 0.5);
@@ -181,7 +260,82 @@ class Tensor {
   virtual Tensor& FisherF(double m = 1.0, double n = 1.0);
   virtual Tensor& StudentT(double n = 1.0);
 
-  // Element-wise mathematical operations on this that are in standard library
+  // Static random generators are deligated
+  static Tensor Rand(const size_storage &size);
+  static Tensor Uniform(const size_storage &size, double a = 0.0,
+                        double b = 1.0);
+  static Tensor UniformReal(const size_storage &size, double a = 0.0,
+                            double b = 1.0);
+  static Tensor UniformInt(const size_storage &size, int a = 0,
+                           int b = ::std::numeric_limits<IntType>::max());
+  static Tensor Bernoulli(const size_storage &size, double p = 0.5);
+  static Tensor Binomial(const size_storage &size, int t = 1,
+                         double p = 0.5);
+  static Tensor NegativeBinomial(const size_storage &size, int k = 1,
+                                 double p = 0.5);
+  static Tensor Geometric(const size_storage &size, double p = 0.5);
+  static Tensor Poisson(const size_storage &size, double mean = 1.0);
+  static Tensor Exponential(const size_storage &size, double lambda = 1.0);
+  static Tensor Gamma(const size_storage &size, double alpha = 1.0,
+                      double beta = 1.0);
+  static Tensor Weibull(const size_storage &size, double a = 1.0,
+                        double b = 1.0);
+  static Tensor ExtremeValue(const size_storage &size, double a = 0.0,
+                             double b = 1.0);
+  static Tensor Normal(const size_storage &size, double mean = 0.0,
+                       double stddev = 1.0);
+  static Tensor LogNormal(const size_storage &size, double m = 0.0,
+                          double s = 1.0);
+  static Tensor ChiSquared(const size_storage &size, double n = 1.0);
+  static Tensor Cauchy(const size_storage &size, double a = 0.0,
+                       double b = 1.0);
+  static Tensor FisherF(const size_storage &size, double m = 1.0,
+                        double n = 1.0);
+  static Tensor StudentT(const size_storage &size, double n = 1.0);
+
+  // Element-wise mathematical operations that are free of parameters
+  virtual const Tensor& Exp() const;
+  virtual const Tensor& Exp2() const;
+  virtual const Tensor& ExpM1() const;
+  virtual const Tensor& Log() const;
+  virtual const Tensor& Log10() const;
+  virtual const Tensor& Log2() const;
+  virtual const Tensor& Log1P() const;
+  virtual const Tensor& Sqrt() const;
+  virtual const Tensor& Cbrt() const;
+  virtual const Tensor& Sin() const;
+  virtual const Tensor& Cos() const;
+  virtual const Tensor& Tan() const;
+  virtual const Tensor& ASin() const;
+  virtual const Tensor& ACos() const;
+  virtual const Tensor& ATan() const;
+  virtual const Tensor& SinH() const;
+  virtual const Tensor& CosH() const;
+  virtual const Tensor& TanH() const;
+  virtual const Tensor& ASinH() const;
+  virtual const Tensor& ACosH() const;
+  virtual const Tensor& ATanH() const;
+  virtual const Tensor& Erf() const;
+  virtual const Tensor& ErfC() const;
+  virtual const Tensor& TGamma() const;
+  virtual const Tensor& LGamma() const;
+  virtual const Tensor& Ceil() const;
+  virtual const Tensor& Floor() const;
+  virtual const Tensor& Trunc() const;
+  virtual const Tensor& Round() const;
+  virtual const Tensor& NearbyInt() const;
+  virtual const Tensor& RInt() const;
+  virtual const Tensor& LogB() const;
+  virtual const Tensor& FPClassify() const;
+  virtual const Tensor& IsFinite() const;
+  virtual const Tensor& IsInf() const;
+  virtual const Tensor& IsNana() const;
+  virtual const Tensor& IsNormal() const;
+  virtual const Tensor& Signbit() const;
+  virtual const Tensor& Zero() const;
+  virtual const Tensor& Contiguous() const;
+
+  // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& Exp();
   virtual Tensor& Exp2();
   virtual Tensor& ExpM1();
@@ -223,121 +377,6 @@ class Tensor {
   virtual Tensor& Zero();
   virtual Tensor& Contiguous();
 
-  // Reduction operations
-  virtual value_type Max();
-  virtual value_type Min();
-  virtual value_type Sum();
-  virtual value_type Mean();
-  virtual value_type Var();
-  virtual value_type Std();
-
-  // Element-wise operations with a constant
-  virtual Tensor& Add(const_reference x);
-  virtual Tensor& Sub(const_reference x);
-  virtual Tensor& Mul(const_reference x);
-  virtual Tensor& Div(const_reference x);
-  virtual Tensor& FMod(const_reference x);
-  virtual Tensor& Remainder(const_reference x);
-  virtual Tensor& FMax(const_reference x);
-  virtual Tensor& FMin(const_reference x);
-  virtual Tensor& FDim(const_reference x);
-  virtual Tensor& Pow(const_reference x);
-  virtual Tensor& Hypot(const_reference x);
-  virtual Tensor& ATan2(const_reference x);
-  virtual Tensor& ScalBN(const_reference x);
-  virtual Tensor& ScalBLN(const_reference x);
-  virtual Tensor& NextAfter(const_reference x);
-  virtual Tensor& NextToward(const_reference x);
-  virtual Tensor& CopySign(const_reference x);
-  virtual Tensor& IsGreater(const_reference x);
-  virtual Tensor& IsGreaterEqual(const_reference x);
-  virtual Tensor& IsLess(const_reference x);
-  virtual Tensor& IsLessEqual(const_reference x);
-  virtual Tensor& IsLessGreater(const_reference x);
-  virtual Tensor& IsUnordered(const_reference x);
-  virtual Tensor& Fill(const_reference x);
-
-  // Element-wise operations with another tensor
-  virtual Tensor& Add(const Tensor &x);
-  virtual Tensor& Sub(const Tensor &x);
-  virtual Tensor& Mul(const Tensor &x);
-  virtual Tensor& Div(const Tensor &x);
-  virtual Tensor& FMod(const Tensor &x);
-  virtual Tensor& Remainder(const Tensor &x);
-  virtual Tensor& FMax(const Tensor &x);
-  virtual Tensor& FMin(const Tensor &x);
-  virtual Tensor& FDim(const Tensor &x);
-  virtual Tensor& Pow(const Tensor &x);
-  virtual Tensor& Hypot(const Tensor &x);
-  virtual Tensor& ATan2(const Tensor &x);
-  virtual Tensor& ScalBN(const Tensor &x);
-  virtual Tensor& ScaleBLN(const Tensor &x);
-  virtual Tensor& NextAfter(const Tensor &x);
-  virtual Tensor& NextToward(const Tensor &x);
-  virtual Tensor& CopySign(const Tensor &x);
-  virtual Tensor& IsGreater(const Tensor &x);
-  virtual Tensor& IsGreaterEqual(const Tensor &x);
-  virtual Tensor& IsLess(const Tensor &x);
-  virtual Tensor& IsLessEqual(const Tensor &x);
-  virtual Tensor& IsLessGreater(const Tensor &x);
-  virtual Tensor& IsUnordered(const Tensor &x);
-
-  // Static constructor functions are delegated
-  static Tensor Cat(const Tensor& s, const Tensor& t, dim_type dim);
-  static Tensor Diag(const Tensor& s);
-  static Tensor Eye(size_type n);
-  static Tensor Eye(size_type m, size_type n);
-  static Tensor Eye(const size_storage &size);
-  static Tensor LinSpace(const_reference x, const_reference y, size_type n);
-  static Tensor LogSpace(const_reference x, const_reference y, size_type n);
-  static Tensor Ones(size_type n);
-  static Tensor Ones(size_type m, size_type n);
-  static Tensor Ones(size_type n0, size_type n1, size_type n2);
-  static Tensor Ones(size_type n0, size_type n1, size_type n2, size_type n3);
-  static Tensor Ones(const size_storage &size);
-  static Tensor Range(const_reference x, const_reference y, reference step);
-  static Tensor Reshape(const Tensor& tensor, const size_storage size);
-  static Tensor TriL(const Tensor &s);
-  static Tensor TriU(const Tensor &s);
-  static Tensor Zeros(size_type n);
-  static Tensor Zeros(size_type m, size_type n);
-  static Tensor Zeros(size_type n0, size_type n1, size_type n2);
-  static Tensor Zeros(size_type n0, size_type n1, size_type n2, size_type n3);
-  static Tensor Zeros(const size_storage &size);
-
-  // Static random generators are deligated
-  static Tensor Rand(const size_storage &size);
-  static Tensor Uniform(const size_storage &size, double a = 0.0,
-                        double b = 1.0);
-  static Tensor UniformReal(const size_storage &size, double a = 0.0,
-                            double b = 1.0);
-  static Tensor UniformInt(const size_storage &size, int a = 0,
-                           int b = ::std::numeric_limits<IntType>::max());
-  static Tensor Bernoulli(const size_storage &size, double p = 0.5);
-  static Tensor Binomial(const size_storage &size, int t = 1,
-                         double p = 0.5);
-  static Tensor NegativeBinomial(const size_storage &size, int k = 1,
-                                 double p = 0.5);
-  static Tensor Geometric(const size_storage &size, double p = 0.5);
-  static Tensor Poisson(const size_storage &size, double mean = 1.0);
-  static Tensor Exponential(const size_storage &size, double lambda = 1.0);
-  static Tensor Gamma(const size_storage &size, double alpha = 1.0,
-                      double beta = 1.0);
-  static Tensor Weibull(const size_storage &size, double a = 1.0,
-                        double b = 1.0);
-  static Tensor ExtremeValue(const size_storage &size, double a = 0.0,
-                             double b = 1.0);
-  static Tensor Normal(const size_storage &size, double mean = 0.0,
-                       double stddev = 1.0);
-  static Tensor LogNormal(const size_storage &size, double m = 0.0,
-                          double s = 1.0);
-  static Tensor ChiSquared(const size_storage &size, double n = 1.0);
-  static Tensor Cauchy(const size_storage &size, double a = 0.0,
-                       double b = 1.0);
-  static Tensor FisherF(const size_storage &size, double m = 1.0,
-                        double n = 1.0);
-  static Tensor StudentT(const size_storage &size, double n = 1.0);
-
   // static element-wise mathematical operations are deligated
   static Tensor Exp(const Tensor &t);
   static Tensor Exp2(const Tensor &t);
@@ -378,7 +417,61 @@ class Tensor {
   static Tensor IsNormal(const Tensor &t);
   static Tensor Signbit(const Tensor &t);
   static Tensor Zero(const Tensor &t);
-  static Tensor Contiguous();
+  static Tensor Contiguous(const Tensor &t);
+
+  // Element-wise operations with a constant
+  virtual const Tensor& Add(const_reference x) const;
+  virtual const Tensor& Sub(const_reference x) const;
+  virtual const Tensor& Mul(const_reference x) const;
+  virtual const Tensor& Div(const_reference x) const;
+  virtual const Tensor& FMod(const_reference x) const;
+  virtual const Tensor& Remainder(const_reference x) const;
+  virtual const Tensor& FMax(const_reference x) const;
+  virtual const Tensor& FMin(const_reference x) const;
+  virtual const Tensor& FDim(const_reference x) const;
+  virtual const Tensor& Pow(const_reference x) const;
+  virtual const Tensor& Hypot(const_reference x) const;
+  virtual const Tensor& ATan2(const_reference x) const;
+  virtual const Tensor& LDExp(const_reference x) const;
+  virtual const Tensor& ScalBN(const_reference x) const;
+  virtual const Tensor& ScalBLN(const_reference x) const;
+  virtual const Tensor& NextAfter(const_reference x) const;
+  virtual const Tensor& NextToward(const_reference x) const;
+  virtual const Tensor& CopySign(const_reference x) const;
+  virtual const Tensor& IsGreater(const_reference x) const;
+  virtual const Tensor& IsGreaterEqual(const_reference x) const;
+  virtual const Tensor& IsLess(const_reference x) const;
+  virtual const Tensor& IsLessEqual(const_reference x) const;
+  virtual const Tensor& IsLessGreater(const_reference x) const;
+  virtual const Tensor& IsUnordered(const_reference x) const;
+  virtual const Tensor& Fill(const_reference x) const;
+
+  // Non-const element-wise operations are delegated using static_cast
+  virtual Tensor& Add(const_reference x);
+  virtual Tensor& Sub(const_reference x);
+  virtual Tensor& Mul(const_reference x);
+  virtual Tensor& Div(const_reference x);
+  virtual Tensor& FMod(const_reference x);
+  virtual Tensor& Remainder(const_reference x);
+  virtual Tensor& FMax(const_reference x);
+  virtual Tensor& FMin(const_reference x);
+  virtual Tensor& FDim(const_reference x);
+  virtual Tensor& Pow(const_reference x);
+  virtual Tensor& Hypot(const_reference x);
+  virtual Tensor& ATan2(const_reference x);
+  virtual Tensor& LDExp(const_reference x);
+  virtual Tensor& ScalBN(const_reference x);
+  virtual Tensor& ScalBLN(const_reference x);
+  virtual Tensor& NextAfter(const_reference x);
+  virtual Tensor& NextToward(const_reference x);
+  virtual Tensor& CopySign(const_reference x);
+  virtual Tensor& IsGreater(const_reference x);
+  virtual Tensor& IsGreaterEqual(const_reference x);
+  virtual Tensor& IsLess(const_reference x);
+  virtual Tensor& IsLessEqual(const_reference x);
+  virtual Tensor& IsLessGreater(const_reference x);
+  virtual Tensor& IsUnordered(const_reference x);
+  virtual Tensor& Fill(const_reference x);
 
   // Static element-wise operations with a constant are delegated
   static Tensor Add(const Tensor &t, const_reference x);
@@ -405,6 +498,56 @@ class Tensor {
   static Tensor IsLessGreater(const Tensor &t, const_reference x);
   static Tensor IsUnordered(const Tensor &t, const_reference x);
   static Tensor Fill(const Tensor &t, const_reference x);
+
+  // Element-wise operations with another tensor
+  virtual const Tensor& Add(const Tensor &x) const;
+  virtual const Tensor& Sub(const Tensor &x) const;
+  virtual const Tensor& Mul(const Tensor &x) const;
+  virtual const Tensor& Div(const Tensor &x) const;
+  virtual const Tensor& FMod(const Tensor &x) const;
+  virtual const Tensor& Remainder(const Tensor &x) const;
+  virtual const Tensor& FMax(const Tensor &x) const;
+  virtual const Tensor& FMin(const Tensor &x) const;
+  virtual const Tensor& FDim(const Tensor &x) const;
+  virtual const Tensor& Pow(const Tensor &x) const;
+  virtual const Tensor& Hypot(const Tensor &x) const;
+  virtual const Tensor& ATan2(const Tensor &x) const;
+  virtual const Tensor& ScalBN(const Tensor &x) const;
+  virtual const Tensor& ScaleBLN(const Tensor &x) const;
+  virtual const Tensor& NextAfter(const Tensor &x) const;
+  virtual const Tensor& NextToward(const Tensor &x) const;
+  virtual const Tensor& CopySign(const Tensor &x) const;
+  virtual const Tensor& IsGreater(const Tensor &x) const;
+  virtual const Tensor& IsGreaterEqual(const Tensor &x) const;
+  virtual const Tensor& IsLess(const Tensor &x) const;
+  virtual const Tensor& IsLessEqual(const Tensor &x) const;
+  virtual const Tensor& IsLessGreater(const Tensor &x) const;
+  virtual const Tensor& IsUnordered(const Tensor &x) const;
+
+  // Non-const element-wise operations are delegated using const_cast
+  virtual Tensor& Add(const Tensor &x);
+  virtual Tensor& Sub(const Tensor &x);
+  virtual Tensor& Mul(const Tensor &x);
+  virtual Tensor& Div(const Tensor &x);
+  virtual Tensor& FMod(const Tensor &x);
+  virtual Tensor& Remainder(const Tensor &x);
+  virtual Tensor& FMax(const Tensor &x);
+  virtual Tensor& FMin(const Tensor &x);
+  virtual Tensor& FDim(const Tensor &x);
+  virtual Tensor& Pow(const Tensor &x);
+  virtual Tensor& Hypot(const Tensor &x);
+  virtual Tensor& ATan2(const Tensor &x);
+  virtual Tensor& ScalBN(const Tensor &x);
+  virtual Tensor& ScaleBLN(const Tensor &x);
+  virtual Tensor& NextAfter(const Tensor &x);
+  virtual Tensor& NextToward(const Tensor &x);
+  virtual Tensor& CopySign(const Tensor &x);
+  virtual Tensor& IsGreater(const Tensor &x);
+  virtual Tensor& IsGreaterEqual(const Tensor &x);
+  virtual Tensor& IsLess(const Tensor &x);
+  virtual Tensor& IsLessEqual(const Tensor &x);
+  virtual Tensor& IsLessGreater(const Tensor &x);
+  virtual Tensor& IsUnordered(const Tensor &x);
 
   // Static element-wise operations with another tensor are delegated
   static Tensor Add(const Tensor &t, const Tensor &x);
