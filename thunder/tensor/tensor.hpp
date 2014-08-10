@@ -268,7 +268,7 @@ class Tensor {
   virtual Tensor& Hypot(const_reference x);
   virtual Tensor& ATan2(const_reference x);
   virtual Tensor& ScalBN(const_reference x);
-  virtual Tensor& ScaleBLN(const_reference x);
+  virtual Tensor& ScalBLN(const_reference x);
   virtual Tensor& NextAfter(const_reference x);
   virtual Tensor& NextToward(const_reference x);
   virtual Tensor& CopySign(const_reference x);
