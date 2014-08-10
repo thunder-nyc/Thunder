@@ -46,116 +46,91 @@ class Tensor {
   typedef ::std::shared_ptr< S > storage_pointer;
   typedef size_storage::size_type dim_type;
 
-  // Value iterators
+  // Iterators and their functions. Subtensor and value iterators.
+  class iterator;
+  class const_iterator;
   class value_iterator;
-  class value_const_iterator;
+  iterator begin();
+  iterator end();
+  const_iterator begin() const;
+  const_iterator end() const;
+  value_iterator value_begin();
+  value_iterator value_end();
 
-  // Default constructor
+  // Constructors
   explicit Tensor(const storage_pointer &storage = storage_pointer(new S()),
                   size_type offset = 0);
-
-  // Explicit size constructor using storage class, supporting initializer_list
   explicit Tensor(const size_storage &size);
-  // Explicit size constructor with designated storage.
   Tensor(const size_storage &size, const storage_pointer &storage,
          size_type offset = 0);
-  // Explicit size and stride constructor
   Tensor(const size_storage &size, const stride_storage &stride);
-  // Explicit size and stride constructor using designated storage
   Tensor(const size_storage &size, const stride_storage &stride,
          const storage_pointer &storage, size_type offset = 0);
-
-  // Copy constructor
   Tensor(const Tensor &other);
-
-  // Move constructor
   Tensor(Tensor &&other);
 
-  // Make destructor virtual for supporting polymorphism.
+  // Destructor
   virtual ~Tensor();
 
-  // Assignment operator using copy and swap idiom
+  // Assignment operators
   virtual Tensor &operator=(Tensor other);
-  // Assignment operator delegated to Fill
   virtual Tensor &operator=(const_reference value);
-  // Assignment operator to value from the virst element
   friend reference operator=(reference value, const Tensor& tensor);
 
-  // Index operators returns subtensor at the first dimension
+  // Index operators
   virtual Tensor operator[](size_type pos) const;
-  // Index operators returns subtensors using storage index
   virtual Tensor operator[](const size_storage &pos) const;
-
-  // Ranged index operators returns subtensor at the first dimension
   virtual Tensor operator[](size_type pos_a, size_type pos_b) const;
-  // Ranged index operators returns subtensors using storage index
   virtual Tensor operator[](const size_storage &pos_a,
                             const size_storage &pos_b) const;
 
-  // Return the number of dimensions of this tensor
+  // Property queries
   dim_type Dimension() const;
-  // Return the size of this tensor.
   size_storage Size() const;
   size_type Size(dim_type dim) const;
-  // Return the stride of this tensor.
+  size_type Count() const;
   stride_storage Stride() const;
   difference_type Stride(dim_type dim) const;
-  // Return the storage inside tensor.
   storage_pointer Storage() const;
-  // Return the offset of this tensor.
   size_type Offset() const;
-  // Return the raw data pointer pointing at 0 of this tensor
   pointer Data() const;
-  // Return whether the the tensor is contiguous
   bool IsContiguous() const;
-  // Return whether the tensor is of same size as other
   template < typename Other_S >
   bool IsSameSizeAs (const Tensor< Other_S > &other) const;
 
-  // Set the tensor to have same storage and size as target
+  // Storage setters
   Tensor& Set(const Tensor &other);
-  // Set the tensor to target storage
   Tensor& Set(const storage_pointer &storage, size_type offset = 0);
+  Tensor& Set(const size_storage &size, const storage_pointer &storage,
+              size_type offset = 0);
+  Tensor& Set(const size_storage &size, const stride_storage &stride,
+              const stroage_pointer &storage, size_type offset = 0);
 
   // Copy data from another tensor with same number of elements
   template < typename Other_S >
   Tensor& Copy(const Tensor< Other_S > &other);
 
-  // Fill all values with target value
-  Tensor& Fill(const value_type &value);
-
-  // Fill all values with zero
-  Tensor& Zero();
-
-  // Resize as tensor: if size differs, will replace underlying storage
+  // Resize Operations
+  Tensor& Resize(const size_storage &size);
+  Tensor& Resize(const size_storage &size, const stride_storage &stride);
   template < typename Other_S >
   Tensor& ResizeAs(const Tensor< Other_S > &other);
 
-  // Resize operators: will replace the underlying storage if size differs
-  Tensor& Resize(const size_storage &size);
-  Tensor& Resize(const size_storage &size, const stride_storage &stride);
-
-  // Extract subtensors
+  // Extract subtensors or transformations
   Tensor Narrow(dim_type dim, size_type pos, size_type size) const;
   Tensor Select(dim_type dim, size_type pos) const;
   Tensor View(const size_storage &size) const;
   template < typename Other_S >
   Tensor ViewAs(const Tensor< Other_S > &other);
-
-  // Transpose dimensions 0 and 1
   Tensor Transpose();
-  // Transpose designated dimensions
   Tensor Transpose(dim_type dim0, dim_type dim1);
-
-  // Unfold the designated dimension to some size with a certain step
   Tensor Unfold(dim_type dim, size_type size, size_type step);
 
-  // Apply a lambda modifier. Returns reference to *this.
+  // Apply a lambda. Returns reference to *this if it is a modifier.
   virtual Tensor& Apply(::std::function< value_type(value_type) > &lambda);
   virtual Tensor& Apply(::std::function< value_type(const value_type&) > &lambda);
   virtual Tensor& Apply(::std::function< void(value_type&) > &lambda);
   virtual Tensor& Apply(::std::function< void(value_type*) > &lambda);
-  // Apply a lambda non-modifier.
   virtual void Apply(::std::function< void(value_type) > &lambda) const;
   virtual void Apply(::std::function< void(const value_type&) > &lambda) const;
   virtual void Apply(::std::function< void(const value_type*) > &lambda) const;
@@ -245,6 +220,8 @@ class Tensor {
   virtual Tensor& IsNana();
   virtual Tensor& IsNormal();
   virtual Tensor& Signbit();
+  virtual Tensor& Zero();
+  virtual Tensor& Contiguous();
 
   // Reduction operations
   virtual value_type Max();
@@ -278,6 +255,7 @@ class Tensor {
   virtual Tensor& IsLessEqual(const_reference x);
   virtual Tensor& IsLessGreater(const_reference x);
   virtual Tensor& IsUnordered(const_reference x);
+  virtual Tensor& Fill(const_reference x);
 
   // Element-wise operations with another tensor
   virtual Tensor& Add(const Tensor &x);
@@ -399,6 +377,8 @@ class Tensor {
   static Tensor IsNana(const Tensor &t);
   static Tensor IsNormal(const Tensor &t);
   static Tensor Signbit(const Tensor &t);
+  static Tensor Zero(const Tensor &t);
+  static Tensor Contiguous();
 
   // Static element-wise operations with a constant are delegated
   static Tensor Add(const Tensor &t, const_reference x);
@@ -424,6 +404,7 @@ class Tensor {
   static Tensor IsLessEqual(const Tensor &t, const_reference x);
   static Tensor IsLessGreater(const Tensor &t, const_reference x);
   static Tensor IsUnordered(const Tensor &t, const_reference x);
+  static Tensor Fill(const Tensor &t, const_reference x);
 
   // Static element-wise operations with another tensor are delegated
   static Tensor Add(const Tensor &t, const Tensor &x);
