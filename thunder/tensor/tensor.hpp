@@ -414,7 +414,7 @@ class Tensor {
   static Tensor Hypot(const Tensor &t, const_reference x);
   static Tensor ATan2(const Tensor &t, const_reference x);
   static Tensor ScalBN(const Tensor &t, const_reference x);
-  static Tensor ScaleBLN(const Tensor &t, const_reference x);
+  static Tensor ScalBLN(const Tensor &t, const_reference x);
   static Tensor NextAfter(const Tensor &t, const_reference x);
   static Tensor NextToward(const Tensor &t, const_reference x);
   static Tensor CopySign(const Tensor &t, const_reference x);
