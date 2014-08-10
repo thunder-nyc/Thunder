@@ -62,9 +62,10 @@ class Tensor {
   virtual ~Tensor();
 
   // Assignment operators
-  virtual Tensor &operator=(Tensor other);
-  virtual Tensor &operator=(const_reference value);
-  friend reference operator=(reference value, const Tensor& tensor);
+  virtual Tensor& operator=(Tensor other);
+  virtual const Tensor &operator=(const_reference value) const;
+  virtual Tensor& operator=(const_reference value);
+  friend reference operator=(reference value, const Tensor& t);
 
   // Index operators
   virtual Tensor operator[](size_type pos) const;
@@ -73,58 +74,175 @@ class Tensor {
   virtual Tensor operator[](const size_storage &pos_a,
                             const size_storage &pos_b) const;
 
+  // Templated airthmetic operators are type left associated
+  template < typename Other_S >
+  Tensor operator+(const Tensor< Other_S > &other) const;
+  template < typename Other_S >
+  Tensor operator-(const Tensor< Other_S > &other) const;
+
+  // Arithmetic operators are delegated
+  virtual Tensor operator+(const Tensor &other) const;
+  virtual Tensor operator-(const Tensor &other) const;
+
+  // Comparison operators with value are delegated
+  virtual Tensor operator==(const_reference value) const;
+  virtual Tensor operator>(const_reference value) const;
+  virtual Tensor operator<(const_reference value) const;
+  virtual Tensor operator<=(const_reference value) const;
+  virtual Tensor operator>=(const_reference value) const;
+  friend Tensor operator==(const_reference value, const Tensor &t);
+  friend Tensor operator>(const_reference value, const Tensor &t);
+  friend Tensor operator<(const_reference value, const Tensor &t);
+  friend Tensor operator<=(const_reference value, const Tensor &t);
+  friend Tensor operator>=(const_reference value, const Tensor &t);
+
+  // Templated comparison operators are delegated
+  template < typename Other_S >
+  Tensor operator==(const Tensor< Other_S > &other);
+  template < typename Other_S >
+  Tensor operator>(const Tensor< Other_S > &other);
+  template < typename Other_S >
+  Tensor operator<(const Tensor< Other_S > &other);
+  template < typename Other_S >
+  Tensor operator<=(const Tensor< Other_S > &other);
+  template < typename Other_S >
+  Tensor operator>=(const Tensor< Other_S > &other);
+
+  // Comparison operators with another tensor are delegated
+  virtual Tensor operator==(const Tensor &other) const;
+  virtual Tensor operator>(const Tensor &other) const;
+  virtual Tensor operator<(const Tensor &other) const;
+  virtual Tensor operator<=(const Tensor &other) const;
+  virtual Tensor operator>=(const Tensor &other) const;
+
   // Iterators and their functions. Subtensor and value iterators.
   class iterator;
   class const_iterator;
-  class value_iterator;
-  iterator begin();
-  iterator end();
-  const_iterator begin() const;
-  const_iterator end() const;
-  value_iterator value_begin() const;
-  value_iterator value_end() const;
+  class reference_iterator;
+  class const_reference_iterator;
+  virtual iterator begin() const;
+  virtual iterator end() const;
+  virtual const_iterator begin() const;
+  virtual const_iterator end() const;
+  virtual reference_iterator value_begin() const;
+  virtual reference_iterator value_end() const;
+  virtual const_reference_iterator value_begin() const;
+  virtual const_reference_iterator value_end() const;
 
-  // Property queries
-  dim_type Dimension() const;
-  size_storage Size() const;
-  size_type Size(dim_type dim) const;
-  size_type Count() const;
-  stride_storage Stride() const;
-  difference_type Stride(dim_type dim) const;
-  storage_pointer Storage() const;
-  size_type Offset() const;
-  pointer Data() const;
-  bool IsContiguous() const;
+  // Static iterator functions are delegated
+  static iterator begin(const Tensor &t);
+  static iterator end(const Tensor &t);
+  static const_iterator begin(const Tensor &t);
+  static const_iterator end(const Tensor &t);
+  static reference_iterator value_begin(const Tensor &t);
+  static reference_iterator value_end(const Tensor &t);
+  static const_reference_iterator value_begin(const Tensor &t);
+  static const_reference_iterator value_end(const Tensor &t);
+
+  // Non-virtual templated queriers
   template < typename Other_S >
   bool IsSameSizeAs (const Tensor< Other_S > &other) const;
 
-  // Storage setters
-  Tensor& Set(const Tensor &other);
-  Tensor& Set(const storage_pointer &storage, size_type offset = 0);
-  Tensor& Set(const size_storage &size, const storage_pointer &storage,
-              size_type offset = 0);
-  Tensor& Set(const size_storage &size, const stride_storage &stride,
-              const stroage_pointer &storage, size_type offset = 0);
+  // Static non-virtual templated queriers are delegated
+  template < typename Other_S >
+  bool IsSameSizeAs (const Tensor& t, const Tensor< Other_S > &other) const;
 
-  // Copy data from another tensor with same number of elements
+  // Non-virtual templated modifiers
   template < typename Other_S >
   Tensor& Copy(const Tensor< Other_S > &other);
-
-  // Resize Operations
-  Tensor& Resize(const size_storage &size);
-  Tensor& Resize(const size_storage &size, const stride_storage &stride);
   template < typename Other_S >
   Tensor& ResizeAs(const Tensor< Other_S > &other);
 
-  // Extract subtensors or transformations
-  Tensor Narrow(dim_type dim, size_type pos, size_type size) const;
-  Tensor Select(dim_type dim, size_type pos) const;
-  Tensor View(const size_storage &size) const;
+  // Static non-virtual templated modifiers are delegated
+  template < typename Other_S >
+  Tensor& Copy(Tensor *t, const Tensor< Other_S > &other);
+  template < typename Other_S >
+  Tensor& ResizeAs(Tensor *t, const Tensor< Other_S > &other);
+
+  // Property queries
+  virtual dim_type Dimension() const;
+  virtual size_storage Size() const;
+  virtual size_type Size(dim_type dim) const;
+  virtual size_type Count() const;
+  virtual stride_storage Stride() const;
+  virtual difference_type Stride(dim_type dim) const;
+  virtual storage_pointer Storage() const;
+  virtual size_type Offset() const;
+  virtual pointer Data() const;
+  virtual bool IsContiguous() const;
+  virtual bool IsSameSizeAs(const Tensor &other) const;
+
+  // Static property queries are delegated
+  static dim_type Dimension(const Tensor &t);
+  static size_storage Size(const Tensor &t);
+  static size_type Size(const Tensor &t, dim_type dim);
+  static size_type Count(const Tensor &t);
+  static stride_storage Stride(const Tensor &t);
+  static difference_type Stride(const Tensor &t, dim_type dim);
+  static storage_pointer Storage(const Tensor &t);
+  static size_type Offset(const Tensor &t);
+  static pointer Data(const Tensor &t);
+  static bool IsContiguous(const Tensor &t);
+  static bool IsSameSizeAs(const Tensor &t, const Tensor &other);
+
+  // Normal and specialized modifiers
+  virtual Tensor& Copy(const Tensor &other);
+  virtual Tensor& Set(const Tensor &other);
+  virtual Tensor& Set(const storage_pointer &storage, size_type offset = 0);
+  virtual Tensor& Set(const size_storage &size, const storage_pointer &storage,
+                      size_type offset = 0);
+  virtual Tensor& Set(const size_storage &size, const stride_storage &stride,
+                      const stroage_pointer &storage, size_type offset = 0);
+  virtual Tensor& Resize(const size_storage &size);
+  virtual Tensor& Resize(const size_storage &size, const stride_storage &stride);
+  virtual Tensor& ResizeAs(const Tensor &other);
+  virtual Tensor& Contiguous();
+
+  // Static normal and specialized modifiers are delegated
+  static Tensor& Copy(Tensor *t, const Tensor &other);
+  static Tensor& Set(Tensor *t, const Tensor &other);
+  static Tensor& Set(Tensor *t, const storage_pointer &storage,
+                     size_type offset = 0);
+  static Tensor& Set(Tensor *t, const size_storage &size,
+                     const storage_pointer &storage, size_type offset = 0);
+  static Tensor& Set(Tensor *t, const size_storage &size,
+                     const stride_storage &stride,
+                     const stroage_pointer &storage, size_type offset = 0);
+  static Tensor& Resize(Tensor *t, const size_storage &size);
+  static Tensor& Resize(Tensor *t, const size_storage &size,
+                        const stride_storage &stride);
+  static Tensor& ResizeAs(Tensor *t, const Tensor &other);
+  static Tensor& Contiguous(Tensor *t);
+
+  // Templated subtensor extractors
   template < typename Other_S >
   Tensor ViewAs(const Tensor< Other_S > &other) const;
-  Tensor Transpose() const;
-  Tensor Transpose(dim_type dim0, dim_type dim1) const;
-  Tensor Unfold(dim_type dim, size_type size, size_type step) const;
+
+  // Static templated subtensor extractors are delegated
+  template < typename Other_S >
+  static Tensor ViewAs(const Tensor& t, const Tensor< Other_S > &other);
+
+  // Extract subtensors or transformations
+  virtual Tensor Narrow(dim_type dim, size_type pos, size_type size) const;
+  virtual Tensor Select(dim_type dim, size_type pos) const;
+  virtual Tensor View(const size_storage &size) const;
+  virtual Tensor ViewAs(const Tensor &other) const;
+  virtual Tensor Transpose() const;
+  virtual Tensor Transpose(dim_type dim0, dim_type dim1) const;
+  virtual Tensor Unfold(dim_type dim, size_type size, size_type step) const;
+  virtual Tensor Clone() const;
+
+  //Static subtensor or transformation extractors are delegated
+  static Tensor Narrow(const Tensor &t, dim_type dim, size_type pos,
+                       size_type size);
+  static Tensor Select(const Tensor &t, dim_type dim, size_type pos);
+  static Tensor View(const Tensor &t, const size_storage &size);
+  static Tensor ViewAs(const Tensor &t, const Tensor &other);
+  static Tensor Transpose(const Tensor &t);
+  static Tensor Transpose(const Tensor &t, dim_type dim0, dim_type dim1);
+  static Tensor Unfold(const Tensor &t, dim_type dim, size_type size,
+                       size_type step);
+  static Tensor Clone(const Tensor& t);
 
   // lambda applications
   virtual const Tensor& Apply(
@@ -333,7 +451,6 @@ class Tensor {
   virtual const Tensor& IsNormal() const;
   virtual const Tensor& Signbit() const;
   virtual const Tensor& Zero() const;
-  virtual const Tensor& Contiguous() const;
 
   // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& Exp();
@@ -375,7 +492,6 @@ class Tensor {
   virtual Tensor& IsNormal();
   virtual Tensor& Signbit();
   virtual Tensor& Zero();
-  virtual Tensor& Contiguous();
 
   // static element-wise mathematical operations are deligated
   static Tensor Exp(const Tensor &t);
@@ -417,7 +533,6 @@ class Tensor {
   static Tensor IsNormal(const Tensor &t);
   static Tensor Signbit(const Tensor &t);
   static Tensor Zero(const Tensor &t);
-  static Tensor Contiguous(const Tensor &t);
 
   // Element-wise operations with a constant
   virtual const Tensor& Add(const_reference x) const;
@@ -499,6 +614,54 @@ class Tensor {
   static Tensor IsUnordered(const Tensor &t, const_reference x);
   static Tensor Fill(const Tensor &t, const_reference x);
 
+  // Templated element-wise operations with another tensor
+  template < typename Other_S >
+  const Tensor& Add(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& Sub(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& Mul(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& Div(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& FMod(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& Remainder(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& FMax(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& FMin(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& FDim(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& Pow(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& Hypot(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& ATan2(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& ScalBN(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& ScaleBLN(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& NextAfter(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& NextToward(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& CopySign(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& IsGreater(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& IsGreaterEqual(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& IsLess(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& IsLessEqual(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& IsLessGreater(const Tensor< Other_S > &x) const;
+  template < typename Other_S >
+  const Tensor& IsUnordered(const Tensor< Other_S > &x) const;
+
   // Element-wise operations with another tensor
   virtual const Tensor& Add(const Tensor &x) const;
   virtual const Tensor& Sub(const Tensor &x) const;
@@ -524,6 +687,54 @@ class Tensor {
   virtual const Tensor& IsLessGreater(const Tensor &x) const;
   virtual const Tensor& IsUnordered(const Tensor &x) const;
 
+  // Non-const templated element-wise operations are delegated using const_cast
+  template < typename Other_S >
+  Tensor& Add(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& Sub(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& Mul(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& Div(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& FMod(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& Remainder(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& FMax(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& FMin(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& FDim(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& Pow(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& Hypot(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& ATan2(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& ScalBN(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& ScaleBLN(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& NextAfter(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& NextToward(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& CopySign(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& IsGreater(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& IsGreaterEqual(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& IsLess(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& IsLessEqual(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& IsLessGreater(const Tensor< Other_S > &x);
+  template < typename Other_S >
+  Tensor& IsUnordered(const Tensor< Other_S > &x);
+
   // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& Add(const Tensor &x);
   virtual Tensor& Sub(const Tensor &x);
@@ -548,6 +759,54 @@ class Tensor {
   virtual Tensor& IsLessEqual(const Tensor &x);
   virtual Tensor& IsLessGreater(const Tensor &x);
   virtual Tensor& IsUnordered(const Tensor &x);
+
+  // Static templated element-wise operations with another tensor are delegated
+  template < typename Other_S >
+  static Tensor Add(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor Sub(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor Mul(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor Div(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor FMod(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor Remainder(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor FMax(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor FMin(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor FDim(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor Pow(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor Hypot(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor ATan2(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor ScalBN(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor ScaleBLN(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor NextAfter(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor NextToward(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor CopySign(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor IsGreater(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor IsGreaterEqual(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor IsLess(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor IsLessEqual(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor IsLessGreater(const Tensor &t, const Tensor< Other_S > &x);
+  template < typename Other_S >
+  static Tensor IsUnordered(const Tensor &t, const Tensor< Other_S > &x);
 
   // Static element-wise operations with another tensor are delegated
   static Tensor Add(const Tensor &t, const Tensor &x);
