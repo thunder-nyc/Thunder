@@ -260,7 +260,7 @@ class Tensor {
   virtual Tensor& FisherF(double m = 1.0, double n = 1.0);
   virtual Tensor& StudentT(double n = 1.0);
 
-  // Static random generators are deligated
+  // Static random generators are delegated
   static Tensor Rand(const size_storage &size);
   static Tensor Uniform(const size_storage &size, double a = 0.0,
                         double b = 1.0);
