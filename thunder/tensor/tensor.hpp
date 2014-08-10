@@ -236,7 +236,7 @@ class Tensor {
   virtual Tensor& Floor();
   virtual Tensor& Trunc();
   virtual Tensor& Round();
-  virtual Tensor& NearByInt();
+  virtual Tensor& NearbyInt();
   virtual Tensor& RInt();
   virtual Tensor& LogB();
   virtual Tensor& FPClassify();
@@ -390,7 +390,7 @@ class Tensor {
   static Tensor Floor(const Tensor &t);
   static Tensor Trunc(const Tensor &t);
   static Tensor Round(const Tensor &t);
-  static Tensor NearByInt(const Tensor &t);
+  static Tensor NearbyInt(const Tensor &t);
   static Tensor RInt(const Tensor &t);
   static Tensor LogB(const Tensor &t);
   static Tensor FPClassify(const Tensor &t);
