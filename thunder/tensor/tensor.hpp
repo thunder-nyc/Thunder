@@ -25,7 +25,7 @@
 
 #include "thunder/storage.hpp"
 
-namespace thunder{
+namespace thunder {
 
 template < typename S >
 class Tensor {
@@ -140,11 +140,11 @@ class Tensor {
 
   // Non-virtual templated queriers
   template < typename Other_S >
-  bool IsSameSizeAs (const Tensor< Other_S > &other) const;
+  bool IsSameSizeAs(const Tensor< Other_S > &other) const;
 
   // Static non-virtual templated queriers are delegated
   template < typename Other_S >
-  bool IsSameSizeAs (const Tensor& t, const Tensor< Other_S > &other) const;
+  bool IsSameSizeAs(const Tensor& t, const Tensor< Other_S > &other) const;
 
   // Non-virtual templated modifiers
   template < typename Other_S >
@@ -193,7 +193,8 @@ class Tensor {
   virtual Tensor& Set(const size_storage &size, const stride_storage &stride,
                       const storage_pointer &storage, size_type offset = 0);
   virtual Tensor& Resize(const size_storage &size);
-  virtual Tensor& Resize(const size_storage &size, const stride_storage &stride);
+  virtual Tensor& Resize(const size_storage &size,
+                         const stride_storage &stride);
   virtual Tensor& ResizeAs(const Tensor &other);
   virtual Tensor& Contiguous();
 
@@ -231,7 +232,7 @@ class Tensor {
   virtual Tensor Unfold(dim_type dim, size_type size, size_type step) const;
   virtual Tensor Clone() const;
 
-  //Static subtensor or transformation extractors are delegated
+  // Static subtensor or transformation extractors are delegated
   static Tensor Narrow(const Tensor &t, dim_type dim, size_type pos,
                        size_type size);
   static Tensor Select(const Tensor &t, dim_type dim, size_type pos);
@@ -245,30 +246,32 @@ class Tensor {
 
   // lambda applications
   virtual const Tensor& Apply(
-      ::std::function< value_type(value_type) > &lambda) const;
+      const ::std::function< value_type(value_type) > &lambda) const;
   virtual const Tensor& Apply(
-      ::std::function< value_type(const value_type&) > &lambda) const;
+      const ::std::function< value_type(const value_type&) > &lambda) const;
   virtual const Tensor& Apply(
-      ::std::function< void(value_type&) > &lambda) const;
+      const ::std::function< void(value_type&) > &lambda) const;
   virtual const Tensor& Apply(
-      ::std::function< void(value_type*) > &lambda) const;
+      const ::std::function< void(value_type*) > &lambda) const;
 
   // Non-const lambda applications are delegated using const_cast
-  virtual Tensor& Apply(::std::function< value_type(value_type) > &lambda);
   virtual Tensor& Apply(
-      ::std::function< value_type(const value_type&) > &lambda);
-  virtual Tensor& Apply(::std::function< void(value_type&) > &lambda);
-  virtual Tensor& Apply(::std::function< void(value_type*) > &lambda);
+      const ::std::function< value_type(value_type) > &lambda);
+  virtual Tensor& Apply(
+      const ::std::function< value_type(const value_type&) > &lambda);
+  virtual Tensor& Apply(const ::std::function< void(value_type&) > &lambda);
+  virtual Tensor& Apply(const ::std::function< void(value_type*) > &lambda);
 
   // Static lambda applications are delegated
   static Tensor Apply(const Tensor& t,
-                      ::std::function< value_type(value_type) > &lambda);
-  static Tensor Apply(const Tensor& t, 
-                      ::std::function< value_type(const value_type&) > &lambda);
+                      const ::std::function< value_type(value_type) > &lambda);
+  static Tensor Apply(
+      const Tensor& t,
+      const ::std::function< value_type(const value_type&) > &lambda);
   static Tensor Apply(const Tensor& t,
-                      ::std::function< void(value_type&) > &lambda);
+                      const ::std::function< void(value_type&) > &lambda);
   static Tensor Apply(const Tensor& t,
-                      ::std::function< void(value_type*) > &lambda);
+                      const ::std::function< void(value_type*) > &lambda);
 
   // Reduction operations
   virtual value_type Max() const;

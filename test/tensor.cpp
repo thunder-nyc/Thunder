@@ -17,12 +17,10 @@
 
 #include "thunder/tensor.hpp"
 
-#include <stdio.h>
-
 #include "gtest/gtest.h"
 
-TEST(TensorTest, CompileTest){
-  EXPECT_EQ(0,0);
+TEST(TensorTest, CompileTest) {
+  EXPECT_EQ(0, 0);
 }
 
 #undef TEST_ALL_TYPES

@@ -17,8 +17,6 @@
 
 #include "thunder/storage.hpp"
 
-#include <stdio.h>
-
 #include "gtest/gtest.h"
 
 #define TEST_ALL_TYPES(FUNC)         \
