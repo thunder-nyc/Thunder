@@ -22,6 +22,7 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
+#include <utility>
 
 #include "thunder/storage.hpp"
 
@@ -67,11 +68,32 @@ class Tensor {
   virtual Tensor& operator=(const_reference value);
 
   // Static casts
-  operator value_type();
+  operator value_type() const;
+
+  // Paranthesis operators points to a reference of value
+  virtual reference operator()() const;
+  virtual reference operator()(size_type pos) const;
+  virtual reference operator()(size_type pos0, size_type pos1) const;
+  virtual reference operator()(size_type pos0, size_type pos1,
+                               size_type pos2) const;
+  virtual reference operator()(size_type pos0, size_type pos1,
+                               size_type pos2, size_type pos_3) const;
+  virtual reference operator()(const size_storage &pos) const;
 
   // Index operators
   virtual Tensor operator[](size_type pos) const;
-  virtual Tensor operator[](const size_storage &pos) const;
+  virtual Tensor operator[](
+      const ::std::pair< size_type, size_type > &range) const;
+
+  // Arithmetic operators with value are delegated
+  virtual Tensor operator+(const_reference value) const;
+  virtual Tensor operator-(const_reference value) const;
+  template < typename Other_S >
+  friend Tensor< Other_S > operator+(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
+  template < typename Other_S >
+  friend Tensor< Other_S > operator-(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
 
   // Templated airthmetic operators are type left associated
   template < typename Other_S >
