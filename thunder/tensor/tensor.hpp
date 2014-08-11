@@ -44,7 +44,7 @@ class Tensor {
   typedef Storage< size_type > size_storage;
   typedef Storage< difference_type > stride_storage;
   typedef ::std::shared_ptr< S > storage_pointer;
-  typedef size_storage::size_type dim_type;
+  typedef typename size_storage::size_type dim_type;
 
   // Constructors
   explicit Tensor(const storage_pointer &storage = storage_pointer(new S()),
@@ -65,14 +65,13 @@ class Tensor {
   virtual Tensor& operator=(Tensor other);
   virtual const Tensor &operator=(const_reference value) const;
   virtual Tensor& operator=(const_reference value);
-  friend reference operator=(reference value, const Tensor& t);
+
+  // Static casts
+  operator value_type();
 
   // Index operators
   virtual Tensor operator[](size_type pos) const;
   virtual Tensor operator[](const size_storage &pos) const;
-  virtual Tensor operator[](size_type pos_a, size_type pos_b) const;
-  virtual Tensor operator[](const size_storage &pos_a,
-                            const size_storage &pos_b) const;
 
   // Templated airthmetic operators are type left associated
   template < typename Other_S >
@@ -90,11 +89,21 @@ class Tensor {
   virtual Tensor operator<(const_reference value) const;
   virtual Tensor operator<=(const_reference value) const;
   virtual Tensor operator>=(const_reference value) const;
-  friend Tensor operator==(const_reference value, const Tensor &t);
-  friend Tensor operator>(const_reference value, const Tensor &t);
-  friend Tensor operator<(const_reference value, const Tensor &t);
-  friend Tensor operator<=(const_reference value, const Tensor &t);
-  friend Tensor operator>=(const_reference value, const Tensor &t);
+  template < typename Other_S >
+  friend Tensor< Other_S > operator==(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
+  template < typename Other_S >
+  friend Tensor< Other_S > operator>(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
+  template < typename Other_S >
+  friend Tensor< Other_S > operator<(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
+  template < typename Other_S >
+  friend Tensor< Other_S > operator>=(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
+  template < typename Other_S >
+  friend Tensor< Other_S > operator<=(
+      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
 
   // Templated comparison operators are delegated
   template < typename Other_S >
@@ -117,27 +126,17 @@ class Tensor {
 
   // Iterators and their functions. Subtensor and value iterators.
   class iterator;
-  class const_iterator;
   class reference_iterator;
-  class const_reference_iterator;
   virtual iterator begin() const;
   virtual iterator end() const;
-  virtual const_iterator begin() const;
-  virtual const_iterator end() const;
   virtual reference_iterator value_begin() const;
   virtual reference_iterator value_end() const;
-  virtual const_reference_iterator value_begin() const;
-  virtual const_reference_iterator value_end() const;
 
   // Static iterator functions are delegated
   static iterator begin(const Tensor &t);
   static iterator end(const Tensor &t);
-  static const_iterator begin(const Tensor &t);
-  static const_iterator end(const Tensor &t);
   static reference_iterator value_begin(const Tensor &t);
   static reference_iterator value_end(const Tensor &t);
-  static const_reference_iterator value_begin(const Tensor &t);
-  static const_reference_iterator value_end(const Tensor &t);
 
   // Non-virtual templated queriers
   template < typename Other_S >
@@ -166,7 +165,7 @@ class Tensor {
   virtual size_type Count() const;
   virtual stride_storage Stride() const;
   virtual difference_type Stride(dim_type dim) const;
-  virtual storage_pointer Storage() const;
+  virtual storage_pointer GetStorage() const;
   virtual size_type Offset() const;
   virtual pointer Data() const;
   virtual bool IsContiguous() const;
@@ -179,7 +178,7 @@ class Tensor {
   static size_type Count(const Tensor &t);
   static stride_storage Stride(const Tensor &t);
   static difference_type Stride(const Tensor &t, dim_type dim);
-  static storage_pointer Storage(const Tensor &t);
+  static storage_pointer GetStorage(const Tensor &t);
   static size_type Offset(const Tensor &t);
   static pointer Data(const Tensor &t);
   static bool IsContiguous(const Tensor &t);
@@ -192,7 +191,7 @@ class Tensor {
   virtual Tensor& Set(const size_storage &size, const storage_pointer &storage,
                       size_type offset = 0);
   virtual Tensor& Set(const size_storage &size, const stride_storage &stride,
-                      const stroage_pointer &storage, size_type offset = 0);
+                      const storage_pointer &storage, size_type offset = 0);
   virtual Tensor& Resize(const size_storage &size);
   virtual Tensor& Resize(const size_storage &size, const stride_storage &stride);
   virtual Tensor& ResizeAs(const Tensor &other);
@@ -207,7 +206,7 @@ class Tensor {
                      const storage_pointer &storage, size_type offset = 0);
   static Tensor& Set(Tensor *t, const size_storage &size,
                      const stride_storage &stride,
-                     const stroage_pointer &storage, size_type offset = 0);
+                     const storage_pointer &storage, size_type offset = 0);
   static Tensor& Resize(Tensor *t, const size_storage &size);
   static Tensor& Resize(Tensor *t, const size_storage &size,
                         const stride_storage &stride);
@@ -280,66 +279,19 @@ class Tensor {
   virtual value_type Std() const;
 
   // Static reduction operations are deligated
-  static value_type Max(const Tensor &t) const;
-  static value_type Min(const Tensor &t) const;
-  static value_type Sum(const Tensor &t) const;
-  static value_type Mean(const Tensor &t) const;
-  static value_type Var(const Tensor &t) const;
-  static value_type Std(const Tensor &t) const;
-
-  // Constructor functions in which this stores the result.
-  virtual Tensor& Cat(const Tensor& s, const Tensor& t, dim_type dim);
-  virtual Tensor& Diag(const Tensor& s);
-  virtual Tensor& Eye(size_type n);
-  virtual Tensor& Eye(size_type m, size_type n);
-  virtual Tensor& Eye(const size_storage &size);
-  virtual Tensor& LinSpace(const_reference x, const_reference y, size_type n);
-  virtual Tensor& LogSpace(const_reference x, const_reference y, size_type n);
-  virtual Tensor& Ones(size_type n);
-  virtual Tensor& Ones(size_type m, size_type n);
-  virtual Tensor& Ones(size_type n0, size_type n1, size_type n2);
-  virtual Tensor& Ones(size_type n0, size_type n1, size_type n2, size_type n3);
-  virtual Tensor& Ones(const size_storage &size);
-  virtual Tensor& Range(const_reference x, const_reference y,
-                        const_reference step);
-  virtual Tensor& Reshape(const Tensor& tensor, const size_storage size);
-  virtual Tensor& TriL(const Tensor &s);
-  virtual Tensor& TriU(const Tensor &s);
-  virtual Tensor& Zeros(size_type n);
-  virtual Tensor& Zeros(size_type m, size_type n);
-  virtual Tensor& Zeros(size_type n0, size_type n1, size_type n2);
-  virtual Tensor& Zeros(size_type n0, size_type n1, size_type n2, size_type n3);
-  virtual Tensor& Zeros(const size_storage &size);
-
-  // Static constructor functions are delegated
-  static Tensor Cat(const Tensor& s, const Tensor& t, dim_type dim);
-  static Tensor Diag(const Tensor& s);
-  static Tensor Eye(size_type n);
-  static Tensor Eye(size_type m, size_type n);
-  static Tensor Eye(const size_storage &size);
-  static Tensor LinSpace(const_reference x, const_reference y, size_type n);
-  static Tensor LogSpace(const_reference x, const_reference y, size_type n);
-  static Tensor Ones(size_type n);
-  static Tensor Ones(size_type m, size_type n);
-  static Tensor Ones(size_type n0, size_type n1, size_type n2);
-  static Tensor Ones(size_type n0, size_type n1, size_type n2, size_type n3);
-  static Tensor Ones(const size_storage &size);
-  static Tensor Range(const_reference x, const_reference y, reference step);
-  static Tensor Reshape(const Tensor& tensor, const size_storage size);
-  static Tensor TriL(const Tensor &s);
-  static Tensor TriU(const Tensor &s);
-  static Tensor Zeros(size_type n);
-  static Tensor Zeros(size_type m, size_type n);
-  static Tensor Zeros(size_type n0, size_type n1, size_type n2);
-  static Tensor Zeros(size_type n0, size_type n1, size_type n2, size_type n3);
-  static Tensor Zeros(const size_storage &size);
+  static value_type Max(const Tensor &t);
+  static value_type Min(const Tensor &t);
+  static value_type Sum(const Tensor &t);
+  static value_type Mean(const Tensor &t);
+  static value_type Var(const Tensor &t);
+  static value_type Std(const Tensor &t);
 
   // All random generators are either double or int, using static_cast.
   virtual const Tensor& Rand() const;
   virtual const Tensor& Uniform(double a = 0.0, double b = 1.0) const;
   virtual const Tensor& UniformReal(double a = 0.0, double b = 1.0) const;
   virtual const Tensor& UniformInt(
-      int a = 0, int b = ::std::numeric_limits<IntType>::max()) const;
+      int a = 0, int b = ::std::numeric_limits< int >::max()) const;
   virtual const Tensor& Bernoulli(double p = 0.5) const;
   virtual const Tensor& Binomial(int t = 1, double p = 0.5) const;
   virtual const Tensor& NegativeBinomial(int k = 1, double p = 0.5) const;
@@ -357,11 +309,11 @@ class Tensor {
   virtual const Tensor& StudentT(double n = 1.0) const;
 
   // All non-const random generators are delegated using const_cast.
-  virtual Tensor& Rand() const;
+  virtual Tensor& Rand();
   virtual Tensor& Uniform(double a = 0.0, double b = 1.0);
   virtual Tensor& UniformReal(double a = 0.0, double b = 1.0);
   virtual Tensor& UniformInt(
-      int a = 0, int b = ::std::numeric_limits<IntType>::max());
+      int a = 0, int b = ::std::numeric_limits< int >::max());
   virtual Tensor& Bernoulli(double p = 0.5);
   virtual Tensor& Binomial(int t = 1, double p = 0.5);
   virtual Tensor& NegativeBinomial(int k = 1, double p = 0.5);
@@ -385,7 +337,7 @@ class Tensor {
   static Tensor UniformReal(const size_storage &size, double a = 0.0,
                             double b = 1.0);
   static Tensor UniformInt(const size_storage &size, int a = 0,
-                           int b = ::std::numeric_limits<IntType>::max());
+                           int b = ::std::numeric_limits< int >::max());
   static Tensor Bernoulli(const size_storage &size, double p = 0.5);
   static Tensor Binomial(const size_storage &size, int t = 1,
                          double p = 0.5);
@@ -832,6 +784,29 @@ class Tensor {
   static Tensor IsLessEqual(const Tensor &t, const Tensor &x);
   static Tensor IsLessGreater(const Tensor &t, const Tensor &x);
   static Tensor IsUnordered(const Tensor &t, const Tensor &x);
+
+  // Constructor functions can only be static
+  static Tensor Cat(const Tensor& s, const Tensor& t, dim_type dim);
+  static Tensor Diag(const Tensor& s);
+  static Tensor Eye(size_type n);
+  static Tensor Eye(size_type m, size_type n);
+  static Tensor Eye(const size_storage &size);
+  static Tensor LinSpace(const_reference x, const_reference y, size_type n);
+  static Tensor LogSpace(const_reference x, const_reference y, size_type n);
+  static Tensor Ones(size_type n);
+  static Tensor Ones(size_type m, size_type n);
+  static Tensor Ones(size_type n0, size_type n1, size_type n2);
+  static Tensor Ones(size_type n0, size_type n1, size_type n2, size_type n3);
+  static Tensor Ones(const size_storage &size);
+  static Tensor Range(const_reference x, const_reference y, reference step);
+  static Tensor Reshape(const Tensor& tensor, const size_storage size);
+  static Tensor TriL(const Tensor &s);
+  static Tensor TriU(const Tensor &s);
+  static Tensor Zeros(size_type n);
+  static Tensor Zeros(size_type m, size_type n);
+  static Tensor Zeros(size_type n0, size_type n1, size_type n2);
+  static Tensor Zeros(size_type n0, size_type n1, size_type n2, size_type n3);
+  static Tensor Zeros(const size_storage &size);
 
  private:
   size_storage size_;

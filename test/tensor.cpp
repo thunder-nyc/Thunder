@@ -15,9 +15,14 @@
  *
  */
 
-#ifndef THUNDER_TENSOR_HPP
-#define THUNDER_TENSOR_HPP
+#include "thunder/tensor.hpp"
 
-#include "thunder/tensor/tensor.hpp"
+#include <stdio.h>
 
-#endif  // THUNDER_TENSOR_HPP
+#include "gtest/gtest.h"
+
+TEST(TensorTest, CompileTest){
+  EXPECT_EQ(0,0);
+}
+
+#undef TEST_ALL_TYPES
