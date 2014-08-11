@@ -810,6 +810,21 @@ class Tensor {
   static Tensor IsLessGreater(const Tensor &t, const Tensor &x);
   static Tensor IsUnordered(const Tensor &t, const Tensor &x);
 
+  // Fused operations with values and tensors
+  const Tensor& FMA(const_reference y, const_reference z) const;
+  const Tensor& FMA(const Tensor& y, const_reference z) const;
+  const Tensor& FMA(const Tensor& y, const Tensor& z) const;
+
+  // Non-const fused operations are delegated using const_cast
+  Tensor& FMA(const_reference y, const_reference z);
+  Tensor& FMA(const Tensor &y, const_reference z);
+  Tensor& FMA(const Tensor &y, const Tensor& z);
+
+  // Static fused operations are delegated
+  static Tensor FMA(const Tensor &x, const_reference y, const_reference z);
+  static Tensor FMA(const Tensor &x, const Tensor &y, const_reference z);
+  static Tensor FMA(const Tensor &x, const Tensor &y, const Tensor &z);
+
   // Constructor functions can only be static
   static Tensor Cat(const Tensor& s, const Tensor& t, dim_type dim);
   static Tensor Diag(const Tensor& s);
