@@ -204,23 +204,31 @@ class Tensor {
 
   // Templated subtensor extractors
   template < typename T >
-  Tensor viewAs(const T &other) const;
-  virtual Tensor viewAs(const Tensor &other) const;
+  Tensor viewAs(const T &other, size_type offset = 0) const;
+  template < typename T >
+  Tensor viewAs(const T &other, const stride_storage &stride,
+                size_type offset = 0) const;
 
   // Static templated subtensor extractors are delegated
   template < typename T >
-  static Tensor viewAs(const Tensor& t, const T &other);
-  static Tensor viewAs(const Tensor &t, const Tensor &other);
+  static Tensor viewAs(const Tensor &t, const T &other, size_type offset = 0);
+  template < typename T >
+  static Tensor viewAs(const Tensor &t, const T &other,
+                       const stride_storage &stride, size_type offset = 0);
 
   // Extract subtensors or transformations -- no need for non-const overload
   virtual Tensor narrow(dim_type dim, size_type pos, size_type size) const;
   virtual Tensor select(dim_type dim, size_type pos) const;
-  virtual Tensor view(size_type size0) const;
-  virtual Tensor view(size_type size0, size_type size1) const;
-  virtual Tensor view(size_type size0, size_type size1, size_type size2) const;
+  virtual Tensor view(size_type size0, size_type offset = 0) const;
+  virtual Tensor view(size_type size0, size_type size1,
+                      size_type offset = 0) const;
   virtual Tensor view(size_type size0, size_type size1, size_type size2,
-                      size_type size3) const;
-  virtual Tensor view(const size_storage &size) const;
+                      size_type offset = 0) const;
+  virtual Tensor view(size_type size0, size_type size1, size_type size2,
+                      size_type size3, size_type offset = 0) const;
+  virtual Tensor view(const size_storage &size, size_type offset = 0) const;
+  virtual Tensor view(const size_storage &size, const stride_storage &stride,
+                      size_type offset = 0) const;
   virtual Tensor transpose() const;
   virtual Tensor transpose(dim_type dim0, dim_type dim1) const;
   virtual Tensor unfold(dim_type dim, size_type size, size_type step) const;
@@ -248,6 +256,8 @@ class Tensor {
   static Tensor view(const Tensor &t, size_type size0, size_type size1,
                      size_type size2, size_type size3);
   static Tensor view(const Tensor &t, const size_storage &size);
+  static Tensor view(const Tensor &t, const size_storage &size,
+                     const stride_storage &stride, size_type offset = 0);
   static Tensor transpose(const Tensor &t);
   static Tensor transpose(const Tensor &t, dim_type dim0, dim_type dim1);
   static Tensor unfold(const Tensor &t, dim_type dim, size_type size,
