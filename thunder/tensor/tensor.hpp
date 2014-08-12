@@ -88,18 +88,8 @@ class Tensor {
   // Arithmetic operators with value are delegated
   virtual Tensor operator+(const_reference value) const;
   virtual Tensor operator-(const_reference value) const;
-  template < typename Other_S >
-  friend Tensor< Other_S > operator+(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-  template < typename Other_S >
-  friend Tensor< Other_S > operator-(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-
-  // Templated airthmetic operators are type left associated
-  template < typename Other_S >
-  Tensor operator+(const Tensor< Other_S > &other) const;
-  template < typename Other_S >
-  Tensor operator-(const Tensor< Other_S > &other) const;
+  friend Tensor operator+(const_reference value, const Tensor &t);
+  friend Tensor operator-(const_reference value, const Tensor &t);
 
   // Arithmetic operators are delegated
   virtual Tensor operator+(const Tensor &other) const;
@@ -111,33 +101,11 @@ class Tensor {
   virtual Tensor operator<(const_reference value) const;
   virtual Tensor operator<=(const_reference value) const;
   virtual Tensor operator>=(const_reference value) const;
-  template < typename Other_S >
-  friend Tensor< Other_S > operator==(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-  template < typename Other_S >
-  friend Tensor< Other_S > operator>(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-  template < typename Other_S >
-  friend Tensor< Other_S > operator<(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-  template < typename Other_S >
-  friend Tensor< Other_S > operator>=(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-  template < typename Other_S >
-  friend Tensor< Other_S > operator<=(
-      typename Tensor< Other_S >::const_reference value, const Tensor< S > &t);
-
-  // Templated comparison operators are delegated
-  template < typename Other_S >
-  Tensor operator==(const Tensor< Other_S > &other);
-  template < typename Other_S >
-  Tensor operator>(const Tensor< Other_S > &other);
-  template < typename Other_S >
-  Tensor operator<(const Tensor< Other_S > &other);
-  template < typename Other_S >
-  Tensor operator<=(const Tensor< Other_S > &other);
-  template < typename Other_S >
-  Tensor operator>=(const Tensor< Other_S > &other);
+  friend Tensor operator==(const_reference value, const Tensor &t);
+  friend Tensor operator>(const_reference value, const Tensor &t);
+  friend Tensor operator<(const_reference value, const Tensor &t);
+  friend Tensor operator>=(const_reference value, const Tensor &t);
+  friend Tensor operator<=(const_reference value, const Tensor &t);
 
   // Comparison operators with another tensor are delegated
   virtual Tensor operator==(const Tensor &other) const;
@@ -161,24 +129,12 @@ class Tensor {
   static reference_iterator value_end(const Tensor &t);
 
   // Non-virtual templated queriers
-  template < typename Other_S >
-  bool isSameSizeAs(const Tensor< Other_S > &other) const;
+  template < typename T >
+  bool isSameSizeAs(const T &other) const;
 
   // Static non-virtual templated queriers are delegated
-  template < typename Other_S >
-  bool isSameSizeAs(const Tensor& t, const Tensor< Other_S > &other) const;
-
-  // Non-virtual templated modifiers
-  template < typename Other_S >
-  Tensor& copy(const Tensor< Other_S > &other);
-  template < typename Other_S >
-  Tensor& resizeAs(const Tensor< Other_S > &other);
-
-  // Static non-virtual templated modifiers are delegated
-  template < typename Other_S >
-  Tensor& copy(Tensor *t, const Tensor< Other_S > &other);
-  template < typename Other_S >
-  Tensor& resizeAs(Tensor *t, const Tensor< Other_S > &other);
+  template < typename T >
+  static bool isSameSizeAs(const Tensor& t, const T &other);
 
   // Property queries
   virtual dim_type dimension() const;
@@ -206,8 +162,22 @@ class Tensor {
   static bool isContiguous(const Tensor &t);
   static bool isSameSizeAs(const Tensor &t, const Tensor &other);
 
-  // Normal and specialized modifiers
+  // Non-virtual templated modifiers
+  template < typename T >
+  Tensor& copy(const T &other);
+  template < typename T >
+  Tensor& resizeAs(const T &other);
   virtual Tensor& copy(const Tensor &other);
+
+  // Static non-virtual templated modifiers are delegated
+  template < typename T >
+  static Tensor& copy(Tensor *t, const T &other);
+  static Tensor& copy(Tensor *t, const Tensor &other);
+  template < typename T >
+  static Tensor& resizeAs(Tensor *t, const T &other);
+  static Tensor& resizeAs(Tensor *t, const Tensor &other);
+
+  // Normal modifiers
   virtual Tensor& set(const Tensor &other);
   virtual Tensor& set(const storage_pointer &storage, size_type offset = 0);
   virtual Tensor& set(const size_storage &size, const storage_pointer &storage,
@@ -218,10 +188,8 @@ class Tensor {
   virtual Tensor& resize(const size_storage &size,
                          const stride_storage &stride);
   virtual Tensor& resizeAs(const Tensor &other);
-  virtual Tensor& contiguous();
 
-  // Static normal and specialized modifiers are delegated
-  static Tensor& copy(Tensor *t, const Tensor &other);
+  // Static modifiers are delegated
   static Tensor& set(Tensor *t, const Tensor &other);
   static Tensor& set(Tensor *t, const storage_pointer &storage,
                      size_type offset = 0);
@@ -233,38 +201,70 @@ class Tensor {
   static Tensor& resize(Tensor *t, const size_storage &size);
   static Tensor& resize(Tensor *t, const size_storage &size,
                         const stride_storage &stride);
-  static Tensor& resizeAs(Tensor *t, const Tensor &other);
-  static Tensor& contiguous(Tensor *t);
 
   // Templated subtensor extractors
-  template < typename Other_S >
-  Tensor viewAs(const Tensor< Other_S > &other) const;
+  template < typename T >
+  Tensor viewAs(const T &other) const;
+  virtual Tensor viewAs(const Tensor &other) const;
 
   // Static templated subtensor extractors are delegated
-  template < typename Other_S >
-  static Tensor viewAs(const Tensor& t, const Tensor< Other_S > &other);
+  template < typename T >
+  static Tensor viewAs(const Tensor& t, const T &other);
+  static Tensor viewAs(const Tensor &t, const Tensor &other);
 
-  // Extract subtensors or transformations
+  // Extract subtensors or transformations -- no need for non-const overload
   virtual Tensor narrow(dim_type dim, size_type pos, size_type size) const;
   virtual Tensor select(dim_type dim, size_type pos) const;
+  virtual Tensor view(size_type size0) const;
+  virtual Tensor view(size_type size0, size_type size1) const;
+  virtual Tensor view(size_type size0, size_type size1, size_type size2) const;
+  virtual Tensor view(size_type size0, size_type size1, size_type size2,
+                      size_type size3) const;
   virtual Tensor view(const size_storage &size) const;
-  virtual Tensor viewAs(const Tensor &other) const;
   virtual Tensor transpose() const;
   virtual Tensor transpose(dim_type dim0, dim_type dim1) const;
   virtual Tensor unfold(dim_type dim, size_type size, size_type step) const;
   virtual Tensor clone() const;
+  virtual Tensor cat(const Tensor& t, dim_type dim) const;
+  virtual Tensor diag() const;
+  virtual Tensor reshape(size_type s0) const;
+  virtual Tensor reshape(size_type s0, size_type s1) const;
+  virtual Tensor reshape(size_type s0, size_type s1, size_type s2) const;
+  virtual Tensor reshape(size_type s0, size_type s1, size_type s2,
+                         size_type s3) const;
+  virtual Tensor reshape(const size_storage size) const;
+  virtual Tensor triL() const;
+  virtual Tensor triU() const;
+  virtual Tensor contiguous();
 
   // Static subtensor or transformation extractors are delegated
   static Tensor narrow(const Tensor &t, dim_type dim, size_type pos,
                        size_type size);
   static Tensor select(const Tensor &t, dim_type dim, size_type pos);
+  static Tensor view(const Tensor &t, size_type size0);
+  static Tensor view(const Tensor &t, size_type size0, size_type size1);
+  static Tensor view(const Tensor &t, size_type size0, size_type size1,
+                     size_type size2);
+  static Tensor view(const Tensor &t, size_type size0, size_type size1,
+                     size_type size2, size_type size3);
   static Tensor view(const Tensor &t, const size_storage &size);
-  static Tensor viewAs(const Tensor &t, const Tensor &other);
   static Tensor transpose(const Tensor &t);
   static Tensor transpose(const Tensor &t, dim_type dim0, dim_type dim1);
   static Tensor unfold(const Tensor &t, dim_type dim, size_type size,
                        size_type step);
   static Tensor clone(const Tensor& t);
+  static Tensor cat(const Tensor &s, const Tensor& t, dim_type dim);
+  static Tensor diag(const Tensor &s);
+  static Tensor reshape(const Tensor &s, size_type s0);
+  static Tensor reshape(const Tensor &s, size_type s0, size_type s1);
+  static Tensor reshape(const Tensor &s, size_type s0, size_type s1,
+                        size_type s2);
+  static Tensor reshape(const Tensor &s, size_type s0, size_type s1,
+                        size_type s2, size_type s3);
+  static Tensor reshape(const Tensor &s, const size_storage size);
+  static Tensor triL(const Tensor &s);
+  static Tensor triU(const Tensor &s);
+  static Tensor contiguous(const Tensor &t);
 
   // lambda applications
   virtual const Tensor& apply(
@@ -824,43 +824,6 @@ class Tensor {
   static Tensor fma(const Tensor &x, const_reference y, const_reference z);
   static Tensor fma(const Tensor &x, const Tensor &y, const_reference z);
   static Tensor fma(const Tensor &x, const Tensor &y, const Tensor &z);
-
-  // Constructor functions that can also be non-static
-  virtual Tensor cat(const Tensor& t, dim_type dim) const;
-  virtual Tensor diag() const;
-  virtual Tensor reshape(size_type s0) const;
-  virtual Tensor reshape(size_type s0, size_type s1) const;
-  virtual Tensor reshape(size_type s0, size_type s1, size_type s2) const;
-  virtual Tensor reshape(size_type s0, size_type s1, size_type s2,
-                         size_type s3) const;
-  virtual Tensor reshape(const size_storage size) const;
-  virtual Tensor triL() const;
-  virtual Tensor triU() const;
-
-  // Non-const constructor functions are delegated using const_cast
-  virtual Tensor cat(const Tensor& t, dim_type dim);
-  virtual Tensor diag();
-  virtual Tensor reshape(size_type s0);
-  virtual Tensor reshape(size_type s0, size_type s1);
-  virtual Tensor reshape(size_type s0, size_type s1, size_type s2);
-  virtual Tensor reshape(size_type s0, size_type s1, size_type s2,
-                         size_type s3);
-  virtual Tensor reshape(const size_storage size);
-  virtual Tensor triL();
-  virtual Tensor triU();
-
-  // Static constructor functions are delegated
-  static Tensor cat(const Tensor &s, const Tensor& t, dim_type dim);
-  static Tensor diag(const Tensor &s);
-  static Tensor reshape(const Tensor &s, size_type s0);
-  static Tensor reshape(const Tensor &s, size_type s0, size_type s1);
-  static Tensor reshape(const Tensor &s, size_type s0, size_type s1,
-                        size_type s2);
-  static Tensor reshape(const Tensor &s, size_type s0, size_type s1,
-                        size_type s2, size_type s3);
-  static Tensor reshape(const Tensor &s, const size_storage size);
-  static Tensor triL(const Tensor &s);
-  static Tensor triU(const Tensor &s);
 
   // Constructor functions that can only be static
   static Tensor eye(size_type n);
