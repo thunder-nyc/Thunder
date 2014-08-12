@@ -35,80 +35,80 @@
   }
 
 template <typename T>
-void ConstructorTest() {
+void constructorTest() {
   // Construct an empty storage
   thunder::Storage<T> default_storage;
-  EXPECT_EQ(0, default_storage.Size());
-  EXPECT_EQ(nullptr, default_storage.Data());
+  EXPECT_EQ(0, default_storage.size());
+  EXPECT_EQ(nullptr, default_storage.data());
 
   // Construct an empty storage using explicit size
   thunder::Storage<T> size_empty_storage(0);
-  EXPECT_EQ(0, size_empty_storage.Size());
-  EXPECT_EQ(nullptr, size_empty_storage.Data());
+  EXPECT_EQ(0, size_empty_storage.size());
+  EXPECT_EQ(nullptr, size_empty_storage.data());
 
   // Construct an empty storage from copy constructor
   thunder::Storage<T> copy_empty_storage(default_storage);
-  EXPECT_EQ(0, copy_empty_storage.Size());
-  EXPECT_EQ(nullptr, copy_empty_storage.Data());
+  EXPECT_EQ(0, copy_empty_storage.size());
+  EXPECT_EQ(nullptr, copy_empty_storage.data());
 
   // Construct an storage with some size
   thunder::Storage<T> size_storage(5);
-  EXPECT_EQ(5, size_storage.Size());
-  EXPECT_NE(nullptr, size_storage.Data());
+  EXPECT_EQ(5, size_storage.size());
+  EXPECT_NE(nullptr, size_storage.data());
 
   // Construct an storage with some size and a default value
   thunder::Storage<T> size_value_storage(5, (T)3);
-  EXPECT_EQ(5, size_storage.Size());
-  EXPECT_NE(nullptr, size_value_storage.Data());
+  EXPECT_EQ(5, size_storage.size());
+  EXPECT_NE(nullptr, size_value_storage.data());
   for (int i = 0; i < 5; ++i) {
-    EXPECT_EQ((T)3, size_value_storage.Data()[i]);
+    EXPECT_EQ((T)3, size_value_storage.data()[i]);
   }
 
   // Copy construct a storage
   thunder::Storage<T> copy_storage(size_storage);
-  EXPECT_EQ(5, copy_storage.Size());
-  EXPECT_NE(nullptr, copy_storage.Data());
+  EXPECT_EQ(5, copy_storage.size());
+  EXPECT_NE(nullptr, copy_storage.data());
   for (int i = 0; i < 5; ++i) {
-    EXPECT_EQ(size_storage.Data()[i], copy_storage.Data()[i]);
+    EXPECT_EQ(size_storage.data()[i], copy_storage.data()[i]);
   }
 
   // Initialzation list constructor
   thunder::Storage<T> init_storage({3, 4, 5, 6, 7});
-  EXPECT_EQ(5, init_storage.Size());
-  EXPECT_NE(nullptr, init_storage.Data());
+  EXPECT_EQ(5, init_storage.size());
+  EXPECT_NE(nullptr, init_storage.data());
   for (int i = 0; i < 5; ++i) {
-    EXPECT_EQ(static_cast<T>(i + 3), init_storage.Data()[i]);
+    EXPECT_EQ(static_cast<T>(i + 3), init_storage.data()[i]);
   }
 }
-TEST_ALL_TYPES(ConstructorTest);
+TEST_ALL_TYPES(constructorTest);
 
 template <typename T>
-void AssignmentTest() {
+void assignmentTest() {
   // Create a storage of size 5 and assign values to it
   thunder::Storage<T> storage(5);
   for (int i = 0; i < 5; ++i) {
-    storage.Data()[i] = static_cast<T>(i + 3);
+    storage.data()[i] = static_cast<T>(i + 3);
   }
 
   // Assign the storage
   thunder::Storage<T> assign_storage(10);
   assign_storage = storage;
-  EXPECT_EQ(5, assign_storage.Size());
+  EXPECT_EQ(5, assign_storage.size());
   for (int i = 0; i < 5; ++i) {
-    EXPECT_EQ(storage.Data()[i], assign_storage.Data()[i]);
+    EXPECT_EQ(storage.data()[i], assign_storage.data()[i]);
   }
 
   // Assign to self
   assign_storage = assign_storage;
-  EXPECT_EQ(5, assign_storage.Size());
+  EXPECT_EQ(5, assign_storage.size());
   for (int i = 0; i < 5; ++i) {
-    EXPECT_EQ(storage.Data()[i], assign_storage.Data()[i]);
+    EXPECT_EQ(storage.data()[i], assign_storage.data()[i]);
   }
 }
-TEST_ALL_TYPES(AssignmentTest);
+TEST_ALL_TYPES(assignmentTest);
 
 template <typename T>
-void IndexAndIteratorTest() {
+void indexAndIteratorTest() {
   // Create a storage of size 5 and assign values to it
   thunder::Storage<T> storage(5);
   for (int i = 0; i < 5; ++i) {
@@ -121,10 +121,10 @@ void IndexAndIteratorTest() {
     ++i;
   }
 }
-TEST_ALL_TYPES(IndexAndIteratorTest);
+TEST_ALL_TYPES(indexAndIteratorTest);
 
 template <typename T>
-void CopyTest() {
+void copyTest() {
   // Create an int storage of size 5 and assign values to it
   thunder::Storage<int> double_storage(5);
   for (int i = 0; i < 5; ++i) {
@@ -132,31 +132,31 @@ void CopyTest() {
   }
 
   // Copy to self
-  double_storage.Copy(double_storage);
+  double_storage.copy(double_storage);
   for (int i = 0; i < 5; ++i) {
     EXPECT_EQ(static_cast<double>(i + 3), double_storage[i]);
   }
 
   // Create an empty storage of type T
   thunder::Storage<T> storage;
-  storage.Copy(double_storage);
+  storage.copy(double_storage);
   for (int i = 0; i < 5; ++i) {
     EXPECT_EQ(static_cast<T>(i + 3), storage[i]);
   }
 }
-TEST_ALL_TYPES(CopyTest);
+TEST_ALL_TYPES(copyTest);
 
 template <typename T>
-void ResizeTest() {
+void resizeTest() {
   // Create a storage of size 10
   thunder::Storage<T> storage(10);
 
   // Resize to 5 with default value
-  storage.Resize(5, (T)3);
+  storage.resize(5, (T)3);
   for (int i = 0; i < 5; ++i) {
     EXPECT_EQ((T)3, storage[i]);
   }
 }
-TEST_ALL_TYPES(ResizeTest);
+TEST_ALL_TYPES(resizeTest);
 
 #undef TEST_ALL_TYPES

@@ -96,12 +96,12 @@ typename Storage< T, A >::const_reference Storage< T, A >::operator[](
 }
 
 template < typename T, typename A >
-typename Storage< T, A >::pointer Storage< T, A >::Data() {
+typename Storage< T, A >::pointer Storage< T, A >::data() {
   return data_;
 }
 
 template < typename T, typename A >
-typename Storage< T, A >::const_pointer Storage< T, A >::Data() const {
+typename Storage< T, A >::const_pointer Storage< T, A >::data() const {
   return data_;
 }
 
@@ -127,9 +127,9 @@ typename Storage< T, A >::const_iterator Storage< T, A >::end() const {
 
 template < typename T, typename A >
 template < typename Other_T, typename Other_A >
-void Storage< T, A >::Copy(const Storage< Other_T, Other_A > &other) {
+void Storage< T, A >::copy(const Storage< Other_T, Other_A > &other) {
   if (this != reinterpret_cast<const Storage*> (&other)) {
-    Resize(static_cast<size_type>(other.Size()));
+    resize(static_cast<size_type>(other.size()));
     for (size_type i = 0; i < size_; ++i) {
       data_[i] = static_cast<T> (
           other[static_cast<
@@ -139,7 +139,7 @@ void Storage< T, A >::Copy(const Storage< Other_T, Other_A > &other) {
 }
 
 template < typename T, typename A >
-void Storage< T, A >::Resize(size_type count) {
+void Storage< T, A >::resize(size_type count) {
   if (size_ != count) {
     if (data_ != nullptr) {
       alloc_.deallocate(data_, size_);
@@ -154,15 +154,15 @@ void Storage< T, A >::Resize(size_type count) {
 }
 
 template < typename T, typename A >
-void Storage< T, A >::Resize(size_type count, const_reference value) {
-  Resize(count);
+void Storage< T, A >::resize(size_type count, const_reference value) {
+  resize(count);
   for (size_type i = 0; i < size_; ++i) {
     data_[i] = value;
   }
 }
 
 template < typename T, typename A >
-typename Storage< T, A >::size_type Storage< T, A >::Size() const {
+typename Storage< T, A >::size_type Storage< T, A >::size() const {
   return size_;
 }
 

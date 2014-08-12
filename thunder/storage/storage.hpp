@@ -68,9 +68,9 @@ class Storage {
   const_reference operator[](size_type pos) const;
 
   // Get raw pointer to data
-  pointer Data();
+  pointer data();
   // Get const raw pointer to data
-  const_pointer Data() const;
+  const_pointer data() const;
 
   // Get iterator to data
   iterator begin();
@@ -82,16 +82,16 @@ class Storage {
   const_iterator end() const;
 
   // Copy from a different storage using static casts
-  template< typename Other_T, typename Other_A >
-  void Copy(const Storage< Other_T, Other_A > &other);
+  template< typename S >
+  void copy(const S &other);
 
   // Resize. Data content will be lost.
-  void Resize(size_type count);
+  void resize(size_type count);
   // Resize with all elements using target value
-  void Resize(size_type count, const_reference value);
+  void resize(size_type count, const_reference value);
 
   // Check the size of the storage
-  size_type Size() const;
+  size_type size() const;
 
  private:
   A alloc_;
