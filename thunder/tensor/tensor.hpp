@@ -351,7 +351,6 @@ class Tensor {
   const Tensor& studentT(RF n = 1.0) const;
 
   // Non-const random generators are delegated using const_cast.
-  virtual Tensor& rand();
   template < typename RF = double >
   Tensor& uniform(RF a = 0.0, RF b = 1.0);
   template < typename RF = double >
@@ -391,7 +390,6 @@ class Tensor {
   Tensor& studentT(RF n = 1.0);
 
   // Static random generators are delegated
-  static Tensor rand(const size_storage &size);
   template < typename RF = double >
   static Tensor uniform(const size_storage &size, RF a = 0.0, RF b = 1.0);
   template < typename RF = double >
