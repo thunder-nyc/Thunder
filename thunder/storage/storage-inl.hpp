@@ -126,14 +126,13 @@ typename Storage< T, A >::const_iterator Storage< T, A >::end() const {
 }
 
 template < typename T, typename A >
-template < typename Other_T, typename Other_A >
-void Storage< T, A >::copy(const Storage< Other_T, Other_A > &other) {
+template < typename S >
+void Storage< T, A >::copy(const S &other) {
   if (this != reinterpret_cast<const Storage*> (&other)) {
     resize(static_cast<size_type>(other.size()));
     for (size_type i = 0; i < size_; ++i) {
       data_[i] = static_cast<T> (
-          other[static_cast<
-                typename Storage< Other_T, Other_A >::size_type >(i)]);
+          other[static_cast< typename S::size_type >(i)]);
     }
   }
 }
