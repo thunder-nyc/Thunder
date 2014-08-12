@@ -23,7 +23,7 @@
 
 namespace thunder {
 
-template < typename T, typename A = ::std::allocator<T> >
+template < typename D, typename A = ::std::allocator< D > >
 class Storage {
  public:
   // Typedefs from allocator
@@ -33,8 +33,8 @@ class Storage {
   typedef typename A::const_reference const_reference;
   typedef typename A::difference_type difference_type;
   typedef typename A::size_type size_type;
-  typedef typename ::std::allocator_traits<A>::pointer pointer;
-  typedef typename ::std::allocator_traits<A>::const_pointer const_pointer;
+  typedef typename ::std::allocator_traits< A >::pointer pointer;
+  typedef typename ::std::allocator_traits< A >::const_pointer const_pointer;
 
   // Iterator definitions
   typedef pointer iterator;
@@ -54,7 +54,7 @@ class Storage {
   // Move constructor
   Storage(Storage &&other);
   // Constructor from initializer_list
-  Storage(::std::initializer_list< T > init, const A& alloc = A());
+  Storage(::std::initializer_list< D > init, const A& alloc = A());
 
   // Destructor
   ~Storage();

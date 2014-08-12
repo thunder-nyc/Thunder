@@ -68,7 +68,7 @@ class Tensor {
   virtual Tensor& operator=(const_reference value);
 
   // Static casts
-  operator value_type() const;
+  virtual operator value_type() const;
 
   // Paranthesis operators points to a reference of value
   virtual reference operator()() const;
