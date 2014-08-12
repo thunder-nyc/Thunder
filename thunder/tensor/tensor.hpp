@@ -156,7 +156,7 @@ class Tensor {
   static size_type count(const Tensor &t);
   static stride_storage stride(const Tensor &t);
   static difference_type stride(const Tensor &t, dim_type dim);
-  static storage_pointer getStorage(const Tensor &t);
+  static storage_pointer storage(const Tensor &t);
   static size_type offset(const Tensor &t);
   static pointer data(const Tensor &t);
   static bool isContiguous(const Tensor &t);
