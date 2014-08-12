@@ -311,82 +311,126 @@ class Tensor {
   static value_type var(const Tensor &t);
   static value_type std(const Tensor &t);
 
-  // All random generators are either double or int, using static_cast.
-  virtual const Tensor& rand() const;
-  virtual const Tensor& uniform(double a = 0.0, double b = 1.0) const;
-  virtual const Tensor& uniformReal(double a = 0.0, double b = 1.0) const;
-  virtual const Tensor& uniformInt(
-      int a = 0, int b = ::std::numeric_limits< int >::max()) const;
-  virtual const Tensor& bernoulli(double p = 0.5) const;
-  virtual const Tensor& ninomial(int t = 1, double p = 0.5) const;
-  virtual const Tensor& negativeBinomial(int k = 1, double p = 0.5) const;
-  virtual const Tensor& geometric(double p = 0.5) const;
-  virtual const Tensor& poisson(double mean = 1.0) const;
-  virtual const Tensor& exponential(double lambda = 1.0) const;
-  virtual const Tensor& gamma(double alpha = 1.0, double beta = 1.0) const;
-  virtual const Tensor& weibull(double a = 1.0, double b = 1.0) const;
-  virtual const Tensor& extremeValue(double a = 0.0, double b = 1.0) const;
-  virtual const Tensor& normal(double mean = 0.0, double stddev = 1.0) const;
-  virtual const Tensor& logNormal(double m = 0.0, double s = 1.0) const;
-  virtual const Tensor& chiSquared(double n = 1.0) const;
-  virtual const Tensor& cauchy(double a = 0.0, double b = 1.0) const;
-  virtual const Tensor& fisherF(double m = 1.0, double n = 1.0) const;
-  virtual const Tensor& studentT(double n = 1.0) const;
+  // All random generators are templated on RF and RI.
+  template < typename RF = double >
+  const Tensor& uniform(RF a = 0.0, RF b = 1.0) const;
+  template < typename RF = double >
+  const Tensor& uniformReal(RF a = 0.0, RF b = 1.0) const;
+  template < typename RI = int >
+  const Tensor& uniformInt(RI a = 0,
+                           RI b = ::std::numeric_limits< RI >::max()) const;
+  template < typename RF = double >
+  const Tensor& bernoulli(RF p = 0.5) const;
+  template < typename RI = int, typename RF = double >
+  const Tensor& ninomial(RI t = 1, RF p = 0.5) const;
+  template < typename RI = int, typename RF = double >
+  const Tensor& negativeBinomial(RI k = 1, RF p = 0.5) const;
+  template < typename RF = double >
+  const Tensor& geometric(RF p = 0.5) const;
+  template < typename RF = double >
+  const Tensor& poisson(RF mean = 1.0) const;
+  template < typename RF = double >
+  const Tensor& exponential(RF lambda = 1.0) const;
+  template < typename RF = double >
+  const Tensor& gamma(RF alpha = 1.0, RF beta = 1.0) const;
+  template < typename RF = double >
+  const Tensor& weibull(RF a = 1.0, RF b = 1.0) const;
+  template < typename RF = double >
+  const Tensor& extremeValue(RF a = 0.0, RF b = 1.0) const;
+  template < typename RF = double >
+  const Tensor& normal(RF mean = 0.0, RF stddev = 1.0) const;
+  template < typename RF = double >
+  const Tensor& logNormal(RF m = 0.0, RF s = 1.0) const;
+  template < typename RF = double >
+  const Tensor& chiSquared(RF n = 1.0) const;
+  template < typename RF = double >
+  const Tensor& cauchy(RF a = 0.0, RF b = 1.0) const;
+  template < typename RF = double >
+  const Tensor& fisherF(RF m = 1.0, RF n = 1.0) const;
+  template < typename RF = double >
+  const Tensor& studentT(RF n = 1.0) const;
 
-  // All non-const random generators are delegated using const_cast.
+  // Non-const random generators are delegated using const_cast.
   virtual Tensor& rand();
-  virtual Tensor& uniform(double a = 0.0, double b = 1.0);
-  virtual Tensor& uniformReal(double a = 0.0, double b = 1.0);
-  virtual Tensor& uniformInt(
-      int a = 0, int b = ::std::numeric_limits< int >::max());
-  virtual Tensor& bernoulli(double p = 0.5);
-  virtual Tensor& binomial(int t = 1, double p = 0.5);
-  virtual Tensor& negativeBinomial(int k = 1, double p = 0.5);
-  virtual Tensor& geometric(double p = 0.5);
-  virtual Tensor& poisson(double mean = 1.0);
-  virtual Tensor& exponential(double lambda = 1.0);
-  virtual Tensor& gamma(double alpha = 1.0, double beta = 1.0);
-  virtual Tensor& weibull(double a = 1.0, double b = 1.0);
-  virtual Tensor& extremeValue(double a = 0.0, double b = 1.0);
-  virtual Tensor& normal(double mean = 0.0, double stddev = 1.0);
-  virtual Tensor& logNormal(double m = 0.0, double s = 1.0);
-  virtual Tensor& chiSquared(double n = 1.0);
-  virtual Tensor& cauchy(double a = 0.0, double b = 1.0);
-  virtual Tensor& fisherF(double m = 1.0, double n = 1.0);
-  virtual Tensor& studentT(double n = 1.0);
+  template < typename RF = double >
+  Tensor& uniform(RF a = 0.0, RF b = 1.0);
+  template < typename RF = double >
+  Tensor& uniformReal(RF a = 0.0, RF b = 1.0);
+  template < typename RI = int >
+  Tensor& uniformInt(RI a = 0,
+                     RI b = ::std::numeric_limits< RI >::max());
+  template < typename RF = double >
+  Tensor& bernoulli(RF p = 0.5);
+  template < typename RI = int, typename RF = double >
+  Tensor& ninomial(RI t = 1, RF p = 0.5);
+  template < typename RI = int, typename RF = double >
+  Tensor& negativeBinomial(RI k = 1, RF p = 0.5);
+  template < typename RF = double >
+  Tensor& geometric(RF p = 0.5);
+  template < typename RF = double >
+  Tensor& poisson(RF mean = 1.0);
+  template < typename RF = double >
+  Tensor& exponential(RF lambda = 1.0);
+  template < typename RF = double >
+  Tensor& gamma(RF alpha = 1.0, RF beta = 1.0);
+  template < typename RF = double >
+  Tensor& weibull(RF a = 1.0, RF b = 1.0);
+  template < typename RF = double >
+  Tensor& extremeValue(RF a = 0.0, RF b = 1.0);
+  template < typename RF = double >
+  Tensor& normal(RF mean = 0.0, RF stddev = 1.0);
+  template < typename RF = double >
+  Tensor& logNormal(RF m = 0.0, RF s = 1.0);
+  template < typename RF = double >
+  Tensor& chiSquared(RF n = 1.0);
+  template < typename RF = double >
+  Tensor& cauchy(RF a = 0.0, RF b = 1.0);
+  template < typename RF = double >
+  Tensor& fisherF(RF m = 1.0, RF n = 1.0);
+  template < typename RF = double >
+  Tensor& studentT(RF n = 1.0);
 
   // Static random generators are delegated
   static Tensor rand(const size_storage &size);
-  static Tensor uniform(const size_storage &size, double a = 0.0,
-                        double b = 1.0);
-  static Tensor uniformReal(const size_storage &size, double a = 0.0,
-                            double b = 1.0);
-  static Tensor uniformInt(const size_storage &size, int a = 0,
-                           int b = ::std::numeric_limits< int >::max());
-  static Tensor bernoulli(const size_storage &size, double p = 0.5);
-  static Tensor binomial(const size_storage &size, int t = 1,
-                         double p = 0.5);
-  static Tensor negativeBinomial(const size_storage &size, int k = 1,
-                                 double p = 0.5);
-  static Tensor geometric(const size_storage &size, double p = 0.5);
-  static Tensor poisson(const size_storage &size, double mean = 1.0);
-  static Tensor exponential(const size_storage &size, double lambda = 1.0);
-  static Tensor gamma(const size_storage &size, double alpha = 1.0,
-                      double beta = 1.0);
-  static Tensor weibull(const size_storage &size, double a = 1.0,
-                        double b = 1.0);
-  static Tensor extremeValue(const size_storage &size, double a = 0.0,
-                             double b = 1.0);
-  static Tensor normal(const size_storage &size, double mean = 0.0,
-                       double stddev = 1.0);
-  static Tensor logNormal(const size_storage &size, double m = 0.0,
-                          double s = 1.0);
-  static Tensor chiSquared(const size_storage &size, double n = 1.0);
-  static Tensor cauchy(const size_storage &size, double a = 0.0,
-                       double b = 1.0);
-  static Tensor fisherF(const size_storage &size, double m = 1.0,
-                        double n = 1.0);
-  static Tensor studentT(const size_storage &size, double n = 1.0);
+  template < typename RF = double >
+  static Tensor uniform(const size_storage &size, RF a = 0.0, RF b = 1.0);
+  template < typename RF = double >
+  static Tensor uniformReal(const size_storage &size, RF a = 0.0, RF b = 1.0);
+  template < typename RI = int >
+  static Tensor uniformInt(const size_storage &size, RI a = 0,
+                           RI b = ::std::numeric_limits< RI >::max());
+  template < typename RF = double >
+  static Tensor bernoulli(const size_storage &size, RF p = 0.5);
+  template < typename RI = int, typename RF = double >
+  static Tensor ninomial(const size_storage &size, RI t = 1, RF p = 0.5);
+  template < typename RI = int, typename RF = double >
+  static Tensor negativeBinomial(const size_storage &size, RI k = 1,
+                                 RF p = 0.5);
+  template < typename RF = double >
+  static Tensor geometric(const size_storage &size, RF p = 0.5);
+  template < typename RF = double >
+  static Tensor poisson(const size_storage &size, RF mean = 1.0);
+  template < typename RF = double >
+  static Tensor exponential(const size_storage &size, RF lambda = 1.0);
+  template < typename RF = double >
+  static Tensor gamma(const size_storage &size, RF alpha = 1.0, RF beta = 1.0);
+  template < typename RF = double >
+  static Tensor weibull(const size_storage &size, RF a = 1.0, RF b = 1.0);
+  template < typename RF = double >
+  static Tensor extremeValue(const size_storage &size, RF a = 0.0, RF b = 1.0);
+  template < typename RF = double >
+  static Tensor normal(const size_storage &size, RF mean = 0.0,
+                       RF stddev = 1.0);
+  template < typename RF = double >
+  static Tensor logNormal(const size_storage &size, RF m = 0.0, RF s = 1.0);
+  template < typename RF = double >
+  static Tensor chiSquared(const size_storage &size, RF n = 1.0);
+  template < typename RF = double >
+  static Tensor cauchy(const size_storage &size, RF a = 0.0, RF b = 1.0);
+  template < typename RF = double >
+  static Tensor fisherF(const size_storage &size, RF m = 1.0, RF n = 1.0);
+  template < typename RF = double >
+  static Tensor studentT(const size_storage &size, RF n = 1.0);
 
   // Element-wise mathematical operations that are free of parameters
   virtual const Tensor& exp() const;
@@ -591,54 +635,6 @@ class Tensor {
   static Tensor isunordered(const Tensor &t, const_reference x);
   static Tensor fill(const Tensor &t, const_reference x);
 
-  // Templated element-wise operations with another tensor
-  template < typename Other_S >
-  const Tensor& add(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& sub(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& mul(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& div(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& fmod(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& remainder(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& fmax(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& fmin(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& fdim(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& pow(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& hypot(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& atan2(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& scalbn(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& scalebln(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& nextafter(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& nexttoward(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& copysign(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& isgreater(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& isgreaterequal(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& isless(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& islessequal(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& islessgreater(const Tensor< Other_S > &x) const;
-  template < typename Other_S >
-  const Tensor& isunordered(const Tensor< Other_S > &x) const;
-
   // Element-wise operations with another tensor
   virtual const Tensor& add(const Tensor &x) const;
   virtual const Tensor& sub(const Tensor &x) const;
@@ -664,54 +660,6 @@ class Tensor {
   virtual const Tensor& islessgreater(const Tensor &x) const;
   virtual const Tensor& isunordered(const Tensor &x) const;
 
-  // Non-const templated element-wise operations are delegated using const_cast
-  template < typename Other_S >
-  Tensor& add(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& sub(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& mul(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& div(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& fmod(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& remainder(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& fmax(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& fmin(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& fdim(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& pow(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& hypot(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& atan2(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& scalbn(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& scalebln(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& nextafter(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& nexttoward(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& copysign(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& isgreater(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& isgreaterequal(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& isless(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& islessequal(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& islessgreater(const Tensor< Other_S > &x);
-  template < typename Other_S >
-  Tensor& isunordered(const Tensor< Other_S > &x);
-
   // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& add(const Tensor &x);
   virtual Tensor& sub(const Tensor &x);
@@ -736,54 +684,6 @@ class Tensor {
   virtual Tensor& islessgqual(const Tensor &x);
   virtual Tensor& islessgreater(const Tensor &x);
   virtual Tensor& isunordered(const Tensor &x);
-
-  // Static templated element-wise operations with another tensor are delegated
-  template < typename Other_S >
-  static Tensor add(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor sub(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor mul(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor div(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor fmod(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor remainder(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor fmax(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor fmin(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor fdim(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor pow(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor hypot(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor atan2(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor scalbn(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor scalbln(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor nextafter(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor nexttoward(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor copysign(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor isgreater(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor isgreaterequal(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor isless(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor islessEqual(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor islessgreater(const Tensor &t, const Tensor< Other_S > &x);
-  template < typename Other_S >
-  static Tensor isunordered(const Tensor &t, const Tensor< Other_S > &x);
 
   // Static element-wise operations with another tensor are delegated
   static Tensor add(const Tensor &t, const Tensor &x);
