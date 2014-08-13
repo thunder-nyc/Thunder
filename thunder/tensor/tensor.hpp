@@ -841,6 +841,7 @@ class Tensor< S >::iterator {
   Tensor& operator*() const;
   Tensor* operator->() const;
   Tensor& operator[](size_type) const;
+
  private:
   Tensor current_;
   const Tensor *tensor_;
@@ -858,7 +859,7 @@ class Tensor< S >::reference_iterator {
   ~reference_iterator();
 
   reference_iterator& operator=(reference_iterator it);
-  
+
   bool operator==(const reference_iterator& it) const;
   bool operator!=(const reference_iterator& it) const;
   bool operator<(const reference_iterator& it) const;
@@ -881,6 +882,7 @@ class Tensor< S >::reference_iterator {
   reference operator*() const;
   pointer operator->() const;
   reference operator[](size_type sz) const;
+
  private:
   const Tensor *tensor_;
   size_storage position_;
