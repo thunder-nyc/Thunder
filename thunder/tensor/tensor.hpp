@@ -802,6 +802,76 @@ class Tensor {
   size_type offset_;
 };
 
+template < typename S >
+class Tensor< S >::reference_iterator {
+ public:
+  typedef std::random_access_iterator_tag iterator_category;
+
+  reference_iterator(const Tensor< S > &t);
+  reference_iterator(const reference_iterator&);
+  ~reference_iterator();
+
+  iterator& operator=(const reference_iterator&);
+  bool operator==(const reference_iterator&) const;
+  bool operator!=(const reference_iterator&) const;
+  bool operator<(const reference_iterator&) const;
+  bool operator>(const reference_iterator&) const;
+  bool operator<=(const reference_iterator&) const;
+  bool operator>=(const reference_iterator&) const;
+
+  reference_iterator& operator++();
+  reference_iterator operator++(int);
+  reference_iterator& operator--();
+  reference_iterator operator--(int);
+  reference_iterator& operator+=(size_type);
+  reference_iterator operator+(size_type) const;
+  friend reference_iterator operator+(size_type, const reference_iterator&);
+  reference_iterator& operator-=(size_type);
+  reference_iterator operator-(size_type) const;
+  difference_type operator-(reference_iterator) const;
+
+  reference operator*() const;
+  pointer operator->() const;
+  reference operator[](size_type) const;
+ private:
+  const Tensor<S> &t;
+};
+
+template < typename S >
+class Tensor< S >::iterator {
+ public:
+  typedef std::random_access_iterator_tag iterator_category;
+
+  iterator(const Tensor< S > &t);
+  iterator(const iterator&);
+  ~iterator();
+
+  iterator& operator=(const iterator&);
+  bool operator==(const iterator&) const;
+  bool operator!=(const iterator&) const;
+  bool operator<(const iterator&) const;
+  bool operator>(const iterator&) const;
+  bool operator<=(const iterator&) const;
+  bool operator>=(const iterator&) const;
+
+  iterator& operator++();
+  iterator operator++(int);
+  iterator& operator--();
+  iterator operator--(int);
+  iterator& operator+=(size_type);
+  iterator operator+(size_type) const;
+  friend iterator operator+(size_type, const iterator&);
+  iterator& operator-=(size_type);
+  iterator operator-(size_type) const;
+  difference_type operator-(iterator) const;
+
+  Tensor& operator*() const;
+  Tensor* operator->() const;
+  Tensor& operator[](size_type) const;
+ private:
+  const Tensor<S> &t;
+};
+
 }  // namespace thunder
 
 #endif  // THUNDER_TENSOR_TENSOR_HPP
