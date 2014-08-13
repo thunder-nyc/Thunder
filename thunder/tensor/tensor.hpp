@@ -229,8 +229,9 @@ class Tensor {
   virtual Tensor view(const size_storage &size, size_type offset = 0) const;
   virtual Tensor view(const size_storage &size, const stride_storage &stride,
                       size_type offset = 0) const;
-  virtual Tensor transpose() const;
-  virtual Tensor transpose(dim_type dim0, dim_type dim1) const;
+  virtual Tensor t() const;
+  virtual Tensor h() const;
+  virtual Tensor transpose(dim_type dim0 = 0, dim_type dim1 = 1) const;
   virtual Tensor unfold(dim_type dim, size_type size, size_type step) const;
   virtual Tensor clone() const;
   virtual Tensor cat(const Tensor& t, dim_type dim) const;
@@ -258,8 +259,10 @@ class Tensor {
   static Tensor view(const Tensor &t, const size_storage &size);
   static Tensor view(const Tensor &t, const size_storage &size,
                      const stride_storage &stride, size_type offset = 0);
-  static Tensor transpose(const Tensor &t);
-  static Tensor transpose(const Tensor &t, dim_type dim0, dim_type dim1);
+  static Tensor t(const Tensor &t);
+  static Tensor h(const Tensor &t);
+  static Tensor transpose(const Tensor &t, dim_type dim0 = 0,
+                          dim_type dim1 = 1);
   static Tensor unfold(const Tensor &t, dim_type dim, size_type size,
                        size_type step);
   static Tensor clone(const Tensor& t);
@@ -275,6 +278,18 @@ class Tensor {
   static Tensor triL(const Tensor &s);
   static Tensor triU(const Tensor &s);
   static Tensor contiguous(const Tensor &t);
+
+  // Type conversions
+  template < typename T >
+  T type();
+  virtual const Tensor& type() const;
+  virtual Tensor& type();
+
+  // Static type conversions are delegated
+  template < typename T >
+  static T type(const Tensor& t);
+  static Tensor& type(Tensor &t);
+  static const Tensor& type(const Tensor &t);
 
   // lambda applications
   virtual const Tensor& apply(
@@ -480,6 +495,12 @@ class Tensor {
   virtual const Tensor& isnormal() const;
   virtual const Tensor& signbit() const;
   virtual const Tensor& zero() const;
+  virtual const Tensor& real() const;
+  virtual const Tensor& imag() const;
+  virtual const Tensor& arg() const;
+  virtual const Tensor& norm() const;
+  virtual const Tensor& conj() const;
+  virtual const Tensor& proj() const;
 
   // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& exp();
@@ -521,6 +542,12 @@ class Tensor {
   virtual Tensor& isnormal();
   virtual Tensor& signbit();
   virtual Tensor& zero();
+  virtual Tensor& real();
+  virtual Tensor& imag();
+  virtual Tensor& arg();
+  virtual Tensor& norm();
+  virtual Tensor& conj();
+  virtual Tensor& proj();
 
   // static element-wise mathematical operations are deligated
   static Tensor exp(const Tensor &t);
@@ -562,6 +589,12 @@ class Tensor {
   static Tensor isnormal(const Tensor &t);
   static Tensor signbit(const Tensor &t);
   static Tensor zero(const Tensor &t);
+  static Tensor real(const Tensor &t);
+  static Tensor imag(const Tensor &t);
+  static Tensor arg(const Tensor &t);
+  static Tensor norm(const Tensor &t);
+  static Tensor conj(const Tensor &t);
+  static Tensor proj(const Tensor &t);
 
   // Element-wise operations with a constant
   virtual const Tensor& add(const_reference x) const;
@@ -721,16 +754,19 @@ class Tensor {
   // Fused operations with values and tensors
   const Tensor& fma(const_reference y, const_reference z) const;
   const Tensor& fma(const Tensor& y, const_reference z) const;
+  const Tensor& fma(const_reference y, const Tensor& z) const;
   const Tensor& fma(const Tensor& y, const Tensor& z) const;
 
   // Non-const fused operations are delegated using const_cast
   Tensor& fma(const_reference y, const_reference z);
   Tensor& fma(const Tensor &y, const_reference z);
+  Tensor& fma(const_reference y, const Tensor& z);
   Tensor& fma(const Tensor &y, const Tensor& z);
 
   // Static fused operations are delegated
   static Tensor fma(const Tensor &x, const_reference y, const_reference z);
   static Tensor fma(const Tensor &x, const Tensor &y, const_reference z);
+  static Tensor fma(const Tensor &x, const_reference y, const Tensor &z);
   static Tensor fma(const Tensor &x, const Tensor &y, const Tensor &z);
 
   // Constructor functions that can only be static
