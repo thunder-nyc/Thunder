@@ -194,6 +194,8 @@ class Tensor {
                       const storage_pointer &s, size_type os = 0);
   virtual Tensor& resize(const size_storage &sz);
   virtual Tensor& resize(const size_storage &sz, const stride_storage &st);
+  virtual Tensor& contiguous();
+  virtual Tensor& squeeze();
 
   // Static modifiers are delegated
   static Tensor& set(Tensor *x, const Tensor &other);
@@ -206,6 +208,8 @@ class Tensor {
   static Tensor& resize(Tensor *x, const size_storage &sz);
   static Tensor& resize(Tensor *x, const size_storage &sz,
                         const stride_storage &st);
+  static Tensor& contiguous(Tensor *x);
+  static Tensor& squeeze(Tensor *x);
 
   // Templated subtensor extractors
   template < typename T >
@@ -248,8 +252,6 @@ class Tensor {
   virtual Tensor reshape(const size_storage size) const;
   virtual Tensor triL() const;
   virtual Tensor triU() const;
-  virtual Tensor contiguous() const;
-  virtual Tensor squeeze() const;
 
   // Static subtensor or transformation extractors are delegated
   static Tensor narrow(const Tensor &x, dim_type dim, size_type pos,
@@ -282,8 +284,6 @@ class Tensor {
   static Tensor reshape(const Tensor &x, const size_storage size);
   static Tensor triL(const Tensor &x);
   static Tensor triU(const Tensor &x);
-  static Tensor contiguous(const Tensor &x);
-  static Tensor squeeze(const Tensor &x);
 
   // Type conversions
   template < typename T >
