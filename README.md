@@ -1,13 +1,26 @@
 Thunder
 =======
 
-Since Facebook released [th++](https://github.com/facebook/thpp), I wanted to program a similar library addressing some of its problems by more proper template design with C++11. Originally I thought I would name the library as 'th--' just for a humour. But then I wrote '--' as 'under' and it so happens that 'thunder' is a much cooler name! What a coincidence that I used to write a 'Thunder Neural Networks' library!
+Thunder, ak.k. TH--, a joking name for Facebook's [TH++](https://github.com/facebook/thpp) and [Torch](http://torch.ch)'s libTH.
 
-The goal here to make a Torch-like tensor library that can easily manage device-dependent code using template specializations. That way, the user of this library could transfer data between devices easily, and run code on different hardwares transparently. The first stage will be for CPU and CUDA as a working proof of idea.
+Thunder is an effort to design and implement an [Torch](http://torch.ch)-like environment for high-dimensional numerical operations on tensors in C++11. This problem can be decomposed into 3 parts: device-dependent memory management, platform-dependent numerics, and object serialization. Our current goal is to provide a working proof of idea using the Eigen library and CUDA library as device-dependent numerical backends.
 
-I chose to use C++ 11 because many new features it provides -- including but not limited to multi-threading, ranged for iterators, raw string literals and move constructors -- greatly simplifies the way we use a compiled programming language. I would say it is a very much different language now compared to what we have been taught before.
+This code shows what we want to do at a very high level, using deep learning as an example:
+```cpp
+// Thunder library (a.k.a. TH--, or "TH under")
+using namespace thunder;
 
-The belief is that a well-designed tensor library for C++ could be used as easily as those in scripting languages, except for some rare cases where extremely fast prototyping is needed. The immediate advantage is also tremendous -- all the C++ libraries are available to us right after a data type conversion is provided. This is quite different from a scripting language based library -- to provide bridge to extra libraries, usually a complete interface must be designed and implemented. The possibility from this alone is quite exciting -- think about what you can do with OpenCV, Qt, Redis, Boost, std::thread, and many others!
+// Construct a model in double tensor
+nn::Sequential<DoubleTensor> model;
+
+// Compiler will automatically deduce nn::Linear<DoubleTensor>
+model.Add(nn::Linear(1024, 10));
+model.Add(nn::SoftMax());
+
+// Construct a model in CUDA and initialize from a different type
+nn::Sequential<CudaFloatTensor> cu_model(model);
+```
+
 
 Managing Device-Dependent Code
 ------
@@ -32,9 +45,22 @@ As a result, we could implement the tensor library with
 ```cpp
 template<typename Storage>
 class thunder::Tensor{/* Implementation here */};
-
-typedef thunder::Tensor<thunder::FloatStorage> thunder::FloatTensor;
-typedef thunder::Tensor<thunder::CudaFloatStorage> thunder::CudaFloatTensor;
 ```
 
 As for device-dependent code, they can be easily implemented with tensor specializations as above.
+
+Managing Platform-Dependent Numerical Library
+------
+
+Previously we show a design of templating the Tensor class on the Storage class so that they can be specialized to different computing devices. However, even on a single device, we have many numerical libraries to use. Especially, in CPU for which the Storage classes might be the same, we have choices between [Eigen](http://eigen.tuxfamily.org/), [BLAS](http://www.netlib.org/blas)/[LAPACK](http://www.netlib.org/lapack)(including OpenBLAS, ATLAS, etc.), and [Intel MKL](https://software.intel.com/en-us/intel-mkl). All these stack of libraries all provide almost the same functionality. It is up to the programmer to choose which to use at compile time.
+
+To hide this complication, we can wrap these functions in a inheritance structure. For example
+```cpp
+template < typename Storage >
+class EigenTensor< Storage > : public Tensor < Storage >
+```
+
+Serialization
+------
+
+Thunder library will rely on [BOOST-serialization](www.boost.org/doc/libs/release/libs/serialization) to do serialization automatically.
