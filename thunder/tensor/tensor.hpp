@@ -59,7 +59,7 @@ class Tensor {
   Tensor(const size_storage &sz, const stride_storage &st);
   Tensor(const size_storage &sz, const stride_storage &st,
          const storage_pointer &s, size_type os = 0);
-  Tensor(const Tensor &other);
+  Tensor(const Tensor &y);
   Tensor(Tensor &&other);
 
   // Destructor
@@ -97,10 +97,10 @@ class Tensor {
   virtual Tensor& operator-=(const_reference value) const;
 
   // Arithmetic operators are delegated
-  virtual Tensor operator+(const Tensor &other) const;
-  virtual Tensor operator-(const Tensor &other) const;
-  virtual Tensor& operator+=(const Tensor &other) const;
-  virtual Tensor& operator-=(const Tensor &other) const;
+  virtual Tensor operator+(const Tensor &y) const;
+  virtual Tensor operator-(const Tensor &y) const;
+  virtual Tensor& operator+=(const Tensor &y) const;
+  virtual Tensor& operator-=(const Tensor &y) const;
 
   // Comparison operators with value are delegated
   virtual Tensor operator==(const_reference value) const;
@@ -115,11 +115,11 @@ class Tensor {
   friend Tensor operator<=(const_reference value, const Tensor &x);
 
   // Comparison operators with another tensor are delegated
-  virtual Tensor operator==(const Tensor &other) const;
-  virtual Tensor operator>(const Tensor &other) const;
-  virtual Tensor operator<(const Tensor &other) const;
-  virtual Tensor operator<=(const Tensor &other) const;
-  virtual Tensor operator>=(const Tensor &other) const;
+  virtual Tensor operator==(const Tensor &y) const;
+  virtual Tensor operator>(const Tensor &y) const;
+  virtual Tensor operator<(const Tensor &y) const;
+  virtual Tensor operator<=(const Tensor &y) const;
+  virtual Tensor operator>=(const Tensor &y) const;
 
   // Iterators and their functions. Subtensor and value iterators.
   class iterator;
@@ -154,7 +154,7 @@ class Tensor {
   virtual size_type offset() const;
   virtual pointer data() const;
   virtual bool isContiguous() const;
-  virtual bool isSameSizeAs(const Tensor &other) const;
+  virtual bool isSameSizeAs(const Tensor &y) const;
 
   // Static property queries are delegated
   static dim_type dimension(const Tensor &x);
@@ -167,26 +167,26 @@ class Tensor {
   static size_type offset(const Tensor &x);
   static pointer data(const Tensor &x);
   static bool isContiguous(const Tensor &x);
-  static bool isSameSizeAs(const Tensor &x, const Tensor &other);
+  static bool isSameSizeAs(const Tensor &x, const Tensor &y);
 
   // Non-virtual templated modifiers
   template < typename T >
-  Tensor& copy(const T &other);
-  virtual Tensor& copy(const Tensor &other);
+  Tensor& copy(const T &y);
+  virtual Tensor& copy(const Tensor &y);
   template < typename T >
-  Tensor& resizeAs(const T &other);
-  virtual Tensor& resizeAs(const Tensor &other);
+  Tensor& resizeAs(const T &y);
+  virtual Tensor& resizeAs(const Tensor &y);
 
   // Static non-virtual templated modifiers are delegated
   template < typename T >
-  static Tensor& copy(Tensor *x, const T &other);
-  static Tensor& copy(Tensor *x, const Tensor &other);
+  static Tensor& copy(Tensor *x, const T &y);
+  static Tensor& copy(Tensor *x, const Tensor &y);
   template < typename T >
-  static Tensor& resizeAs(Tensor *x, const T &other);
-  static Tensor& resizeAs(Tensor *x, const Tensor &other);
+  static Tensor& resizeAs(Tensor *x, const T &y);
+  static Tensor& resizeAs(Tensor *x, const Tensor &y);
 
   // Normal modifiers
-  virtual Tensor& set(const Tensor &other);
+  virtual Tensor& set(const Tensor &y);
   virtual Tensor& set(const storage_pointer &storage, size_type os = 0);
   virtual Tensor& set(const size_storage &sz, const storage_pointer &s,
                       size_type os = 0);
@@ -198,7 +198,7 @@ class Tensor {
   virtual Tensor& squeeze();
 
   // Static modifiers are delegated
-  static Tensor& set(Tensor *x, const Tensor &other);
+  static Tensor& set(Tensor *x, const Tensor &y);
   static Tensor& set(Tensor *x, const storage_pointer &s, size_type os = 0);
   static Tensor& set(Tensor *x, const size_storage &sz,
                      const storage_pointer &s, size_type os = 0);
@@ -213,17 +213,26 @@ class Tensor {
 
   // Templated subtensor extractors
   template < typename T >
-  Tensor viewAs(const T &other, size_type os = 0) const;
+  Tensor viewAs(const T &y, size_type os = 0) const;
   template < typename T >
-  Tensor viewAs(const T &other, const stride_storage &st,
+  Tensor viewAs(const T &y, const stride_storage &st,
                 size_type os = 0) const;
+  template < typename T >
+  Tensor extract(const T &y);
+  template < typename T >
+  Tensor shuffle(const T &y);
+
 
   // Static templated subtensor extractors are delegated
   template < typename T >
-  static Tensor viewAs(const Tensor &t, const T &other, size_type os = 0);
+  static Tensor viewAs(const Tensor &x, const T &y, size_type os = 0);
   template < typename T >
-  static Tensor viewAs(const Tensor &t, const T &other,
+  static Tensor viewAs(const Tensor &x, const T &y,
                        const stride_storage &st, size_type os = 0);
+  template < typename T >
+  static Tensor extract(const Tensor &x, const T &y);
+  template < typename T >
+  static Tensor shuffle(const Tensor &x, const T &y);
 
   // Extract subtensors or transformations -- no need for non-const overload
   virtual Tensor narrow(dim_type dim, size_type pos, size_type size) const;
