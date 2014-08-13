@@ -10,13 +10,21 @@ all: $(targets)
 
 .PHONY : test
 test : $(targets)
-	-num=0; \
+	-count=0; \
+	success=0; \
+	failure=0; \
 	for target in $(targets); do \
-		let num+=1; \
-		echo "Testing $$num/$(words $(targets)): $$target"; \
+		let count+=1; \
+		echo "Testing $$count/$(words $(targets)): $$target"; \
 		./$$target; \
+		if [ $$? == 0 ]; then \
+			let success+=1; \
+		else \
+			let failure+=1; \
+		fi; \
 		echo; \
-	done \
+	done; \
+	echo "SUCCESS: $$success/$(words $(targets)); FAILURE: $$failure/$(words $(targets))";
 
 .PHONY : clean
 clean :
