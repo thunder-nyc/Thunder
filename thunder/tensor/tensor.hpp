@@ -504,7 +504,7 @@ class Tensor {
   virtual const Tensor& real() const;
   virtual const Tensor& imag() const;
   virtual const Tensor& arg() const;
-  virtual const Tensor& norm() const;
+  virtual const Tensor& cnrm() const;
   virtual const Tensor& conj() const;
   virtual const Tensor& proj() const;
 
@@ -551,7 +551,7 @@ class Tensor {
   virtual Tensor& real();
   virtual Tensor& imag();
   virtual Tensor& arg();
-  virtual Tensor& norm();
+  virtual Tensor& cnrm();
   virtual Tensor& conj();
   virtual Tensor& proj();
 
@@ -598,7 +598,7 @@ class Tensor {
   static Tensor real(const Tensor &x);
   static Tensor imag(const Tensor &x);
   static Tensor arg(const Tensor &x);
-  static Tensor norm(const Tensor &x);
+  static Tensor cnrm(const Tensor &x);
   static Tensor conj(const Tensor &x);
   static Tensor proj(const Tensor &x);
 
