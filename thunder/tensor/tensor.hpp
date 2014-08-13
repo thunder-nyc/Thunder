@@ -809,6 +809,7 @@ class Tensor< S >::reference_iterator {
 
   reference_iterator(const Tensor< S > &t);
   reference_iterator(const reference_iterator&);
+  reference_iterator(reference_iterator&&);
   ~reference_iterator();
 
   iterator& operator=(const reference_iterator&);
@@ -834,7 +835,8 @@ class Tensor< S >::reference_iterator {
   pointer operator->() const;
   reference operator[](size_type) const;
  private:
-  const Tensor<S> &t;
+  const Tensor<S> *t_;
+  size_storage pos_;
 };
 
 template < typename S >
@@ -843,7 +845,8 @@ class Tensor< S >::iterator {
   typedef std::random_access_iterator_tag iterator_category;
 
   iterator(const Tensor< S > &t);
-  iterator(const iterator&);
+  iterator(const iterator&) it;
+  iterator(iterator&&);
   ~iterator();
 
   iterator& operator=(const iterator&);
@@ -869,7 +872,8 @@ class Tensor< S >::iterator {
   Tensor* operator->() const;
   Tensor& operator[](size_type) const;
  private:
-  const Tensor<S> &t;
+  const Tensor<S> *t;
+  size_type pos;
 };
 
 }  // namespace thunder
