@@ -787,6 +787,14 @@ class Tensor {
   static Tensor zeros(size_type n0, size_type n1, size_type n2, size_type n3);
   static Tensor zeros(const size_storage &size);
 
+  // Templated constructor functions can only be static
+  template < typename TR >
+  static Tensor polar(const_reference r, const TR& theta);
+  template < typename TR >
+  static Tensor polar(const TR& r, reference theta);
+  template < typename TR >
+  static Tensor polar(const TR& r, const TR& theta);
+
  private:
   size_storage size_;
   stride_storage stride_;
