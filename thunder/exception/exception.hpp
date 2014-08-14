@@ -17,7 +17,28 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_INL_HPP_
-#define THUNDER_TENSOR_TENSOR_INL_HPP_
+#ifndef THUNDER_EXCEPTION_EXCEPTION_HPP_
+#define THUNDER_EXCEPTION_EXCEPTION_HPP_
 
-#endif  // THUNDER_TENSOR_TENSOR_INL_HPP
+#include <exception>
+
+namespace thunder {
+namespace exception {
+
+using ::std::exception;
+using ::std::log_error;
+using ::std::runtime_error;
+using ::std::invalid_argument;
+using ::std::domain_error;
+using ::std::length_error;
+using ::std::out_of_range;
+using ::std::future_error;
+using ::std::range_error;
+using ::std::overflow_error;
+using ::std::underflow_error;
+using ::std::system_error;
+
+}  // namespace exception
+}  // namespace thunder
+
+#endif  // THUNDER_EXCEPTION_EXCEPTION_HPP_
