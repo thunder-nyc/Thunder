@@ -19,6 +19,11 @@
 #define THUNDER_TENSOR_HPP
 
 #include "thunder/tensor/tensor.hpp"
-#include "thunder/tensor/tensor-inl.hpp"
+
+namespace thunder {
+
+using tensor::Tensor;
+
+}  // namespace thunder
 
 #endif  // THUNDER_TENSOR_HPP

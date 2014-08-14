@@ -27,6 +27,7 @@
 #include "thunder/storage.hpp"
 
 namespace thunder {
+namespace tensor {
 
 template < typename S >
 class Tensor {
@@ -897,6 +898,7 @@ class Tensor< S >::reference_iterator {
   size_storage position_;
 };
 
+}  // namespace tensor
 }  // namespace thunder
 
 #endif  // THUNDER_TENSOR_TENSOR_HPP

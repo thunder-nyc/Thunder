@@ -19,6 +19,11 @@
 #define THUNDER_STORAGE_HPP
 
 #include "thunder/storage/storage.hpp"
-#include "thunder/storage/storage-inl.hpp"
+
+namespace thunder {
+
+using storage::Storage;
+
+}  // namespace thunder
 
 #endif  // THUNDER_STORAGE_HPP

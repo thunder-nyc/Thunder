@@ -22,6 +22,7 @@
 #include <memory>
 
 namespace thunder {
+namespace storage {
 
 template < typename D, typename A = ::std::allocator< D > >
 class Storage {
@@ -99,6 +100,9 @@ class Storage {
   pointer data_;
 };
 
+}  // namespace storage
 }  // namespace thunder
+
+#include "thunder/storage/storage-inl.hpp"
 
 #endif  // THUNDER_STORAGE_STORAGE_HPP_

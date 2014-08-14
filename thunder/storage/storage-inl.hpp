@@ -24,6 +24,7 @@
 #include <utility>
 
 namespace thunder {
+namespace storage {
 
 template < typename D, typename A >
 Storage< D, A >::Storage(const A &alloc)
@@ -165,6 +166,7 @@ typename Storage< D, A >::size_type Storage< D, A >::size() const {
   return size_;
 }
 
+}  // namespace storage
 }  // namespace thunder
 
 #endif  // THUNDER_STORAGE_STORAGE_INL_HPP
