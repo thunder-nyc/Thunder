@@ -247,21 +247,16 @@ class Tensor {
   virtual Tensor view(const size_storage &sz, size_type os = 0) const;
   virtual Tensor view(const size_storage &sz, const stride_storage &st,
                       size_type os = 0) const;
-  virtual Tensor t() const;
-  virtual Tensor h() const;
   virtual Tensor transpose(dim_type dim0 = 0, dim_type dim1 = 1) const;
   virtual Tensor unfold(dim_type dim, size_type size, size_type step) const;
   virtual Tensor clone() const;
   virtual Tensor cat(const Tensor &y, dim_type dim) const;
-  virtual Tensor diag() const;
   virtual Tensor reshape(size_type sz0) const;
   virtual Tensor reshape(size_type sz0, size_type sz1) const;
   virtual Tensor reshape(size_type sz0, size_type sz1, size_type sz2) const;
   virtual Tensor reshape(size_type sz0, size_type sz1, size_type sz2,
                          size_type sz3) const;
   virtual Tensor reshape(const size_storage size) const;
-  virtual Tensor triL() const;
-  virtual Tensor triU() const;
 
   // Static subtensor or transformation extractors are delegated
   static Tensor narrow(const Tensor &x, dim_type dim, size_type pos,
@@ -276,15 +271,12 @@ class Tensor {
   static Tensor view(const Tensor &x, const size_storage &sz);
   static Tensor view(const Tensor &x, const size_storage &sz,
                      const stride_storage &st, size_type os = 0);
-  static Tensor t(const Tensor &x);
-  static Tensor h(const Tensor &x);
   static Tensor transpose(const Tensor &t, dim_type dim0 = 0,
                           dim_type dim1 = 1);
   static Tensor unfold(const Tensor &t, dim_type dim, size_type size,
                        size_type step);
   static Tensor clone(const Tensor& t);
   static Tensor cat(const Tensor &x, const Tensor &y, dim_type dim);
-  static Tensor diag(const Tensor &x);
   static Tensor reshape(const Tensor &x, size_type s0);
   static Tensor reshape(const Tensor &x, size_type s0, size_type s1);
   static Tensor reshape(const Tensor &x, size_type s0, size_type s1,
@@ -292,8 +284,6 @@ class Tensor {
   static Tensor reshape(const Tensor &x, size_type s0, size_type s1,
                         size_type s2, size_type s3);
   static Tensor reshape(const Tensor &x, const size_storage size);
-  static Tensor triL(const Tensor &x);
-  static Tensor triU(const Tensor &x);
 
   // Type conversions
   template < typename T >
@@ -786,17 +776,11 @@ class Tensor {
   static Tensor fma(const Tensor &x, const Tensor &y, const Tensor &z);
 
   // Constructor functions that can only be static
-  static Tensor eye(size_type n);
-  static Tensor eye(size_type m, size_type n);
-  static Tensor eye(const size_storage &sz);
-  static Tensor linSpace(const_reference x, const_reference y, size_type n);
-  static Tensor logSpace(const_reference x, const_reference y, size_type n);
   static Tensor ones(size_type n);
   static Tensor ones(size_type m, size_type n);
   static Tensor ones(size_type n0, size_type n1, size_type n2);
   static Tensor ones(size_type n0, size_type n1, size_type n2, size_type n3);
   static Tensor ones(const size_storage &sz);
-  static Tensor range(const_reference x, const_reference y, reference step);
   static Tensor zeros(size_type n);
   static Tensor zeros(size_type m, size_type n);
   static Tensor zeros(size_type n0, size_type n1, size_type n2);
@@ -900,5 +884,7 @@ class Tensor< S >::reference_iterator {
 
 }  // namespace tensor
 }  // namespace thunder
+
+#include "thunder/tensor/tensor-inl.hpp"
 
 #endif  // THUNDER_TENSOR_TENSOR_HPP
