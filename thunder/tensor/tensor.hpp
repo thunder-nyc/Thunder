@@ -52,19 +52,19 @@ class Tensor {
   typedef typename size_storage::size_type dim_type;
 
   // Constructors
-  explicit Tensor(const storage_pointer &s = storage_pointer(nullptr),
-                  size_type os = 0);
+  explicit Tensor();
   explicit Tensor(const size_storage &sz);
   explicit Tensor(size_type sz0);
   Tensor(size_type sz0, size_type sz1);
   Tensor(size_type sz0, size_type sz1, size_type sz2);
   Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3);
+  explicit Tensor(const storage_pointer &s, size_type os = 0);
   Tensor(const size_storage &sz, const storage_pointer &s, size_type os = 0);
   Tensor(const size_storage &sz, const stride_storage &st);
   Tensor(const size_storage &sz, const stride_storage &st,
          const storage_pointer &s, size_type os = 0);
   Tensor(const Tensor &y);
-  Tensor(Tensor &&other);
+  Tensor(Tensor &&y);
 
   // Destructor
   virtual ~Tensor();

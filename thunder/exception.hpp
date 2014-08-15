@@ -17,26 +17,24 @@
  * @}
  */
 
-#ifndef THUNDER_EXCEPTION_EXCEPTION_HPP_
-#define THUNDER_EXCEPTION_EXCEPTION_HPP_
+#ifndef THUNDER_EXCEPTION_HPP_
+#define THUNDER_EXCEPTION_HPP_
 
-#include <exception>
+#include "thunder/exception/exception.hpp"
 
 namespace thunder {
-namespace exception {
 
-using ::std::exception;
-using ::std::logic_error;
-using ::std::runtime_error;
-using ::std::invalid_argument;
-using ::std::domain_error;
-using ::std::length_error;
-using ::std::out_of_range;
-using ::std::range_error;
-using ::std::overflow_error;
-using ::std::underflow_error;
+using exception::exception;
+using exception::logic_error;
+using exception::runtime_error;
+using exception::invalid_argument;
+using exception::domain_error;
+using exception::length_error;
+using exception::out_of_range;
+using exception::range_error;
+using exception::overflow_error;
+using exception::underflow_error;
 
-}  // namespace exception
 }  // namespace thunder
 
-#endif  // THUNDER_EXCEPTION_EXCEPTION_HPP_
+#endif  // THUNDER_EXCEPTION_HPP_
