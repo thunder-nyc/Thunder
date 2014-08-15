@@ -139,13 +139,15 @@ class Tensor {
   static reference_iterator reference_begin(const Tensor &x);
   static reference_iterator reference_end(const Tensor &x);
 
-  // Non-virtual templated queriers
+  // Non-virtual templated queries
   template < typename T >
-  bool isSameSizeAs(const T &other) const;
+  bool isSameSizeAs(const T &y) const;
+  virtual bool isSameSizeAs(const Tensor &y) const;
 
-  // Static non-virtual templated queriers are delegated
+  // Static non-virtual templated queries are delegated
   template < typename T >
-  static bool isSameSizeAs(const Tensor &x, const T &other);
+  static bool isSameSizeAs(const Tensor &x, const T &y);
+  static bool isSameSizeAs(const Tensor &x, const Tensor &y);
 
   // Property queries
   virtual dim_type dimension() const;
@@ -158,7 +160,6 @@ class Tensor {
   virtual size_type offset() const;
   virtual pointer data() const;
   virtual bool isContiguous() const;
-  virtual bool isSameSizeAs(const Tensor &y) const;
 
   // Static property queries are delegated
   static dim_type dimension(const Tensor &x);
@@ -166,12 +167,11 @@ class Tensor {
   static size_type size(const Tensor &x, dim_type dim);
   static size_type count(const Tensor &x);
   static stride_storage stride(const Tensor &x);
-  static difference_type stride(const Tensor &t, dim_type dim);
+  static difference_type stride(const Tensor &x, dim_type dim);
   static storage_pointer storage(const Tensor &x);
   static size_type offset(const Tensor &x);
   static pointer data(const Tensor &x);
   static bool isContiguous(const Tensor &x);
-  static bool isSameSizeAs(const Tensor &x, const Tensor &y);
 
   // Non-virtual templated modifiers
   template < typename T >
