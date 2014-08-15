@@ -148,6 +148,11 @@ Tensor< S >::Tensor(Tensor &&y)
     : size_(std::move(y.size_)), stride_(std::move(y.stride_)),
       storage_(std::move(y.storage_)), offset_(std::move(y.offset_)) {}
 
+template < typename S >
+Tensor< S >::~Tensor() {}
+
+
+
 }  // namespace tensor
 }  // namespace thunder
 
