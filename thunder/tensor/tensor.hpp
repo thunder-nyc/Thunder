@@ -52,7 +52,7 @@ class Tensor {
   typedef typename size_storage::size_type dim_type;
 
   // Constructors
-  explicit Tensor(const storage_pointer &s = storage_pointer(new S()),
+  explicit Tensor(const storage_pointer &s = storage_pointer(nullptr),
                   size_type os = 0);
   explicit Tensor(const size_storage &sz);
   explicit Tensor(size_type sz0);
