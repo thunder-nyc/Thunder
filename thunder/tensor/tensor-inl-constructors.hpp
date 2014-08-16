@@ -107,6 +107,35 @@ Tensor< S >::Tensor(const size_storage &sz, const storage_pointer &s,
 }
 
 template< typename S >
+Tensor< S >::Tensor(const size_storage &sz, const stride_storage &st)
+    :size_(sz), stride_(st){
+  if (size_.size() == 0) {
+    throw invalid_argument("Size is empty.");
+  }
+  if (stride_.size() == 0) {
+    throw invalid_argument("Stride is empty.");
+  }
+  if (size_.size() != stride_.size()) {
+    throw invalid_argument("Size and stride have different length.");
+  }
+  for (const size_type &size_x : size_) {
+    if (size_x == 0) {
+      throw invalid_argument("Size evaluates to zero.");
+    }
+  }
+  difference_type max_offset = 0, min_offset = 0;
+  for (dim_type i = 0; i < size_.size(); ++i) {
+    if (stride_[i] < 0) {
+      min_offset = min_offset + (size_[i]-1)*stride_[i];
+    } else if (stride_[i] > 0) {
+      max_offset = max_offset + (size_[i]-1)*stride_[i];
+    }
+  }
+  storage_ = ::std::make_shared< S >(max_offset - min_offset + 1);
+  offset_ = -min_offset;
+}
+
+template< typename S >
 Tensor< S >::Tensor(const size_storage &sz, const stride_storage &st,
                     const storage_pointer &s, size_type os)
     :size_(sz), stride_(st), storage_(s), offset_(os){

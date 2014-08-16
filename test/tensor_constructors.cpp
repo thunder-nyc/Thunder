@@ -93,6 +93,11 @@ TEST(TensorTest, constructorTest) {
   constructorTest(
       from_size_offset_storage_tensor, 2, {5, 4}, {4, 1}, 20, 5, true);
 
+  // Create a tensor from size and stride
+  Tensor< DoubleStorage > from_size_stride_tensor({5, 4}, {-1, 5});
+  constructorTest(from_size_stride_tensor, 2, {5, 4}, {-1, 5}, 20, 4, false);
+  EXPECT_EQ(20, from_size_stride_tensor.storage()->size());
+
   // Create a tensor from a storage with size and stride
   Tensor< DoubleStorage > from_size_stride_storage_tensor(
       {5, 4}, {5, 1}, ::std::make_shared< DoubleStorage >(37));
