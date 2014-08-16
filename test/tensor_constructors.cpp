@@ -25,6 +25,7 @@
 namespace thunder {
 namespace {
 
+// Written using static functions for simultaneously testing them
 template < typename T >
 void constructorTest(
     const T &tensor, typename T::dim_type dimension,
@@ -32,17 +33,17 @@ void constructorTest(
     const typename T::stride_storage &stride,
     typename T::size_type count, typename T::size_type offset,
     bool contiguity) {
-  EXPECT_EQ(dimension, tensor.dimension());
+  EXPECT_EQ(dimension, T::dimension(tensor));
   for(typename T::dim_type i = 0; i < dimension; ++i) {
-    EXPECT_EQ(size[i], tensor.size(i));
-    EXPECT_EQ(size[i], tensor.size()[i]);
-    EXPECT_EQ(stride[i], tensor.stride(i));
-    EXPECT_EQ(stride[i], tensor.stride()[i]);
+    EXPECT_EQ(size[i], T::size(tensor, i));
+    EXPECT_EQ(size[i], T::size(tensor)[i]);
+    EXPECT_EQ(stride[i], T::stride(tensor, i));
+    EXPECT_EQ(stride[i], T::stride(tensor)[i]);
   }
-  EXPECT_EQ(count, tensor.count());
-  EXPECT_EQ(offset, tensor.offset());
-  EXPECT_EQ(contiguity, tensor.isContiguous());
-  EXPECT_NE(nullptr, tensor.storage());
+  EXPECT_EQ(count, T::count(tensor));
+  EXPECT_EQ(offset, T::offset(tensor));
+  EXPECT_EQ(contiguity, T::isContiguous(tensor));
+  EXPECT_NE(nullptr, T::storage(tensor));
 }
 
 TEST(TensorTest, constructorTest) {
