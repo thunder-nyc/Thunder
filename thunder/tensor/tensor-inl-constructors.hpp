@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_INL_HPP_
-#define THUNDER_TENSOR_TENSOR_INL_HPP_
+#ifndef THUNDER_TENSOR_TENSOR_INL_CONSTRUCTORS_HPP_
+#define THUNDER_TENSOR_TENSOR_INL_CONSTRUCTORS_HPP_
 
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
@@ -32,19 +32,7 @@ namespace tensor {
 
 template < typename S >
 Tensor< S >::Tensor()
-    : storage_(new S(1)), offset_(0), size_(1,1), stride_(1,1){}
-
-template < typename S >
-Tensor< S >::Tensor(const storage_pointer &s, size_type os)
-    : storage_(s), offset_(os), size_(1, storage_.size() - offset_ + 1),
-      stride_(1,1) {
-  if (storage_ == nullptr) {
-    throw invalid_argument("Storage is nullptr.");
-  }
-  if (offset_ >= storage_.size()) {
-    throw out_of_range("Offset exceeds storage.");
-  }
-}
+    : size_(1,1), stride_(1,1), storage_(new S(1)), offset_(0){}
 
 template < typename S >
 Tensor< S >::Tensor(const size_storage &sz)
@@ -67,18 +55,30 @@ Tensor< S >::Tensor(const size_storage &sz)
 }
 
 template < typename S >
-Tensor< S >::Tensor(size_type sz0) : Tensor({sz0}) {}
+Tensor< S >::Tensor(size_type sz0) : Tensor(size_storage({sz0})) {}
 
 template < typename S >
-Tensor< S >::Tensor(size_type sz0, size_type sz1) : Tensor({sz0, sz1}) {}
+Tensor< S >::Tensor(size_type sz0, size_type sz1)
+    : Tensor(size_storage({sz0, sz1})) {}
 
 template < typename S >
 Tensor< S >::Tensor(size_type sz0, size_type sz1, size_type sz2)
-    : Tensor({sz0, sz1, sz2}) {}
+    : Tensor(size_storage({sz0, sz1, sz2})) {}
 
 template < typename S >
 Tensor< S >::Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3)
-    : Tensor({sz0, sz1, sz2, sz3}) {}
+    : Tensor(size_storage({sz0, sz1, sz2, sz3})) {}
+
+template < typename S >
+Tensor< S >::Tensor(const storage_pointer &s, size_type os)
+    : size_(1, s->size() - os), stride_(1,1), storage_(s), offset_(os) {
+  if (storage_ == nullptr) {
+    throw invalid_argument("Storage is nullptr.");
+  }
+  if (offset_ >= storage_->size()) {
+    throw out_of_range("Offset exceeds storage.");
+  }
+}
 
 template < typename S >
 Tensor< S >::Tensor(const size_storage &sz, const storage_pointer &s,
@@ -97,7 +97,7 @@ Tensor< S >::Tensor(const size_storage &sz, const storage_pointer &s,
   }
     storage_size *= size_x;
   }
-  if (storage_size + offset > storage_.size()) {
+  if (storage_size + offset_ > storage_->size()) {
     throw out_of_range("Offset and size exceed storage size.");
   }
   stride_[stride_.size() - 1] = 1;
@@ -135,7 +135,7 @@ Tensor< S >::Tensor(const size_storage &sz, const stride_storage &st,
       max_offset = max_offset + (size_[i]-1)*stride_[i];
     }
   }
-  if (min_offset < 0 || max_offset >= storage_.size()) {
+  if (min_offset < 0 || max_offset >= storage_->size()) {
     throw length_error("Offset, size and stride exceed storage size.");
   }
 }
@@ -156,4 +156,4 @@ Tensor< S >::~Tensor() {}
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_TENSOR_INL_HPP
+#endif  // THUNDER_TENSOR_TENSOR_INL_CONSTRUCTORS_HPP

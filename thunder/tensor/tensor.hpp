@@ -32,7 +32,7 @@
 namespace thunder {
 namespace tensor {
 
-template < typename S >
+template < typename S = DoubleStorage >
 class Tensor {
  public:
   // Typedefs from storage
@@ -68,6 +68,56 @@ class Tensor {
 
   // Destructor
   virtual ~Tensor();
+
+  // Non-virtual templated queries
+  template < typename T >
+  bool isSameSizeAs(const T &y) const;
+  virtual bool isSameSizeAs(const Tensor &y) const;
+
+  // Static non-virtual templated queries are delegated
+  template < typename T >
+  static bool isSameSizeAs(const Tensor &x, const T &y);
+  static bool isSameSizeAs(const Tensor &x, const Tensor &y);
+
+  // Property queries
+  virtual dim_type dimension() const;
+  virtual size_storage size() const;
+  virtual size_type size(dim_type dim) const;
+  virtual size_type count() const;
+  virtual stride_storage stride() const;
+  virtual difference_type stride(dim_type dim) const;
+  virtual storage_pointer storage() const;
+  virtual size_type offset() const;
+  virtual pointer data() const;
+  virtual bool isContiguous() const;
+
+  // Static property queries are delegated
+  static dim_type dimension(const Tensor &x);
+  static size_storage size(const Tensor &x);
+  static size_type size(const Tensor &x, dim_type dim);
+  static size_type count(const Tensor &x);
+  static stride_storage stride(const Tensor &x);
+  static difference_type stride(const Tensor &x, dim_type dim);
+  static storage_pointer storage(const Tensor &x);
+  static size_type offset(const Tensor &x);
+  static pointer data(const Tensor &x);
+  static bool isContiguous(const Tensor &x);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
+  // Iterators and their functions. Subtensor and value iterators.
+  class iterator;
+  class reference_iterator;
+  virtual iterator begin() const;
+  virtual iterator end() const;
+  virtual reference_iterator value_begin() const;
+  virtual reference_iterator value_end() const;
+
+  // Static iterator functions are delegated
+  static iterator begin(const Tensor &x);
+  static iterator end(const Tensor &x);
+  static reference_iterator reference_begin(const Tensor &x);
+  static reference_iterator reference_end(const Tensor &x);
 
   // Assignment operators
   virtual Tensor& operator=(Tensor other);
@@ -124,54 +174,6 @@ class Tensor {
   virtual Tensor operator<(const Tensor &y) const;
   virtual Tensor operator<=(const Tensor &y) const;
   virtual Tensor operator>=(const Tensor &y) const;
-
-  // Iterators and their functions. Subtensor and value iterators.
-  class iterator;
-  class reference_iterator;
-  virtual iterator begin() const;
-  virtual iterator end() const;
-  virtual reference_iterator value_begin() const;
-  virtual reference_iterator value_end() const;
-
-  // Static iterator functions are delegated
-  static iterator begin(const Tensor &x);
-  static iterator end(const Tensor &x);
-  static reference_iterator reference_begin(const Tensor &x);
-  static reference_iterator reference_end(const Tensor &x);
-
-  // Non-virtual templated queries
-  template < typename T >
-  bool isSameSizeAs(const T &y) const;
-  virtual bool isSameSizeAs(const Tensor &y) const;
-
-  // Static non-virtual templated queries are delegated
-  template < typename T >
-  static bool isSameSizeAs(const Tensor &x, const T &y);
-  static bool isSameSizeAs(const Tensor &x, const Tensor &y);
-
-  // Property queries
-  virtual dim_type dimension() const;
-  virtual size_storage size() const;
-  virtual size_type size(dim_type dim) const;
-  virtual size_type count() const;
-  virtual stride_storage stride() const;
-  virtual difference_type stride(dim_type dim) const;
-  virtual storage_pointer storage() const;
-  virtual size_type offset() const;
-  virtual pointer data() const;
-  virtual bool isContiguous() const;
-
-  // Static property queries are delegated
-  static dim_type dimension(const Tensor &x);
-  static size_storage size(const Tensor &x);
-  static size_type size(const Tensor &x, dim_type dim);
-  static size_type count(const Tensor &x);
-  static stride_storage stride(const Tensor &x);
-  static difference_type stride(const Tensor &x, dim_type dim);
-  static storage_pointer storage(const Tensor &x);
-  static size_type offset(const Tensor &x);
-  static pointer data(const Tensor &x);
-  static bool isContiguous(const Tensor &x);
 
   // Non-virtual templated modifiers
   template < typename T >
@@ -820,6 +822,8 @@ class Tensor {
   template < typename TR >
   static Tensor polar(const TR& r, const TR& theta);
 
+  !!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
+
  private:
   size_storage size_;
   stride_storage stride_;
@@ -827,6 +831,7 @@ class Tensor {
   size_type offset_;
 };
 
+/* !!! THIS IS MARK FOR NOT IMPLMENTED YET !!!
 template < typename S >
 class Tensor< S >::iterator {
  public:
@@ -906,6 +911,8 @@ class Tensor< S >::reference_iterator {
   const Tensor *tensor_;
   size_storage position_;
 };
+
+!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
 
 }  // namespace tensor
 }  // namespace thunder

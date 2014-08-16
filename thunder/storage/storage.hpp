@@ -26,7 +26,7 @@
 namespace thunder {
 namespace storage {
 
-template < typename D, typename A = ::std::allocator< D > >
+template < typename D = double, typename A = ::std::allocator< D > >
 class Storage {
  public:
   // Typedefs from allocator

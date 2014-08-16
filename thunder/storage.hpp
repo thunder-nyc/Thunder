@@ -22,9 +22,15 @@
 
 #include "thunder/storage/storage.hpp"
 
+#include <memory>
+
 namespace thunder {
 
-using storage::Storage;
+template< typename D = double, typename A = ::std::allocator< D > >
+using Storage = storage::Storage< D, A >;
+
+typedef Storage< double, ::std::allocator< double > > DoubleStorage;
+typedef Storage< float, ::std::allocator< float > > FloatStorage;
 
 }  // namespace thunder
 

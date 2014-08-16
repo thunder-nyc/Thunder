@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_INL_QUERIES_HPP_
-#define THUNDER_TENSOR_TENSOR_INL_QUERIES_HPP_
+#ifndef THUNDER_TENSOR_TENSOR_INL_ITERATORS_HPP_
+#define THUNDER_TENSOR_TENSOR_INL_ITERATORS_HPP_
 
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
@@ -29,7 +29,10 @@
 
 namespace thunder {
 namespace tensor {
+
+
+
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_TENSOR_INL_QUERIES_HPP_
+#endif  // THUNDER_TENSOR_TENSOR_INL_ITERATORS_HPP_

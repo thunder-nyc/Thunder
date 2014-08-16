@@ -24,7 +24,8 @@
 
 namespace thunder {
 
-using tensor::Tensor;
+template < typename S = DoubleStorage >
+using Tensor = tensor::Tensor< S >;
 
 }  // namespace thunder
 
