@@ -824,7 +824,7 @@ class Tensor {
 
   !!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
 
- private:
+ protected:
   size_storage size_;
   stride_storage stride_;
   storage_pointer storage_;
@@ -866,7 +866,7 @@ class Tensor< S >::iterator {
   Tensor* operator->() const;
   Tensor& operator[](size_type) const;
 
- private:
+ protected:
   Tensor current_;
   const Tensor *tensor_;
   size_type posistion_;
@@ -907,7 +907,7 @@ class Tensor< S >::reference_iterator {
   pointer operator->() const;
   reference operator[](size_type sz) const;
 
- private:
+ protected:
   const Tensor *tensor_;
   size_storage position_;
 };
