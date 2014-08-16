@@ -53,16 +53,16 @@ class Tensor {
 
   // Constructors
   explicit Tensor();
-  explicit Tensor(const size_storage &sz);
+  explicit Tensor(size_storage sz);
   explicit Tensor(size_type sz0);
   Tensor(size_type sz0, size_type sz1);
   Tensor(size_type sz0, size_type sz1, size_type sz2);
   Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3);
-  explicit Tensor(const storage_pointer &s, size_type os = 0);
-  Tensor(const size_storage &sz, const storage_pointer &s, size_type os = 0);
-  Tensor(const size_storage &sz, const stride_storage &st);
-  Tensor(const size_storage &sz, const stride_storage &st,
-         const storage_pointer &s, size_type os = 0);
+  explicit Tensor(storage_pointer s, size_type os = 0);
+  Tensor(size_storage sz, storage_pointer s, size_type os = 0);
+  Tensor(size_storage sz, stride_storage st);
+  Tensor(size_storage sz, stride_storage st, storage_pointer s,
+         size_type os = 0);
   Tensor(const Tensor &y);
   Tensor(Tensor &&y);
 
@@ -104,7 +104,7 @@ class Tensor {
   static bool isContiguous(const Tensor &x);
 
   // Assignment operators
-  virtual Tensor& operator=(Tensor other);
+  virtual Tensor& operator=(Tensor y);
 
   // Paranthesis operators points to a reference of value
   virtual reference operator()() const;
@@ -118,8 +118,6 @@ class Tensor {
 
   // Index operators
   virtual Tensor operator[](size_type pos) const;
-  virtual Tensor operator[](
-      const ::std::pair< size_type, size_type > &range) const;
 
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
@@ -826,6 +824,7 @@ class Tensor {
   size_type offset_;
 };
 
+/* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 template < typename S >
 class Tensor< S >::iterator {
  public:
@@ -905,6 +904,7 @@ class Tensor< S >::reference_iterator {
   const Tensor *tensor_;
   size_storage position_;
 };
+!!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!*/
 
 }  // namespace tensor
 }  // namespace thunder
