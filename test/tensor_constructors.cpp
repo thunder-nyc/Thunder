@@ -34,7 +34,7 @@ void constructorTest(
     typename T::size_type count, typename T::size_type offset,
     bool contiguity) {
   EXPECT_EQ(dimension, T::dimension(tensor));
-  for(typename T::dim_type i = 0; i < dimension; ++i) {
+  for (typename T::dim_type i = 0; i < dimension; ++i) {
     EXPECT_EQ(size[i], T::size(tensor, i));
     EXPECT_EQ(size[i], T::size(tensor)[i]);
     EXPECT_EQ(stride[i], T::stride(tensor, i));
@@ -113,7 +113,7 @@ TEST(TensorTest, constructorTest) {
 
   // Copy constructor
   Tensor< DoubleStorage > copy_tensor(from_size_stride_offset_storage_tensor);
-  constructorTest(copy_tensor,2, {5, 4}, {5, -1}, 20, 5, false);
+  constructorTest(copy_tensor, 2, {5, 4}, {5, -1}, 20, 5, false);
   EXPECT_EQ(from_size_stride_offset_storage_tensor.storage(),
             copy_tensor.storage());
   EXPECT_EQ(from_size_stride_offset_storage_tensor.data(),

@@ -30,7 +30,7 @@ namespace tensor {
 
 template < typename S >
 template < typename T >
-bool Tensor< S >::isSameSizeAs(const T &y) const{
+bool Tensor< S >::isSameSizeAs(const T &y) const {
   if (size_.size() != y.dimension()) {
     return false;
   }
@@ -43,7 +43,7 @@ bool Tensor< S >::isSameSizeAs(const T &y) const{
 }
 
 template < typename S >
-bool Tensor< S >::isSameSizeAs(const Tensor &y) const{
+bool Tensor< S >::isSameSizeAs(const Tensor &y) const {
   if (size_.size() != y.size_.size()) {
     return false;
   }

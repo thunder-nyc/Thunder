@@ -32,7 +32,7 @@ namespace tensor {
 
 template < typename S >
 Tensor< S >::Tensor()
-    : size_(1,1), stride_(1,1), storage_(new S(1)), offset_(0){}
+    : size_(1, 1), stride_(1, 1), storage_(new S(1)), offset_(0) {}
 
 template < typename S >
 Tensor< S >::Tensor(const size_storage &sz)
@@ -71,7 +71,7 @@ Tensor< S >::Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3)
 
 template < typename S >
 Tensor< S >::Tensor(const storage_pointer &s, size_type os)
-    : size_(1, s->size() - os), stride_(1,1), storage_(s), offset_(os) {
+    : size_(1, s->size() - os), stride_(1, 1), storage_(s), offset_(os) {
   if (storage_ == nullptr) {
     throw invalid_argument("Storage is nullptr.");
   }
@@ -108,7 +108,7 @@ Tensor< S >::Tensor(const size_storage &sz, const storage_pointer &s,
 
 template< typename S >
 Tensor< S >::Tensor(const size_storage &sz, const stride_storage &st)
-    :size_(sz), stride_(st){
+    :size_(sz), stride_(st) {
   if (size_.size() == 0) {
     throw invalid_argument("Size is empty.");
   }
@@ -138,7 +138,7 @@ Tensor< S >::Tensor(const size_storage &sz, const stride_storage &st)
 template< typename S >
 Tensor< S >::Tensor(const size_storage &sz, const stride_storage &st,
                     const storage_pointer &s, size_type os)
-    :size_(sz), stride_(st), storage_(s), offset_(os){
+    :size_(sz), stride_(st), storage_(s), offset_(os) {
   if (storage_ == nullptr) {
     throw invalid_argument("Storage is nullptr.");
   }
