@@ -103,29 +103,8 @@ class Tensor {
   static pointer data(const Tensor &x);
   static bool isContiguous(const Tensor &x);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
-  // Iterators and their functions. Subtensor and value iterators.
-  class iterator;
-  class reference_iterator;
-  virtual iterator begin() const;
-  virtual iterator end() const;
-  virtual reference_iterator value_begin() const;
-  virtual reference_iterator value_end() const;
-
-  // Static iterator functions are delegated
-  static iterator begin(const Tensor &x);
-  static iterator end(const Tensor &x);
-  static reference_iterator reference_begin(const Tensor &x);
-  static reference_iterator reference_end(const Tensor &x);
-
   // Assignment operators
   virtual Tensor& operator=(Tensor other);
-  virtual const Tensor &operator=(const_reference value) const;
-  virtual Tensor& operator=(const_reference value);
-
-  // Static casts
-  virtual operator value_type() const;
 
   // Paranthesis operators points to a reference of value
   virtual reference operator()() const;
@@ -141,6 +120,22 @@ class Tensor {
   virtual Tensor operator[](size_type pos) const;
   virtual Tensor operator[](
       const ::std::pair< size_type, size_type > &range) const;
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
+  // Iterators and their functions. Subtensor and value iterators.
+  class iterator;
+  class reference_iterator;
+  virtual iterator begin() const;
+  virtual iterator end() const;
+  virtual reference_iterator value_begin() const;
+  virtual reference_iterator value_end() const;
+
+  // Static iterator functions are delegated
+  static iterator begin(const Tensor &x);
+  static iterator end(const Tensor &x);
+  static reference_iterator reference_begin(const Tensor &x);
+  static reference_iterator reference_end(const Tensor &x);
 
   // Arithmetic operators with value are delegated
   virtual Tensor operator+(const_reference value) const;
@@ -831,13 +826,12 @@ class Tensor {
   size_type offset_;
 };
 
-/* !!! THIS IS MARK FOR NOT IMPLMENTED YET !!!
 template < typename S >
 class Tensor< S >::iterator {
  public:
   typedef std::random_access_iterator_tag iterator_category;
 
-  iterator(const Tensor< S > &x);
+  iterator(const Tensor &x);
   iterator(const iterator& it);
   iterator(iterator&& it);
   ~iterator();
@@ -877,7 +871,7 @@ class Tensor< S >::reference_iterator {
  public:
   typedef std::random_access_iterator_tag iterator_category;
 
-  reference_iterator(const Tensor< S > &x);
+  reference_iterator(const Tensor &x);
   reference_iterator(const reference_iterator& it);
   reference_iterator(reference_iterator&& it);
   ~reference_iterator();
@@ -911,8 +905,6 @@ class Tensor< S >::reference_iterator {
   const Tensor *tensor_;
   size_storage position_;
 };
-
-!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
 
 }  // namespace tensor
 }  // namespace thunder

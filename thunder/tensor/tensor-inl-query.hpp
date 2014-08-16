@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_INL_QUERIES_HPP_
-#define THUNDER_TENSOR_TENSOR_INL_QUERIES_HPP_
+#ifndef THUNDER_TENSOR_TENSOR_INL_QUERY_HPP_
+#define THUNDER_TENSOR_TENSOR_INL_QUERY_HPP_
 
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
@@ -189,4 +189,4 @@ bool Tensor< S >::isContiguous(const Tensor &x) {
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_TENSOR_INL_QUERIES_HPP_
+#endif  // THUNDER_TENSOR_TENSOR_INL_QUERY_HPP_

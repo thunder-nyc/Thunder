@@ -17,21 +17,20 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_INL_HPP_
-#define THUNDER_TENSOR_TENSOR_INL_HPP_
+#ifndef THUNDER_TENSOR_TENSOR_INL_ACCESS_HPP_
+#define THUNDER_TENSOR_TENSOR_INL_ACCESS_HPP_
 
 #include "thunder/tensor/tensor.hpp"
+#include "thunder/tensor/tensor-inl.hpp"
 
-// Tensor constructors
-#include "thunder/tensor/tensor-inl-constructor.hpp"
+#include <memory>
 
-// Property query functions
-#include "thunder/tensor/tensor-inl-query.hpp"
+#include "thunder/exception.hpp"
 
-// Access operators
-#include "thunder/tensor/tensor-inl-access.hpp"
+namespace thunder {
+namespace tensor {
 
-// Iterators
-#include "thunder/tensor/tensor-inl-iterator.hpp"
+}  // namespace tensor
+}  // namespace thunder
 
-#endif  // THUNDER_TENSOR_TENSOR_INL_HPP
+#endif  // THUNDER_TENSOR_TENSOR_INL_ACCESS_HPP_

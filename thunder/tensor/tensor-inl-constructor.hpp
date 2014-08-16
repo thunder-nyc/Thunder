@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_INL_CONSTRUCTORS_HPP_
-#define THUNDER_TENSOR_TENSOR_INL_CONSTRUCTORS_HPP_
+#ifndef THUNDER_TENSOR_TENSOR_INL_CONSTRUCTOR_HPP_
+#define THUNDER_TENSOR_TENSOR_INL_CONSTRUCTOR_HPP_
 
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
@@ -185,4 +185,4 @@ Tensor< S >::~Tensor() {}
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_TENSOR_INL_CONSTRUCTORS_HPP
+#endif  // THUNDER_TENSOR_TENSOR_INL_CONSTRUCTOR_HPP
