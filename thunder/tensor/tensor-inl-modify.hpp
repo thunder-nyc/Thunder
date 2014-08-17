@@ -45,8 +45,8 @@ Tensor< S >& Tensor< S >::copy(const T &y) {
     }
   } else {
     typename T::reference_iterator y_begin = y.reference_begin();
-    for(reference_iterator x_begin = reference_begin(), x_end = reference_end();
-        x_begin != x_end; ++x_begin, ++y_begin) {
+    for (reference_iterator x_begin = reference_begin(),
+             x_end = reference_end(); x_begin != x_end; ++x_begin, ++y_begin) {
       *x_begin = static_cast< value_type>(*y_begin);
     }
   }
@@ -67,11 +67,11 @@ Tensor< S >& Tensor< S >::copy(const Tensor &y) {
     }
   } else {
     reference_iterator y_begin = y.reference_begin();
-    for(reference_iterator x_begin = reference_begin(), x_end = reference_end();
-        x_begin != x_end; ++x_begin, ++y_begin) {
+    for (reference_iterator x_begin = reference_begin(),
+             x_end = reference_end(); x_begin != x_end; ++x_begin, ++y_begin) {
       *x_begin = *y_begin;
     }
-  } 
+  }
   return *this;
 }
 
