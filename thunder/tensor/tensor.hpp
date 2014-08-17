@@ -89,6 +89,13 @@ class Tensor {
   virtual storage_pointer storage() const;
   virtual size_type offset() const;
   virtual pointer data() const;
+  virtual reference get() const;
+  virtual reference get(size_type pos) const;
+  virtual reference get(size_type pos0, size_type pos1) const;
+  virtual reference get(size_type pos0, size_type pos1, size_type pos2) const;
+  virtual reference get(size_type pos0, size_type pos1, size_type pos2,
+                        size_type pos3) const;
+  virtual reference get(const size_storage &pos) const;
   virtual bool isContiguous() const;
 
   // Static property queries are delegated
@@ -101,6 +108,14 @@ class Tensor {
   static storage_pointer storage(const Tensor &x);
   static size_type offset(const Tensor &x);
   static pointer data(const Tensor &x);
+  static reference get(const Tensor &x);
+  static reference get(const Tensor &x, size_type pos);
+  static reference get(const Tensor &x, size_type pos0, size_type pos1);
+  static reference get(const Tensor &x, size_type pos0, size_type pos1,
+                       size_type pos2);
+  static reference get(const Tensor &x, size_type pos0, size_type pos1,
+                       size_type pos2, size_type pos3);
+  static reference get(const Tensor &x, const size_storage &pos);
   static bool isContiguous(const Tensor &x);
 
   // Assignment operators
@@ -118,6 +133,10 @@ class Tensor {
 
   // Index operators
   virtual Tensor operator[](size_type pos) const;
+  virtual Tensor operator[](
+      const ::std::pair< size_type, size_type > &range) const;
+  virtual Tensor operator[](
+      const Storage< ::std::pair< size_type, size_type > > &range) const;
 
   // Iterators and their functions. Subtensor and value iterators.
   class iterator;
