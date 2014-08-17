@@ -85,12 +85,12 @@ typename Tensor< S >::size_type Tensor< S >::size(dim_type dim) const {
 }
 
 template < typename S >
-typename Tensor< S >::size_type Tensor< S >::count() const {
-  size_type count = 1;
+typename Tensor< S >::size_type Tensor< S >::length() const {
+  size_type length = 1;
   for (dim_type i = 0; i < size_.size(); ++i) {
-    count *= size_[i];
+    length *= size_[i];
   }
-  return count;
+  return length;
 }
 
 template < typename S >
@@ -151,8 +151,8 @@ typename Tensor< S >::size_type Tensor< S >::size(
 }
 
 template < typename S >
-typename Tensor< S >::size_type Tensor< S >::count(const Tensor &x) {
-  return x.count();
+typename Tensor< S >::size_type Tensor< S >::length(const Tensor &x) {
+  return x.length();
 }
 
 template < typename S >

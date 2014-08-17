@@ -83,7 +83,7 @@ class Tensor {
   virtual dim_type dimension() const;
   virtual size_storage size() const;
   virtual size_type size(dim_type dim) const;
-  virtual size_type count() const;
+  virtual size_type length() const;
   virtual stride_storage stride() const;
   virtual difference_type stride(dim_type dim) const;
   virtual storage_pointer storage() const;
@@ -95,7 +95,7 @@ class Tensor {
   static dim_type dimension(const Tensor &x);
   static size_storage size(const Tensor &x);
   static size_type size(const Tensor &x, dim_type dim);
-  static size_type count(const Tensor &x);
+  static size_type length(const Tensor &x);
   static stride_storage stride(const Tensor &x);
   static difference_type stride(const Tensor &x, dim_type dim);
   static storage_pointer storage(const Tensor &x);
@@ -137,41 +137,6 @@ class Tensor {
   static reference_iterator reference_begin(const Tensor &x);
   static reference_iterator reference_end(const Tensor &x);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
-  // Arithmetic operators with value are delegated
-  virtual Tensor operator+(const_reference value) const;
-  virtual Tensor operator-(const_reference value) const;
-  friend Tensor operator+(const_reference value, const Tensor &x);
-  friend Tensor operator-(const_reference value, const Tensor &x);
-  virtual Tensor& operator+=(const_reference value) const;
-  virtual Tensor& operator-=(const_reference value) const;
-
-  // Arithmetic operators are delegated
-  virtual Tensor operator+(const Tensor &y) const;
-  virtual Tensor operator-(const Tensor &y) const;
-  virtual Tensor& operator+=(const Tensor &y) const;
-  virtual Tensor& operator-=(const Tensor &y) const;
-
-  // Comparison operators with value are delegated
-  virtual Tensor operator==(const_reference value) const;
-  virtual Tensor operator>(const_reference value) const;
-  virtual Tensor operator<(const_reference value) const;
-  virtual Tensor operator<=(const_reference value) const;
-  virtual Tensor operator>=(const_reference value) const;
-  friend Tensor operator==(const_reference value, const Tensor &x);
-  friend Tensor operator>(const_reference value, const Tensor &x);
-  friend Tensor operator<(const_reference value, const Tensor &x);
-  friend Tensor operator>=(const_reference value, const Tensor &x);
-  friend Tensor operator<=(const_reference value, const Tensor &x);
-
-  // Comparison operators with another tensor are delegated
-  virtual Tensor operator==(const Tensor &y) const;
-  virtual Tensor operator>(const Tensor &y) const;
-  virtual Tensor operator<(const Tensor &y) const;
-  virtual Tensor operator<=(const Tensor &y) const;
-  virtual Tensor operator>=(const Tensor &y) const;
-
   // Non-virtual templated modifiers
   template < typename T >
   Tensor& copy(const T &y);
@@ -190,29 +155,28 @@ class Tensor {
 
   // Normal modifiers
   virtual Tensor& set(const Tensor &y);
-  virtual Tensor& set(const storage_pointer &storage, size_type os = 0);
-  virtual Tensor& set(const size_storage &sz, const storage_pointer &s,
+  virtual Tensor& set(storage_pointer storage, size_type os = 0);
+  virtual Tensor& set(size_storage sz, storage_pointer s, size_type os = 0);
+  virtual Tensor& set(size_storage sz, stride_storage st, storage_pointer s,
                       size_type os = 0);
-  virtual Tensor& set(const size_storage &sz, const stride_storage &st,
-                      const storage_pointer &s, size_type os = 0);
-  virtual Tensor& resize(const size_storage &sz);
-  virtual Tensor& resize(const size_storage &sz, const stride_storage &st);
+  virtual Tensor& resize(size_storage sz);
+  virtual Tensor& resize(size_storage sz, stride_storage st);
   virtual Tensor& contiguous();
   virtual Tensor& squeeze();
 
   // Static modifiers are delegated
   static Tensor& set(Tensor *x, const Tensor &y);
-  static Tensor& set(Tensor *x, const storage_pointer &s, size_type os = 0);
-  static Tensor& set(Tensor *x, const size_storage &sz,
-                     const storage_pointer &s, size_type os = 0);
-  static Tensor& set(Tensor *x, const size_storage &sz,
-                     const stride_storage &st, const storage_pointer &s,
+  static Tensor& set(Tensor *x, storage_pointer s, size_type os = 0);
+  static Tensor& set(Tensor *x, size_storage sz, storage_pointer s,
                      size_type os = 0);
-  static Tensor& resize(Tensor *x, const size_storage &sz);
-  static Tensor& resize(Tensor *x, const size_storage &sz,
-                        const stride_storage &st);
+  static Tensor& set(Tensor *x, size_storage sz, stride_storage st,
+                     storage_pointer s, size_type os = 0);
+  static Tensor& resize(Tensor *x, size_storage sz);
+  static Tensor& resize(Tensor *x, size_storage sz, stride_storage st);
   static Tensor& contiguous(Tensor *x);
   static Tensor& squeeze(Tensor *x);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Templated subtensor extractors
   template < typename T >
@@ -818,6 +782,39 @@ class Tensor {
   static Tensor polar(const TR& r, reference theta);
   template < typename TR >
   static Tensor polar(const TR& r, const TR& theta);
+
+  // Arithmetic operators with value are delegated
+  virtual Tensor operator+(const_reference value) const;
+  virtual Tensor operator-(const_reference value) const;
+  friend Tensor operator+(const_reference value, const Tensor &x);
+  friend Tensor operator-(const_reference value, const Tensor &x);
+  virtual Tensor& operator+=(const_reference value) const;
+  virtual Tensor& operator-=(const_reference value) const;
+
+  // Arithmetic operators are delegated
+  virtual Tensor operator+(const Tensor &y) const;
+  virtual Tensor operator-(const Tensor &y) const;
+  virtual Tensor& operator+=(const Tensor &y) const;
+  virtual Tensor& operator-=(const Tensor &y) const;
+
+  // Comparison operators with value are delegated
+  virtual Tensor operator==(const_reference value) const;
+  virtual Tensor operator>(const_reference value) const;
+  virtual Tensor operator<(const_reference value) const;
+  virtual Tensor operator<=(const_reference value) const;
+  virtual Tensor operator>=(const_reference value) const;
+  friend Tensor operator==(const_reference value, const Tensor &x);
+  friend Tensor operator>(const_reference value, const Tensor &x);
+  friend Tensor operator<(const_reference value, const Tensor &x);
+  friend Tensor operator>=(const_reference value, const Tensor &x);
+  friend Tensor operator<=(const_reference value, const Tensor &x);
+
+  // Comparison operators with another tensor are delegated
+  virtual Tensor operator==(const Tensor &y) const;
+  virtual Tensor operator>(const Tensor &y) const;
+  virtual Tensor operator<(const Tensor &y) const;
+  virtual Tensor operator<=(const Tensor &y) const;
+  virtual Tensor operator>=(const Tensor &y) const;
 
   !!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
 

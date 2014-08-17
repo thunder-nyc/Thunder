@@ -31,105 +31,105 @@
 namespace thunder {
 namespace tensor {
 
-template< typename S >
+template < typename S >
 Tensor< S >::iterator::iterator(const Tensor &x, size_type pos)
     : tensor_(&x), position_(pos) {}
 
-template< typename S >
+template < typename S >
 Tensor< S >::iterator::iterator(const iterator &it)
     : tensor_(it.tensor_), position_(it.position_) {}
 
-template< typename S >
+template < typename S >
 Tensor< S >::iterator::iterator(iterator &&it)
     : tensor_(::std::move(it.tensor_)), position_(::std::move(it.position_)) {}
 
-template< typename S >
+template < typename S >
 Tensor< S >::iterator::~iterator() {}
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator& Tensor< S >::iterator::operator=(iterator it) {
   ::std::swap(tensor_, it.tensor_);
   ::std::swap(position_, it.position_);
 }
 
-template< typename S >
+template < typename S >
 bool Tensor< S >::iterator::operator==(const iterator& it) const {
   return tensor_ == it.tensor_ && position_ == it.position_;
 }
 
-template< typename S >
+template < typename S >
 bool Tensor< S >::iterator::operator!=(const iterator& it) const {
   return tensor_ != it.tensor_ || position_ != it.position_;
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator& Tensor< S >::iterator::operator++() {
   ++position_;
   return *this;
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator Tensor< S >::iterator::operator++(int) {
   iterator it = iterator(*tensor_, position_++);
   return it;
 }
 
-template< typename S >
+template < typename S >
 Tensor< S > Tensor< S >::iterator::operator*() const {
   return (*tensor_)[position_];
 }
 
-template< typename S >
+template < typename S >
 Tensor< S >* Tensor< S >::iterator::operator->() const {
   current_ = (*tensor_)[position_];
   return &current_;
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator Tensor< S >::begin() const {
   return iterator(*this);
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator Tensor< S >::end() const {
   return iterator(*this, size_[0]);
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator Tensor< S >::begin(
     const Tensor &x) {
   return x.begin();
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::iterator Tensor< S >::end(
     const Tensor &x) {
   return x.end();
 }
 
-template< typename S >
+template < typename S >
 Tensor< S >::reference_iterator::reference_iterator(const Tensor &x)
     : tensor_(&x), position_(x.size_.size(), 0) {}
 
-template< typename S >
+template < typename S >
 Tensor< S >::reference_iterator::reference_iterator(
 const Tensor &x, size_storage pos) : tensor_(&x) {
   ::std::swap(position_, pos);
 }
 
-template< typename S >
+template < typename S >
 Tensor< S >::reference_iterator::reference_iterator(
     const reference_iterator& it)
     : tensor_(it.tensor_), position_(it.position_) {}
 
-template< typename S >
+template < typename S >
 Tensor< S >::reference_iterator::reference_iterator(reference_iterator &&it)
     : tensor_(it.tensor_), position_(std::move(it.position_)) {}
 
-template< typename S >
+template < typename S >
 Tensor< S >::reference_iterator::~reference_iterator() {}
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator&
 Tensor< S >::reference_iterator::operator=(reference_iterator it) {
   tensor_ = it.tensor_;
@@ -137,7 +137,7 @@ Tensor< S >::reference_iterator::operator=(reference_iterator it) {
   return *this;
 }
 
-template< typename S >
+template < typename S >
 bool Tensor< S >::reference_iterator::operator==(
     const reference_iterator& it) const {
   if (tensor_ != it.tensor_) {
@@ -151,7 +151,7 @@ bool Tensor< S >::reference_iterator::operator==(
   return true;
 }
 
-template< typename S >
+template < typename S >
 bool Tensor< S >::reference_iterator::operator!=(
     const reference_iterator& it) const {
   if (tensor_ != it.tensor_) {
@@ -165,7 +165,7 @@ bool Tensor< S >::reference_iterator::operator!=(
   return false;
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator&
 Tensor< S >::reference_iterator::operator++() {
   ++position_[position_.size() - 1];
@@ -177,7 +177,7 @@ Tensor< S >::reference_iterator::operator++() {
   return *this;
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator
 Tensor< S >::reference_iterator::operator++(int) {
   reference_iterator it(*this);
@@ -190,24 +190,24 @@ Tensor< S >::reference_iterator::operator++(int) {
   return it;
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference
 Tensor< S >::reference_iterator::operator*() const {
   return (*tensor_)(position_);
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::pointer
 Tensor< S >::reference_iterator::operator->() const {
   return &(*tensor_)(position_);
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_begin() const {
   return reference_iterator(*this);
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_end() const {
   size_storage pos(size_.size());
   for (dim_type i = 1; i < size_.size(); ++i) {
@@ -217,13 +217,13 @@ typename Tensor< S >::reference_iterator Tensor< S >::reference_end() const {
   return reference_iterator(*this, pos);
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_begin(
     const Tensor &x) {
   return x.reference_begin();
 }
 
-template< typename S >
+template < typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_end(
     const Tensor &x) {
   return x.reference_end();

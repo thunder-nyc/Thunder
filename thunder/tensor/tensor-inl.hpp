@@ -34,4 +34,7 @@
 // Iterators
 #include "thunder/tensor/tensor-inl-iterator.hpp"
 
+// Modifiers
+#include "thunder/tensor/tensor-inl-modify.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP

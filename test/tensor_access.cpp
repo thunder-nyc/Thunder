@@ -31,7 +31,7 @@ void constructorTest(
     const T &tensor, typename T::dim_type dimension,
     const typename T::size_storage &size,
     const typename T::stride_storage &stride,
-    typename T::size_type count, typename T::size_type offset,
+    typename T::size_type length, typename T::size_type offset,
     bool contiguity) {
   EXPECT_EQ(dimension, T::dimension(tensor));
   for (typename T::dim_type i = 0; i < dimension; ++i) {
@@ -40,7 +40,7 @@ void constructorTest(
     EXPECT_EQ(stride[i], T::stride(tensor, i));
     EXPECT_EQ(stride[i], T::stride(tensor)[i]);
   }
-  EXPECT_EQ(count, T::count(tensor));
+  EXPECT_EQ(length, T::length(tensor));
   EXPECT_EQ(offset, T::offset(tensor));
   EXPECT_EQ(contiguity, T::isContiguous(tensor));
   EXPECT_NE(nullptr, T::storage(tensor));
