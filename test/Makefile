@@ -1,5 +1,5 @@
 # List all the test targets here
-targets = storage tensor_constructors
+targets = storage tensor_nomath
 
 CXXFLAGS += -std=c++11 -Wall -I..
 LDFLAGS += -lgtest -lgtest_main

@@ -37,7 +37,7 @@ Tensor< S >::iterator::iterator(const Tensor &x, size_type pos)
 
 template< typename S >
 Tensor< S >::iterator::iterator(const iterator &it)
-    : tensor_(it.tensor_), position_(it.position_){}
+    : tensor_(it.tensor_), position_(it.position_) {}
 
 template< typename S >
 Tensor< S >::iterator::iterator(iterator &&it)
@@ -47,7 +47,7 @@ template< typename S >
 Tensor< S >::iterator::~iterator() {}
 
 template< typename S >
-typename Tensor< S >::iterator& Tensor< S >::iterator::operator=(iterator it){
+typename Tensor< S >::iterator& Tensor< S >::iterator::operator=(iterator it) {
   ::std::swap(tensor_, it.tensor_);
   ::std::swap(position_, it.position_);
 }
@@ -57,7 +57,8 @@ bool Tensor< S >::iterator::operator==(const iterator& it) const {
   return tensor_ == it.tensor_ && position_ == it.position_;
 }
 
-bool operator!=(const iterator& it) const {
+template< typename S >
+bool Tensor< S >::iterator::operator!=(const iterator& it) const {
   return tensor_ != it.tensor_ || position_ != it.position_;
 }
 
@@ -96,19 +97,19 @@ typename Tensor< S >::iterator Tensor< S >::end() const {
 
 template< typename S >
 typename Tensor< S >::iterator Tensor< S >::begin(
-    const Tensor &x){
+    const Tensor &x) {
   return x.begin();
 }
 
 template< typename S >
-typename Tensor< S >::reference_iterator Tensor< S >::end(
-    const Tensor &x){
+typename Tensor< S >::iterator Tensor< S >::end(
+    const Tensor &x) {
   return x.end();
 }
 
 template< typename S >
 Tensor< S >::reference_iterator::reference_iterator(const Tensor &x)
-    : tensor_(&x), position_(x.size_.size(),0) {}
+    : tensor_(&x), position_(x.size_.size(), 0) {}
 
 template< typename S >
 Tensor< S >::reference_iterator::reference_iterator(
@@ -122,7 +123,7 @@ Tensor< S >::reference_iterator::reference_iterator(
     : tensor_(it.tensor_), position_(it.position_) {}
 
 template< typename S >
-Tensor< S >::reference_iterator::reference_iterator(reference_iterator &&it) :
+Tensor< S >::reference_iterator::reference_iterator(reference_iterator &&it)
     : tensor_(it.tensor_), position_(std::move(it.position_)) {}
 
 template< typename S >
@@ -215,13 +216,13 @@ typename Tensor< S >::reference_iterator Tensor< S >::reference_end() const {
 
 template< typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_begin(
-    const Tensor &x){
+    const Tensor &x) {
   return x.reference_begin();
 }
 
 template< typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_end(
-    const Tensor &x){
+    const Tensor &x) {
   return x.reference_end();
 }
 
