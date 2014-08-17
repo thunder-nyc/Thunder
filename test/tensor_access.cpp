@@ -120,5 +120,130 @@ TEST(TensorTest, constructorTest) {
             copy_tensor.data());
 }
 
+TEST(TensorTest, accessTest) {
+  // Create a tensor that is of normal stride
+  Tensor< DoubleStorage > normal_tensor(3, 5, 4);
+
+  // Test on evaluation operator
+  normal_tensor(1, 3, 2) = 7;
+  EXPECT_EQ(7, normal_tensor(1, 3, 2));
+  EXPECT_EQ(normal_tensor.data(), &normal_tensor());
+  EXPECT_EQ(normal_tensor.data() + 34, &normal_tensor(1, 3, 2));
+  EXPECT_EQ(normal_tensor.data() + 34, &normal_tensor({1, 3, 2}));
+
+  // Test on sub-tensor selection operator
+  Tensor< DoubleStorage > select_tensor = normal_tensor[1];
+  EXPECT_EQ(2, select_tensor.dimension());
+  EXPECT_EQ(5, select_tensor.size(0));
+  EXPECT_EQ(4, select_tensor.size(1));
+  EXPECT_EQ(4, select_tensor.stride(0));
+  EXPECT_EQ(1, select_tensor.stride(1));
+  EXPECT_EQ(normal_tensor.storage(), select_tensor.storage());
+  EXPECT_EQ(20, select_tensor.offset());
+
+  // Test on assignment operator
+  Tensor< DoubleStorage > assign_tensor(7);
+  assign_tensor = normal_tensor;
+  EXPECT_EQ(normal_tensor.dimension(), assign_tensor.dimension());
+  for (int i = 0; i < 3; ++i) {
+    EXPECT_EQ(normal_tensor.size(i), assign_tensor.size(i));
+    EXPECT_EQ(normal_tensor.stride(i), assign_tensor.stride(i));
+  }
+  EXPECT_EQ(normal_tensor.storage(), assign_tensor.storage());
+
+  // Create a tensor that is not of normal stride
+  Tensor< DoubleStorage > stride_tensor({5, 4}, {-1, 5});
+
+  // Test on evaluation operator
+  for (int i = 0; i < 5; ++i) {
+    for (int j = 0; j < 4; ++j) {
+      stride_tensor(i, j) = i * 6 + j * 13 + 3;
+      EXPECT_EQ(i * 6 + j * 13 + 3, stride_tensor(i, j));
+      EXPECT_EQ(stride_tensor.data() - i + 5 * j, &stride_tensor(i, j));
+    }
+  }
+
+  // Test on subtensor operator
+  for (int i = 0; i < 5; ++i) {
+    Tensor< DoubleStorage> subtensor = stride_tensor[i];
+    EXPECT_EQ(1, subtensor.dimension());
+    EXPECT_EQ(4, subtensor.size(0));
+    EXPECT_EQ(5, subtensor.stride(0));
+    EXPECT_EQ(stride_tensor.offset() - i, subtensor.offset());
+    EXPECT_EQ(stride_tensor.data() - i, subtensor.data());
+    EXPECT_FALSE(subtensor.isContiguous());
+  }
+}
+
+TEST(TensorTest, iteratorTest) {
+  // Create a normal tensor
+  Tensor< DoubleStorage > normal_tensor(3, 5, 4);
+
+  // Subtensor iteration
+  int i = 0;
+  for (Tensor< DoubleStorage > t : normal_tensor) {
+    EXPECT_EQ(2, t.dimension());
+    EXPECT_EQ(5, t.size(0));
+    EXPECT_EQ(4, t.size(1));
+    EXPECT_EQ(4, t.stride(0));
+    EXPECT_EQ(1, t.stride(1));
+    EXPECT_EQ(normal_tensor.storage(), t.storage());
+    EXPECT_EQ(i * 20, t.offset());
+    EXPECT_TRUE(t.isContiguous());
+    int j = 0;
+    for (Tensor< DoubleStorage > s : t) {
+      EXPECT_EQ(1, s.dimension());
+      EXPECT_EQ(4, s.size(0));
+      EXPECT_EQ(1, s.stride(0));
+      EXPECT_EQ(normal_tensor.storage(), s.storage());
+      EXPECT_EQ(i * 20 + j * 4, s.offset());
+      EXPECT_TRUE(t.isContiguous());
+      ++j;
+    }
+    EXPECT_EQ(5, j);
+    ++i;
+  }
+  EXPECT_EQ(3, i);
+
+  // Reference value iteration
+  i = 0;
+  for (auto begin = normal_tensor.reference_begin(),
+           end = normal_tensor.reference_end();
+       begin != end; ++begin) {
+    *begin = static_cast< double >(i);
+    EXPECT_FLOAT_EQ(static_cast< double >(i), normal_tensor.data()[i]);
+    ++i;
+  }
+  EXPECT_EQ(60, i);
+
+  // Create a tensor that is not of normal stride
+  Tensor< DoubleStorage > stride_tensor({5, 4}, {-1, 5});
+
+  // Testing subtensor iterators
+  i = 0;
+  for (Tensor< DoubleStorage> t : stride_tensor) {
+    EXPECT_EQ(1, t.dimension());
+    EXPECT_EQ(4, t.size(0));
+    EXPECT_EQ(5, t.stride(0));
+    EXPECT_EQ(stride_tensor.storage(), t.storage());
+    EXPECT_EQ(stride_tensor.offset() - i, t.offset());
+    EXPECT_FALSE(t.isContiguous());
+    ++i;
+  }
+  EXPECT_EQ(5, i);
+
+  // Test reference iterators
+  i = 0;
+  for (auto begin = stride_tensor.reference_begin(),
+           end = stride_tensor.reference_end();
+       begin != end; ++begin) {
+    *begin = static_cast< double >(i);
+    EXPECT_FLOAT_EQ(static_cast< double >(i),
+                    *(stride_tensor.data() - i / 4 + (i % 4) * 5));
+    ++i;
+  }
+  EXPECT_EQ(20, i);
+}
+
 }  // namespace
 }  // namespace thunder

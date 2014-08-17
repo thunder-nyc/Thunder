@@ -70,13 +70,13 @@ typename Tensor< S >::iterator& Tensor< S >::iterator::operator++() {
 
 template< typename S >
 typename Tensor< S >::iterator Tensor< S >::iterator::operator++(int) {
-  return iterator(*tensor_, position_++);
+  iterator it = iterator(*tensor_, position_++);
+  return it;
 }
 
 template< typename S >
-Tensor< S >& Tensor< S >::iterator::operator*() const {
-  current_ = (*tensor_)[position_];
-  return current_;
+Tensor< S > Tensor< S >::iterator::operator*() const {
+  return (*tensor_)[position_];
 }
 
 template< typename S >
@@ -127,6 +127,9 @@ Tensor< S >::reference_iterator::reference_iterator(reference_iterator &&it)
     : tensor_(it.tensor_), position_(std::move(it.position_)) {}
 
 template< typename S >
+Tensor< S >::reference_iterator::~reference_iterator() {}
+
+template< typename S >
 typename Tensor< S >::reference_iterator&
 Tensor< S >::reference_iterator::operator=(reference_iterator it) {
   tensor_ = it.tensor_;
@@ -166,7 +169,7 @@ template< typename S >
 typename Tensor< S >::reference_iterator&
 Tensor< S >::reference_iterator::operator++() {
   ++position_[position_.size() - 1];
-  dim_type i = position_.size();
+  dim_type i = position_.size() - 1;
   while (i > 0 && position_[i] >= tensor_->size(i)) {
     position_[i] = 0;
     ++position_[--i];
@@ -179,7 +182,7 @@ typename Tensor< S >::reference_iterator
 Tensor< S >::reference_iterator::operator++(int) {
   reference_iterator it(*this);
   ++position_[position_.size() - 1];
-  dim_type i = position_.size();
+  dim_type i = position_.size() - 1;
   while (i > 0 && position_[i] >= tensor_->size(i)) {
     position_[i] = 0;
     ++position_[--i];
@@ -207,10 +210,10 @@ typename Tensor< S >::reference_iterator Tensor< S >::reference_begin() const {
 template< typename S >
 typename Tensor< S >::reference_iterator Tensor< S >::reference_end() const {
   size_storage pos(size_.size());
-  for (dim_type i = 0; i < size_.size() - 1; ++i) {
-    pos[i] = size_[i] - 1;
+  for (dim_type i = 1; i < size_.size(); ++i) {
+    pos[i] = 0;
   }
-  pos[size_.size() - 1] = size_[size_.size() - 1];
+  pos[0] = size_[0];
   return reference_iterator(*this, pos);
 }
 

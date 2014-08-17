@@ -846,7 +846,7 @@ class Tensor< S >::iterator {
   iterator& operator++();
   iterator operator++(int);
 
-  Tensor& operator*() const;
+  Tensor operator*() const;
   Tensor* operator->() const;
 
  protected:
