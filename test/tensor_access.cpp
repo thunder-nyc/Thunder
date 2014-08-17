@@ -128,8 +128,10 @@ TEST(TensorTest, accessTest) {
   normal_tensor(1, 3, 2) = 7;
   EXPECT_EQ(7, normal_tensor(1, 3, 2));
   EXPECT_EQ(normal_tensor.data(), &normal_tensor());
-  EXPECT_EQ(normal_tensor.data() + 34, &normal_tensor(1, 3, 2));
-  EXPECT_EQ(normal_tensor.data() + 34, &normal_tensor({1, 3, 2}));
+  EXPECT_EQ(normal_tensor.data() + 34, &normal_tensor.get(1, 3, 2));
+  EXPECT_EQ(normal_tensor.data() + 34,
+            &normal_tensor.get(
+                Tensor< DoubleStorage >::size_storage({1, 3, 2})));
 
   // Test on sub-tensor selection operator
   Tensor< DoubleStorage > select_tensor = normal_tensor[1];
@@ -151,6 +153,34 @@ TEST(TensorTest, accessTest) {
   }
   EXPECT_EQ(normal_tensor.storage(), assign_tensor.storage());
 
+  // Test on binary subtensor operator
+  Tensor< DoubleStorage > normal_binary_subtensor = normal_tensor[{1, 2}];
+  EXPECT_EQ(3, normal_binary_subtensor.dimension());
+  EXPECT_EQ(2, normal_binary_subtensor.size(0));
+  EXPECT_EQ(5, normal_binary_subtensor.size(1));
+  EXPECT_EQ(4, normal_binary_subtensor.size(2));
+  EXPECT_EQ(20, normal_binary_subtensor.stride(0));
+  EXPECT_EQ(4, normal_binary_subtensor.stride(1));
+  EXPECT_EQ(1, normal_binary_subtensor.stride(2));
+  EXPECT_EQ(normal_tensor.storage(), normal_binary_subtensor.storage());
+  EXPECT_EQ(normal_tensor.offset() + 20, normal_binary_subtensor.offset());
+  EXPECT_TRUE(normal_binary_subtensor.isContiguous());
+
+  // Test on multiple subtensor operator
+  Tensor< DoubleStorage > normal_multiple_subtensor
+      = normal_tensor[{{1, 2}, {2, 2}}];
+  EXPECT_EQ(3, normal_multiple_subtensor.dimension());
+  EXPECT_EQ(2, normal_multiple_subtensor.size(0));
+  EXPECT_EQ(1, normal_multiple_subtensor.size(1));
+  EXPECT_EQ(4, normal_multiple_subtensor.size(2));
+  EXPECT_EQ(20, normal_multiple_subtensor.stride(0));
+  EXPECT_EQ(4, normal_multiple_subtensor.stride(1));
+  EXPECT_EQ(1, normal_multiple_subtensor.stride(2));
+  EXPECT_EQ(normal_tensor.storage(), normal_multiple_subtensor.storage());
+  EXPECT_EQ(normal_tensor.offset() + 20 + 8,
+            normal_multiple_subtensor.offset());
+  EXPECT_FALSE(normal_multiple_subtensor.isContiguous());
+
   // Create a tensor that is not of normal stride
   Tensor< DoubleStorage > stride_tensor({5, 4}, {-1, 5});
 
@@ -158,12 +188,12 @@ TEST(TensorTest, accessTest) {
   for (int i = 0; i < 5; ++i) {
     for (int j = 0; j < 4; ++j) {
       stride_tensor(i, j) = i * 6 + j * 13 + 3;
-      EXPECT_EQ(i * 6 + j * 13 + 3, stride_tensor(i, j));
-      EXPECT_EQ(stride_tensor.data() - i + 5 * j, &stride_tensor(i, j));
+      EXPECT_EQ(i * 6 + j * 13 + 3, stride_tensor.get(i, j));
+      EXPECT_EQ(stride_tensor.data() - i + 5 * j, &stride_tensor.get(i, j));
     }
   }
 
-  // Test on subtensor operator
+  // Test on unitary subtensor operator
   for (int i = 0; i < 5; ++i) {
     Tensor< DoubleStorage> subtensor = stride_tensor[i];
     EXPECT_EQ(1, subtensor.dimension());
@@ -173,6 +203,28 @@ TEST(TensorTest, accessTest) {
     EXPECT_EQ(stride_tensor.data() - i, subtensor.data());
     EXPECT_FALSE(subtensor.isContiguous());
   }
+
+  // Test on binary subtensor operator
+  Tensor< DoubleStorage > binary_subtensor = stride_tensor[{1, 3}];
+  EXPECT_EQ(2, binary_subtensor.dimension());
+  EXPECT_EQ(3, binary_subtensor.size(0));
+  EXPECT_EQ(4, binary_subtensor.size(1));
+  EXPECT_EQ(-1, binary_subtensor.stride(0));
+  EXPECT_EQ(5, binary_subtensor.stride(1));
+  EXPECT_EQ(stride_tensor.storage(), binary_subtensor.storage());
+  EXPECT_EQ(stride_tensor.offset() - 1, binary_subtensor.offset());
+  EXPECT_FALSE(binary_subtensor.isContiguous());
+
+  // Test on multiple subtensor operator
+  Tensor< DoubleStorage > multiple_subtensor = stride_tensor[{{1, 3}, {2, 2}}];
+  EXPECT_EQ(2, multiple_subtensor.dimension());
+  EXPECT_EQ(3, multiple_subtensor.size(0));
+  EXPECT_EQ(1, multiple_subtensor.size(1));
+  EXPECT_EQ(-1, multiple_subtensor.stride(0));
+  EXPECT_EQ(5, multiple_subtensor.stride(1));
+  EXPECT_EQ(stride_tensor.storage(), multiple_subtensor.storage());
+  EXPECT_EQ(stride_tensor.offset() - 1 + 10, multiple_subtensor.offset());
+  EXPECT_FALSE(multiple_subtensor.isContiguous());
 }
 
 TEST(TensorTest, iteratorTest) {

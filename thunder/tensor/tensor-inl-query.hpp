@@ -122,6 +122,61 @@ typename Tensor< S >::pointer Tensor< S >::data() const {
 }
 
 template < typename S >
+typename Tensor< S >::reference Tensor< S >::get() const {
+  return (*this)();
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(size_type pos) const {
+  if (pos >= size_[0]) {
+    throw out_of_range("Position exceeds size limit");
+  }
+  return (*this)(pos);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    size_type pos0, size_type pos1) const {
+  if (size_.size() < 2 || pos0 >= size_[0] || pos1 >= size_[1]) {
+    throw out_of_range("Position exceeds size limit");
+  }
+  return (*this)(pos0, pos1);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    size_type pos0, size_type pos1, size_type pos2) const {
+  if (size_.size() < 3 || pos0 >= size_[0] || pos1 >= size_[1]
+      || pos2 >= size_[2]) {
+    throw out_of_range("Position exceeds size limit");
+  }
+  return (*this)(pos0, pos1, pos2);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    size_type pos0, size_type pos1, size_type pos2, size_type pos3) const {
+  if (size_.size() < 4 || pos0 >= size_[0] || pos1 >= size_[1]
+      || pos2 >= size_[2] || pos3 >= size_[3]) {
+    throw out_of_range("Position exceeds size limit");
+  }
+  return (*this)(pos0, pos1, pos2, pos3);
+}
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    const size_storage &pos) const {
+  if (size_.size() < pos.size()) {
+    throw out_of_range("Position exceeds size limit");
+  }
+  for (dim_type i = 0; i < pos.size(); ++i) {
+    if (pos[i] >= size_[i]) {
+      throw out_of_range("Position exceeds size limit");
+    }
+  }
+  return (*this)(pos);
+}
+
+template < typename S >
 bool Tensor< S >::isContiguous() const {
   if (stride_[stride_.size() - 1] != 1) {
     return false;
@@ -179,6 +234,42 @@ typename Tensor< S >::size_type Tensor< S >::offset(const Tensor &x) {
 template < typename S >
 typename Tensor< S >::pointer Tensor< S >::data(const Tensor &x) {
   return x.data();
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(const Tensor &x) {
+  return x.get();
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    const Tensor &x, size_type pos) {
+  return x.get(pos);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    const Tensor &x, size_type pos0, size_type pos1) {
+  return x.get(pos0, pos1);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    const Tensor &x, size_type pos0, size_type pos1, size_type pos2) {
+  return x.get(pos0, pos1, pos2);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    const Tensor &x, size_type pos0, size_type pos1, size_type pos2,
+    size_type pos3) {
+  return x.get(pos0, pos1, pos2, pos3);
+}
+
+template < typename S >
+typename Tensor< S >::reference Tensor< S >::get(
+    const Tensor &x, const size_storage &pos) {
+  return x.get(pos);
 }
 
 template < typename S >

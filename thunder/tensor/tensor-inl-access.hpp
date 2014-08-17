@@ -24,6 +24,7 @@
 #include "thunder/tensor/tensor-inl.hpp"
 
 #include <memory>
+#include <utility>
 
 #include "thunder/exception.hpp"
 
@@ -90,6 +91,27 @@ Tensor< S > Tensor< S >::operator[](size_type pos) const {
     st[i] = stride_[i + 1];
   }
   return Tensor(sz, st, storage_, os);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::operator[](
+    const ::std::pair< size_type, size_type > &range) const {
+  size_type os = offset_ + range.first * stride_[0];
+  size_storage sz(size_);
+  sz[0] = range.second - range.first + 1;
+  return Tensor(sz, stride_, storage_, os);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::operator[](
+    const Storage< ::std::pair< size_type, size_type > > &range) const {
+  size_type os = offset_;
+  size_storage sz(size_);
+  for (dim_type i = 0; i < range.size(); ++i) {
+    os = os + range[i].first * stride_[i];
+    sz[i] = range[i].second - range[i].first + 1;
+  }
+  return Tensor(sz, stride_, storage_, os);
 }
 
 }  // namespace tensor
