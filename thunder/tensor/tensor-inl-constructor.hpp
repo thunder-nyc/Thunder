@@ -73,9 +73,8 @@ Tensor< S >::Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3)
 
 template < typename S >
 Tensor< S >::Tensor(storage_pointer s, size_type os)
-    : size_(1, s->size() - os), stride_(1, 1) {
+    : size_(1, s->size() - os), stride_(1, 1), offset_(os) {
   ::std::swap(storage_, s);
-  ::std::swap(offset_, os);
   if (storage_ == nullptr) {
     throw invalid_argument("Storage is nullptr.");
   }
@@ -86,10 +85,9 @@ Tensor< S >::Tensor(storage_pointer s, size_type os)
 
 template < typename S >
 Tensor< S >::Tensor(size_storage sz, storage_pointer s, size_type os)
-    : stride_(sz.size()) {
+    : stride_(sz.size()), offset_(os) {
   ::std::swap(size_, sz);
   ::std::swap(storage_, s);
-  ::std::swap(offset_, os);
   if (storage_ == nullptr) {
     throw invalid_argument("Storage is nullptr.");
   }
@@ -144,11 +142,10 @@ Tensor< S >::Tensor(size_storage sz, stride_storage st) {
 
 template< typename S >
 Tensor< S >::Tensor(size_storage sz, stride_storage st, storage_pointer s,
-                    size_type os) {
+                    size_type os) : offset_(os) {
   ::std::swap(size_, sz);
   ::std::swap(stride_, st);
   ::std::swap(storage_, s);
-  ::std::swap(offset_, os);
   if (storage_ == nullptr) {
     throw invalid_argument("Storage is nullptr.");
   }

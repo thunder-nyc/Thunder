@@ -119,21 +119,25 @@ class Tensor {
   // Index operators
   virtual Tensor operator[](size_type pos) const;
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
   // Iterators and their functions. Subtensor and value iterators.
   class iterator;
-  class reference_iterator;
   virtual iterator begin() const;
   virtual iterator end() const;
-  virtual reference_iterator value_begin() const;
-  virtual reference_iterator value_end() const;
 
   // Static iterator functions are delegated
   static iterator begin(const Tensor &x);
   static iterator end(const Tensor &x);
+
+  // Reference iterators
+  class reference_iterator;
+  virtual reference_iterator reference_begin() const;
+  virtual reference_iterator reference_end() const;
+
+  // Static reference iterator functions are delegated
   static reference_iterator reference_begin(const Tensor &x);
   static reference_iterator reference_end(const Tensor &x);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Arithmetic operators with value are delegated
   virtual Tensor operator+(const_reference value) const;
@@ -824,13 +828,12 @@ class Tensor {
   size_type offset_;
 };
 
-/* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 template < typename S >
 class Tensor< S >::iterator {
  public:
-  typedef std::random_access_iterator_tag iterator_category;
+  typedef ::std::input_iterator_tag iterator_category;
 
-  iterator(const Tensor &x);
+  explicit iterator(const Tensor &x, size_type pos = 0);
   iterator(const iterator& it);
   iterator(iterator&& it);
   ~iterator();
@@ -839,38 +842,26 @@ class Tensor< S >::iterator {
 
   bool operator==(const iterator& it) const;
   bool operator!=(const iterator& it) const;
-  bool operator<(const iterator& it) const;
-  bool operator>(const iterator& it) const;
-  bool operator<=(const iterator& it) const;
-  bool operator>=(const iterator& it) const;
 
   iterator& operator++();
   iterator operator++(int);
-  iterator& operator--();
-  iterator operator--(int);
-  iterator& operator+=(size_type sz);
-  iterator operator+(size_type sz) const;
-  friend iterator operator+(size_type sz, const iterator& it);
-  iterator& operator-=(size_type sz);
-  iterator operator-(size_type) const;
-  difference_type operator-(const iterator&) const;
 
   Tensor& operator*() const;
   Tensor* operator->() const;
-  Tensor& operator[](size_type) const;
 
  protected:
-  Tensor current_;
   const Tensor *tensor_;
-  size_type posistion_;
+  size_type position_;
+  Tensor current_;
 };
 
 template < typename S >
 class Tensor< S >::reference_iterator {
  public:
-  typedef std::random_access_iterator_tag iterator_category;
+  typedef std::input_iterator_tag iterator_category;
 
-  reference_iterator(const Tensor &x);
+  explicit reference_iterator(const Tensor &x);
+  reference_iterator(const Tensor &x, size_storage pos);
   reference_iterator(const reference_iterator& it);
   reference_iterator(reference_iterator&& it);
   ~reference_iterator();
@@ -879,32 +870,17 @@ class Tensor< S >::reference_iterator {
 
   bool operator==(const reference_iterator& it) const;
   bool operator!=(const reference_iterator& it) const;
-  bool operator<(const reference_iterator& it) const;
-  bool operator>(const reference_iterator& it) const;
-  bool operator<=(const reference_iterator& it) const;
-  bool operator>=(const reference_iterator& it) const;
 
   reference_iterator& operator++();
   reference_iterator operator++(int);
-  reference_iterator& operator--();
-  reference_iterator operator--(int);
-  reference_iterator& operator+=(size_type sz);
-  reference_iterator operator+(size_type sz) const;
-  friend reference_iterator operator+(size_type sz,
-                                      const reference_iterator& it);
-  reference_iterator& operator-=(size_type sz);
-  reference_iterator operator-(size_type sz) const;
-  difference_type operator-(const reference_iterator& it) const;
 
   reference operator*() const;
   pointer operator->() const;
-  reference operator[](size_type sz) const;
 
  protected:
   const Tensor *tensor_;
   size_storage position_;
 };
-!!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!*/
 
 }  // namespace tensor
 }  // namespace thunder
