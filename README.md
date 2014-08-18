@@ -17,11 +17,11 @@ Please note that the Thunder library is still quite new and immature. Many of it
 
 ### Compilers for C++11
 
-Thunder requires a C++11 compiler. We target our tests to gcc >= 4.8 and clang >= 3.4.
+Thunder requires a C++11 compiler. We target our tests to [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
 
 ## Features
 
-Thunder has many exciting features. The following is a preview list. Some of them are already in the current source code tree.
+Thunder has many exciting features. The following is a preview list. Some of them are already in the current public source code.
 
 ### Device Transparency
 
@@ -90,7 +90,7 @@ We support all [random generators provided by the C++11 standard library](http:/
 * Gamma distribution
 * Weibull distribution
 * Extreme value distribution
-* normal distribution
+* Normal distribution
 * Log normal distribution
 * Chi squared distribution
 * Cauchy distribution
