@@ -48,11 +48,19 @@ using namespace thunder;
 // Create a tensor of size 3x9x7x10
 DoubleTensor tensor(3, 9, 7, 10);
 
+// Create a vector of size 10
+DoubleTensor vector(10);
+
+// Create a vector of size 7 storing result data
+DoubleTensor result = DoubleTensor::zeros(7);
+
 // Each t is of size 9x7x10
 for (DoubleTensor t : tensor) {
     // Each s is of size 7x10
     for (DoubleTensor s : t) {
-    	// Do something with s and t	
+        // Do matrix-vector multiplication with vector sampled
+        // from normal distribution with mean = 0 and std = 1
+    	result += blas::gemv(t, vector.normal(0, 1));
     }
 }
 ```
