@@ -46,6 +46,7 @@ class Tensor {
   typedef typename S::const_pointer const_pointer;
 
   // Typedefs for tensor
+  typedef S storage_type;
   typedef Storage< size_type > size_storage;
   typedef Storage< difference_type > stride_storage;
   typedef ::std::shared_ptr< S > storage_pointer;
@@ -174,11 +175,16 @@ class Tensor {
 
   // Normal modifiers
   virtual Tensor& set(const Tensor &y);
-  virtual Tensor& set(storage_pointer storage, size_type os = 0);
+  virtual Tensor& set(storage_pointer s, size_type os = 0);
   virtual Tensor& set(size_storage sz, storage_pointer s, size_type os = 0);
   virtual Tensor& set(size_storage sz, stride_storage st, storage_pointer s,
                       size_type os = 0);
   virtual Tensor& resize(size_storage sz);
+  virtual Tensor& resize(size_type sz);
+  virtual Tensor& resize(size_type sz0, size_type sz1);
+  virtual Tensor& resize(size_type sz0, size_type sz1, size_type sz2);
+  virtual Tensor& resize(size_type sz0, size_type sz1, size_type sz2,
+                         size_type sz3);
   virtual Tensor& resize(size_storage sz, stride_storage st);
   virtual Tensor& contiguous();
   virtual Tensor& squeeze();
@@ -191,6 +197,11 @@ class Tensor {
   static Tensor& set(Tensor *x, size_storage sz, stride_storage st,
                      storage_pointer s, size_type os = 0);
   static Tensor& resize(Tensor *x, size_storage sz);
+  static Tensor& resize(Tensor *x, size_type sz);
+  static Tensor& resize(Tensor *x, size_type sz0, size_type sz1);
+  static Tensor& resize(Tensor *x, size_type sz0, size_type sz1, size_type sz2);
+  static Tensor& resize(Tensor *x, size_type sz0, size_type sz1, size_type sz2,
+                        size_type sz3);
   static Tensor& resize(Tensor *x, size_storage sz, stride_storage st);
   static Tensor& contiguous(Tensor *x);
   static Tensor& squeeze(Tensor *x);

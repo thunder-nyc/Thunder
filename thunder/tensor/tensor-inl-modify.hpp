@@ -120,7 +120,7 @@ Tensor< S >& Tensor< S >::set(const Tensor &y) {
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::set(storage_pointer storage, size_type os) {
+Tensor< S >& Tensor< S >::set(storage_pointer s, size_type os) {
   difference_type max_offset = os, min_offset = os;
   for (dim_type i = 0; i < size_.size(); ++i) {
     if (stride_[i] < 0) {
@@ -129,10 +129,10 @@ Tensor< S >& Tensor< S >::set(storage_pointer storage, size_type os) {
       max_offset = max_offset + (size_[i]-1)*stride_[i];
     }
   }
-  if (min_offset < 0 || max_offset >= storage_->size()) {
+  if (min_offset < 0 || max_offset >= s->size()) {
     throw out_of_range("Offset, size and stride exceed storage size.");
   }
-  ::std::swap(storage_, storage);
+  ::std::swap(storage_, s);
   ::std::swap(offset_, os);
   return *this;
 }
@@ -188,6 +188,27 @@ Tensor< S >& Tensor< S >::resize(size_storage sz) {
     st[i - 1] = sz[i] * st[i];
   }
   return resize(sz, st);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(size_type sz) {
+  return resize(size_storage({sz}));
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(size_type sz0, size_type sz1) {
+  return resize(size_storage({sz0, sz1}));
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(size_type sz0, size_type sz1, size_type sz2) {
+  return resize(size_storage({sz0, sz1, sz2}));
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(
+    size_type sz0, size_type sz1, size_type sz2, size_type sz3) {
+  return resize(size_storage({sz0, sz1, sz2, sz3}));
 }
 
 template < typename S >
@@ -289,6 +310,28 @@ Tensor< S >& Tensor< S >::set(
 template < typename S >
 Tensor< S >& Tensor< S >::resize(Tensor *x, size_storage sz) {
   return x->resize(sz);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(Tensor *x, size_type sz) {
+  return x->resize(sz);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(Tensor *x, size_type sz0, size_type sz1) {
+  return x->resize(sz0, sz1);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(
+    Tensor *x, size_type sz0, size_type sz1, size_type sz2) {
+  return x->resize(sz0, sz1, sz2);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::resize(
+    Tensor *x, size_type sz0, size_type sz1, size_type sz2, size_type sz3) {
+  return x->resize(sz0, sz1, sz2, sz3);
 }
 
 template < typename S >
