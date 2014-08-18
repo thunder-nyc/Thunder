@@ -60,7 +60,7 @@ for (DoubleTensor t : tensor) {
     for (DoubleTensor s : t) {
         // Do matrix-vector multiplication with vector sampled
         // from normal distribution with mean = 0 and std = 1
-    	result += blas::gemv(t, vector.normal(0, 1));
+    	result += blas::gemv(s, vector.normal(0, 1));
     }
 }
 ```
