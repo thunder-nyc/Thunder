@@ -39,6 +39,33 @@ FloatCudaTensor gpu_tensor;
 gpu_tensor.resizeAs(cpu_tensor).copy(cpu_tensor);
 ```
 
+### Reference Semantics
+
+Tensors in Thunder do not manage memory; rather, they contain [thread-safe C++11 shared pointers](http://en.cppreference.com/w/cpp/memory/shared_ptr) to underlying `Storage` objects. Unless explicitly created by constructors, static tensor creators or a call to `Tensor::clone()` for deep copying, Thunder tensors are light-weight objects that can be copied, moved or returned without heavy side effects.
+
+That being said, we still have static memory deallocation when a `Storage` is not linked by anybody. This provides us with both fast Tensor operations and tight memory control without requiring any explicit memory calls by the user.
+
+```cpp
+using namespace thunder;
+
+// Using tensor constructors create new underlying Storage object.
+DoubleTensor tensor(3, 9, 7, 10);
+
+// Static tensor creators also create new underlying Storage objects.
+DoubleTensor created_tensor = DoubleTensor::ones(tensor.size());
+
+// Copy constructor still points to the same Storage object.
+DoubleTensor copied_tensor = tensor;
+
+// Subtensor operators still points to the same Storage object,
+// but now we have a different subtensor view of size 2x8x7x10
+DoubleTensor sub_tensor = tensor[{{1,2},{1,8}}]
+
+// However, the call to 'clone()' creates new underlying Storage.
+// It is essentially a 'deep copy'.
+DoubleTensor cloned_tensor = tensor.clone();
+```
+
 ### Ranged `for` Loop
 
 We support the new [C++11 ranged `for` loop](http://en.cppreference.com/w/cpp/language/range-for) on tensors. In Thunder, a ranged `for` loop iterates through the first dimension of the tensor.
