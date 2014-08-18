@@ -15,6 +15,10 @@ cp -r thunder /usr/local/include/
 
 Please note that the Thunder library is still quite new and immature. Many of its features are still under implementation. Therefore we do not yet provide a configuration or installation script. We will change this later when the library is ready to be released.
 
+### Compilers for C++11
+
+Thunder requires a C++11 compiler. We target our tests to gcc >= 4.8 and clang >= 3.4.
+
 ## Features
 
 Thunder has many exciting features. The following is a preview list. Some of them are already in the current source code tree.
@@ -106,7 +110,7 @@ tensor.gamma(1.0, 1.0);
 
 ### Serialization
 
-We use the boost serialization library to serialize all data structures in Thunder.
+We use the [boost serialization](http://www.boost.org/doc/libs/release/libs/serialization) library to serialize all data structures in Thunder.
 ```cpp
 using namespace thunder;
 using namespace boost;
