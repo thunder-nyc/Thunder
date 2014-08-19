@@ -32,6 +32,37 @@
 namespace thunder {
 namespace tensor {
 
+template < typename S >
+class SizeIterator {
+ public:
+  SizeIterator(S sz);
+  SizeIterator(const SizeIterator &it);
+  SizeIterator(SizeIterator &&it);
+  ~SizeIterator();
+
+  SizeIterator& operator=(SizeIterator it);
+
+  bool operator==(const SizeIterator &it) const;
+  bool operator!=(const SizeIterator &it) const;
+
+  SizeIterator& operator++();
+  SizeIterator operator++(int);
+
+  S& operator*();
+  S* operator->();
+
+  SizeIterator& begin();
+  SizeIterator& end();
+
+  static SizeIterator begin(S sz);
+  static SizeIterator end(S sz);
+
+  
+ private:
+  S size_;
+  S current_;
+}
+
 }  // namespace tensor
 }  // namespace thunder
 
