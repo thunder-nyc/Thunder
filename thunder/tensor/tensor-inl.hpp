@@ -37,4 +37,7 @@
 // Modifiers
 #include "thunder/tensor/tensor-inl-modify.hpp"
 
+// Transformations
+#include "thunder/tensor/tensor-inl-transform.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP

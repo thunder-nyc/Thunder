@@ -53,41 +53,14 @@ Tensor< S >& Tensor< S >::copy(const T &y) {
   return *this;
 }
 
-template< typename S >
-Tensor< S >& Tensor< S >::copy(const Tensor &y) {
-  if (length() != y.length()) {
-    throw length_error("Data have inconsistent length for copy");
-  }
-  if (isContiguous() && y.isContiguous()) {
-    size_type x_length = length();
-    pointer x_data = data();
-    pointer y_data = y.data();
-    for (size_type i = 0; i < x_length; ++i) {
-      x_data[i] = y_data[i];
-    }
-  } else {
-    reference_iterator y_begin = y.reference_begin();
-    for (reference_iterator x_begin = reference_begin(),
-             x_end = reference_end(); x_begin != x_end; ++x_begin, ++y_begin) {
-      *x_begin = *y_begin;
-    }
-  }
-  return *this;
-}
-
 template < typename S >
 template < typename T >
 Tensor< S >& Tensor< S >::resizeAs(const T &y) {
-  size_storage sz(static_cast< dim_type >(y.dimension()));
+  size_storage sz(y.dimension());
   for (dim_type i = 0; i < sz.size(); ++i) {
-    sz[i] = y.size(static_cast< typename T::dim_type >(i));
+    sz[i] = static_cast< size_type >(y.size(i));
   }
   return this->resize(sz);
-}
-
-template < typename S >
-Tensor< S >& Tensor< S >::resizeAs(const Tensor &y) {
-  return this->resize(y.size());
 }
 
 // Static non-virtual templated modifiers are delegated
@@ -98,18 +71,8 @@ Tensor< S >& Tensor< S >::copy(Tensor *x, const T &y) {
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::copy(Tensor *x, const Tensor &y) {
-  return x->copy(y);
-}
-
-template < typename S >
 template < typename T >
 Tensor< S >& Tensor< S >::resizeAs(Tensor *x, const T &y) {
-  return x->resizeAs(y);
-}
-
-template < typename S >
-Tensor< S >& Tensor< S >::resizeAs(Tensor *x, const Tensor &y) {
   return x->resizeAs(y);
 }
 

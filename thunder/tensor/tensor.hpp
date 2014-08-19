@@ -73,12 +73,10 @@ class Tensor {
   // Non-virtual templated queries
   template < typename T >
   bool isSameSizeAs(const T &y) const;
-  virtual bool isSameSizeAs(const Tensor &y) const;
 
   // Static non-virtual templated queries are delegated
   template < typename T >
   static bool isSameSizeAs(const Tensor &x, const T &y);
-  static bool isSameSizeAs(const Tensor &x, const Tensor &y);
 
   // Property queries
   virtual dim_type dimension() const;
@@ -160,18 +158,14 @@ class Tensor {
   // Non-virtual templated modifiers
   template < typename T >
   Tensor& copy(const T &y);
-  virtual Tensor& copy(const Tensor &y);
   template < typename T >
   Tensor& resizeAs(const T &y);
-  virtual Tensor& resizeAs(const Tensor &y);
 
   // Static non-virtual templated modifiers are delegated
   template < typename T >
   static Tensor& copy(Tensor *x, const T &y);
-  static Tensor& copy(Tensor *x, const Tensor &y);
   template < typename T >
   static Tensor& resizeAs(Tensor *x, const T &y);
-  static Tensor& resizeAs(Tensor *x, const Tensor &y);
 
   // Normal modifiers
   virtual Tensor& set(const Tensor &y);
@@ -206,8 +200,6 @@ class Tensor {
   static Tensor& contiguous(Tensor *x);
   static Tensor& squeeze(Tensor *x);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
   // Templated subtensor extractors
   template < typename T >
   Tensor viewAs(const T &y, size_type os = 0) const;
@@ -215,9 +207,9 @@ class Tensor {
   Tensor viewAs(const T &y, const stride_storage &st,
                 size_type os = 0) const;
   template < typename T >
-  Tensor extract(const T &y);
+  Tensor extract(const T &y) const;
   template < typename T >
-  Tensor shuffle(const T &y);
+  Tensor shuffle(const T &y) const;
 
 
   // Static templated subtensor extractors are delegated
@@ -281,6 +273,7 @@ class Tensor {
                         size_type s2, size_type s3);
   static Tensor reshape(const Tensor &x, const size_storage size);
 
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
   // Type conversions
   template < typename T >
   T type();

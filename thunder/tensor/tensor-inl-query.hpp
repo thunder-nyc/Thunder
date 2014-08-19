@@ -43,26 +43,8 @@ bool Tensor< S >::isSameSizeAs(const T &y) const {
 }
 
 template < typename S >
-bool Tensor< S >::isSameSizeAs(const Tensor &y) const {
-  if (size_.size() != y.size_.size()) {
-    return false;
-  }
-  for (dim_type i = 0; i < size_.size(); ++i) {
-    if (size_[i] != y.size_[i]) {
-      return false;
-    }
-  }
-  return true;
-}
-
-template < typename S >
 template < typename T >
 bool Tensor< S >::isSameSizeAs(const Tensor &x, const T &y) {
-  return x.isSameSizeAs(y);
-}
-
-template < typename S >
-bool Tensor< S >::isSameSizeAs(const Tensor &x, const Tensor &y) {
   return x.isSameSizeAs(y);
 }
 
