@@ -48,8 +48,8 @@ class SizeIterator {
   SizeIterator& operator++();
   SizeIterator operator++(int);
 
-  S& operator*();
-  S* operator->();
+  S& operator*() const;
+  S* operator->() const;
 
   SizeIterator& begin();
   SizeIterator& end();
@@ -60,7 +60,7 @@ class SizeIterator {
   
  private:
   S size_;
-  S current_;
+  mutable S current_;
 }
 
 }  // namespace tensor
