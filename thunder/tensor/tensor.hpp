@@ -223,6 +223,8 @@ class Tensor {
   template < typename T >
   static Tensor shuffle(const Tensor &x, const T &y);
 
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
   // Extract subtensors or transformations -- no need for non-const overload
   virtual Tensor narrow(dim_type dim, size_type pos, size_type size) const;
   virtual Tensor select(dim_type dim, size_type pos) const;
@@ -273,7 +275,6 @@ class Tensor {
                         size_type s2, size_type s3);
   static Tensor reshape(const Tensor &x, const size_storage size);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
   // Type conversions
   template < typename T >
   T type();
