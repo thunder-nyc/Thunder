@@ -132,8 +132,7 @@ class Tensor {
 
   // Index operators
   virtual Tensor operator[](size_type pos) const;
-  virtual Tensor operator[](
-      const ::std::pair< size_type, size_type > &range) const;
+  virtual Tensor operator[](const size_storage& pos) const;
   virtual Tensor operator[](
       const Storage< ::std::pair< size_type, size_type > > &range) const;
 

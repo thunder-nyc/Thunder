@@ -84,22 +84,40 @@ typename Tensor< S >::reference Tensor< S >::operator()(
 template < typename S >
 Tensor< S > Tensor< S >::operator[](size_type pos) const {
   size_type os = offset_ + pos * stride_[0];
-  size_storage sz(size_.size()-1);
-  stride_storage st(stride_.size()-1);
-  for (dim_type i = 0; i < sz.size(); ++i) {
-    sz[i] = size_[i + 1];
-    st[i] = stride_[i + 1];
+  if (size_.size() > 1) {
+    size_storage sz(size_.size()-1);
+    stride_storage st(stride_.size()-1);
+    for (dim_type i = 0; i < sz.size(); ++i) {
+      sz[i] = size_[i + 1];
+      st[i] = stride_[i + 1];
+    }
+    return Tensor(sz, st, storage_, os);
+  } else {
+    size_storage sz(1,1);
+    stride_storage st(1,1);
+    return Tensor(sz, st, storage_, os);
   }
-  return Tensor(sz, st, storage_, os);
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::operator[](
-    const ::std::pair< size_type, size_type > &range) const {
-  size_type os = offset_ + range.first * stride_[0];
-  size_storage sz(size_);
-  sz[0] = range.second - range.first + 1;
-  return Tensor(sz, stride_, storage_, os);
+Tensor< S > Tensor< S >::operator[](const size_storage &pos) const {
+  size_type os = offset_;
+  for (dim_type i = 0; i < pos.size(); ++i) {
+    os += pos_[i] * stride_[i];
+  }
+  if (size_.size() > pos.size()) {
+    size_storage sz(size_.size() - pos.size());
+    stride_storage st(stride_.size() - pos.size());
+    for (dim_type i = 0; i < sz.size(); ++i) {
+      sz[i] = size_[pos.size() + i];
+      st[i] = stride_[pos.size() + i];
+    }
+    return Tensor(sz, st, storage_, os);
+  } else {
+    size_storage sz(1, 1);
+    stride_storage st(1, 1);
+    return Tensor(sz, st, storage_, os);
+  }
 }
 
 template < typename S >
