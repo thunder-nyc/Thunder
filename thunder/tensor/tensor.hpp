@@ -866,13 +866,13 @@ class Tensor< S >::iterator {
   iterator& operator++();
   iterator operator++(int);
 
-  Tensor& operator*() const;
-  Tensor* operator->() const;
+  const Tensor& operator*() const;
+  const Tensor* operator->() const;
 
  protected:
   const Tensor *tensor_;
   size_type position_;
-  mutable Tensor current_;
+  Tensor current_;
 };
 
 template < typename S >

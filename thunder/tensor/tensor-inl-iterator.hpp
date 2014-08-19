@@ -75,14 +75,14 @@ typename Tensor< S >::iterator Tensor< S >::iterator::operator++(int) {
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::iterator::operator*() const {
-  current_ = (*tensor_)[position_];
+const Tensor< S >& Tensor< S >::iterator::operator*() const {
+  const_cast< Tensor< S > >(current_) = (*tensor_)[position_];
   return current_;
 }
 
 template < typename S >
-Tensor< S >* Tensor< S >::iterator::operator->() const {
-  current_ = (*tensor_)[position_];
+const Tensor< S >* Tensor< S >::iterator::operator->() const {
+  const_cast< Tensor< S > >(current_) = (*tensor_)[position_];
   return &current_;
 }
 
