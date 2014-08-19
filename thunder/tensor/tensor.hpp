@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_TENSOR_HPP
-#define THUNDER_TENSOR_TENSOR_HPP
+#ifndef THUNDER_TENSOR_TENSOR_HPP_
+#define THUNDER_TENSOR_TENSOR_HPP_
 
 #include <functional>
 #include <initializer_list>
@@ -907,4 +907,4 @@ class Tensor< S >::reference_iterator {
 
 #include "thunder/tensor/tensor-inl.hpp"
 
-#endif  // THUNDER_TENSOR_TENSOR_HPP
+#endif  // THUNDER_TENSOR_TENSOR_HPP_
