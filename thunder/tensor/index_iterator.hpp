@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_SIZE_ITERATOR_HPP_
-#define THUNDER_TENSOR_SIZE_ITERATOR_HPP_
+#ifndef THUNDER_TENSOR_INDEX_ITERATOR_HPP_
+#define THUNDER_TENSOR_INDEX_ITERATOR_HPP_
 
 #include "thunder/storage.hpp"
 
@@ -26,7 +26,7 @@ namespace thunder {
 namespace tensor {
 
 template < typename S >
-class SizeIterator {
+class IndexIterator {
  public:
   // Iterator tag
   typedef std::input_iterator_tag iterator_category;
@@ -42,28 +42,28 @@ class SizeIterator {
   typedef typename S::pointer pointer;
   typedef typename S::const_pointer const_pointer;
 
-  explicit SizeIterator(S sz, value_type pos = 0);
-  SizeIterator(S sz, S current);
-  SizeIterator(const SizeIterator &it);
-  SizeIterator(SizeIterator &&it);
-  ~SizeIterator();
+  explicit IndexIterator(S sz, value_type pos = 0);
+  IndexIterator(S sz, S current);
+  IndexIterator(const IndexIterator &it);
+  IndexIterator(IndexIterator &&it);
+  ~IndexIterator();
 
-  SizeIterator& operator=(SizeIterator it);
+  IndexIterator& operator=(IndexIterator it);
 
-  bool operator==(const SizeIterator &it) const;
-  bool operator!=(const SizeIterator &it) const;
+  bool operator==(const IndexIterator &it) const;
+  bool operator!=(const IndexIterator &it) const;
 
-  SizeIterator& operator++();
-  SizeIterator operator++(int);
+  IndexIterator& operator++();
+  IndexIterator operator++(int);
 
   const S& operator*() const;
   const S* operator->() const;
 
-  SizeIterator& begin();
-  SizeIterator& end();
+  IndexIterator& begin();
+  IndexIterator& end();
 
-  static SizeIterator begin(S sz);
-  static SizeIterator end(S sz);
+  static IndexIterator begin(S sz);
+  static IndexIterator end(S sz);
 
   
  private:
@@ -77,4 +77,4 @@ class SizeIterator {
 
 #include "thunder/tensor/size_iterrator-inl.hpp"
 
-#endif  // THUNDER_TENSOR_SIZE_ITERATOR_HPP_
+#endif  // THUNDER_TENSOR_INDEX_ITERATOR_HPP_

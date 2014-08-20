@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_SIZE_ITERATOR_INL_HPP_
-#define THUNDER_TENSOR_SIZE_ITERATOR_INL_HPP_
+#ifndef THUNDER_TENSOR_INDEX_ITERATOR_INL_HPP_
+#define THUNDER_TENSOR_INDEX_ITERATOR_INL_HPP_
 
 #include "thunder/tensor/size_iterator.hpp"
 
@@ -30,7 +30,7 @@ namespace thunder {
 namespace tensor {
 
 template < typename S >
-SizeIterator< S >::SizeIterator(S sz, value_type pos)
+IndexIterator< S >::IndexIterator(S sz, value_type pos)
     : stride_(sz.size()), current_(sz.size()) {
   ::std::swap(size_, sz);
   stride_[stride_.size() - 1] = 1;
@@ -44,7 +44,7 @@ SizeIterator< S >::SizeIterator(S sz, value_type pos)
 }
 
 template < typename S >
-SizeIterator< S >::SizeIterator(S sz, S current) : stride_(sz.size()) {
+IndexIterator< S >::IndexIterator(S sz, S current) : stride_(sz.size()) {
   ::std::swap(size_, sz);
   ::std::swap(current_, current);
   stride_[stride_.size() - 1] = 1;
@@ -54,26 +54,26 @@ SizeIterator< S >::SizeIterator(S sz, S current) : stride_(sz.size()) {
 }
 
 template < typename S >
-SizeIterator< S >::SizeIterator(const SizeIterator &it)
+IndexIterator< S >::IndexIterator(const IndexIterator &it)
     : size_(it.size_), stride_(it.stride_), current_(it.current_) {}
 
 template < typename S >
-SizeIterator< S >::SizeIterator(SizeIterator &&it)
+IndexIterator< S >::IndexIterator(IndexIterator &&it)
     : size_(::std::move(it.size_)), stride_(::std::move(it.stride_)),
       current_(::std::move(it.current_)) {}
 
 template < typename S >
-SizeIterator< S >::~SizeIterator() {}
+IndexIterator< S >::~IndexIterator() {}
 
 template < typename S >
-SizeIterator< S >::operator=(SizeIterator it) {
+IndexIterator< S >::operator=(IndexIterator it) {
   ::std::swap(size_, it.size_);
   ::std::swap(stride_, it.stride_);
   ::std::swap(current_, it.current_);
 }
 
 template < typename S >
-bool SizeIterator< S >::operator==(const SizeIterator &it) const {
+bool IndexIterator< S >::operator==(const IndexIterator &it) const {
   if (size_.size() != it.size_.size()) {
     return false;
   }
@@ -86,7 +86,7 @@ bool SizeIterator< S >::operator==(const SizeIterator &it) const {
 }
 
 template < typename S >
-bool SizeIterator< S >::operator!=(const SizeIterator &it) const {
+bool IndexIterator< S >::operator!=(const IndexIterator &it) const {
   if (size_.size() != it.size_.size()) {
     return true;
   }
@@ -99,7 +99,7 @@ bool SizeIterator< S >::operator!=(const SizeIterator &it) const {
 }
 
 template < typename S >
-SizeIterator< S >& SizeIterator< S >::operator++() {
+IndexIterator< S >& IndexIterator< S >::operator++() {
   ++current_[current_.size() - 1];
   dim_type i = current_.size() - 1;
   while (i > 0 && current_[i] >= size_[i]) {
@@ -110,8 +110,8 @@ SizeIterator< S >& SizeIterator< S >::operator++() {
 }
 
 template < typename S >
-SizeIterator< S > SizeIterator< S >::operator++(int) {
-  SizeIterator it(*this);
+IndexIterator< S > IndexIterator< S >::operator++(int) {
+  IndexIterator it(*this);
   ++current_[current_.size() - 1];
   dim_type i = current_.size() - 1;
   while (i > 0 && current_[i] >= size_[i]) {
@@ -122,40 +122,40 @@ SizeIterator< S > SizeIterator< S >::operator++(int) {
 }
 
 template < typename S >
-const S& SizeIterator< S >::operator*() const {
+const S& IndexIterator< S >::operator*() const {
   return current_;
 }
 
 template < typename S >
-const S* SizeIterator< S >::operator->() const {
+const S* IndexIterator< S >::operator->() const {
   return &current_;
 }
 
 template < typename S >
-SizeIterator< S >& SizeIterator< S >::begin() {
+IndexIterator< S >& IndexIterator< S >::begin() {
   for (size_type i = 0; i < current_.size(); ++i) {
     current_[i] = 0;
   }
 }
 
 template < typename S >
-SizeIterator< S >& SizeIterator< S >::end() {
+IndexIterator< S >& IndexIterator< S >::end() {
   for (size_type i = 0; i < current_.size(); ++i) {
     current_[i] = size_[i] - 1;
   }
 }
 
 template < typename S >
-SizeIterator< S > SizeIterator< S >::begin(S sz) {
-  return SizeIterator(sz).begin();
+IndexIterator< S > IndexIterator< S >::begin(S sz) {
+  return IndexIterator(sz).begin();
 }
 
 template < typename S >
-SizeIterator< S > SizeIterator< S >::end(S sz) {
-  return SizeIterator(sz).end();
+IndexIterator< S > IndexIterator< S >::end(S sz) {
+  return IndexIterator(sz).end();
 }
 
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_SIZE_ITERATOR_INL_HPP_
+#endif  // THUNDER_TENSOR_INDEX_ITERATOR_INL_HPP_
