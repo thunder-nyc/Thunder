@@ -82,9 +82,9 @@ DoubleTensor vector(10);
 DoubleTensor result = DoubleTensor::zeros(7);
 
 // Each t is of size 9x7x10
-for (DoubleTensor t : tensor) {
+for (const DoubleTensor &t : tensor) {
     // Each s is of size 7x10
-    for (DoubleTensor s : t) {
+    for (const DoubleTensor &s : t) {
         // Do matrix-vector multiplication with vector sampled
         // from normal distribution with mean = 0 and std = 1
     	result += blas::gemv(s, vector.normal(0, 1));
