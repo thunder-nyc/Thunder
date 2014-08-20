@@ -159,7 +159,7 @@ TEST(TensorTest, accessTest) {
   EXPECT_EQ(4, normal_binary_subtensor.size(0));
   EXPECT_EQ(1, normal_binary_subtensor.stride(0));
   EXPECT_EQ(normal_tensor.storage(), normal_binary_subtensor.storage());
-  EXPECT_EQ(normal_tensor.offset() + 28, normal_binary_subtensor.offset());
+  EXPECT_EQ(normal_tensor.offset() + 20 + 8, normal_binary_subtensor.offset());
   EXPECT_TRUE(normal_binary_subtensor.isContiguous());
 
   // Test on multiple subtensor operator
