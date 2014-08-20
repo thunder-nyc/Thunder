@@ -175,7 +175,7 @@ typename Tensor< S >::reference_iterator&
 Tensor< S >::reference_iterator::operator++() {
   ++position_[position_.size() - 1];
   dim_type i = position_.size() - 1;
-  while (i > 0 && position_[i] >= tensor_->size(i)) {
+  while (i > 0 && position_[i] >= tensor_->size_[i]) {
     position_[i] = 0;
     ++position_[--i];
   }
@@ -188,7 +188,7 @@ Tensor< S >::reference_iterator::operator++(int) {
   reference_iterator it(*this);
   ++position_[position_.size() - 1];
   dim_type i = position_.size() - 1;
-  while (i > 0 && position_[i] >= tensor_->size(i)) {
+  while (i > 0 && position_[i] >= tensor_->size_[i]) {
     position_[i] = 0;
     ++position_[--i];
   }

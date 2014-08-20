@@ -20,12 +20,17 @@
 #ifndef THUNDER_TENSOR_HPP
 #define THUNDER_TENSOR_HPP
 
+#include "thunder/storage.hpp"
+
 #include "thunder/tensor/tensor.hpp"
 
 namespace thunder {
 
 template < typename S = DoubleStorage >
 using Tensor = tensor::Tensor< S >;
+
+typedef Tensor< DoubleStorage > DoubleTensor;
+typedef Tensor< FloatStorage > FloatTensor;
 
 }  // namespace thunder
 

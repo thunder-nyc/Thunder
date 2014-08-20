@@ -36,6 +36,7 @@ template < typename S = DoubleStorage >
 class Tensor {
  public:
   // Typedefs from storage
+  typedef S storage_type;
   typedef typename S::allocator_type allocator_type;
   typedef typename S::value_type value_type;
   typedef typename S::reference reference;
@@ -46,7 +47,6 @@ class Tensor {
   typedef typename S::const_pointer const_pointer;
 
   // Typedefs for tensor
-  typedef S storage_type;
   typedef Storage< size_type > size_storage;
   typedef Storage< difference_type > stride_storage;
   typedef ::std::shared_ptr< S > storage_pointer;

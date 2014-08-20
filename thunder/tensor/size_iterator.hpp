@@ -20,13 +20,6 @@
 #ifndef THUNDER_TENSOR_SIZE_ITERATOR_HPP_
 #define THUNDER_TENSOR_SIZE_ITERATOR_HPP_
 
-#include <functional>
-#include <initializer_list>
-#include <limits>
-#include <memory>
-#include <string>
-#include <utility>
-
 #include "thunder/storage.hpp"
 
 namespace thunder {
@@ -35,7 +28,22 @@ namespace tensor {
 template < typename S >
 class SizeIterator {
  public:
-  SizeIterator(S sz);
+  // Iterator tag
+  typedef std::input_iterator_tag iterator_category;
+
+  // Typedefs from S
+  typedef S storage_type;
+  typedef typename S::allocator_type allocator_type;
+  typedef typename S::value_type value_type;
+  typedef typename S::reference reference;
+  typedef typename S::const_reference const_reference;
+  typedef typename S::difference_type difference_type;
+  typedef typename S::size_type size_type;
+  typedef typename S::pointer pointer;
+  typedef typename S::const_pointer const_pointer;
+
+  explicit SizeIterator(S sz, value_type pos = 0);
+  SizeIterator(S sz, S current);
   SizeIterator(const SizeIterator &it);
   SizeIterator(SizeIterator &&it);
   ~SizeIterator();
@@ -60,10 +68,13 @@ class SizeIterator {
   
  private:
   S size_;
+  S stride_;
   S current_;
 }
 
 }  // namespace tensor
 }  // namespace thunder
+
+#include "thunder/tensor/size_iterrator-inl.hpp"
 
 #endif  // THUNDER_TENSOR_SIZE_ITERATOR_HPP_
