@@ -33,7 +33,7 @@ namespace tensor {
 
 template < typename S >
 Tensor< S >::iterator::iterator(const Tensor &x, size_type pos)
-    : tensor_(&x), position_(pos), current_(x[0]){
+    : tensor_(&x), position_(pos), current_(x[0]) {
   current_.offset_ += position_ * tensor_->stride_[0];
 }
 
@@ -44,7 +44,7 @@ Tensor< S >::iterator::iterator(const iterator &it)
 template < typename S >
 Tensor< S >::iterator::iterator(iterator &&it)
     : tensor_(::std::move(it.tensor_)), position_(::std::move(it.position_)),
-      current_(::std::move(it.current_)){}
+      current_(::std::move(it.current_)) {}
 
 template < typename S >
 Tensor< S >::iterator::~iterator() {}

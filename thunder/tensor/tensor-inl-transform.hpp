@@ -91,7 +91,7 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
     }
     return t;
   } else {
-    // TODO: Implement here. Need to access iterators.
+    // TODO(Xiang): Implement here. Need to access iterators.
   }
 }
 
@@ -113,4 +113,4 @@ static Tensor shuffle(const Tensor &x, const T &y);
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  //THUNDER_TENSOR_TENSOR_INL_TRANSFORM_HPP_
+#endif  // THUNDER_TENSOR_TENSOR_INL_TRANSFORM_HPP_

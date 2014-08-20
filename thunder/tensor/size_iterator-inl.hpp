@@ -17,8 +17,10 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_SIZE_ITERATOR_HPP_
-#define THUNDER_TENSOR_SIZE_ITERATOR_HPP_
+#ifndef THUNDER_TENSOR_SIZE_ITERATOR_INL_HPP_
+#define THUNDER_TENSOR_SIZE_ITERATOR_INL_HPP_
+
+#include "thunder/tensor/size_iterator.hpp"
 
 #include <utility>
 
@@ -156,4 +158,4 @@ SizeIterator< S > SizeIterator< S >::end(S sz) {
 }  // namespace tensor
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_SIZE_ITERATOR_HPP_
+#endif  // THUNDER_TENSOR_SIZE_ITERATOR_INL_HPP_

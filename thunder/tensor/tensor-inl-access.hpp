@@ -93,8 +93,8 @@ Tensor< S > Tensor< S >::operator[](size_type pos) const {
     }
     return Tensor(sz, st, storage_, os);
   } else {
-    size_storage sz(1,1);
-    stride_storage st(1,1);
+    size_storage sz(1, 1);
+    stride_storage st(1, 1);
     return Tensor(sz, st, storage_, os);
   }
 }
