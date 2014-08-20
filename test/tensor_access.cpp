@@ -155,15 +155,11 @@ TEST(TensorTest, accessTest) {
 
   // Test on binary subtensor operator
   Tensor< DoubleStorage > normal_binary_subtensor = normal_tensor[{1, 2}];
-  EXPECT_EQ(3, normal_binary_subtensor.dimension());
-  EXPECT_EQ(2, normal_binary_subtensor.size(0));
-  EXPECT_EQ(5, normal_binary_subtensor.size(1));
-  EXPECT_EQ(4, normal_binary_subtensor.size(2));
-  EXPECT_EQ(20, normal_binary_subtensor.stride(0));
-  EXPECT_EQ(4, normal_binary_subtensor.stride(1));
-  EXPECT_EQ(1, normal_binary_subtensor.stride(2));
+  EXPECT_EQ(1, normal_binary_subtensor.dimension());
+  EXPECT_EQ(4, normal_binary_subtensor.size(0));
+  EXPECT_EQ(1, normal_binary_subtensor.stride(0));
   EXPECT_EQ(normal_tensor.storage(), normal_binary_subtensor.storage());
-  EXPECT_EQ(normal_tensor.offset() + 20, normal_binary_subtensor.offset());
+  EXPECT_EQ(normal_tensor.offset() + 28, normal_binary_subtensor.offset());
   EXPECT_TRUE(normal_binary_subtensor.isContiguous());
 
   // Test on multiple subtensor operator
@@ -206,14 +202,12 @@ TEST(TensorTest, accessTest) {
 
   // Test on binary subtensor operator
   Tensor< DoubleStorage > binary_subtensor = stride_tensor[{1, 3}];
-  EXPECT_EQ(2, binary_subtensor.dimension());
-  EXPECT_EQ(3, binary_subtensor.size(0));
-  EXPECT_EQ(4, binary_subtensor.size(1));
-  EXPECT_EQ(-1, binary_subtensor.stride(0));
-  EXPECT_EQ(5, binary_subtensor.stride(1));
+  EXPECT_EQ(1, binary_subtensor.dimension());
+  EXPECT_EQ(1, binary_subtensor.size(0));
+  EXPECT_EQ(1, binary_subtensor.stride(0));
   EXPECT_EQ(stride_tensor.storage(), binary_subtensor.storage());
-  EXPECT_EQ(stride_tensor.offset() - 1, binary_subtensor.offset());
-  EXPECT_FALSE(binary_subtensor.isContiguous());
+  EXPECT_EQ(stride_tensor.offset() - 1 + 3 * 5, binary_subtensor.offset());
+  EXPECT_TRUE(binary_subtensor.isContiguous());
 
   // Test on multiple subtensor operator
   Tensor< DoubleStorage > multiple_subtensor = stride_tensor[{{1, 3}, {2, 2}}];
@@ -233,7 +227,7 @@ TEST(TensorTest, iteratorTest) {
 
   // Subtensor iteration
   int i = 0;
-  for (Tensor< DoubleStorage > t : normal_tensor) {
+  for (const Tensor< DoubleStorage > &t : normal_tensor) {
     EXPECT_EQ(2, t.dimension());
     EXPECT_EQ(5, t.size(0));
     EXPECT_EQ(4, t.size(1));
@@ -243,13 +237,35 @@ TEST(TensorTest, iteratorTest) {
     EXPECT_EQ(i * 20, t.offset());
     EXPECT_TRUE(t.isContiguous());
     int j = 0;
-    for (Tensor< DoubleStorage > s : t) {
+    for (const Tensor< DoubleStorage > &s : t) {
       EXPECT_EQ(1, s.dimension());
       EXPECT_EQ(4, s.size(0));
       EXPECT_EQ(1, s.stride(0));
       EXPECT_EQ(normal_tensor.storage(), s.storage());
       EXPECT_EQ(i * 20 + j * 4, s.offset());
       EXPECT_TRUE(t.isContiguous());
+      int k = 0;
+      for (const Tensor< DoubleStorage > &r : s) {
+        EXPECT_EQ(1, r.dimension());
+        EXPECT_EQ(1, r.size(0));
+        EXPECT_EQ(1, r.stride(0));
+        EXPECT_EQ(normal_tensor.storage(), r.storage());
+        EXPECT_EQ(i * 20 + j * 4 + k, r.offset());
+        EXPECT_TRUE(r.isContiguous());
+        int l = 0;
+        for (const Tensor< DoubleStorage > &p : r) {
+          EXPECT_EQ(1, p.dimension());
+          EXPECT_EQ(1, p.size(0));
+          EXPECT_EQ(1, p.stride(0));
+          EXPECT_EQ(normal_tensor.storage(), p.storage());
+          EXPECT_EQ(i * 20 + j * 4 + k, p.offset());
+          EXPECT_TRUE(p.isContiguous());
+          ++l;
+        }
+        EXPECT_EQ(1, l);
+        ++k;
+      }
+      EXPECT_EQ(4, k);
       ++j;
     }
     EXPECT_EQ(5, j);
@@ -273,13 +289,35 @@ TEST(TensorTest, iteratorTest) {
 
   // Testing subtensor iterators
   i = 0;
-  for (Tensor< DoubleStorage> t : stride_tensor) {
+  for (const Tensor< DoubleStorage> &t : stride_tensor) {
     EXPECT_EQ(1, t.dimension());
     EXPECT_EQ(4, t.size(0));
     EXPECT_EQ(5, t.stride(0));
     EXPECT_EQ(stride_tensor.storage(), t.storage());
     EXPECT_EQ(stride_tensor.offset() - i, t.offset());
     EXPECT_FALSE(t.isContiguous());
+    int j = 0;
+    for (const Tensor< DoubleStorage > &s : t) {
+      EXPECT_EQ(1, s.dimension());
+      EXPECT_EQ(1, s.size(0));
+      EXPECT_EQ(1, s.stride(0));
+      EXPECT_EQ(stride_tensor.storage(), s.storage());
+      EXPECT_EQ(stride_tensor.offset() - i + 5 * j, s.offset());
+      EXPECT_TRUE(s.isContiguous());
+      int k = 0;
+      for (const Tensor< DoubleStorage > &r : s) {
+        EXPECT_EQ(1, r.dimension());
+        EXPECT_EQ(1, r.size(0));
+        EXPECT_EQ(1, r.stride(0));
+        EXPECT_EQ(stride_tensor.storage(), r.storage());
+        EXPECT_EQ(stride_tensor.offset() - i + 5 * j, r.offset());
+        EXPECT_TRUE(r.isContiguous());
+        ++k;
+      }
+      EXPECT_EQ(1, k);
+      ++j;
+    }
+    EXPECT_EQ(4, j);
     ++i;
   }
   EXPECT_EQ(5, i);

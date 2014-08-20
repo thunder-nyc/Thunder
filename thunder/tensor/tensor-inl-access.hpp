@@ -103,7 +103,7 @@ template < typename S >
 Tensor< S > Tensor< S >::operator[](const size_storage &pos) const {
   size_type os = offset_;
   for (dim_type i = 0; i < pos.size(); ++i) {
-    os += pos_[i] * stride_[i];
+    os += pos[i] * stride_[i];
   }
   if (size_.size() > pos.size()) {
     size_storage sz(size_.size() - pos.size());

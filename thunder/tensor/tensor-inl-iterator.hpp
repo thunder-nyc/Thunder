@@ -33,15 +33,18 @@ namespace tensor {
 
 template < typename S >
 Tensor< S >::iterator::iterator(const Tensor &x, size_type pos)
-    : tensor_(&x), position_(pos) {}
+    : tensor_(&x), position_(pos), current_(x[0]){
+  current_.offset_ += position_ * tensor_->stride_[0];
+}
 
 template < typename S >
 Tensor< S >::iterator::iterator(const iterator &it)
-    : tensor_(it.tensor_), position_(it.position_) {}
+    : tensor_(it.tensor_), position_(it.position_), current_(it.current_) {}
 
 template < typename S >
 Tensor< S >::iterator::iterator(iterator &&it)
-    : tensor_(::std::move(it.tensor_)), position_(::std::move(it.position_)) {}
+    : tensor_(::std::move(it.tensor_)), position_(::std::move(it.position_)),
+      current_(::std::move(it.current_)){}
 
 template < typename S >
 Tensor< S >::iterator::~iterator() {}
@@ -50,6 +53,7 @@ template < typename S >
 typename Tensor< S >::iterator& Tensor< S >::iterator::operator=(iterator it) {
   ::std::swap(tensor_, it.tensor_);
   ::std::swap(position_, it.position_);
+  ::std::swap(current_, it.current_);
 }
 
 template < typename S >
@@ -65,24 +69,24 @@ bool Tensor< S >::iterator::operator!=(const iterator& it) const {
 template < typename S >
 typename Tensor< S >::iterator& Tensor< S >::iterator::operator++() {
   ++position_;
+  current_.offset_ += tensor_->stride_[0];
   return *this;
 }
 
 template < typename S >
 typename Tensor< S >::iterator Tensor< S >::iterator::operator++(int) {
   iterator it = iterator(*tensor_, position_++);
+  current_.offset_ += tensor_->stride_[0];
   return it;
 }
 
 template < typename S >
 const Tensor< S >& Tensor< S >::iterator::operator*() const {
-  const_cast< Tensor< S > >(current_) = (*tensor_)[position_];
   return current_;
 }
 
 template < typename S >
 const Tensor< S >* Tensor< S >::iterator::operator->() const {
-  const_cast< Tensor< S > >(current_) = (*tensor_)[position_];
   return &current_;
 }
 
