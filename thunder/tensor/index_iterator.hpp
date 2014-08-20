@@ -65,16 +65,15 @@ class IndexIterator {
   static IndexIterator begin(S sz);
   static IndexIterator end(S sz);
 
-  
  private:
   S size_;
   S stride_;
   S current_;
-}
+};
 
 }  // namespace tensor
 }  // namespace thunder
 
-#include "thunder/tensor/size_iterrator-inl.hpp"
+#include "thunder/tensor/index_iterator-inl.hpp"
 
 #endif  // THUNDER_TENSOR_INDEX_ITERATOR_HPP_

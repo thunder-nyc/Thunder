@@ -20,7 +20,7 @@
 #ifndef THUNDER_TENSOR_INDEX_ITERATOR_INL_HPP_
 #define THUNDER_TENSOR_INDEX_ITERATOR_INL_HPP_
 
-#include "thunder/tensor/size_iterator.hpp"
+#include "thunder/tensor/index_iterator.hpp"
 
 #include <utility>
 
@@ -34,7 +34,7 @@ IndexIterator< S >::IndexIterator(S sz, value_type pos)
     : stride_(sz.size()), current_(sz.size()) {
   ::std::swap(size_, sz);
   stride_[stride_.size() - 1] = 1;
-  for (size_type i = stride_size() - 1; i > 0; ++i) {
+  for (size_type i = stride_.size() - 1; i > 0; --i) {
     stride_[i - 1] = size_[i] * stride_[i];
   }
   for (size_type i = 0; i < current_.size(); ++i) {
@@ -48,7 +48,7 @@ IndexIterator< S >::IndexIterator(S sz, S current) : stride_(sz.size()) {
   ::std::swap(size_, sz);
   ::std::swap(current_, current);
   stride_[stride_.size() - 1] = 1;
-  for (size_type i = stride_size() - 1; i > 0; ++i) {
+  for (size_type i = stride_.size() - 1; i > 0; --i) {
     stride_[i - 1] = size_[i] * stride_[i];
   }
 }
@@ -66,10 +66,11 @@ template < typename S >
 IndexIterator< S >::~IndexIterator() {}
 
 template < typename S >
-IndexIterator< S >::operator=(IndexIterator it) {
+IndexIterator< S >& IndexIterator< S >::operator=(IndexIterator it) {
   ::std::swap(size_, it.size_);
   ::std::swap(stride_, it.stride_);
   ::std::swap(current_, it.current_);
+  return *this;
 }
 
 template < typename S >
@@ -101,7 +102,7 @@ bool IndexIterator< S >::operator!=(const IndexIterator &it) const {
 template < typename S >
 IndexIterator< S >& IndexIterator< S >::operator++() {
   ++current_[current_.size() - 1];
-  dim_type i = current_.size() - 1;
+  size_type i = current_.size() - 1;
   while (i > 0 && current_[i] >= size_[i]) {
     current_[i] = 0;
     ++current_[--i];
@@ -113,7 +114,7 @@ template < typename S >
 IndexIterator< S > IndexIterator< S >::operator++(int) {
   IndexIterator it(*this);
   ++current_[current_.size() - 1];
-  dim_type i = current_.size() - 1;
+  size_type i = current_.size() - 1;
   while (i > 0 && current_[i] >= size_[i]) {
     current_[i] = 0;
     ++current_[--i];
@@ -136,13 +137,13 @@ IndexIterator< S >& IndexIterator< S >::begin() {
   for (size_type i = 0; i < current_.size(); ++i) {
     current_[i] = 0;
   }
+  return *this;
 }
 
 template < typename S >
 IndexIterator< S >& IndexIterator< S >::end() {
-  for (size_type i = 0; i < current_.size(); ++i) {
-    current_[i] = size_[i] - 1;
-  }
+  current_[0] = size_[0];
+  return *this;
 }
 
 template < typename S >
