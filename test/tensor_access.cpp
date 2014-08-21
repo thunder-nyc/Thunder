@@ -132,6 +132,7 @@ TEST(TensorTest, accessTest) {
   EXPECT_EQ(normal_tensor.data() + 34,
             &normal_tensor.get(
                 Tensor< DoubleStorage >::size_storage({1, 3, 2})));
+  EXPECT_TRUE(normal_tensor.partialContiguity(0, 1));
 
   // Test on sub-tensor selection operator
   Tensor< DoubleStorage > select_tensor = normal_tensor[1];
@@ -179,6 +180,11 @@ TEST(TensorTest, accessTest) {
 
   // Create a tensor that is not of normal stride
   Tensor< DoubleStorage > stride_tensor({5, 4}, {-1, 5});
+
+  // Test for partial contiguity
+  EXPECT_TRUE(stride_tensor.partialContiguity(0, 0));
+  EXPECT_FALSE(stride_tensor.partialContiguity(0, 1));
+  EXPECT_FALSE(stride_tensor.partialContiguity(0, 2));
 
   // Test on evaluation operator
   for (int i = 0; i < 5; ++i) {

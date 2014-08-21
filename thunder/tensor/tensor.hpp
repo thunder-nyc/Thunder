@@ -96,6 +96,7 @@ class Tensor {
                         size_type pos3) const;
   virtual reference get(const size_storage &pos) const;
   virtual bool isContiguous() const;
+  virtual bool partialContiguity(dim_type a, dim_type b) const;
 
   // Static property queries are delegated
   static dim_type dimension(const Tensor &x);
@@ -116,6 +117,7 @@ class Tensor {
                        size_type pos2, size_type pos3);
   static reference get(const Tensor &x, const size_storage &pos);
   static bool isContiguous(const Tensor &x);
+  static bool partialContiguity(const Tensor &x, dim_type a, dim_type b);
 
   // Assignment operators
   virtual Tensor& operator=(Tensor y);

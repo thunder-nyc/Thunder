@@ -172,6 +172,27 @@ bool Tensor< S >::isContiguous() const {
 }
 
 template < typename S >
+bool Tensor< S >::partialContiguity(dim_type a, dim_type b) const {
+  if (b < size_.size()) {
+    for (dim_type i = a; i < b; ++i) {
+      if (stride_[i] != stride_[i + 1] * size_[i + 1]) {
+        return false;
+      }
+    }
+  } else {
+    if (stride_[stride_.size() - 1] != 1) {
+      return false;
+    }
+    for (dim_type i = a; i < size_.size() - 1; ++i) {
+      if (stride_[i] != stride_[i + 1] * size_[i + 1]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+template < typename S >
 typename Tensor< S >::dim_type Tensor< S >::dimension(const Tensor &x) {
   return x.dimension();
 }
@@ -257,6 +278,11 @@ typename Tensor< S >::reference Tensor< S >::get(
 template < typename S >
 bool Tensor< S >::isContiguous(const Tensor &x) {
   return x.isContiguous();
+}
+
+template < typename S >
+bool Tensor< S >::partialContiguity(const Tensor &x, dim_type a, dim_type b) {
+  return x.partialContiguity(a, b);
 }
 
 }  // namespace tensor
