@@ -1,4 +1,4 @@
-/*
+doc/*
  * \copyright Copyright 2014 Xiang Zhang All Rights Reserved.
  * \license @{
  *
@@ -181,6 +181,7 @@ class Tensor {
   virtual Tensor& resize(size_storage sz, stride_storage st);
   virtual Tensor& contiguous();
   virtual Tensor& squeeze();
+  virtual Tensor& unique();
 
   // Static modifiers are delegated
   static Tensor& set(Tensor *x, const Tensor &y);
@@ -198,6 +199,7 @@ class Tensor {
   static Tensor& resize(Tensor *x, size_storage sz, stride_storage st);
   static Tensor& contiguous(Tensor *x);
   static Tensor& squeeze(Tensor *x);
+  static Tensor& unique(Tensor *x);
 
   // Templated subtensor extractors
   template < typename T >

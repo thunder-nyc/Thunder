@@ -248,6 +248,19 @@ Tensor< S >& Tensor< S >::squeeze() {
 }
 
 template < typename S >
+Tensor< S >& Tensor< S >::unique() {
+  if (!storage_.unique()) {
+    Tensor< S > t(size_, stride_);
+    t.copy(*this);
+    ::std::swap(size_, t.size_);
+    ::std::swap(stride_, t.stride_);
+    ::std::swap(storage_, t.storage_);
+    ::std::swap(offset_, t.offset_);
+  }
+  return *this;
+}
+
+template < typename S >
 Tensor< S >& Tensor< S >::set(Tensor *x, const Tensor &y) {
   return x->set(y);
 }
@@ -311,6 +324,11 @@ Tensor< S >& Tensor< S >::contiguous(Tensor *x) {
 template < typename S >
 Tensor< S >& Tensor< S >::squeeze(Tensor *x) {
   return x->squeeze();
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::unique(Tensor *x) {
+  return x->unique();
 }
 
 }  // namespace tensor

@@ -26,6 +26,7 @@
 #include <utility>
 
 #include "thunder/exception.hpp"
+#include "thunder/tensor/index_iteratpr.hpp"
 
 namespace thunder {
 namespace tensor {
