@@ -1,4 +1,4 @@
-doc/*
+/*
  * \copyright Copyright 2014 Xiang Zhang All Rights Reserved.
  * \license @{
  *

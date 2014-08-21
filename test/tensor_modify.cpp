@@ -100,6 +100,16 @@ void modifyTest() {
   EXPECT_EQ(3, tensor3.size(0));
   EXPECT_EQ(2, tensor3.size(1));
   EXPECT_TRUE(tensor3.isContiguous());
+
+  // Make a subtensor of tensor 3
+  T tensor6 = tensor3[1];
+  // 3 because storage() call create a temporary
+  EXPECT_EQ(3, tensor3.storage().use_count());
+  EXPECT_EQ(3, tensor6.storage().use_count());
+  T::unique(&tensor6);
+  // 2 because storage() call create a temporary
+  EXPECT_EQ(2, tensor3.storage().use_count());
+  EXPECT_EQ(2, tensor6.storage().use_count());
 }
 
 TEST(TensorTest, modifyTest) {
