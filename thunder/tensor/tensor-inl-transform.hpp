@@ -70,7 +70,8 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
   for (dim_type i = y_dimension; i < size_.size(); ++i) {
     sz[i - y_dimension + 1] = size_[i];
   }
-  if (isContiguous() && y.isContiguous()) {
+  // Get the size of returning tensor
+  if (y.isContiguous()) {
     y::size_type y_length = y.length();
     y::pointer y_data = y.data();
     for (y::size_type i = 0; i < y_length; ++y) {
@@ -78,11 +79,21 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
         ++sz[0];
       }
     }
-    Tensor< S > t(sz);
+  } else {
+    for (T::reference_iterator begin = y.reference_begin(),
+             end = y.reference_end(); begin != end; ++begin) {
+      if (static_cast< bool >(*begin) == true) {
+        ++sz[0];
+      }
+    }
+  }
+  Tensor< S > t(sz);
+  // Really do the copy
+  if (isContiguous() && y.isContiguous()) {
     difference_type st = stride_[y_dimension - 1];
     pointer t_data = t.data();
     pointer dt = data();
-    size_type current;
+    size_type current = 0;
     for (y::size_type i = 0; i < y_length; ++y) {
       if (static_cast< bool >(y_data[i]) == true) {
         for (size_type j = 0; j < st; ++j) {
@@ -90,26 +101,84 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
         }
       }
     }
-    return t;
   } else {
-    // TODO(Xiang): Implement here. Need to access iterators.
+    for (SizeIterator< T::size_storage > begin =
+             SizeIterator< T::size_storage >::begin(y.size()),
+         end = SizeIterator< T::size_storage >::end(y.size());
+         begin != end; ++begin) {
+      size_type pos = 0;
+      if (static_cast< bool >(y[begin]()) == true) {
+        t[pos].copy((*this)[begin]);
+      }
+    }
   }
+  return t;
 }
 
+template < typename S >
 template < typename T >
-Tensor shuffle(const T &y) const;
+Tensor< S > Tensor< S >::shuffle(const T &y) const {
+  if (static_cast< size_type >(y.size(y.dimension() - 1)) != size_.size()) {
+    throw out_of_range("Shuffle index tensor mismatches");
+  }
+  if (y.size() == 1) {
+    Tensor< S > t;
+    size_storage ind(size_.size());
+    for (T::dim_type i = 0; i < y.size(); ++i) {
+      ind[i] = static_cast< size_type >(y(i));
+      if (ind[i] >= size_[i]) {
+        throw out_of_range("Shuffle index exceeds limit");
+      }
+    }
+    t() = (*this)(ind);
+    return t;
+  }
+  size_storage sz(y.dimension() - 1);
+  for (dim_type i = 0; i < sz.size(); ++i) {
+    sz[i] = y.size(i);
+  }
+  Tensor< S > t(sz);
+  size_storage ind(size_.size());
+  for (SizeIterator< size_storage > begin =
+           SizeIterator< size_storage >::begin(sz),
+           end = SizeIterator< size_storage >::end(sz); begin != end; ++begin) {
+    for (dim_type i = 0; i < ind.size(); ++i) {
+      ind[i] = static_cast< size_type >(y[*begin](i));
+      if (ind[i] >= sz[i]) {
+        throw out_of_range("Shuffle index exceedds limit");
+      }
+      t[*begin] = (*this)(ind);
+    }
+  }
+  return t;
+}
 
 
 // Static templated subtensor extractors are delegated
+template < typename S >
 template < typename T >
-static Tensor viewAs(const Tensor &x, const T &y, size_type os = 0);
+Tensor< S > Tensor< S >::viewAs(const Tensor &x, const T &y, size_type os = 0) {
+  return x.viewAs(y, os);
+}
+
+template < typename S >
 template < typename T >
-static Tensor viewAs(const Tensor &x, const T &y,
-                     const stride_storage &st, size_type os = 0);
+Tensor< S > Tensor< S >::viewAs(const Tensor &x, const T &y,
+                                const stride_storage &st, size_type os = 0) {
+  return x.viewAs(y, os);
+}
+
+template < typename S >
 template < typename T >
-static Tensor extract(const Tensor &x, const T &y);
+Tensor< S > Tensor< S >::extract(const Tensor &x, const T &y) {
+  return x.extract(y);
+}
+
+template < typename S >
 template < typename T >
-static Tensor shuffle(const Tensor &x, const T &y);
+Tensor< S > Tensor< S >::shuffle(const Tensor &x, const T &y) {
+  return x.shuffle(y);
+}
 
 }  // namespace tensor
 }  // namespace thunder
