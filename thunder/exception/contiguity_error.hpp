@@ -27,16 +27,13 @@
 namespace thunder {
 namespace exception {
 
-using ::std::exception;
-using ::std::logic_error;
-using ::std::runtime_error;
-using ::std::invalid_argument;
-using ::std::domain_error;
-using ::std::length_error;
-using ::std::out_of_range;
-using ::std::range_error;
-using ::std::overflow_error;
-using ::std::underflow_error;
+class contiguity_error : public ::std::runtime_error {
+ public:
+  explicit contiguity_error(const std::string& what_arg)
+      : ::std::runtime_error(what_arg) {}
+  explicit contiguity_error(const char* what_arg)
+      : ::std::runtime_error(what_arg) {}
+};
 
 }  // namespace exception
 }  // namespace thunder

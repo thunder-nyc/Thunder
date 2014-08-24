@@ -235,19 +235,19 @@ class Tensor {
                       size_type os = 0) const;
   virtual Tensor view(size_type sz0, size_type sz1, size_type sz2,
                       size_type sz3, size_type os = 0) const;
-  virtual Tensor view(const size_storage &sz, size_type os = 0) const;
-  virtual Tensor view(const size_storage &sz, const stride_storage &st,
+  virtual Tensor view(size_storage sz, size_type os = 0) const;
+  virtual Tensor view(size_storage sz, stride_storage st,
                       size_type os = 0) const;
   virtual Tensor transpose(dim_type dim0 = 0, dim_type dim1 = 1) const;
   virtual Tensor unfold(dim_type dim, size_type size, size_type step) const;
   virtual Tensor clone() const;
-  virtual Tensor cat(const Tensor &y, dim_type dim) const;
+  virtual Tensor cat(const Tensor &y, dim_type dim = 0) const;
   virtual Tensor reshape(size_type sz0) const;
   virtual Tensor reshape(size_type sz0, size_type sz1) const;
   virtual Tensor reshape(size_type sz0, size_type sz1, size_type sz2) const;
   virtual Tensor reshape(size_type sz0, size_type sz1, size_type sz2,
                          size_type sz3) const;
-  virtual Tensor reshape(const size_storage size) const;
+  virtual Tensor reshape(size_storage sz) const;
   
   // Static subtensor or transformation extractors are delegated
   static Tensor narrow(const Tensor &x, dim_type dim, size_type pos,
@@ -256,25 +256,25 @@ class Tensor {
   static Tensor view(const Tensor &x, size_type sz0);
   static Tensor view(const Tensor &x, size_type sz0, size_type sz1);
   static Tensor view(const Tensor &x, size_type sz0, size_type sz1,
-                     size_type size2);
+                     size_type sz2);
   static Tensor view(const Tensor &x, size_type sz0, size_type sz1,
                      size_type sz2, size_type sz3);
-  static Tensor view(const Tensor &x, const size_storage &sz);
-  static Tensor view(const Tensor &x, const size_storage &sz,
-                     const stride_storage &st, size_type os = 0);
-  static Tensor transpose(const Tensor &t, dim_type dim0 = 0,
+  static Tensor view(const Tensor &x, size_storage sz, size_type os = 0);
+  static Tensor view(const Tensor &x, size_storage sz, stride_storage st,
+                     size_type os = 0);
+  static Tensor transpose(const Tensor &x, dim_type dim0 = 0,
                           dim_type dim1 = 1);
-  static Tensor unfold(const Tensor &t, dim_type dim, size_type size,
+  static Tensor unfold(const Tensor &x, dim_type dim, size_type size,
                        size_type step);
   static Tensor clone(const Tensor& t);
-  static Tensor cat(const Tensor &x, const Tensor &y, dim_type dim);
-  static Tensor reshape(const Tensor &x, size_type s0);
-  static Tensor reshape(const Tensor &x, size_type s0, size_type s1);
-  static Tensor reshape(const Tensor &x, size_type s0, size_type s1,
-                        size_type s2);
-  static Tensor reshape(const Tensor &x, size_type s0, size_type s1,
-                        size_type s2, size_type s3);
-  static Tensor reshape(const Tensor &x, const size_storage size);
+  static Tensor cat(const Tensor &x, const Tensor &y, dim_type dim = 0);
+  static Tensor reshape(const Tensor &x, size_type sz0);
+  static Tensor reshape(const Tensor &x, size_type sz0, size_type sz1);
+  static Tensor reshape(const Tensor &x, size_type sz0, size_type sz1,
+                        size_type sz2);
+  static Tensor reshape(const Tensor &x, size_type sz0, size_type sz1,
+                        size_type sz2, size_type sz3);
+  static Tensor reshape(const Tensor &x, size_storage sz);
   
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
