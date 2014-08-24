@@ -44,14 +44,25 @@ Tensor< S > Tensor< S >::viewAs(const T &y, size_type os) const {
 }
 
 template < typename S >
+Tensor< S > Tensor< S >::viewAs(const Tensor &y, size_type os) const {
+  return this->view(y.size(), y.stride(), os);
+}
+
+template < typename S >
 template < typename T >
-Tensor< S > Tensor< S >::viewAs(const T &y, const stride_storage &st,
+Tensor< S > Tensor< S >::viewAs(const T &y, stride_storage st,
                                 size_type os) const {
   size_storage sz(y.dimension());
   for (dim_type i = 0; i < sz.size(); ++i) {
     sz[i] = static_cast< size_type >(y.size(i));
   }
   return this->view(sz, st, os);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::viewAs(const Tensor &y, stride_storage st,
+                                size_type os) const {
+  return this->view(y.size(), st, os);
 }
 
 template < typename S >
@@ -170,10 +181,22 @@ Tensor< S > Tensor< S >::viewAs(const Tensor &x, const T &y, size_type os) {
 }
 
 template < typename S >
-template < typename T >
-Tensor< S > Tensor< S >::viewAs(const Tensor &x, const T &y,
-                                const stride_storage &st, size_type os) {
+Tensor< S > Tensor< S >::viewAs(
+    const Tensor &x, const Tensor &y, size_type os) {
   return x.viewAs(y, os);
+}
+
+template < typename S >
+template < typename T >
+Tensor< S > Tensor< S >::viewAs(const Tensor &x, const T &y, stride_storage st,
+                                size_type os) {
+  return x.viewAs(y, st, os);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::viewAs(const Tensor &x, const Tensor &y,
+                                stride_storage st, size_type os) {
+  return x.viewAs(y, st, os);
 }
 
 template < typename S >

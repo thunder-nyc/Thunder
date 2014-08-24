@@ -203,12 +203,13 @@ class Tensor {
   static Tensor& squeeze(Tensor *x);
   static Tensor& unique(Tensor *x);
 
-  // Templated subtensor extractors
+  // Templated subtensor extractors. Specialization for type collision.
   template < typename T >
   Tensor viewAs(const T &y, size_type os = 0) const;
+  Tensor viewAs(const Tensor &y, size_type os = 0) const;
   template < typename T >
-  Tensor viewAs(const T &y, const stride_storage &st,
-                size_type os = 0) const;
+  Tensor viewAs(const T &y, stride_storage st, size_type os = 0) const;
+  Tensor viewAs(const Tensor &y, stride_storage st, size_type os = 0) const;
   template < typename T >
   Tensor extract(const T &y) const;
   template < typename T >
@@ -218,9 +219,12 @@ class Tensor {
   // Static templated subtensor extractors are delegated
   template < typename T >
   static Tensor viewAs(const Tensor &x, const T &y, size_type os = 0);
+  static Tensor viewAs(const Tensor &x, const Tensor &y, size_type os = 0);
   template < typename T >
-  static Tensor viewAs(const Tensor &x, const T &y,
-                       const stride_storage &st, size_type os = 0);
+  static Tensor viewAs(const Tensor &x, const T &y, stride_storage st,
+                       size_type os = 0);
+  static Tensor viewAs(const Tensor &x, const Tensor &y, stride_storage st,
+                       size_type os = 0);
   template < typename T >
   static Tensor extract(const Tensor &x, const T &y);
   template < typename T >

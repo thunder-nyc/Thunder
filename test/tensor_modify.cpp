@@ -31,7 +31,7 @@ void modifyTest() {
   T tensor1(5, 3, 4);
   T tensor2(7, 9, 2);
   T tensor3(2, 1, 2);
-  Tensor< FloatStorage > tensor4(7, 9, 2);
+  FloatTensor tensor4(7, 9, 2);
   T tensor5({7, 9, 2}, {-1, 10, 17});
 
   T::set(&tensor1, tensor2);
@@ -113,8 +113,35 @@ void modifyTest() {
 }
 
 TEST(TensorTest, modifyTest) {
-  modifyTest< Tensor< DoubleStorage > >();
-  modifyTest< Tensor< FloatStorage > >();
+  modifyTest< DoubleTensor >();
+  modifyTest< FloatTensor >();
+  modifyTest< Tensor< Storage< int > > > ();
+}
+
+template < typename T >
+void transformTest() {
+  T t1(10, 20, 7);
+  FloatTensor t2(3, 5);
+
+  T t1_viewas = T::viewAs(t1, t2, 10);
+  EXPECT_EQ(t2.dimension(), t1_viewas.dimension());
+  EXPECT_EQ(t2.size(0), t1_viewas.size(0));
+  EXPECT_EQ(t2.size(1), t1_viewas.size(1));
+  EXPECT_EQ(10, t1_viewas.offset());
+  EXPECT_EQ(t1.storage(), t1_viewas.storage());
+
+  T t1_viewas_stride = T::viewAs(
+      t1, t2, typename T::stride_storage({1, 7}), 10);
+  EXPECT_EQ(t2.dimension(), t1_viewas_stride.dimension());
+  EXPECT_EQ(t2.size(0), t1_viewas_stride.size(0));
+  EXPECT_EQ(t2.size(1), t1_viewas_stride.size(1));
+  EXPECT_EQ(10, t1_viewas_stride.offset());
+  EXPECT_EQ(t1.storage(), t1_viewas_stride.storage());
+}
+
+TEST(TensorTest, transformTest) {
+  transformTest< DoubleTensor >();
+  transformTest< FloatTensor >();
 }
 
 }  // namespace
