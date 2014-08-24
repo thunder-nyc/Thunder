@@ -26,7 +26,7 @@
 #include <utility>
 
 #include "thunder/exception.hpp"
-#include "thunder/tensor/index_iteratpr.hpp"
+#include "thunder/tensor/index_iterator.hpp"
 
 namespace thunder {
 namespace tensor {
@@ -45,7 +45,7 @@ Tensor< S > Tensor< S >::viewAs(const T &y, size_type os) const {
 
 template < typename S >
 template < typename T >
-Tensor< S > viewAs(const T &y, const stride_storage &st, size_type os) const {
+Tensor< S > Tensor< S >::viewAs(const T &y, const stride_storage &st, size_type os) const {
   size_storage sz(y.dimension());
   for (dim_type i = 0; i < sz.size(); ++i) {
     sz[i] = static_cast< size_type >(y.size(i));
@@ -59,8 +59,8 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
   if (dimension() < y.dimension()) {
     throw out_of_range("Dimension exceeds limit");
   }
-  dim_type y_dimension = static_cast< dim_type > y.dimension();
-  for (i = 0; i < y_dimension; ++i) {
+  dim_type y_dimension = static_cast< dim_type >(y.dimension());
+  for (dim_type i = 0; i < y_dimension; ++i) {
     if (size_[i] != static_cast< size_type >(y.size(i))) {
       throw out_of_range("Size does not match");
     }
@@ -71,15 +71,15 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
   }
   // Get the size of returning tensor
   if (y.isContiguous()) {
-    y::size_type y_length = y.length();
-    y::pointer y_data = y.data();
-    for (y::size_type i = 0; i < y_length; ++y) {
+    typename T::size_type y_length = y.length();
+    typename T::pointer y_data = y.data();
+    for (typename T::size_type i = 0; i < y_length; ++y) {
       if (static_cast< bool >(y_data[i]) == true) {
         ++sz[0];
       }
     }
   } else {
-    for (T::reference_iterator begin = y.reference_begin(),
+    for (typename T::reference_iterator begin = y.reference_begin(),
              end = y.reference_end(); begin != end; ++begin) {
       if (static_cast< bool >(*begin) == true) {
         ++sz[0];
@@ -89,11 +89,13 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
   Tensor< S > t(sz);
   // Really do the copy
   if (isContiguous() && y.isContiguous()) {
+    typename T::size_type y_length = y.length();
+    typename T::pointer y_data = y.data();
     difference_type st = stride_[y_dimension - 1];
     pointer t_data = t.data();
     pointer dt = data();
     size_type current = 0;
-    for (y::size_type i = 0; i < y_length; ++y) {
+    for (typename T::size_type i = 0; i < y_length; ++y) {
       if (static_cast< bool >(y_data[i]) == true) {
         for (size_type j = 0; j < st; ++j) {
           t_data[current++] = dt[i * st + j];
@@ -101,9 +103,9 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
       }
     }
   } else {
-    for (SizeIterator< T::size_storage > begin =
-             SizeIterator< T::size_storage >::begin(y.size()),
-         end = SizeIterator< T::size_storage >::end(y.size());
+    for (IndexIterator< typename T::size_storage > begin =
+             IndexIterator< typename T::size_storage >::begin(y.size()),
+         end = IndexIterator< typename T::size_storage >::end(y.size());
          begin != end; ++begin) {
       size_type pos = 0;
       if (static_cast< bool >(y[begin]()) == true) {
@@ -123,7 +125,7 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
   if (y.size() == 1) {
     Tensor< S > t;
     size_storage ind(size_.size());
-    for (T::dim_type i = 0; i < y.size(); ++i) {
+    for (typename T::dim_type i = 0; i < y.size(); ++i) {
       ind[i] = static_cast< size_type >(y(i));
       if (ind[i] >= size_[i]) {
         throw out_of_range("Shuffle index exceeds limit");
@@ -138,9 +140,9 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
   }
   Tensor< S > t(sz);
   size_storage ind(size_.size());
-  for (SizeIterator< size_storage > begin =
-           SizeIterator< size_storage >::begin(sz),
-           end = SizeIterator< size_storage >::end(sz); begin != end; ++begin) {
+  for (IndexIterator< size_storage > begin =
+           IndexIterator< size_storage >::begin(sz),
+           end = IndexIterator< size_storage >::end(sz); begin != end; ++begin) {
     for (dim_type i = 0; i < ind.size(); ++i) {
       ind[i] = static_cast< size_type >(y[*begin](i));
       if (ind[i] >= sz[i]) {
@@ -196,10 +198,10 @@ Tensor< S > Tensor< S >::narrow(dim_type dim, size_type pos,
 template < typename S >
 Tensor< S > Tensor< S >::select(dim_type dim, size_type pos) const {
   if (dim >= size_.size()) {
-    return out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit");
   }
   if (pos >= size_[dim]) {
-    return out_of_range("Position exceed limit");
+    throw out_of_range("Position exceed limit");
   }
   if (size_.size() == 1) {
     size_storage sz(1, 1);
@@ -210,7 +212,7 @@ Tensor< S > Tensor< S >::select(dim_type dim, size_type pos) const {
     stride_storage st(stride_.size() - 1);
     for (dim_type i = 0; i < dim; ++i) {
       sz[i] = size_[i];
-      st[i] = st_[i];
+      st[i] = stride_[i];
     }
     for (dim_type i = dim + 1; i < size_.size(); ++i) {
       sz[i - 1] = size_[i];
@@ -293,26 +295,26 @@ Tensor< S > Tensor< S >::clone() const {
 template < typename S >
 Tensor< S > Tensor< S >::cat(const Tensor &y, dim_type dim) const {
   if (size_.size() != y.size_.size()) {
-    return out_of_range("Dimension mismatches");
+    throw out_of_range("Dimension mismatches");
   }
   if (dim >= size_.size()) {
-    return out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit");
   }
   for (dim_type i = 0; i < dim; ++i) {
     if (size_[i] != y.size(i)) {
-      return out_of_range("Size mismatches");
+      throw out_of_range("Size mismatches");
     }
   }
   for (dim_type i = dim + 1; i < size_.size(); ++i) {
     if (size_[i] != y.size(i)) {
-      return out_of_range("Size mismatches");
+      throw out_of_range("Size mismatches");
     }
   }
   size_storage sz(size_);
   sz[dim] = size_[dim] + y.size(dim);
   Tensor t(sz);
-  t.narrow(dim, 0, size_[dim]):copy(*this);
-  t.narrow(dim, size_[dim], y.size(dim)):copy(*this);
+  t.narrow(dim, 0, size_[dim]).copy(*this);
+  t.narrow(dim, size_[dim], y.size(dim)).copy(*this);
   return t;
 }
 
@@ -430,8 +432,8 @@ Tensor< S > Tensor< S >::view(const Tensor &x, size_type sz0, size_type sz1,
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::view(const Tensor &x, size_storage sz) {
-  return x.view(sz);
+Tensor< S > Tensor< S >::view(const Tensor &x, size_storage sz, size_type os) {
+  return x.view(sz, os);
 }
 
 template < typename S >

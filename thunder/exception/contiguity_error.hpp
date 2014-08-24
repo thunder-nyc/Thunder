@@ -17,12 +17,10 @@
  * @}
  */
 
-#ifndef THUNDER_EXCEPTION_EXCEPTION_HPP_
-#define THUNDER_EXCEPTION_EXCEPTION_HPP_
+#ifndef THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
+#define THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
 
 #include <exception>
-
-#include "thunder/exception/contiguity_error.hpp"
 
 namespace thunder {
 namespace exception {
@@ -38,4 +36,4 @@ class contiguity_error : public ::std::runtime_error {
 }  // namespace exception
 }  // namespace thunder
 
-#endif  // THUNDER_EXCEPTION_EXCEPTION_HPP_
+#endif  // THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
