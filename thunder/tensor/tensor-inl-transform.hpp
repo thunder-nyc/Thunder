@@ -45,7 +45,8 @@ Tensor< S > Tensor< S >::viewAs(const T &y, size_type os) const {
 
 template < typename S >
 template < typename T >
-Tensor< S > Tensor< S >::viewAs(const T &y, const stride_storage &st, size_type os) const {
+Tensor< S > Tensor< S >::viewAs(const T &y, const stride_storage &st,
+                                size_type os) const {
   size_storage sz(y.dimension());
   for (dim_type i = 0; i < sz.size(); ++i) {
     sz[i] = static_cast< size_type >(y.size(i));
@@ -147,7 +148,8 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
   size_storage ind(size_.size());
   for (IndexIterator< size_storage > begin =
            IndexIterator< size_storage >::begin(sz),
-           end = IndexIterator< size_storage >::end(sz); begin != end; ++begin) {
+           end = IndexIterator< size_storage >::end(sz);
+       begin != end; ++begin) {
     for (dim_type i = 0; i < ind.size(); ++i) {
       ind[i] = static_cast< size_type >(y[*begin](i));
       if (ind[i] >= sz[i]) {

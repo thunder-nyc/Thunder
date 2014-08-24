@@ -248,7 +248,7 @@ class Tensor {
   virtual Tensor reshape(size_type sz0, size_type sz1, size_type sz2,
                          size_type sz3) const;
   virtual Tensor reshape(size_storage sz) const;
-  
+
   // Static subtensor or transformation extractors are delegated
   static Tensor narrow(const Tensor &x, dim_type dim, size_type pos,
                        size_type size);
@@ -275,7 +275,7 @@ class Tensor {
   static Tensor reshape(const Tensor &x, size_type sz0, size_type sz1,
                         size_type sz2, size_type sz3);
   static Tensor reshape(const Tensor &x, size_storage sz);
-  
+
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Type conversions
