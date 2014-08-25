@@ -66,9 +66,9 @@ DoubleTensor sub_tensor = tensor[{{1,2},{1,8}}]
 DoubleTensor cloned_tensor = tensor.clone();
 ```
 
-### Ranged `for` Loop
+### Range-based `for` Loop
 
-We support the new [C++11 ranged `for` loop](http://en.cppreference.com/w/cpp/language/range-for) on tensors. In Thunder, a ranged `for` loop iterates through the first dimension of the tensor.
+We support the new [C++11 range-based `for` loop](http://en.cppreference.com/w/cpp/language/range-for) on tensors. In Thunder, a range-based `for` loop iterates through the first dimension of the tensor.
 ```cpp
 using namespace thunder;
 
