@@ -29,7 +29,13 @@ namespace tensor {
 template < typename S >
 template < typename T >
 T Tensor< S >::type() {
-  return T(size_, stride_).copy(*this);
+  typename T::size_storage sz(size_.size());
+  typename T::stride_storage st(stride_.size());
+  for (dim_type i = 0; i < size_.size(); ++i) {
+    sz[i] = static_cast< typename T::size_type >(size_[i]);
+    st[i] = static_cast< typename T::difference_type >(stride_[i]);
+  }
+  return T(sz, st).copy(*this);
 }
 
 template < typename S >
@@ -45,8 +51,8 @@ Tensor< S >& Tensor< S >::type() {
 // Static type conversions are delegated
 template < typename S >
 template < typename T >
-T Tensor< S >::type(const Tensor& t) {
-  return t.type< T >();
+T Tensor< S >::type(const Tensor& x) {
+  return x.type< T >();
 }
 
 template < typename S >
@@ -55,7 +61,7 @@ Tensor< S >& Tensor< S >::type(Tensor &x) {
 }
 
 template < typename S >
-const Tensor& type(const Tensor &x) {
+const Tensor< S >& Tensor< S >::type(const Tensor &x) {
   return x.type< const Tensor >();
 }
 
