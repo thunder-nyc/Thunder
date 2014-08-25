@@ -39,12 +39,14 @@ T Tensor< S >::type() {
 }
 
 template < typename S >
-const Tensor< S >& Tensor< S >::type() const {
+template <>
+const Tensor< S >& Tensor< S >::type< const Tensor >() const {
   return *this;
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::type() {
+template <>
+Tensor< S >& Tensor< S >::type< Tensor >() {
   return *this;
 }
 
@@ -56,13 +58,15 @@ T Tensor< S >::type(const Tensor& x) {
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::type(Tensor &x) {
-  return x.type< Tensor >();
+template <>
+const Tensor< S >& Tensor< S >::type< const Tensor >(const Tensor &x) {
+  return x.type< const Tensor >();
 }
 
 template < typename S >
-const Tensor< S >& Tensor< S >::type(const Tensor &x) {
-  return x.type< const Tensor >();
+template <>
+Tensor< S >& Tensor< S >::type< Tensor >(Tensor &x) {
+  return x.type< Tensor >();
 }
 
 }  // namespace tensor
