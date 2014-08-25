@@ -40,4 +40,7 @@
 // Transformations
 #include "thunder/tensor/tensor-inl-transform.hpp"
 
+// Type conversion
+#include "thunder/tensor/tensor-inl-type.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP

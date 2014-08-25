@@ -279,8 +279,6 @@ class Tensor {
                         size_type sz2, size_type sz3);
   static Tensor reshape(const Tensor &x, size_storage sz);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
   // Type conversions
   template < typename T >
   T type();
@@ -292,6 +290,8 @@ class Tensor {
   static T type(const Tensor& t);
   static Tensor& type(Tensor &x);
   static const Tensor& type(const Tensor &x);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // lambda applications
   virtual const Tensor& apply(
