@@ -203,7 +203,7 @@ class Tensor {
   static Tensor& squeeze(Tensor *x);
   static Tensor& unique(Tensor *x);
 
-  // Templated subtensor extractors. Specialization for type collision.
+  // Templated subtensor extractors. Specialization because of type collision.
   template < typename T >
   Tensor viewAs(const T &y, size_type os = 0) const;
   Tensor viewAs(const Tensor &y, size_type os = 0) const;
@@ -233,12 +233,11 @@ class Tensor {
   // Extract subtensors or transformations -- no need for non-const overload
   virtual Tensor narrow(dim_type dim, size_type pos, size_type size) const;
   virtual Tensor select(dim_type dim, size_type pos) const;
-  virtual Tensor view(size_type sz0, size_type os = 0) const;
-  virtual Tensor view(size_type sz0, size_type sz1, size_type os = 0) const;
+  virtual Tensor view(size_type sz0) const;
+  virtual Tensor view(size_type sz0, size_type sz1) const;
+  virtual Tensor view(size_type sz0, size_type sz1, size_type sz2) const;
   virtual Tensor view(size_type sz0, size_type sz1, size_type sz2,
-                      size_type os = 0) const;
-  virtual Tensor view(size_type sz0, size_type sz1, size_type sz2,
-                      size_type sz3, size_type os = 0) const;
+                      size_type sz3) const;
   virtual Tensor view(size_storage sz, size_type os = 0) const;
   virtual Tensor view(size_storage sz, stride_storage st,
                       size_type os = 0) const;

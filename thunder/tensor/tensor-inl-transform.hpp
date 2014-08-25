@@ -82,10 +82,11 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
     sz[i - y_dimension + 1] = size_[i];
   }
   // Get the size of returning tensor
+  sz[0] = 0;
   typename T::size_type y_length = y.length();
   typename T::pointer y_data = y.data();
   if (y.isContiguous()) {
-    for (typename T::size_type i = 0; i < y_length; ++y) {
+    for (typename T::size_type i = 0; i < y_length; ++i) {
       if (static_cast< bool >(y_data[i]) == true) {
         ++sz[0];
       }
@@ -100,13 +101,13 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
   }
 
   // Create the new tensor and do the copy
-  Tensor< S > t(sz);
+  Tensor t(sz);
   if (isContiguous() && y.isContiguous()) {
     difference_type st = stride_[y_dimension - 1];
     pointer t_data = t.data();
     pointer dt = data();
     size_type current = 0;
-    for (typename T::size_type i = 0; i < y_length; ++y) {
+    for (typename T::size_type i = 0; i < y_length; ++i) {
       if (static_cast< bool >(y_data[i]) == true) {
         for (size_type j = 0; j < st; ++j) {
           t_data[current++] = dt[i * st + j];
@@ -118,15 +119,15 @@ Tensor< S > Tensor< S >::extract(const T &y) const {
     for (dim_type i = 0; i < y_size.size(); ++i) {
       y_size[i] = y.size(i);
     }
+    size_type pos = 0;
     IndexIterator< size_storage > t_begin =
         IndexIterator< size_storage>::begin(y_size);
     for (IndexIterator< typename T::size_storage > begin =
              IndexIterator< typename T::size_storage >::begin(y.size()),
              end = IndexIterator< typename T::size_storage >::end(y.size());
-         begin != end; ++begin) {
-      size_type pos = 0;
-      if (static_cast< bool >(y[begin]()) == true) {
-        t[pos++].copy((*this)[t_begin++]);
+         begin != end; ++begin, ++t_begin) {
+      if (static_cast< bool >(y[*begin]()) == true) {
+        t[pos++].copy((*this)[*t_begin]);
       }
     }
   }
@@ -139,10 +140,10 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
   if (static_cast< dim_type >(y.size(y.dimension() - 1)) != size_.size()) {
     throw out_of_range("Shuffle dimension mismatches");
   }
-  if (y.size() == 1) {
-    Tensor< S > t;
+  if (y.dimension() == 1) {
+    Tensor t;
     size_storage ind(size_.size());
-    for (typename T::dim_type i = 0; i < y.size(); ++i) {
+    for (typename T::dim_type i = 0; i < y.size(0); ++i) {
       ind[i] = static_cast< size_type >(y(i));
       if (ind[i] >= size_[i]) {
         throw out_of_range("Shuffle index exceeds limit");
@@ -155,7 +156,7 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
   for (dim_type i = 0; i < sz.size(); ++i) {
     sz[i] = y.size(i);
   }
-  Tensor< S > t(sz);
+  Tensor t(sz);
   size_storage ind(size_.size());
   for (IndexIterator< size_storage > begin =
            IndexIterator< size_storage >::begin(sz),
@@ -163,11 +164,11 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
        begin != end; ++begin) {
     for (dim_type i = 0; i < ind.size(); ++i) {
       ind[i] = static_cast< size_type >(y[*begin](i));
-      if (ind[i] >= sz[i]) {
-        throw out_of_range("Shuffle index exceedds limit");
+      if (ind[i] >= size_[i]) {
+        throw out_of_range("Shuffle index exceeds limit");
       }
-      t[*begin] = (*this)(ind);
     }
+    t(*begin) = (*this)(ind);
   }
   return t;
 }
@@ -253,26 +254,25 @@ Tensor< S > Tensor< S >::select(dim_type dim, size_type pos) const {
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::view(size_type sz0, size_type os) const {
-  return Tensor(size_storage({sz0}), storage_, os);
+Tensor< S > Tensor< S >::view(size_type sz0) const {
+  return Tensor(size_storage({sz0}), storage_, 0);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::view(size_type sz0, size_type sz1) const {
+  return Tensor(size_storage({sz0, sz1}), storage_, 0);
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::view(
-    size_type sz0, size_type sz1, size_type os) const {
-  return Tensor(size_storage({sz0, sz1}), storage_, os);
+    size_type sz0, size_type sz1, size_type sz2) const {
+  return Tensor(size_storage({sz0, sz1, sz2}), storage_, 0);
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::view(
-    size_type sz0, size_type sz1, size_type sz2, size_type os) const {
-  return Tensor(size_storage({sz0, sz1, sz2}), storage_, os);
-}
-
-template < typename S >
-Tensor< S > Tensor< S >::view(size_type sz0, size_type sz1, size_type sz2,
-                              size_type sz3, size_type os) const {
-  return Tensor(size_storage({sz0, sz1, sz2, sz3}), storage_, os);
+    size_type sz0, size_type sz1, size_type sz2, size_type sz3) const {
+  return Tensor(size_storage({sz0, sz1, sz2, sz3}), storage_, 0);
 }
 
 template < typename S >
@@ -424,9 +424,9 @@ Tensor< S > Tensor< S >::reshape(size_storage sz) const {
   if (t_length != length()) {
     throw out_of_range("Length mismatches");
   }
-  stride_storage st(size_.size());
+  stride_storage st(sz.size());
   st[st.size() - 1] = stride_[stride_.size() - 1];
-  for (dim_type i = st.size() - 1; i > 0; ++i) {
+  for (dim_type i = st.size() - 1; i > 0; --i) {
     st[i - 1] = sz[i] * st[i];
   }
   return Tensor(sz, st, storage_, offset_);
