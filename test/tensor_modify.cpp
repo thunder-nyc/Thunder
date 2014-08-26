@@ -124,7 +124,7 @@ void viewAsTest() {
   int t1_val = 0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   FloatTensor t2(3, 5);
@@ -157,7 +157,7 @@ void extractTest() {
   int t1_val = 0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   FloatTensor t2(10, 20, 7);
@@ -204,7 +204,7 @@ void shuffleTest() {
   int t1_val = 0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   FloatTensor t2(3);
@@ -242,7 +242,7 @@ void viewTest() {
   int t1_val = 0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   T t1_viewed_1 = T::view(t1, 90);
@@ -307,7 +307,7 @@ void reshapeTest() {
   int t1_val = 0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   T t1_reshaped_1 = T::reshape(t1, 1400);
@@ -358,7 +358,7 @@ void transformTest() {
   int t1_val = 0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   T t1_narrowed = T::narrow(t1, 1, 2, 5);

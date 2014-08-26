@@ -23,50 +23,28 @@
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
 
+#include <typeinfo>
+
 namespace thunder {
 namespace tensor {
 
 template < typename S >
 template < typename T >
-T Tensor< S >::type() {
+T Tensor< S >::type() const {
   typename T::size_storage sz(size_.size());
   typename T::stride_storage st(stride_.size());
   for (dim_type i = 0; i < size_.size(); ++i) {
     sz[i] = static_cast< typename T::size_type >(size_[i]);
     st[i] = static_cast< typename T::difference_type >(stride_[i]);
+   
   }
   return T(sz, st).copy(*this);
 }
 
 template < typename S >
-template <>
-const Tensor< S >& Tensor< S >::type< const Tensor >() const {
-  return *this;
-}
-
-template < typename S >
-template <>
-Tensor< S >& Tensor< S >::type< Tensor >() {
-  return *this;
-}
-
-// Static type conversions are delegated
-template < typename S >
 template < typename T >
 T Tensor< S >::type(const Tensor& x) {
   return x.type< T >();
-}
-
-template < typename S >
-template <>
-const Tensor< S >& Tensor< S >::type< const Tensor >(const Tensor &x) {
-  return x.type< const Tensor >();
-}
-
-template < typename S >
-template <>
-Tensor< S >& Tensor< S >::type< Tensor >(Tensor &x) {
-  return x.type< Tensor >();
 }
 
 }  // namespace tensor

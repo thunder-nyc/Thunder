@@ -281,19 +281,11 @@ class Tensor {
 
   // Type conversions
   template < typename T >
-  T type();
-  template <>
-  const Tensor& type< const Tensor >() const;
-  template <>
-  Tensor& type< Tensor >();
+  T type() const;
 
   // Static type conversions are delegated
   template < typename T >
   static T type(const Tensor& x);
-  template <>
-  static const Tensor& type< const Tensor >(const Tensor &x);
-  template <>
-  static Tensor& type< Tensor >(Tensor &x);
 
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 

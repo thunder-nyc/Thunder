@@ -1,5 +1,5 @@
 # List all the test targets here
-targets = storage index_iterator tensor_access tensor_modify
+targets = storage index_iterator tensor_access tensor_modify tensor_type
 
 CXXFLAGS += -std=c++11 -Wall -I..
 LDFLAGS += -lgtest -lgtest_main
