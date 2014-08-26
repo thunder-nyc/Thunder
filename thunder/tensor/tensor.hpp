@@ -287,7 +287,6 @@ class Tensor {
   template < typename T >
   static T type(const Tensor& x);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // lambda applications
   virtual const Tensor& apply(
@@ -317,6 +316,8 @@ class Tensor {
                       const ::std::function< void(value_type&) > &lambda);
   static Tensor apply(const Tensor &x,
                       const ::std::function< void(value_type*) > &lambda);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Reduction operations
   virtual value_type max(Tensor< size_type > *pos = nullptr) const;

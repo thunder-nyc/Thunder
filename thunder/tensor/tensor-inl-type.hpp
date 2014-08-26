@@ -23,8 +23,6 @@
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
 
-#include <typeinfo>
-
 namespace thunder {
 namespace tensor {
 

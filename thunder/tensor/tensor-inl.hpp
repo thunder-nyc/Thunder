@@ -43,4 +43,7 @@
 // Type conversion
 #include "thunder/tensor/tensor-inl-type.hpp"
 
+// Lambda application
+#include "thunder/tensor/tensor-inl-apply.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP
