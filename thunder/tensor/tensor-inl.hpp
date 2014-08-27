@@ -46,4 +46,7 @@
 // Lambda application
 #include "thunder/tensor/tensor-inl-apply.hpp"
 
+// Mathematical reduction
+#include "thunder/tensor/tensor-inl-reduction.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP

@@ -317,8 +317,6 @@ class Tensor {
   static Tensor apply(const Tensor &x,
                       const ::std::function< void(value_type*) > &lambda);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
   // Reduction operations
   virtual value_type max(Tensor< size_type > *pos = nullptr) const;
   virtual value_type min(Tensor< size_type > *pos = nullptr) const;
@@ -356,6 +354,8 @@ class Tensor {
   static value_type mean(const Tensor &x, dim_type d);
   static value_type var(const Tensor &x, dim_type d);
   static value_type std(const Tensor &x, dim_type d);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // All random generators are templated on RF and RI.
   template < typename RF = double >
