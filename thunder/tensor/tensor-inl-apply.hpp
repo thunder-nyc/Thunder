@@ -28,15 +28,60 @@ namespace tensor {
 
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
-    const ::std::function< value_type(value_type) > &lambda) const;
+    const ::std::function< value_type(value_type) > &lambda) const {
+  if (partialContiguity(0, size_.size() - 1)) {
+    pointer data_pointer = data();
+    size_type data_length = length();
+    difference_type step = stride_[stride_.size() - 1];
+    for (size_type i = 0; i < data_length; ++i) {
+      data_pointer[i * step] = lambda(data_pointer[i * step]);
+    }
+  } else {
+    for (reference_iterator begin = reference_begin(), end = reference_end();
+         begin != end; ++begin) {
+      *begin = lambda(*begin);
+    }
+  }
+  return *this;
+}
 
 template< typename S >
 const Tensor< S >& Tensor< S >:: apply(
-    const ::std::function< value_type(const value_type&) > &lambda) const;
+    const ::std::function< value_type(const value_type&) > &lambda) const {
+  if (partialContiguity(0, size_.size() - 1)) {
+    pointer data_pointer = data();
+    size_type data_length = length();
+    difference_type step = stride_[stride_.size() - 1];
+    for (size_type i = 0; i < data_length; ++i) {
+      data_pointer[i * step] = lambda(data_pointer[i * step]);
+    }
+  } else {
+    for (reference_iterator begin = reference_begin(), end = reference_end();
+         begin != end; ++begin) {
+      *begin = lambda(*begin);
+    }
+  }
+  return *this;
+}
 
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
-    const ::std::function< void(value_type&) > &lambda) const;
+    const ::std::function< void(value_type&) > &lambda) const {
+  if (partialContiguity(0, size_.size() - 1)) {
+    pointer data_pointer = data();
+    size_type data_length = length();
+    difference_type step = stride_[stride_.size() - 1];
+    for (size_type i = 0; i < data_length; ++i) {
+      data_pointer[i * step] = lambda(data_pointer[i * step]);
+    }
+  } else {
+    for (reference_iterator begin = reference_begin(), end = reference_end();
+         begin != end; ++begin) {
+      *begin = lambda(*begin);
+    }
+  }
+  return *this;
+}
 
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
