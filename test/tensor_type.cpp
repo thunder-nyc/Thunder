@@ -82,5 +82,155 @@ TEST(TensorTest, typeTest) {
   typeTest< Tensor< Storage< int > > >();
 }
 
+template< typename T >
+void applyTest() {
+  T t1(10, 20, 7);
+  int t1_val = 0;
+  double t1_sum = 0.0;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    t1_sum += static_cast< double >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
+  }
+
+  double sum = 0;
+  T t2 = T::apply(
+      t1, ::std::function< typename T::value_type(typename T::value_type x) >(
+          [&sum](typename T::value_type x) {sum += static_cast< double >(x);
+                                            return x + 1;}));
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t2(i, j, k));
+      }
+    }
+  }
+
+  sum = 0;
+  T t3 = T::apply(t1, ::std::function< typename T::value_type(
+      const typename T::value_type&) > (
+          [&sum](const typename T::value_type &x) {
+            sum += static_cast< double >(x);
+            return x + 1;} ));
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t3(i, j, k));
+      }
+    }
+  }
+
+  sum = 0;
+  T t4 = T::apply(t1, [&sum](typename T::value_type &x) {
+      sum += static_cast< double >(x);
+      x += 1;
+    });
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t4(i, j, k));
+      }
+    }
+  }
+
+  sum = 0;
+  T t5 = T::apply(t1, [&sum](typename T::value_type *x) {
+      sum += static_cast< double >(*x);
+      *x += 1;
+    });
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t5(i, j, k));
+      }
+    }
+  }
+}
+
+TEST(TensorTest, applyTest) {
+  applyTest< DoubleTensor >();
+  applyTest< FloatTensor >();
+  applyTest< Tensor< Storage< int > > >();
+}
+
+template< typename T >
+void noncontiguousApplyTest() {
+  T t1({10, 20, 7}, {290, 14, 2});
+  int t1_val = 0;
+  double t1_sum = 0.0;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    t1_sum += static_cast< double >(t1_val);
+    *begin = static_cast< typename T::value_type >(t1_val++);
+  }
+
+  double sum = 0;
+  T t2 = T::apply(
+      t1, ::std::function< typename T::value_type(typename T::value_type x) >(
+          [&sum](typename T::value_type x) {sum += static_cast< double >(x);
+                                            return x + 1;}));
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t2(i, j, k));
+      }
+    }
+  }
+
+  sum = 0;
+  T t3 = T::apply(t1, ::std::function< typename T::value_type(
+      const typename T::value_type&) > (
+          [&sum](const typename T::value_type &x) {
+            sum += static_cast< double >(x);
+            return x + 1;} ));
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t3(i, j, k));
+      }
+    }
+  }
+
+  sum = 0;
+  T t4 = T::apply(t1, [&sum](typename T::value_type &x) {
+      sum += static_cast< double >(x);
+      x += 1;
+    });
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t4(i, j, k));
+      }
+    }
+  }
+
+  sum = 0;
+  T t5 = T::apply(t1, [&sum](typename T::value_type *x) {
+      sum += static_cast< double >(*x);
+      *x += 1;
+    });
+  EXPECT_FLOAT_EQ(t1_sum, sum);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k) + 1, t5(i, j, k));
+      }
+    }
+  }
+}
+
+TEST(TensorTest, noncontiguousApplyTest) {
+  noncontiguousApplyTest< DoubleTensor >();
+  noncontiguousApplyTest< FloatTensor >();
+  noncontiguousApplyTest< Tensor< Storage< int > > >();
+}
+
 }  // namespace
 }  // namespace thunder
