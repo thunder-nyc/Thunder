@@ -91,6 +91,11 @@ const Tensor< S >* Tensor< S >::iterator::operator->() const {
 }
 
 template < typename S >
+typename Tensor< S >::size_type Tensor< S >::iterator::position() {
+  return position_;
+}
+
+template < typename S >
 typename Tensor< S >::iterator Tensor< S >::begin() const {
   return iterator(*this);
 }
@@ -205,6 +210,12 @@ template < typename S >
 typename Tensor< S >::pointer
 Tensor< S >::reference_iterator::operator->() const {
   return &(*tensor_)(position_);
+}
+
+template < typename S >
+typename Tensor< S >::size_storage
+Tensor< S >::reference_iterator::position() const {
+  return position_;
 }
 
 template < typename S >

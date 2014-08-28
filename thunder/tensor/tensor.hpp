@@ -318,8 +318,8 @@ class Tensor {
                       const ::std::function< void(value_type*) > &lambda);
 
   // Reduction operations
-  virtual value_type max(Tensor< size_type > *pos = nullptr) const;
-  virtual value_type min(Tensor< size_type > *pos = nullptr) const;
+  virtual value_type max(size_storage *pos = nullptr) const;
+  virtual value_type min(size_storage *pos = nullptr) const;
   virtual value_type sum() const;
   virtual value_type prod() const;
   virtual value_type mean() const;
@@ -327,8 +327,8 @@ class Tensor {
   virtual value_type std() const;
 
   // Static reduction operations are deligated
-  static value_type max(const Tensor &x, Tensor< size_type > *pos = nullptr);
-  static value_type min(const Tensor &x, Tensor< size_type > *pos = nullptr);
+  static value_type max(const Tensor &x, size_storage *pos = nullptr);
+  static value_type min(const Tensor &x, size_storage *pos = nullptr);
   static value_type sum(const Tensor &x);
   static value_type prod(const Tensor &x);
   static value_type mean(const Tensor &x);
@@ -336,8 +336,8 @@ class Tensor {
   static value_type std(const Tensor &x);
 
   // Reduction operations along a dimension
-  virtual value_type max(dim_type d, Tensor< size_type > *pos = nullptr) const;
-  virtual value_type min(dim_type d, Tensor< size_type > *pos = nullptr) const;
+  virtual value_type max(dim_type d, size_storage *pos = nullptr) const;
+  virtual value_type min(dim_type d, size_storage *pos = nullptr) const;
   virtual value_type sum(dim_type d) const;
   virtual value_type prod(dim_type d) const;
   virtual value_type mean(dim_type d) const;
@@ -873,6 +873,8 @@ class Tensor< S >::iterator {
   const Tensor& operator*() const;
   const Tensor* operator->() const;
 
+  size_type position() const;
+
  protected:
   const Tensor *tensor_;
   size_type position_;
@@ -900,6 +902,8 @@ class Tensor< S >::reference_iterator {
 
   reference operator*() const;
   pointer operator->() const;
+
+  size_storage position() const;
 
  protected:
   const Tensor *tensor_;
