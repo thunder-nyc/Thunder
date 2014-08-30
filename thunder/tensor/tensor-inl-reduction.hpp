@@ -24,7 +24,7 @@
 #include "thunder/tensor/tensor-inl.hpp"
 
 #include <limits>
-#include <stdlib.h>
+#include <cmath>
 
 #include "thunder/exception.hpp"
 #include "thunder/tensor/index_iterator.hpp"
@@ -36,10 +36,10 @@ template < typename S >
 typename Tensor< S >::value_type Tensor< S >::max(
     Tensor< size_storage > *pos) const {
   value_type max_value = ::std::numeric_limits< value_type >::lowest();
-  if (pos->size() != size_.size()) {
+  if (pos->size(0) != size_.size()) {
     pos->resize(size_.size());
   }
-  if (partialContiguous(0, size_.size() - 1)) {
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     size_type data_length = length();
@@ -56,12 +56,16 @@ typename Tensor< S >::value_type Tensor< S >::max(
     }
     (*pos)(0) = position;
   } else {
+    size_storage position;
     for (reference_iterator begin = reference_begin(), end = reference_end();
          begin != end; ++begin) {
       if (*begin > max_value) {
           max_value = *begin;
-          *pos = begin.position();
+          position = begin.position();
       }
+    }
+    for (dim_type i = 0; i < size_.size(); ++i) {
+      (*pos)(i) = position[i];
     }
   }
   return max_value;
@@ -69,12 +73,12 @@ typename Tensor< S >::value_type Tensor< S >::max(
 
 template < typename S >
 typename Tensor< S >::value_type Tensor< S >::min(
-    Tensor< size_type > *pos) const {
+    Tensor< size_storage > *pos) const {
   value_type min_value = ::std::numeric_limits< value_type >::max();
-  if (pos->size() != size_.size()) {
+  if (pos->size(0) != size_.size()) {
     pos->resize(size_.size());
   }
-  if (partialContiguous(0, size_.size() - 1)) {
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     size_type data_length = length();
@@ -91,21 +95,25 @@ typename Tensor< S >::value_type Tensor< S >::min(
     }
     (*pos)(0) = position;
   } else {
+    size_storage position;
     for (reference_iterator begin = reference_begin(), end = reference_end();
          begin != end; ++begin) {
       if (*begin < min_value) {
         min_value = *begin;
-        *pos = begin.position();
+        position = begin.position();
       }
+    }
+    for (dim_type i = 0; i < size_.size(); ++i) {
+      (*pos)(i) = position[i];
     }
   }
   return min_value;
 }
 
 template < typename S >
-typename Tensor< S >::value_type max() const {
+typename Tensor< S >::value_type Tensor< S >::max() const {
   value_type max_value = ::std::numeric_limits< value_type >::lowest();
-  if (partialContiguous(0, size_.size() - 1)) {
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     size_type data_length = length();
@@ -126,9 +134,9 @@ typename Tensor< S >::value_type max() const {
 }
 
 template < typename S >
-typename Tensor< S >::value_type min() const {
+typename Tensor< S >::value_type Tensor< S >::min() const {
   value_type min_value = ::std::numeric_limits< value_type >::max();
-  if (partialContiguous(0, size_.size() - 1)) {
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     size_type data_length = length();
@@ -151,7 +159,7 @@ typename Tensor< S >::value_type min() const {
 template < typename S >
 typename Tensor< S >::value_type Tensor< S >::sum() const {
   value_type sum_value = 0;
-  if (partialContiguous(0, size_.size() - 1)) {
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     size_type data_length = length();
@@ -167,9 +175,10 @@ typename Tensor< S >::value_type Tensor< S >::sum() const {
   return sum_value;
 }
 
-virtual value_type prod() const {
+template < typename S >
+typename Tensor< S >::value_type Tensor< S >::prod() const {
   value_type prod_value = 1;
-  if (partialContiguous(0, size_.size() - 1)) {
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     size_type data_length = length();
@@ -193,10 +202,10 @@ typename Tensor< S >::value_type Tensor< S >::mean() const {
 template < typename S >
 typename Tensor< S >::value_type Tensor< S >::var() const {
   value_type sum_value = 0;
-  if (partialContiguous(0, size_.size() - 1)) {
+  size_type data_length = length();
+  if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
-    size_type data_length = length();
     for (size_type i = 0; i < data_length; ++i) {
       sum_value += data_pointer[i * step] * data_pointer[i * step];
     }
@@ -261,7 +270,7 @@ typename Tensor< S >::value_type Tensor< S >::std(const Tensor &x) {
   return x.std();
 }
 
-// Reduction operations along a dimension
+/*
 template < typename S >
 Tensor< S > Tensor< S >::max(dim_type d, Tensor< size_storage > *pos) const {
   if (d >= size_.size()) {
@@ -381,6 +390,7 @@ static Tensor prod(const Tensor &x, dim_type d);
 static Tensor mean(const Tensor &x, dim_type d);
 static Tensor var(const Tensor &x, dim_type d);
 static Tensor std(const Tensor &x, dim_type d);
+*/
 
 }  // namespace tensor
 }  // namespace thunder

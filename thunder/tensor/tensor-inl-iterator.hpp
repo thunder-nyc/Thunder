@@ -91,7 +91,7 @@ const Tensor< S >* Tensor< S >::iterator::operator->() const {
 }
 
 template < typename S >
-typename Tensor< S >::size_type Tensor< S >::iterator::position() {
+typename Tensor< S >::size_type Tensor< S >::iterator::position() const {
   return position_;
 }
 

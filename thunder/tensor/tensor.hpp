@@ -339,6 +339,8 @@ class Tensor {
   static value_type var(const Tensor &x);
   static value_type std(const Tensor &x);
 
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
   // Reduction operations along a dimension
   virtual Tensor max(dim_type d, Tensor< size_storage > *pos) const;
   virtual Tensor min(dim_type d, Tensor< size_storage > *pos) const;
@@ -360,8 +362,6 @@ class Tensor {
   static Tensor mean(const Tensor &x, dim_type d);
   static Tensor var(const Tensor &x, dim_type d);
   static Tensor std(const Tensor &x, dim_type d);
-
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // All random generators are templated on RF and RI.
   template < typename RF = double >
