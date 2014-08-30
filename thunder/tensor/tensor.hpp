@@ -318,8 +318,10 @@ class Tensor {
                       const ::std::function< void(value_type*) > &lambda);
 
   // Reduction operations
-  virtual value_type max(size_storage *pos = nullptr) const;
-  virtual value_type min(size_storage *pos = nullptr) const;
+  virtual value_type max(Tensor< size_storage > *pos) const;
+  virtual value_type min(Tensor< size_storage > *pos) const;
+  virtual value_type max() const;
+  virtual value_type min() const;
   virtual value_type sum() const;
   virtual value_type prod() const;
   virtual value_type mean() const;
@@ -327,8 +329,10 @@ class Tensor {
   virtual value_type std() const;
 
   // Static reduction operations are deligated
-  static value_type max(const Tensor &x, size_storage *pos = nullptr);
-  static value_type min(const Tensor &x, size_storage *pos = nullptr);
+  static value_type max(const Tensor &x, Tensor< size_storage > *pos);
+  static value_type min(const Tensor &x, Tensor< size_storage > *pos);
+  static value_type max(const Tensor &x);
+  static value_type min(const Tensor &x);
   static value_type sum(const Tensor &x);
   static value_type prod(const Tensor &x);
   static value_type mean(const Tensor &x);
@@ -336,24 +340,26 @@ class Tensor {
   static value_type std(const Tensor &x);
 
   // Reduction operations along a dimension
-  virtual value_type max(dim_type d, size_storage *pos = nullptr) const;
-  virtual value_type min(dim_type d, size_storage *pos = nullptr) const;
-  virtual value_type sum(dim_type d) const;
-  virtual value_type prod(dim_type d) const;
-  virtual value_type mean(dim_type d) const;
-  virtual value_type var(dim_type d) const;
-  virtual value_type std(dim_type d) const;
+  virtual Tensor max(dim_type d, Tensor< size_storage > *pos) const;
+  virtual Tensor min(dim_type d, Tensor< size_storage > *pos) const;
+  virtual Tensor max(dim_type d) const;
+  virtual Tensor min(dim_type d) const;
+  virtual Tensor sum(dim_type d) const;
+  virtual Tensor prod(dim_type d) const;
+  virtual Tensor mean(dim_type d) const;
+  virtual Tensor var(dim_type d) const;
+  virtual Tensor std(dim_type d) const;
 
   // Static reduction operations are deligated
-  static value_type max(const Tensor &x, dim_type d,
-                        Tensor< size_type > *pos = nullptr);
-  static value_type min(const Tensor &x, dim_type d,
-                        Tensor< size_type > *pos = nullptr);
-  static value_type sum(const Tensor &x, dim_type d);
-  static value_type prod(const Tensor &x, dim_type d);
-  static value_type mean(const Tensor &x, dim_type d);
-  static value_type var(const Tensor &x, dim_type d);
-  static value_type std(const Tensor &x, dim_type d);
+  static Tensor max(const Tensor &x, dim_type d, size_storage *pos);
+  static Tensor min(const Tensor &x, dim_type d, size_storage *pos);
+  static Tensor max(const Tensor &x, dim_type d);
+  static Tensor min(const Tensor &x, dim_type d);
+  static Tensor sum(const Tensor &x, dim_type d);
+  static Tensor prod(const Tensor &x, dim_type d);
+  static Tensor mean(const Tensor &x, dim_type d);
+  static Tensor var(const Tensor &x, dim_type d);
+  static Tensor std(const Tensor &x, dim_type d);
 
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
