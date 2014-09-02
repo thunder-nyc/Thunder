@@ -34,6 +34,14 @@ void reductionTest() {
            end = t1.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t1_val++);
   }
+
+  EXPECT_EQ(t1_val - 1, static_cast< int >(T::max(t1)));
+  EXPECT_EQ(0, static_cast<int>(T::min(t1)));
+  EXPECT_EQ(t1_val * (t1_val - 1) / 2, static_cast<int>(T::sum(t1)));
+  EXPECT_EQ(0, static_cast<int>(T::prod(t1)));
+  EXPECT_EQ((t1_val-1)/2, static_cast<int>(T::mean(t1)));
+  EXPECT_EQ(652633, static_cast<int>(T::var(t1)));
+  EXPECT_EQ(807, static_cast<int>(T::std(t1)));
 }
 
 TEST(TensorTest, reductionTest) {
