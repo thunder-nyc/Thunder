@@ -202,17 +202,19 @@ typename Tensor< S >::value_type Tensor< S >::mean() const {
 template < typename S >
 typename Tensor< S >::value_type Tensor< S >::var() const {
   value_type sum_value = 0;
+  value_type mean_value = mean();
   size_type data_length = length();
   if (partialContiguity(0, size_.size() - 1)) {
     difference_type step = stride_[stride_.size() - 1];
     pointer data_pointer = data();
     for (size_type i = 0; i < data_length; ++i) {
-      sum_value += data_pointer[i * step] * data_pointer[i * step];
+      sum_value += (data_pointer[i * step] - mean_value) *
+          (data_pointer[i * step] - mean_value);
     }
   } else {
     for (reference_iterator begin = reference_begin(), end = reference_end();
          begin != end; ++begin) {
-      sum_value += (*begin) * (*begin);
+      sum_value += (*begin - mean_value) * (*begin - mean_value);
     }
   }
   return sum_value / static_cast< value_type >(data_length);

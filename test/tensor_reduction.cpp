@@ -40,8 +40,23 @@ void reductionTest() {
   EXPECT_EQ(t1_val * (t1_val - 1) / 2, static_cast<int>(T::sum(t1)));
   EXPECT_EQ(0, static_cast<int>(T::prod(t1)));
   EXPECT_EQ((t1_val-1)/2, static_cast<int>(T::mean(t1)));
-  EXPECT_EQ(652633, static_cast<int>(T::var(t1)));
-  EXPECT_EQ(807, static_cast<int>(T::std(t1)));
+  EXPECT_EQ(163333, static_cast<int>(T::var(t1)));
+  EXPECT_EQ(404, static_cast<int>(T::std(t1)));
+
+  T t2({10, 20, 7}, {290, 14, 2});
+  int t2_val = 0;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++);
+  }
+
+  EXPECT_EQ(t2_val - 1, static_cast< int >(T::max(t2)));
+  EXPECT_EQ(0, static_cast<int>(T::min(t2)));
+  EXPECT_EQ(t2_val * (t2_val - 1) / 2, static_cast<int>(T::sum(t2)));
+  EXPECT_EQ(0, static_cast<int>(T::prod(t2)));
+  EXPECT_EQ((t2_val-1)/2, static_cast<int>(T::mean(t2)));
+  EXPECT_EQ(163333, static_cast<int>(T::var(t2)));
+  EXPECT_EQ(404, static_cast<int>(T::std(t2)));
 }
 
 TEST(TensorTest, reductionTest) {
