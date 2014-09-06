@@ -39,13 +39,13 @@ namespace tensor {
       difference_type data_step = stride_[stride_.size() - 1];          \
       size_type data_length = length();                                 \
       for (size_type i = 0; i < data_length; ++i) {                     \
-        data_pointer[i * data_step] =                                   \
-            ::std::func(data_pointer[i * data_step]);                   \
+        data_pointer[i * data_step] = static_cast< value_type >(        \
+            ::std::func(data_pointer[i * data_step]));                  \
       }                                                                 \
     } else {                                                            \
       for (reference_iterator begin = reference_begin(),                \
                end = reference_end(); begin != end; ++begin) {          \
-        *begin = ::std::func(*begin);                                   \
+        *begin = static_cast< value_type >(::std::func(*begin));        \
       }                                                                 \
     }                                                                   \
     return *this;                                                       \
@@ -114,12 +114,13 @@ const Tensor< S >& Tensor< S >::cnrm() const {
     difference_type data_step = stride_[stride_.size() - 1];
     size_type data_length = length();
     for (size_type i = 0; i < data_length; ++i) {
-      data_pointer[i * data_step] = ::std::norm(data_pointer[i * data_step]);
+      data_pointer[i * data_step] = static_cast< value_type >(
+          ::std::norm(data_pointer[i * data_step]));
     }
   } else {
     for (reference_iterator begin = reference_begin(),
              end = reference_end(); begin != end; ++begin) {
-      *begin = ::std::norm(*begin);
+      *begin = static_cast< value_type >(::std::norm(*begin));
     }
   }
   return *this;

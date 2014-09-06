@@ -30,10 +30,10 @@ namespace {
   template< typename T >                                                \
   void func ## Test() {                                                 \
     T t1(10, 20, 7);                                                    \
-    int t1_val = 1;                                                     \
+    int t1_val = -800;                                                  \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
              end = t1.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t1_val++) / 1500;  \
+      *begin = static_cast< typename T::value_type >(t1_val++) / 300;   \
     }                                                                   \
     T t1_result = T::func(t1);                                          \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
@@ -47,10 +47,10 @@ namespace {
     }                                                                   \
                                                                         \
     T t2({10, 20, 7}, {161 , 8, 1});                                    \
-    int t2_val = 1;                                                     \
+    int t2_val = -800;                                                  \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
              end = t2.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t2_val++) / 1500;  \
+      *begin = static_cast< typename T::value_type >(t2_val++) / 300;   \
     }                                                                   \
     T t2_result = T::func(t2);                                          \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
@@ -118,10 +118,10 @@ TEST_STD_UNARY(proj);
 template< typename T >
 void zeroTest() {
   T t1(10, 20, 7);
-  int t1_val = 1;
+  int t1_val = -800;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 1500;
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
   }
   T t1_result = T::zero(t1);
   for (typename T::reference_iterator begin = t1.reference_begin(),
@@ -130,10 +130,10 @@ void zeroTest() {
   }
   
   T t2({10, 20, 7}, {161 , 8, 1});
-  int t2_val = 1;
+  int t2_val = -800;
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 1500;
+    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
   }
   T t2_result = T::zero(t2);
   for (typename T::reference_iterator begin = t2.reference_begin(),
@@ -149,10 +149,10 @@ TEST(TensorTest, zeroTest) {
 template< typename T >
 void cnrmTest() {
   T t1(10, 20, 7);
-  int t1_val = 1;
+  int t1_val = -800;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 1500;
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
   }
   T t1_result = T::cnrm(t1);
   for (typename T::reference_iterator begin = t1.reference_begin(),
@@ -161,10 +161,10 @@ void cnrmTest() {
   }
   
   T t2({10, 20, 7}, {161 , 8, 1});
-  int t2_val = 1;
+  int t2_val = -800;
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 1500;
+    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
   }
   T t2_result = T::cnrm(t2);
   for (typename T::reference_iterator begin = t2.reference_begin(),
