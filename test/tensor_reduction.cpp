@@ -43,6 +43,18 @@ void reductionTest() {
   EXPECT_EQ(163333, static_cast<int>(T::var(t1)));
   EXPECT_EQ(404, static_cast<int>(T::std(t1)));
 
+  Tensor< typename T::size_storage > pos1;
+  EXPECT_EQ(t1_val - 1, static_cast< int >(T::max(t1, &pos1)));
+  EXPECT_EQ(1, pos1.dimension());
+  EXPECT_EQ(3, pos1.size(0));
+  for (int i = 0; i < pos1.size(0); ++i) {
+    EXPECT_EQ(t1.size(i) - 1, pos1(i));
+  }
+  EXPECT_EQ(0, static_cast< int >(T::min(t1, &pos1)));
+  for (int i = 0; i < pos1.size(0); ++i) {
+    EXPECT_EQ(0, pos1(i));
+  }
+
   T t2({10, 20, 7}, {290, 14, 2});
   int t2_val = 0;
   for (typename T::reference_iterator begin = t2.reference_begin(),
@@ -57,6 +69,18 @@ void reductionTest() {
   EXPECT_EQ((t2_val-1)/2, static_cast<int>(T::mean(t2)));
   EXPECT_EQ(163333, static_cast<int>(T::var(t2)));
   EXPECT_EQ(404, static_cast<int>(T::std(t2)));
+
+  Tensor< typename T::size_storage > pos2;
+  EXPECT_EQ(t2_val - 1, static_cast< int >(T::max(t2, &pos2)));
+  EXPECT_EQ(1, pos2.dimension());
+  EXPECT_EQ(3, pos2.size(0));
+  for (int i = 0; i < pos2.size(0); ++i) {
+    EXPECT_EQ(t2.size(i) - 1, pos2(i));
+  }
+  EXPECT_EQ(0, static_cast< int >(T::min(t2, &pos2)));
+  for (int i = 0; i < pos2.size(0); ++i) {
+    EXPECT_EQ(0, pos2(i));
+  }
 }
 
 TEST(TensorTest, reductionTest) {

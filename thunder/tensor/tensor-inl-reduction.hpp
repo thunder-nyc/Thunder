@@ -272,127 +272,156 @@ typename Tensor< S >::value_type Tensor< S >::std(const Tensor &x) {
   return x.std();
 }
 
-/*
 template < typename S >
 Tensor< S > Tensor< S >::max(dim_type d, Tensor< size_storage > *pos) const {
-  if (d >= size_.size()) {
-    throw out_of_range("Dimension exceeds limit");
-  }
-  if (size_.size() == 1) {
-    pos->resize(1);
-    Tensor t(1);
-    difference_type step = stride_[0];
-    size_type data_length = size_[0];
-    pointer data_pointer = data();
-    size_type position = 0;
-    value_type max_value = ::std::numeric_limits< value_type >::lowest();
-    for (size_type i = 0; i < data_length; ++i) {
-      if (data_pointer[i * step] > max_value) {
-        max_value = data_pointer;
-        position = i;
-      }
-    }
-    t() = max_value;
-    (*pos)() = max_value;
-    return t;
-  } else {
-    typename Tensor< size_storage >::size_storage pos_sz(size_.size() - 1);
-    for (dim_type i = 0; i < d; ++i) {
-      pos_sz[i] = size_[i];
-    }
-    for (dim_type i = d + 1; i < size_.size(); ++i) {
-      pos_sz[i - 1] = size_[i];
-    }
-    pos->resize(pos_sz);
-    Tensor t;
-    t.resizeAs(*pos);
-    size_storage position;
-    value_type max_value = ::std::numeric_limits< value_type >::lowest();
-    if (partialContiguity(0, d) && partialContiguity(d, size_.size() - 1)) {
-      // Partial contiguity
-      difference_type step = stride_[d];
-      difference_type left_step = d > 0 ? stride_[d-1] : 0;
-      difference_type right_step = stride_[stride_.size() - 1];
-      difference_type left_t_step = d > 0 ? t.stride_[d-1] : 0;
-      size_type left_length = 1;
-      for (dim_type i = 0; i < d; ++i) {
-        left_length *= size_[i]; 
-      }
-      size_type right_length = 1;
-      for (dim_type i = d + 1; i < size_.size(); ++i) {
-        right_length *= size_[i];
-      }
-      size_type d_length = size_[d];
-      pointer data_pointer = data();
-      pointer t_data_pointer = t.data();
-      pointer pos_data_pointer = pos->data();
-      for (size_type left = 0; left < left_length; ++left) {
-        for (size_type right = 0; right < right_length; ++right) {
-          max_value = ::std::numeric_limits< value_type >::lowest();
-          for (size_type i = 0; i < d_length; ++i) {
-            if (data_pointer[left * left_step + right * right_step + i * step] >
-                max_value) {
-              max_value = data_pointer[left * left_step +
-                                       right * right_step + i * step];
-              pos_data_pointer[left * left_t_step + right] = i;
-            }
-          }
-          t_data_pointer[left * left_t_step + right] = i;
-        }
-      }
-    } else {
-      // No partial contiguity
-      for (IndexIterator< size_storage > begin =
-               IndexIterator< size_storage >::begin(pos_sz),
-               end = IndexIterator < size_storage >::end(pos_sz);
-           begin != end; ++begin) {
-        for (dim_type i = 0; i < d; ++i) {
-          position[i] = (*begin)[i];
-        }
-        for (dim_type i = d + 1; i < size_.size(); ++i) {
-          position[i] = (*begin)[i - 1];
-        }
-        max_value = ::std::numeric_limits< value_type >::lowest();
-        for (size_type i = 0; i < size_[d]; ++i) {
-          position[d] = i;
-          if ((*this)(position) > max_value) {
-            max_value = (*this)(position);
-            (*pos)(*begin) = i;
-          }
-        }
-        t(*begin) = max_value;
-      }
-    }
-    return t;
-  }
+  return Tensor();
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::min(dim_type d, Tensor< size_storage > *pos) const {
+  return Tensor();
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::max(dim_type d) const {
+  if (d >= size_.size()) {
+    throw out_of_range("Dimension exceeds limit");
+  }
+  size_storage sz = size_;
+  sz[d] = 1;
+  Tensor t(sz);
+  if (partialContiguity(0, d) && partialContiguity(d, size_.size() - 1)) {
+    // Get data pointers
+    pointer x_data = data();
+    pointer t_data = t.data();
+    // Determine left and right size
+    size_type x_left_length = 1;
+    for (dim_type i = 0; i < d; ++i) {
+      x_left_length *= size_[i];
+    }
+    size_type x_length = size_[d];
+    size_type x_right_length = 1;
+    for (dim_type i = d + 1; i < size_.size(); ++i) {
+      x_right_length *= size_[i];
+    }
+    // Determine left and right step
+    difference_type x_left_step = d > 0 ? stride_[d - 1] : 0;
+    difference_type x_step = stride_[d];
+    difference_type x_right_step = stride_[stride_.size() - 1];
+    difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
+    difference_type t_right_step = t.stride(t.dimension() - 1);
+    // Run the loop
+    value_type max_value = ::std::numeric_limits< value_type >::lowest();
+    for (size_type i = 0; i < x_left_length; ++i) {
+      for (size_type j = 0; j < x_right_length; ++j) {
+        max_value = ::std::numeric_limits< value_type >::lowest();
+        for (size_type k = 0; k < x_length; ++k) {
+          value_type current_value =
+              x_data[i * x_left_step + j * x_right_step + k * x_step];
+          if (current_value > max_value) {
+            max_value = current_value;
+          }
+        }
+        t_data[i * t_left_step + j * t_right_step] = max_value;
+      }
+    }
+  } else {
+    size_storage position;
+    size_type size_d = size_[d];
+    value_type max_value = ::std::numeric_limits< value_type >::lowest();
+    for (reference_iterator begin = t.reference_begin(),
+             end = t.reference_end(); begin != end; ++begin) {
+      max_value = ::std::numeric_limits< value_type >::lowest();
+      position = begin.position();
+      for (size_type i = 0; i < size_d; ++i) {
+        position[d] = i;
+        value_type current_value = (*this)(position);
+        if (current_value > max_value) {
+          max_value = current_value;
+        }
+      }
+      *begin = max_value;
+    }
+  }
+  return t;
 }
 
-virtual Tensor min(dim_type d) const;
-virtual Tensor sum(dim_type d) const;
-virtual Tensor prod(dim_type d) const;
-virtual Tensor mean(dim_type d) const;
-virtual Tensor var(dim_type d) const;
-virtual Tensor std(dim_type d) const;
+template < typename S >
+Tensor< S > Tensor< S >::min(dim_type d) const {
+  return Tensor();
+}
 
-// Static reduction operations are deligated
-static Tensor max(const Tensor &x, dim_type d, size_storage *pos);
-static Tensor min(const Tensor &x, dim_type d, size_storage *pos);
-static Tensor max(const Tensor &x, dim_type d);
-static Tensor min(const Tensor &x, dim_type d);
-static Tensor sum(const Tensor &x, dim_type d);
-static Tensor prod(const Tensor &x, dim_type d);
-static Tensor mean(const Tensor &x, dim_type d);
-static Tensor var(const Tensor &x, dim_type d);
-static Tensor std(const Tensor &x, dim_type d);
-*/
+template < typename S >
+Tensor< S > Tensor< S >::sum(dim_type d) const {
+  return Tensor();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::prod(dim_type d) const {
+  return Tensor();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::mean(dim_type d) const {
+  return Tensor();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::var(dim_type d) const {
+  return Tensor();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::std(dim_type d) const {
+  return Tensor();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::max(
+    const Tensor &x, dim_type d, Tensor< size_storage > *pos) {
+  return x.max(d, pos);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::min(
+    const Tensor &x, dim_type d, Tensor< size_storage > *pos) {
+  return x.min(d, pos);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::max(const Tensor &x, dim_type d) {
+  return x.max(d);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::min(const Tensor &x, dim_type d) {
+  return x.min(d);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::sum(const Tensor &x, dim_type d) {
+  return x.sum(d);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::prod(const Tensor &x, dim_type d) {
+  return x.prod(d);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::mean(const Tensor &x, dim_type d) {
+  return x.mean(d);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::var(const Tensor &x, dim_type d) {
+  return x.var(d);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::std(const Tensor &x, dim_type d) {
+  return x.std(d);
+}
 
 }  // namespace tensor
 }  // namespace thunder

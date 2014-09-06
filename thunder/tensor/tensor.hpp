@@ -24,6 +24,7 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
+#include <ostream>
 #include <string>
 #include <utility>
 
@@ -339,8 +340,6 @@ class Tensor {
   static value_type var(const Tensor &x);
   static value_type std(const Tensor &x);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
   // Reduction operations along a dimension
   virtual Tensor max(dim_type d, Tensor< size_storage > *pos) const;
   virtual Tensor min(dim_type d, Tensor< size_storage > *pos) const;
@@ -353,8 +352,8 @@ class Tensor {
   virtual Tensor std(dim_type d) const;
 
   // Static reduction operations are deligated
-  static Tensor max(const Tensor &x, dim_type d, size_storage *pos);
-  static Tensor min(const Tensor &x, dim_type d, size_storage *pos);
+  static Tensor max(const Tensor &x, dim_type d, Tensor< size_storage > *pos);
+  static Tensor min(const Tensor &x, dim_type d, Tensor< size_storage > *pos);
   static Tensor max(const Tensor &x, dim_type d);
   static Tensor min(const Tensor &x, dim_type d);
   static Tensor sum(const Tensor &x, dim_type d);
@@ -362,6 +361,16 @@ class Tensor {
   static Tensor mean(const Tensor &x, dim_type d);
   static Tensor var(const Tensor &x, dim_type d);
   static Tensor std(const Tensor &x, dim_type d);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
+  // Printing functions
+  void printToStream(::std::ostream *ostr) const;
+  void printToString(::std::string *str) const;
+
+  // Static printing functions are delegated
+  static void printToStream(::std::ostream *ostr);
+  static void printToString(::std::string *str);
 
   // All random generators are templated on RF and RI.
   template < typename RF = double >
