@@ -290,7 +290,7 @@ Tensor< S > Tensor< S >::max(dim_type d) const {
   size_storage sz = size_;
   sz[d] = 1;
   Tensor t(sz);
-  if (partialContiguity(0, d) && partialContiguity(d, size_.size() - 1)) {
+  if (partialContiguity(0, d) && partialContiguity(d + 1, size_.size() - 1)) {
     // Get data pointers
     pointer x_data = data();
     pointer t_data = t.data();

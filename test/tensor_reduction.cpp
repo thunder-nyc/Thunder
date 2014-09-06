@@ -89,5 +89,53 @@ TEST(TensorTest, reductionTest) {
   reductionTest< Tensor< Storage< int > > >();
 }
 
+template < typename T >
+void maxReductionTest() {
+  T t1(10, 20, 7);
+  int t1_val = 0;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++);
+  }
+
+  T t1_max = T::max(t1, 1);
+  EXPECT_EQ(3, t1_max.dimension());
+  EXPECT_EQ(10, t1_max.size(0));
+  EXPECT_EQ(1, t1_max.size(1));
+  EXPECT_EQ(7, t1_max.size(2));
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 7; ++j) {
+      EXPECT_EQ(t1(i, 19, j), t1_max(i, 0, j));
+    }
+  }
+
+  T t2({10, 20, 7, 9}, {1431,71,10,1});
+  int t2_val = 0;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++);
+  }
+
+  T t2_max = T::max(t2, 1);
+  EXPECT_EQ(4, t2_max.dimension());
+  EXPECT_EQ(10, t2_max.size(0));
+  EXPECT_EQ(1, t2_max.size(1));
+  EXPECT_EQ(7, t2_max.size(2));
+  EXPECT_EQ(9, t2_max.size(3));
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 7; ++j) {
+      for (int k = 0; k < 9; ++k) {
+        EXPECT_EQ(t2(i, 19, j, k), t2_max(i, 0, j, k));
+      }
+    }
+  }
+}
+
+TEST(TensorTest, maxReductionTest) {
+  maxReductionTest< DoubleTensor >();
+  maxReductionTest< FloatTensor >();
+  maxReductionTest< Tensor< Storage< int > > >();
+}
+
 }  // namespace
 }  // namespace thunder
