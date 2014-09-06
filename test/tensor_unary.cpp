@@ -45,6 +45,23 @@ namespace {
                         t1_result(begin.position()));                   \
       }                                                                 \
     }                                                                   \
+                                                                        \
+    T t2({10, 20, 7}, {161 , 8, 1});                                    \
+    int t2_val = 1;                                                     \
+    for (typename T::reference_iterator begin = t2.reference_begin(),   \
+             end = t2.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t2_val++) / 1500;  \
+    }                                                                   \
+    T t2_result = T::func(t2);                                          \
+    for (typename T::reference_iterator begin = t2.reference_begin(),   \
+              end = t2.reference_end(); begin != end; ++begin) {        \
+      if (::std::isnan(t2_result(begin.position()))) {                  \
+        EXPECT_TRUE(::std::isnan(::std::func(*begin)));                 \
+      } else {                                                          \
+        EXPECT_FLOAT_EQ(::std::func(*begin),                            \
+                        t2_result(begin.position()));                   \
+      }                                                                 \
+    }                                                                   \
   }                                                                     \
   TEST(TensorTest, func ## Test) {                                      \
     func ## Test< DoubleTensor >();                                     \
@@ -97,6 +114,68 @@ TEST_STD_UNARY(conj);
 TEST_STD_UNARY(proj);
 
 #undef TEST_STD_UNARY
+
+template< typename T >
+void zeroTest() {
+  T t1(10, 20, 7);
+  int t1_val = 1;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 1500;
+  }
+  T t1_result = T::zero(t1);
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(0, t1_result(begin.position()));
+  }
+  
+  T t2({10, 20, 7}, {161 , 8, 1});
+  int t2_val = 1;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++) / 1500;
+  }
+  T t2_result = T::zero(t2);
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(0, t2_result(begin.position()));
+  }
+}
+TEST(TensorTest, zeroTest) {
+  zeroTest< DoubleTensor >();
+  zeroTest< FloatTensor >();
+}
+
+template< typename T >
+void cnrmTest() {
+  T t1(10, 20, 7);
+  int t1_val = 1;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 1500;
+  }
+  T t1_result = T::cnrm(t1);
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(::std::norm(*begin), t1_result(begin.position()));
+  }
+  
+  T t2({10, 20, 7}, {161 , 8, 1});
+  int t2_val = 1;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++) / 1500;
+  }
+  T t2_result = T::cnrm(t2);
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(::std::norm(*begin), t2_result(begin.position()));
+  }
+}
+TEST(TensorTest, cnrmTest) {
+  cnrmTest< DoubleTensor >();
+  cnrmTest< FloatTensor >();
+}
 
 }  // namespace
 }  // namespace thunder
