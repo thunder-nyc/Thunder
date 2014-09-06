@@ -399,7 +399,7 @@ class Tensor {
   virtual Tensor& round();
   virtual Tensor& nearbyint();
   virtual Tensor& rint();
-  virtual Tensor& logB();
+  virtual Tensor& logb();
   virtual Tensor& fpclassify();
   virtual Tensor& isfinite();
   virtual Tensor& isinf();
