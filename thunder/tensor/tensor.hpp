@@ -476,8 +476,8 @@ class Tensor {
   virtual const Tensor& hypot(const_reference y) const;
   virtual const Tensor& atan2(const_reference y) const;
   virtual const Tensor& ldexp(const_reference y) const;
-  virtual const Tensor& Scalbn(const_reference y) const;
-  virtual const Tensor& Scalbln(const_reference y) const;
+  virtual const Tensor& scalbn(const_reference y) const;
+  virtual const Tensor& scalbln(const_reference y) const;
   virtual const Tensor& nextafter(const_reference y) const;
   virtual const Tensor& nexttoward(const_reference y) const;
   virtual const Tensor& copysign(const_reference y) const;
@@ -514,6 +514,7 @@ class Tensor {
   virtual Tensor& islessequal(const_reference y);
   virtual Tensor& islessgreater(const_reference y);
   virtual Tensor& isunordered(const_reference y);
+  virtual Tensor& fill(const_reference y);
 
   // Static element-wise operations with a constant are delegated
   static Tensor add(const Tensor &x, const_reference y);
@@ -528,6 +529,7 @@ class Tensor {
   static Tensor pow(const Tensor &x, const_reference y);
   static Tensor hypot(const Tensor &x, const_reference y);
   static Tensor atan2(const Tensor &x, const_reference y);
+  static Tensor ldexp(const Tensor &x, const_reference y);
   static Tensor scalbn(const Tensor &x, const_reference y);
   static Tensor scalbln(const Tensor &x, const_reference y);
   static Tensor nextafter(const Tensor &x, const_reference y);
@@ -554,6 +556,7 @@ class Tensor {
   virtual const Tensor& pow(const Tensor &y) const;
   virtual const Tensor& hypot(const Tensor &y) const;
   virtual const Tensor& atan2(const Tensor &y) const;
+  virtual const Tensor& ldexp(const Tensor &y) const;
   virtual const Tensor& scalbn(const Tensor &y) const;
   virtual const Tensor& scalbln(const Tensor &y) const;
   virtual const Tensor& nextafter(const Tensor &y) const;
@@ -579,6 +582,7 @@ class Tensor {
   virtual Tensor& pow(const Tensor &y);
   virtual Tensor& hypot(const Tensor &y);
   virtual Tensor& atan2(const Tensor &y);
+  virtual Tensor& ldexp(const Tensor &y);
   virtual Tensor& scalbn(const Tensor &y);
   virtual Tensor& scalbln(const Tensor &y);
   virtual Tensor& nextafter(const Tensor &y);
@@ -587,7 +591,7 @@ class Tensor {
   virtual Tensor& isgreater(const Tensor &y);
   virtual Tensor& isgreaterequal(const Tensor &y);
   virtual Tensor& isless(const Tensor &y);
-  virtual Tensor& islessgqual(const Tensor &y);
+  virtual Tensor& islessequal(const Tensor &y);
   virtual Tensor& islessgreater(const Tensor &y);
   virtual Tensor& isunordered(const Tensor &y);
 
@@ -604,8 +608,9 @@ class Tensor {
   static Tensor pow(const Tensor &x, const Tensor &y);
   static Tensor hypot(const Tensor &x, const Tensor &y);
   static Tensor atan2(const Tensor &x, const Tensor &y);
+  static Tensor ldexp(const Tensor &x, const Tensor &y);
   static Tensor scalbn(const Tensor &x, const Tensor &y);
-  static Tensor scalebln(const Tensor &x, const Tensor &y);
+  static Tensor scalbln(const Tensor &x, const Tensor &y);
   static Tensor nextafter(const Tensor &x, const Tensor &y);
   static Tensor nexttoward(const Tensor &x, const Tensor &y);
   static Tensor copysign(const Tensor &x, const Tensor &y);
@@ -615,8 +620,6 @@ class Tensor {
   static Tensor islessequal(const Tensor &x, const Tensor &y);
   static Tensor islessgreater(const Tensor &x, const Tensor &y);
   static Tensor isunordered(const Tensor &x, const Tensor &y);
-
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Reduction operations
   virtual value_type max(Tensor< size_storage > *pos) const;
@@ -661,6 +664,8 @@ class Tensor {
   static Tensor mean(const Tensor &x, dim_type d);
   static Tensor var(const Tensor &x, dim_type d);
   static Tensor std(const Tensor &x, dim_type d);
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Printing functions
   void printToStream(::std::ostream *ostr) const;
