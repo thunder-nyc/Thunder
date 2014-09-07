@@ -49,6 +49,9 @@
 // Unary Operations
 #include "thunder/tensor/tensor-inl-unary.hpp"
 
+// Binary operations
+#include "thunder/tensor/tensor-inl-binary.hpp"
+
 // Mathematical reduction
 #include "thunder/tensor/tensor-inl-reduction.hpp"
 
