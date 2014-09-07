@@ -106,25 +106,29 @@ const Tensor< S >& Tensor< S >::apply(
 template< typename S >
 Tensor< S >& Tensor< S >::apply(
     const ::std::function< value_type(value_type) > &lambda) {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->apply(lambda));
+  return const_cast< Tensor& >(
+      const_cast< const Tensor* >(this)->apply(lambda));
 }
 
 template< typename S >
 Tensor< S >& Tensor< S >::apply(
     const ::std::function< value_type(const value_type&) > &lambda) {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->apply(lambda));
+  return const_cast< Tensor& >(
+      const_cast< const Tensor* >(this)->apply(lambda));
 }
 
 template< typename S >
 Tensor< S >& Tensor< S >::apply(
     const ::std::function< void(value_type&) > &lambda) {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->apply(lambda));
+  return const_cast< Tensor& >(
+      const_cast< const Tensor* >(this)->apply(lambda));
 }
 
 template< typename S >
 Tensor< S >& Tensor< S >::apply(
     const ::std::function< void(value_type*) > &lambda) {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->apply(lambda));
+  return const_cast< Tensor& >(
+      const_cast< const Tensor* >(this)->apply(lambda));
 }
 
 // Static lambda applications are delegated

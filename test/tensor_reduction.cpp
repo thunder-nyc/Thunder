@@ -109,7 +109,7 @@ void maxReductionTest() {
     }
   }
 
-  T t2({10, 20, 7, 9}, {1431,71,10,1});
+  T t2({10, 20, 7, 9}, {1431, 71, 10, 1});
   int t2_val = 0;
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {

@@ -34,7 +34,6 @@ T Tensor< S >::type() const {
   for (dim_type i = 0; i < size_.size(); ++i) {
     sz[i] = static_cast< typename T::size_type >(size_[i]);
     st[i] = static_cast< typename T::difference_type >(stride_[i]);
-   
   }
   return T(sz, st).copy(*this);
 }

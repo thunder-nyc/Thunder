@@ -128,7 +128,7 @@ void zeroTest() {
            end = t1.reference_end(); begin != end; ++begin) {
     EXPECT_FLOAT_EQ(0, t1_result(begin.position()));
   }
-  
+
   T t2({10, 20, 7}, {161 , 8, 1});
   int t2_val = -800;
   for (typename T::reference_iterator begin = t2.reference_begin(),
@@ -159,7 +159,7 @@ void cnrmTest() {
            end = t1.reference_end(); begin != end; ++begin) {
     EXPECT_FLOAT_EQ(::std::norm(*begin), t1_result(begin.position()));
   }
-  
+
   T t2({10, 20, 7}, {161 , 8, 1});
   int t2_val = -800;
   for (typename T::reference_iterator begin = t2.reference_begin(),
