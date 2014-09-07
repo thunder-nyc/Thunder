@@ -462,7 +462,34 @@ class Tensor {
   static Tensor conj(const Tensor &x);
   static Tensor proj(const Tensor &x);
 
-  // Non-const element-wise operations are delegated using static_cast
+  // Element-wise operations with a value
+  virtual const Tensor& add(const_reference y) const;
+  virtual const Tensor& sub(const_reference y) const;
+  virtual const Tensor& mul(const_reference y) const;
+  virtual const Tensor& div(const_reference y) const;
+  virtual const Tensor& fmod(const_reference y) const;
+  virtual const Tensor& remainder(const_reference y) const;
+  virtual const Tensor& fmax(const_reference y) const;
+  virtual const Tensor& fmin(const_reference y) const;
+  virtual const Tensor& fdim(const_reference y) const;
+  virtual const Tensor& pow(const_reference y) const;
+  virtual const Tensor& hypot(const_reference y) const;
+  virtual const Tensor& atan2(const_reference y) const;
+  virtual const Tensor& ldexp(const_reference y) const;
+  virtual const Tensor& Scalbn(const_reference y) const;
+  virtual const Tensor& Scalbln(const_reference y) const;
+  virtual const Tensor& nextafter(const_reference y) const;
+  virtual const Tensor& nexttoward(const_reference y) const;
+  virtual const Tensor& copysign(const_reference y) const;
+  virtual const Tensor& isgreater(const_reference y) const;
+  virtual const Tensor& isgreaterequal(const_reference y) const;
+  virtual const Tensor& isless(const_reference y) const;
+  virtual const Tensor& islessequal(const_reference y) const;
+  virtual const Tensor& islessgreater(const_reference y) const;
+  virtual const Tensor& isunordered(const_reference y) const;
+  virtual const Tensor& fill(const_reference y) const;
+
+  // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& add(const_reference y);
   virtual Tensor& sub(const_reference y);
   virtual Tensor& mul(const_reference y);
@@ -487,7 +514,6 @@ class Tensor {
   virtual Tensor& islessequal(const_reference y);
   virtual Tensor& islessgreater(const_reference y);
   virtual Tensor& isunordered(const_reference y);
-  virtual Tensor& fill(const_reference y);
 
   // Static element-wise operations with a constant are delegated
   static Tensor add(const Tensor &x, const_reference y);
@@ -590,6 +616,8 @@ class Tensor {
   static Tensor islessgreater(const Tensor &x, const Tensor &y);
   static Tensor isunordered(const Tensor &x, const Tensor &y);
 
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
   // Reduction operations
   virtual value_type max(Tensor< size_storage > *pos) const;
   virtual value_type min(Tensor< size_storage > *pos) const;
@@ -633,8 +661,6 @@ class Tensor {
   static Tensor mean(const Tensor &x, dim_type d);
   static Tensor var(const Tensor &x, dim_type d);
   static Tensor std(const Tensor &x, dim_type d);
-
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Printing functions
   void printToStream(::std::ostream *ostr) const;
@@ -762,33 +788,6 @@ class Tensor {
   static Tensor fisherF(const size_storage &sz, RF m = 1.0, RF n = 1.0);
   template < typename RF = double >
   static Tensor studentT(const size_storage &sz, RF n = 1.0);
-
-  // Element-wise operations with a value
-  virtual const Tensor& add(const_reference y) const;
-  virtual const Tensor& sub(const_reference y) const;
-  virtual const Tensor& mul(const_reference y) const;
-  virtual const Tensor& div(const_reference y) const;
-  virtual const Tensor& fmod(const_reference y) const;
-  virtual const Tensor& remainder(const_reference y) const;
-  virtual const Tensor& fmax(const_reference y) const;
-  virtual const Tensor& fmin(const_reference y) const;
-  virtual const Tensor& fdim(const_reference y) const;
-  virtual const Tensor& pow(const_reference y) const;
-  virtual const Tensor& hypot(const_reference y) const;
-  virtual const Tensor& atan2(const_reference y) const;
-  virtual const Tensor& ldexp(const_reference y) const;
-  virtual const Tensor& Scalbn(const_reference y) const;
-  virtual const Tensor& Scalbln(const_reference y) const;
-  virtual const Tensor& nextafter(const_reference y) const;
-  virtual const Tensor& nexttoward(const_reference y) const;
-  virtual const Tensor& copysign(const_reference y) const;
-  virtual const Tensor& isgreater(const_reference y) const;
-  virtual const Tensor& isgreaterequal(const_reference y) const;
-  virtual const Tensor& isless(const_reference y) const;
-  virtual const Tensor& islessequal(const_reference y) const;
-  virtual const Tensor& islessgreater(const_reference y) const;
-  virtual const Tensor& isunordered(const_reference y) const;
-  virtual const Tensor& fill(const_reference y) const;
 
   // Fused operations with values and tensors
   const Tensor& fma(const_reference y, const_reference z) const;
