@@ -17,6 +17,7 @@
 
 #include "thunder/tensor.hpp"
 
+#include <complex>
 #include <memory>
 #include <typeinfo>
 

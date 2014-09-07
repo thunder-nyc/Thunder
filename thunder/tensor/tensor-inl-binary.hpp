@@ -315,6 +315,10 @@ template < typename S >
 Tensor< S >& Tensor< S >::fill(const_reference y) {
   return const_cast< Tensor& >(const_cast< const Tensor* >(this)->fill(y));
 }
+template < typename S >
+Tensor< S > Tensor< S >::fill(const Tensor &x, const_reference y) {
+  return x.clone().fill(y);
+}
 
 }  // namespace tensor
 }  // namespace thunder
