@@ -102,8 +102,6 @@ THUNDER_TENSOR_DEFINE_STD_UNARY(signbit);
 THUNDER_TENSOR_DEFINE_STD_UNARY(real);
 THUNDER_TENSOR_DEFINE_STD_UNARY(imag);
 THUNDER_TENSOR_DEFINE_STD_UNARY(arg);
-THUNDER_TENSOR_DEFINE_STD_UNARY(conj);
-THUNDER_TENSOR_DEFINE_STD_UNARY(proj);
 
 #undef THUNDER_TENSOR_DEFINE_STD_UNARY
 
@@ -158,6 +156,32 @@ Tensor< S >& Tensor< S >::zero() {
 template < typename S >
 Tensor< S > Tensor< S >::zero(const Tensor &x) {
   return x.clone().zero();
+}
+
+template < typename S >
+const Tensor< S >& Tensor< S >::conj() const {
+  return *this;
+}
+template < typename S >
+Tensor< S >& Tensor< S >::conj() {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->conj());
+}
+template < typename S >
+Tensor< S > Tensor< S >::conj(const Tensor &x) {
+  return x.clone().conj();
+}
+
+template < typename S >
+const Tensor< S >& Tensor< S >::proj() const {
+  return *this;
+}
+template < typename S >
+Tensor< S >& Tensor< S >::proj() {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->proj());
+}
+template < typename S >
+Tensor< S > Tensor< S >::proj(const Tensor &x) {
+  return x.clone().proj();
 }
 
 }  // namespace tensor
