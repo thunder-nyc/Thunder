@@ -320,6 +320,7 @@ class Tensor {
 
   // Element-wise mathematical operations that are free of parameters
   virtual const Tensor& abs() const;
+  virtual const Tensor& fabs() const;
   virtual const Tensor& exp() const;
   virtual const Tensor& exp2() const;
   virtual const Tensor& expm1() const;
@@ -368,6 +369,7 @@ class Tensor {
 
   // Non-const element-wise operations are delegated using const_cast
   virtual Tensor& abs();
+  virtual Tensor& fabs();
   virtual Tensor& exp();
   virtual Tensor& exp2();
   virtual Tensor& expm1();
@@ -416,6 +418,7 @@ class Tensor {
 
   // static element-wise mathematical operations are deligated
   static Tensor abs(const Tensor &x);
+  static Tensor fabs(const Tensor &x);
   static Tensor exp(const Tensor &x);
   static Tensor exp2(const Tensor &x);
   static Tensor expm1(const Tensor &x);
