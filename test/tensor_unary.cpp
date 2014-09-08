@@ -111,8 +111,6 @@ TEST_STD_UNARY(signbit);
 TEST_STD_UNARY(real);
 TEST_STD_UNARY(imag);
 TEST_STD_UNARY(arg);
-TEST_STD_UNARY(conj);
-TEST_STD_UNARY(proj);
 
 #undef TEST_STD_UNARY
 
@@ -176,6 +174,68 @@ void cnrmTest() {
 TEST(TensorTest, cnrmTest) {
   cnrmTest< DoubleTensor >();
   cnrmTest< FloatTensor >();
+}
+
+template< typename T >
+void conjTest() {
+  T t1(10, 20, 7);
+  int t1_val = -800;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+  }
+  T t1_result = T::conj(t1);
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(*begin, t1_result(begin.position()));
+  }
+
+  T t2({10, 20, 7}, {161 , 8, 1});
+  int t2_val = -800;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
+  }
+  T t2_result = T::conj(t2);
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(*begin, t2_result(begin.position()));
+  }
+}
+TEST(TensorTest, conjTest) {
+  conjTest< DoubleTensor >();
+  conjTest< FloatTensor >();
+}
+
+template< typename T >
+void projTest() {
+  T t1(10, 20, 7);
+  int t1_val = -800;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+  }
+  T t1_result = T::proj(t1);
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(*begin, t1_result(begin.position()));
+  }
+
+  T t2({10, 20, 7}, {161 , 8, 1});
+  int t2_val = -800;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
+  }
+  T t2_result = T::proj(t2);
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(*begin, t2_result(begin.position()));
+  }
+}
+TEST(TensorTest, projTest) {
+  projTest< DoubleTensor >();
+  projTest< FloatTensor >();
 }
 
 }  // namespace
