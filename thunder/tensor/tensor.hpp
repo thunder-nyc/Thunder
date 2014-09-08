@@ -665,6 +665,24 @@ class Tensor {
   static Tensor var(const Tensor &x, dim_type d);
   static Tensor std(const Tensor &x, dim_type d);
 
+  // Fused operations with values and tensors
+  const Tensor& fma(const_reference y, const_reference z) const;
+  const Tensor& fma(const Tensor& y, const_reference z) const;
+  const Tensor& fma(const_reference y, const Tensor& z) const;
+  const Tensor& fma(const Tensor& y, const Tensor& z) const;
+
+  // Non-const fused operations are delegated using const_cast
+  Tensor& fma(const_reference y, const_reference z);
+  Tensor& fma(const Tensor &y, const_reference z);
+  Tensor& fma(const_reference y, const Tensor& z);
+  Tensor& fma(const Tensor &y, const Tensor& z);
+
+  // Static fused operations are delegated
+  static Tensor fma(const Tensor &x, const_reference y, const_reference z);
+  static Tensor fma(const Tensor &x, const Tensor &y, const_reference z);
+  static Tensor fma(const Tensor &x, const_reference y, const Tensor &z);
+  static Tensor fma(const Tensor &x, const Tensor &y, const Tensor &z);
+
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 
   // Printing functions
@@ -793,24 +811,6 @@ class Tensor {
   static Tensor fisherF(const size_storage &sz, RF m = 1.0, RF n = 1.0);
   template < typename RF = double >
   static Tensor studentT(const size_storage &sz, RF n = 1.0);
-
-  // Fused operations with values and tensors
-  const Tensor& fma(const_reference y, const_reference z) const;
-  const Tensor& fma(const Tensor& y, const_reference z) const;
-  const Tensor& fma(const_reference y, const Tensor& z) const;
-  const Tensor& fma(const Tensor& y, const Tensor& z) const;
-
-  // Non-const fused operations are delegated using const_cast
-  Tensor& fma(const_reference y, const_reference z);
-  Tensor& fma(const Tensor &y, const_reference z);
-  Tensor& fma(const_reference y, const Tensor& z);
-  Tensor& fma(const Tensor &y, const Tensor& z);
-
-  // Static fused operations are delegated
-  static Tensor fma(const Tensor &x, const_reference y, const_reference z);
-  static Tensor fma(const Tensor &x, const Tensor &y, const_reference z);
-  static Tensor fma(const Tensor &x, const_reference y, const Tensor &z);
-  static Tensor fma(const Tensor &x, const Tensor &y, const Tensor &z);
 
   // Constructor functions that can only be static
   static Tensor ones(size_type n);
