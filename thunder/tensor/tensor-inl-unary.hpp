@@ -60,7 +60,7 @@ namespace tensor {
     return x.clone().func();                                            \
   }
 
-THUNDER_TENSOR_DEFINE_STD_UNARY(abs);
+THUNDER_TENSOR_DEFINE_STD_UNARY(fabs);
 THUNDER_TENSOR_DEFINE_STD_UNARY(exp);
 THUNDER_TENSOR_DEFINE_STD_UNARY(exp2);
 THUNDER_TENSOR_DEFINE_STD_UNARY(expm1);
@@ -104,6 +104,19 @@ THUNDER_TENSOR_DEFINE_STD_UNARY(imag);
 THUNDER_TENSOR_DEFINE_STD_UNARY(arg);
 
 #undef THUNDER_TENSOR_DEFINE_STD_UNARY
+
+template < typename S >
+const Tensor< S >& Tensor< S >::abs() const {
+  return this->fabs();
+}
+template < typename S >
+Tensor< S >& Tensor< S >::abs() {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->abs());
+}
+template < typename S >
+Tensor< S > Tensor< S >::abs(const Tensor &x) {
+  return x.clone().abs();
+}
 
 template < typename S >
 const Tensor< S >& Tensor< S >::cnrm() const {
