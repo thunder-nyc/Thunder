@@ -70,6 +70,7 @@ namespace {
   }
 
 TEST_STD_UNARY(abs);
+TEST_STD_UNARY(fabs);
 TEST_STD_UNARY(exp);
 TEST_STD_UNARY(exp2);
 TEST_STD_UNARY(expm1);
