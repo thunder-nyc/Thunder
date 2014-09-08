@@ -47,6 +47,7 @@ const Tensor< S >& Tensor< S >::fma(
       *x_begin = static_cast< value_type >(::std::fma(*x_begin, y, z));
     }
   }
+  return *this;
 }
 
 template < typename S >
@@ -72,6 +73,7 @@ const Tensor< S >& Tensor< S >::fma(const Tensor &y, const_reference z) const {
       *x_begin = static_cast< value_type >(::std::fma(*x_begin, *y_begin, z));
     }
   }
+  return *this;
 }
 
 template < typename S >
@@ -97,6 +99,7 @@ const Tensor< S >& Tensor< S >::fma(const_reference y, const Tensor& z) const {
       *x_begin = static_cast< value_type >(::std::fma(*x_begin, y, *z_begin));
     }
   }
+  return *this;
 }
 
 template < typename S >
@@ -106,7 +109,7 @@ const Tensor< S >& Tensor< S >::fma(const Tensor &y, const Tensor &z) const {
   }
   if (partialContiguity(0, size_.size() - 1) &&
       y.partialContiguity(0, y.dimension() - 1) &&
-      z.partialContiguity(0, z.dimension() - 1) {
+      z.partialContiguity(0, z.dimension() - 1)) {
     pointer x_pointer = data();
     difference_type x_step = stride_[stride_.size() - 1];
     size_type x_length = length();
@@ -116,7 +119,7 @@ const Tensor< S >& Tensor< S >::fma(const Tensor &y, const Tensor &z) const {
     difference_type z_step = z.stride(z.dimension() - 1);
     for (size_type i = 0; i < x_length; ++i) {
       x_pointer[i * x_step] = static_cast< value_type >(::std::fma(
-          x_pointer[i * x_step], y_pointer[i * y_step], z_pointer[i * z_step));
+          x_pointer[i * x_step], y_pointer[i * y_step], z_pointer[i * z_step]));
     }
   } else {
     for (reference_iterator x_begin = reference_begin(),
@@ -127,6 +130,7 @@ const Tensor< S >& Tensor< S >::fma(const Tensor &y, const Tensor &z) const {
           ::std::fma(*x_begin, *y_begin, *z_begin));
     }
   }
+  return *this;
 }
 
 template < typename S >
@@ -147,22 +151,22 @@ Tensor< S >& Tensor< S >::fma(const Tensor &y, const Tensor &z) {
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::fma(
+Tensor< S > Tensor< S >::fma(
     const Tensor &x, const_reference y, const_reference z) {
   return x.clone().fma(y, z);
 }
 template < typename S >
-Tensor< S >& Tensor< S >::fma(
+Tensor< S > Tensor< S >::fma(
     const Tensor &x, const Tensor &y, const_reference z) {
   return x.clone().fma(y, z);
 }
 template < typename S >
-Tensor< S >& Tensor< S >::fma(
+Tensor< S > Tensor< S >::fma(
     const Tensor &x, const_reference y, const Tensor &z) {
   return x.clone().fma(y, z);
 }
 template < typename S >
-Tensor< S >& Tensor< S >::fma(
+Tensor< S > Tensor< S >::fma(
     const Tensor &x, const Tensor &y, const Tensor &z) {
   return x.clone().fma(y, z);
 }
