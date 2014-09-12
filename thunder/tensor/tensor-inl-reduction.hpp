@@ -274,12 +274,162 @@ typename Tensor< S >::value_type Tensor< S >::std(const Tensor &x) {
 
 template < typename S >
 Tensor< S > Tensor< S >::max(dim_type d, Tensor< size_storage > *pos) const {
-  return Tensor();
+  if (d >= size_.size()) {
+    throw out_of_range("Dimension exceeds limit");
+  }
+  size_storage sz = size_;
+  sz[d] = 1;
+  Tensor t(sz);
+  pos->resizeAs(t);
+  if (partialContiguity(0, d) && partialContiguity(d + 1, size_.size() - 1)
+      && pos->partialContiguity(0, d)
+      && pos->partialContiguity(d + 1, size_.size() - 1)) {
+    // Get data pointers
+    pointer x_data = data();
+    pointer t_data = t.data();
+    typename Tensor< size_storage >::pointer p_data = pos->data();
+    // Determine left and right size
+    size_type x_left_length = 1;
+    for (dim_type i = 0; i < d; ++i) {
+      x_left_length *= size_[i];
+    }
+    size_type x_length = size_[d];
+    size_type x_right_length = 1;
+    for (dim_type i = d + 1; i < size_.size(); ++i) {
+      x_right_length *= size_[i];
+    }
+    // Determine left and right step
+    difference_type x_left_step = d > 0 ? stride_[d - 1] : 0;
+    difference_type x_step = stride_[d];
+    difference_type x_right_step = stride_[stride_.size() - 1];
+    difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
+    difference_type t_right_step = t.stride(t.dimension() - 1);
+    difference_type p_left_step = d > 0 ? pos->stride(d - 1) : 0;
+    difference_type p_right_step = pos->stride(pos->dimension() - 1);
+    // Run the loop
+    value_type max_value = ::std::numeric_limits< value_type >::lowest();
+    size_type pos_value = 0;
+    for (size_type i = 0; i < x_left_length; ++i) {
+      for (size_type j = 0; j < x_right_length; ++j) {
+        max_value = ::std::numeric_limits< value_type >::lowest();
+        pos_value = 0;
+        for (size_type k = 0; k < x_length; ++k) {
+          value_type current_value =
+              x_data[i * x_left_step + j * x_right_step + k * x_step];
+          if (current_value > max_value) {
+            max_value = current_value;
+            pos_value = k;
+          }
+        }
+        t_data[i * t_left_step + j * t_right_step] = max_value;
+        p_data[i * p_left_step + j * p_right_step] = pos_value;
+      }
+    }
+  } else {
+    size_storage position;
+    size_type size_d = size_[d];
+    value_type max_value = ::std::numeric_limits< value_type >::lowest();
+    size_type pos_value = 0;
+    typename Tensor< size_storage >::reference_iterator p_begin =
+        pos->reference_begin();
+    for (reference_iterator begin = t.reference_begin(),
+             end = t.reference_end(); begin != end; ++begin, ++p_begin) {
+      max_value = ::std::numeric_limits< value_type >::lowest();
+      pos_value = 0;
+      position = begin.position();
+      for (size_type i = 0; i < size_d; ++i) {
+        position[d] = i;
+        value_type current_value = (*this)(position);
+        if (current_value > max_value) {
+          max_value = current_value;
+          pos_value = i;
+        }
+      }
+      *begin = max_value;
+      *p_begin = pos_value;
+    }
+  }
+  return t;
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::min(dim_type d, Tensor< size_storage > *pos) const {
-  return Tensor();
+  if (d >= size_.size()) {
+    throw out_of_range("Dimension exceeds limit");
+  }
+  size_storage sz = size_;
+  sz[d] = 1;
+  Tensor t(sz);
+  pos->resizeAs(t);
+  if (partialContiguity(0, d) && partialContiguity(d + 1, size_.size() - 1)
+      && pos->partialContiguity(0, d)
+      && pos->partialContiguity(d + 1, size_.size() - 1)) {
+    // Get data pointers
+    pointer x_data = data();
+    pointer t_data = t.data();
+    typename Tensor< size_storage >::pointer p_data = pos->data();
+    // Determine left and right size
+    size_type x_left_length = 1;
+    for (dim_type i = 0; i < d; ++i) {
+      x_left_length *= size_[i];
+    }
+    size_type x_length = size_[d];
+    size_type x_right_length = 1;
+    for (dim_type i = d + 1; i < size_.size(); ++i) {
+      x_right_length *= size_[i];
+    }
+    // Determine left and right step
+    difference_type x_left_step = d > 0 ? stride_[d - 1] : 0;
+    difference_type x_step = stride_[d];
+    difference_type x_right_step = stride_[stride_.size() - 1];
+    difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
+    difference_type t_right_step = t.stride(t.dimension() - 1);
+    difference_type p_left_step = d > 0 ? pos->stride(d - 1) : 0;
+    difference_type p_right_step = pos->stride(pos->dimension() - 1);
+    // Run the loop
+    value_type min_value = ::std::numeric_limits< value_type >::max();
+    size_type pos_value = 0;
+    for (size_type i = 0; i < x_left_length; ++i) {
+      for (size_type j = 0; j < x_right_length; ++j) {
+        min_value = ::std::numeric_limits< value_type >::max();
+        pos_value = 0;
+        for (size_type k = 0; k < x_length; ++k) {
+          value_type current_value =
+              x_data[i * x_left_step + j * x_right_step + k * x_step];
+          if (current_value < min_value) {
+            min_value = current_value;
+            pos_value = k;
+          }
+        }
+        t_data[i * t_left_step + j * t_right_step] = min_value;
+        p_data[i * p_left_step + j * p_right_step] = pos_value;
+      }
+    }
+  } else {
+    size_storage position;
+    size_type size_d = size_[d];
+    value_type min_value = ::std::numeric_limits< value_type >::max();
+    size_type pos_value = 0;
+    typename Tensor< size_storage >::reference_iterator p_begin =
+        pos->reference_begin();
+    for (reference_iterator begin = t.reference_begin(),
+             end = t.reference_end(); begin != end; ++begin, ++p_begin) {
+      min_value = ::std::numeric_limits< value_type >::max();
+      pos_value = 0;
+      position = begin.position();
+      for (size_type i = 0; i < size_d; ++i) {
+        position[d] = i;
+        value_type current_value = (*this)(position);
+        if (current_value < min_value) {
+          min_value = current_value;
+          pos_value = i;
+        }
+      }
+      *begin = min_value;
+      *p_begin = pos_value;
+    }
+  }
+  return t;
 }
 
 template < typename S >

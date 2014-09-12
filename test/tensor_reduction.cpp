@@ -129,6 +129,58 @@ void maxTest() {
       }
     }
   }
+
+  T t3(10, 20, 7);
+  int t3_val = 0;
+  for (typename T::reference_iterator begin = t3.reference_begin(),
+           end = t3.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t3_val++);
+  }
+
+  Tensor< typename T::size_storage > t3_pos;
+  T t3_result = T::max(t3, 1, &t3_pos);
+  EXPECT_EQ(3, t3_result.dimension());
+  EXPECT_EQ(10, t3_result.size(0));
+  EXPECT_EQ(1, t3_result.size(1));
+  EXPECT_EQ(7, t3_result.size(2));
+  EXPECT_EQ(3, t3_pos.dimension());
+  EXPECT_EQ(10, t3_pos.size(0));
+  EXPECT_EQ(1, t3_pos.size(1));
+  EXPECT_EQ(7, t3_pos.size(2));
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 7; ++j) {
+      EXPECT_EQ(t3(i, 19, j), t3_result(i, 0, j));
+      EXPECT_EQ(19, t3_pos(i, 0, j));
+    }
+  }
+
+  T t4({10, 20, 7, 9}, {1431, 71, 10, 1});
+  int t4_val = 0;
+  for (typename T::reference_iterator begin = t4.reference_begin(),
+           end = t4.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t4_val++);
+  }
+
+  Tensor< typename T::size_storage > t4_pos;
+  T t4_result = T::max(t4, 1, &t4_pos);
+  EXPECT_EQ(4, t4_result.dimension());
+  EXPECT_EQ(10, t4_result.size(0));
+  EXPECT_EQ(1, t4_result.size(1));
+  EXPECT_EQ(7, t4_result.size(2));
+  EXPECT_EQ(9, t4_result.size(3));
+  EXPECT_EQ(4, t4_pos.dimension());
+  EXPECT_EQ(10, t4_pos.size(0));
+  EXPECT_EQ(1, t4_pos.size(1));
+  EXPECT_EQ(7, t4_pos.size(2));
+  EXPECT_EQ(9, t4_pos.size(3));
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 7; ++j) {
+      for (int k = 0; k < 9; ++k) {
+        EXPECT_EQ(t2(i, 19, j, k), t2_result(i, 0, j, k));
+        EXPECT_EQ(19, t4_pos(i, 0, j, k));
+      }
+    }
+  }
 }
 
 TEST(TensorTest, maxTest) {
@@ -174,6 +226,58 @@ void minTest() {
     for (int j = 0; j < 7; ++j) {
       for (int k = 0; k < 9; ++k) {
         EXPECT_EQ(t2(i, 0, j, k), t2_result(i, 0, j, k));
+      }
+    }
+  }
+
+  T t3(10, 20, 7);
+  int t3_val = 0;
+  for (typename T::reference_iterator begin = t3.reference_begin(),
+           end = t3.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t3_val++);
+  }
+
+  Tensor< typename T::size_storage > t3_pos;
+  T t3_result = T::min(t3, 1, &t3_pos);
+  EXPECT_EQ(3, t3_result.dimension());
+  EXPECT_EQ(10, t3_result.size(0));
+  EXPECT_EQ(1, t3_result.size(1));
+  EXPECT_EQ(7, t3_result.size(2));
+  EXPECT_EQ(3, t3_pos.dimension());
+  EXPECT_EQ(10, t3_pos.size(0));
+  EXPECT_EQ(1, t3_pos.size(1));
+  EXPECT_EQ(7, t3_pos.size(2));
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 7; ++j) {
+      EXPECT_EQ(t3(i, 0, j), t3_result(i, 0, j));
+      EXPECT_EQ(0, t3_pos(i, 0, j));
+    }
+  }
+
+  T t4({10, 20, 7, 9}, {1431, 71, 10, 1});
+  int t4_val = 0;
+  for (typename T::reference_iterator begin = t4.reference_begin(),
+           end = t4.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t4_val++);
+  }
+
+  Tensor< typename T::size_storage > t4_pos;
+  T t4_result = T::min(t4, 1, &t4_pos);
+  EXPECT_EQ(4, t4_result.dimension());
+  EXPECT_EQ(10, t4_result.size(0));
+  EXPECT_EQ(1, t4_result.size(1));
+  EXPECT_EQ(7, t4_result.size(2));
+  EXPECT_EQ(9, t4_result.size(3));
+  EXPECT_EQ(4, t4_pos.dimension());
+  EXPECT_EQ(10, t4_pos.size(0));
+  EXPECT_EQ(1, t4_pos.size(1));
+  EXPECT_EQ(7, t4_pos.size(2));
+  EXPECT_EQ(9, t4_pos.size(3));
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 7; ++j) {
+      for (int k = 0; k < 9; ++k) {
+        EXPECT_EQ(t2(i, 0, j, k), t2_result(i, 0, j, k));
+        EXPECT_EQ(0, t4_pos(i, 0, j, k));
       }
     }
   }
