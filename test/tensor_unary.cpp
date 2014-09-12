@@ -42,8 +42,9 @@ namespace {
       if (::std::isnan(t1_result(begin.position()))) {                  \
         EXPECT_TRUE(::std::isnan(::std::func(*begin)));                 \
       } else {                                                          \
-        EXPECT_FLOAT_EQ(::std::func(*begin),                            \
-                        t1_result(begin.position()));                   \
+        EXPECT_FLOAT_EQ(                                                \
+            static_cast< typename T::value_type >(::std::func(*begin)), \
+            t1_result(begin.position()));                               \
       }                                                                 \
     }                                                                   \
                                                                         \
@@ -59,14 +60,16 @@ namespace {
       if (::std::isnan(t2_result(begin.position()))) {                  \
         EXPECT_TRUE(::std::isnan(::std::func(*begin)));                 \
       } else {                                                          \
-        EXPECT_FLOAT_EQ(::std::func(*begin),                            \
-                        t2_result(begin.position()));                   \
+        EXPECT_FLOAT_EQ(                                                \
+            static_cast< typename T::value_type >(::std::func(*begin)), \
+            t1_result(begin.position()));                               \
       }                                                                 \
     }                                                                   \
   }                                                                     \
   TEST(TensorTest, func ## Test) {                                      \
     func ## Test< DoubleTensor >();                                     \
     func ## Test< FloatTensor >();                                      \
+    func ## Test< Tensor< Storage< int > > >();                         \
   }
 
 TEST_STD_UNARY(abs);
@@ -144,6 +147,7 @@ void zeroTest() {
 TEST(TensorTest, zeroTest) {
   zeroTest< DoubleTensor >();
   zeroTest< FloatTensor >();
+  zeroTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -157,7 +161,8 @@ void cnrmTest() {
   T t1_result = T::cnrm(t1);
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::norm(*begin), t1_result(begin.position()));
+    EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(::std::norm(*begin)),
+                    t1_result(begin.position()));
   }
 
   T t2({10, 20, 7}, {161 , 8, 1});
@@ -169,12 +174,14 @@ void cnrmTest() {
   T t2_result = T::cnrm(t2);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::norm(*begin), t2_result(begin.position()));
+    EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(::std::norm(*begin)),
+                    t2_result(begin.position()));
   }
 }
 TEST(TensorTest, cnrmTest) {
   cnrmTest< DoubleTensor >();
   cnrmTest< FloatTensor >();
+  cnrmTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -206,6 +213,7 @@ void conjTest() {
 TEST(TensorTest, conjTest) {
   conjTest< DoubleTensor >();
   conjTest< FloatTensor >();
+  conjTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -237,6 +245,7 @@ void projTest() {
 TEST(TensorTest, projTest) {
   projTest< DoubleTensor >();
   projTest< FloatTensor >();
+  projTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace
