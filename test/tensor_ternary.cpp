@@ -49,7 +49,7 @@ void fmaTest() {
            end = t2.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t2_val++) / 392;
   }
-  
+
   T t2_result = T::fma(t2, t1, -5);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
@@ -65,7 +65,7 @@ void fmaTest() {
            end = t3.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t3_val++) / 392;
   }
-  
+
   T t3_result = T::fma(t3, 9, t1);
   for (typename T::reference_iterator begin = t3.reference_begin(),
            end = t3.reference_end(); begin != end; ++begin) {
@@ -81,7 +81,7 @@ void fmaTest() {
            end = t4.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t4_val++) / 392;
   }
-  
+
   T t4_result = T::fma(t4, t1, t2);
   for (typename T::reference_iterator begin = t4.reference_begin(),
            end = t4.reference_end(); begin != end; ++begin) {

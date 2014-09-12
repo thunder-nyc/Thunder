@@ -161,7 +161,7 @@ void addTest() {
            end = t2.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t2_val++) / 392;
   }
-  
+
   T t2_result = T::add(t2, t1);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
@@ -173,7 +173,7 @@ void addTest() {
           t2_result(begin.position()));
     }
   }
-  
+
   T t3({10, 20, 7}, {161 , 8, 1});
   int t3_val = -800;
   for (typename T::reference_iterator begin = t3.reference_begin(),
@@ -190,7 +190,7 @@ void addTest() {
                       t3_result(begin.position()));
     }
   }
-  
+
   T t4(10, 20, 7);
   int t4_val = -744;
   for (typename T::reference_iterator begin = t4.reference_begin(),
@@ -239,7 +239,7 @@ void subTest() {
            end = t2.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t2_val++) / 392;
   }
-  
+
   T t2_result = T::sub(t2, t1);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
@@ -251,7 +251,7 @@ void subTest() {
           t2_result(begin.position()));
     }
   }
-  
+
   T t3({10, 20, 7}, {161 , 8, 1});
   int t3_val = -800;
   for (typename T::reference_iterator begin = t3.reference_begin(),
@@ -268,7 +268,7 @@ void subTest() {
                       t3_result(begin.position()));
     }
   }
-  
+
   T t4(10, 20, 7);
   int t4_val = -744;
   for (typename T::reference_iterator begin = t4.reference_begin(),
@@ -317,7 +317,7 @@ void mulTest() {
            end = t2.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t2_val++) / 392;
   }
-  
+
   T t2_result = T::mul(t2, t1);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
@@ -329,7 +329,7 @@ void mulTest() {
           t2_result(begin.position()));
     }
   }
-  
+
   T t3({10, 20, 7}, {161 , 8, 1});
   int t3_val = -800;
   for (typename T::reference_iterator begin = t3.reference_begin(),
@@ -346,7 +346,7 @@ void mulTest() {
                       t3_result(begin.position()));
     }
   }
-  
+
   T t4(10, 20, 7);
   int t4_val = -744;
   for (typename T::reference_iterator begin = t4.reference_begin(),
@@ -398,7 +398,7 @@ void divTest() {
            end = t2.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t2_val++) / 392;
   }
-  
+
   T t2_result = T::div(t2, t1);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
@@ -410,7 +410,7 @@ void divTest() {
           t2_result(begin.position()));
     }
   }
-  
+
   T t3({10, 20, 7}, {161 , 8, 1});
   int t3_val = -800;
   for (typename T::reference_iterator begin = t3.reference_begin(),
@@ -430,7 +430,7 @@ void divTest() {
                       t3_result(begin.position()));
     }
   }
-  
+
   T t4(10, 20, 7);
   int t4_val = -744;
   for (typename T::reference_iterator begin = t4.reference_begin(),
@@ -468,7 +468,7 @@ void fillTest() {
            end = t1.reference_end(); begin != end; ++begin) {
     EXPECT_FLOAT_EQ(9, t1_result(begin.position()));
   }
-  
+
   T t3({10, 20, 7}, {161 , 8, 1});
   int t3_val = -800;
   for (typename T::reference_iterator begin = t3.reference_begin(),
