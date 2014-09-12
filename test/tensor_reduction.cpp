@@ -185,102 +185,60 @@ TEST(TensorTest, minTest) {
   minTest< Tensor< Storage< int > > >();
 }
 
-template < typename T >
-void sumTest() {
-  T t1(10, 20, 7);
-  int t1_val = 0;
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++);
+#define TEST_DIM_REDUCTION(func)                                        \
+  template < typename T >                                               \
+  void func ## Test() {                                                 \
+    T t1(10, 20, 7);                                                    \
+    int t1_val = 0;                                                     \
+    for (typename T::reference_iterator begin = t1.reference_begin(),   \
+             end = t1.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t1_val++);         \
+    }                                                                   \
+                                                                        \
+    T t1_result = T::func(t1, 1);                                       \
+    EXPECT_EQ(3, t1_result.dimension());                                \
+    EXPECT_EQ(10, t1_result.size(0));                                   \
+    EXPECT_EQ(1, t1_result.size(1));                                    \
+    EXPECT_EQ(7, t1_result.size(2));                                    \
+    for (int i = 0; i < 10; ++i) {                                      \
+      for (int j = 0; j < 7; ++j) {                                     \
+        EXPECT_EQ(t1[i].select(1, j).func(), t1_result(i, 0, j));       \
+      }                                                                 \
+    }                                                                   \
+                                                                        \
+    T t2({10, 20, 7, 9}, {1431, 71, 10, 1});                            \
+    int t2_val = 0;                                                     \
+    for (typename T::reference_iterator begin = t2.reference_begin(),   \
+             end = t2.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t2_val++);         \
+    }                                                                   \
+                                                                        \
+    T t2_result = T::func(t2, 1);                                       \
+    EXPECT_EQ(4, t2_result.dimension());                                \
+    EXPECT_EQ(10, t2_result.size(0));                                   \
+    EXPECT_EQ(1, t2_result.size(1));                                    \
+    EXPECT_EQ(7, t2_result.size(2));                                    \
+    EXPECT_EQ(9, t2_result.size(3));                                    \
+    for (int i = 0; i < 10; ++i) {                                      \
+      for (int j = 0; j < 7; ++j) {                                     \
+        for (int k = 0; k < 9; ++k) {                                   \
+          EXPECT_EQ(t2[i].select(1, j).select(1, k).func(),             \
+                    t2_result(i, 0, j, k));                             \
+        }                                                               \
+      }                                                                 \
+    }                                                                   \
+  }                                                                     \
+  TEST(TensorTest, func ## Test) {                                      \
+    func ## Test< DoubleTensor >();                                     \
+    func ## Test< FloatTensor >();                                      \
+    func ## Test< Tensor< Storage< int > > >();                         \
   }
 
-  T t1_result = T::sum(t1, 1);
-  EXPECT_EQ(3, t1_result.dimension());
-  EXPECT_EQ(10, t1_result.size(0));
-  EXPECT_EQ(1, t1_result.size(1));
-  EXPECT_EQ(7, t1_result.size(2));
-  for (int i = 0; i < 10; ++i) {
-    for (int j = 0; j < 7; ++j) {
-      EXPECT_EQ(t1[i].select(1, j).sum(), t1_result(i, 0, j));
-    }
-  }
-
-  T t2({10, 20, 7, 9}, {1431, 71, 10, 1});
-  int t2_val = 0;
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++);
-  }
-
-  T t2_result = T::sum(t2, 1);
-  EXPECT_EQ(4, t2_result.dimension());
-  EXPECT_EQ(10, t2_result.size(0));
-  EXPECT_EQ(1, t2_result.size(1));
-  EXPECT_EQ(7, t2_result.size(2));
-  EXPECT_EQ(9, t2_result.size(3));
-  for (int i = 0; i < 10; ++i) {
-    for (int j = 0; j < 7; ++j) {
-      for (int k = 0; k < 9; ++k) {
-        EXPECT_EQ(t2[i].select(1, j).select(1, k).sum(), t2_result(i, 0, j, k));
-      }
-    }
-  }
-}
-
-TEST(TensorTest, sumTest) {
-  sumTest< DoubleTensor >();
-  sumTest< FloatTensor >();
-  sumTest< Tensor< Storage< int > > >();
-}
-
-template < typename T >
-void prodTest() {
-  T t1(10, 20, 7);
-  int t1_val = 0;
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++);
-  }
-
-  T t1_result = T::prod(t1, 1);
-  EXPECT_EQ(3, t1_result.dimension());
-  EXPECT_EQ(10, t1_result.size(0));
-  EXPECT_EQ(1, t1_result.size(1));
-  EXPECT_EQ(7, t1_result.size(2));
-  for (int i = 0; i < 10; ++i) {
-    for (int j = 0; j < 7; ++j) {
-      EXPECT_EQ(t1[i].select(1, j).prod(), t1_result(i, 0, j));
-    }
-  }
-
-  T t2({10, 20, 7, 9}, {1431, 71, 10, 1});
-  int t2_val = 0;
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++);
-  }
-
-  T t2_result = T::prod(t2, 1);
-  EXPECT_EQ(4, t2_result.dimension());
-  EXPECT_EQ(10, t2_result.size(0));
-  EXPECT_EQ(1, t2_result.size(1));
-  EXPECT_EQ(7, t2_result.size(2));
-  EXPECT_EQ(9, t2_result.size(3));
-  for (int i = 0; i < 10; ++i) {
-    for (int j = 0; j < 7; ++j) {
-      for (int k = 0; k < 9; ++k) {
-        EXPECT_EQ(t2[i].select(1, j).select(1, k).prod(),
-                  t2_result(i, 0, j, k));
-      }
-    }
-  }
-}
-
-TEST(TensorTest, prodTest) {
-  prodTest< DoubleTensor >();
-  prodTest< FloatTensor >();
-  prodTest< Tensor< Storage< int > > >();
-}
+TEST_DIM_REDUCTION(sum);
+TEST_DIM_REDUCTION(prod);
+TEST_DIM_REDUCTION(mean);
+TEST_DIM_REDUCTION(var);
+TEST_DIM_REDUCTION(std);
 
 }  // namespace
 }  // namespace thunder
