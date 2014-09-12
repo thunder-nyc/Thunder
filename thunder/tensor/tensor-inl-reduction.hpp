@@ -412,12 +412,116 @@ Tensor< S > Tensor< S >::min(dim_type d) const {
 
 template < typename S >
 Tensor< S > Tensor< S >::sum(dim_type d) const {
-  return Tensor();
+  if (d >= size_.size()) {
+    throw out_of_range("Dimension exceeds limit");
+  }
+  size_storage sz = size_;
+  sz[d] = 1;
+  Tensor t(sz);
+  if (partialContiguity(0, d) && partialContiguity(d + 1, size_.size() - 1)) {
+    // Get data pointers
+    pointer x_data = data();
+    pointer t_data = t.data();
+    // Determine left and right size
+    size_type x_left_length = 1;
+    for (dim_type i = 0; i < d; ++i) {
+      x_left_length *= size_[i];
+    }
+    size_type x_length = size_[d];
+    size_type x_right_length = 1;
+    for (dim_type i = d + 1; i < size_.size(); ++i) {
+      x_right_length *= size_[i];
+    }
+    // Determine left and right step
+    difference_type x_left_step = d > 0 ? stride_[d - 1] : 0;
+    difference_type x_step = stride_[d];
+    difference_type x_right_step = stride_[stride_.size() - 1];
+    difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
+    difference_type t_right_step = t.stride(t.dimension() - 1);
+    // Run the loop
+    value_type sum_value = 0;
+    for (size_type i = 0; i < x_left_length; ++i) {
+      for (size_type j = 0; j < x_right_length; ++j) {
+        sum_value = 0;
+        for (size_type k = 0; k < x_length; ++k) {
+          sum_value += x_data[i * x_left_step + j * x_right_step + k * x_step];
+        }
+        t_data[i * t_left_step + j * t_right_step] = sum_value;
+      }
+    }
+  } else {
+    size_storage position;
+    size_type size_d = size_[d];
+    value_type sum_value = 0;
+    for (reference_iterator begin = t.reference_begin(),
+             end = t.reference_end(); begin != end; ++begin) {
+      sum_value = 0;
+      position = begin.position();
+      for (size_type i = 0; i < size_d; ++i) {
+        position[d] = i;
+        sum_value += (*this)(position);
+      }
+      *begin = sum_value;
+    }
+  }
+  return t;
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::prod(dim_type d) const {
-  return Tensor();
+  if (d >= size_.size()) {
+    throw out_of_range("Dimension exceeds limit");
+  }
+  size_storage sz = size_;
+  sz[d] = 1;
+  Tensor t(sz);
+  if (partialContiguity(0, d) && partialContiguity(d + 1, size_.size() - 1)) {
+    // Get data pointers
+    pointer x_data = data();
+    pointer t_data = t.data();
+    // Determine left and right size
+    size_type x_left_length = 1;
+    for (dim_type i = 0; i < d; ++i) {
+      x_left_length *= size_[i];
+    }
+    size_type x_length = size_[d];
+    size_type x_right_length = 1;
+    for (dim_type i = d + 1; i < size_.size(); ++i) {
+      x_right_length *= size_[i];
+    }
+    // Determine left and right step
+    difference_type x_left_step = d > 0 ? stride_[d - 1] : 0;
+    difference_type x_step = stride_[d];
+    difference_type x_right_step = stride_[stride_.size() - 1];
+    difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
+    difference_type t_right_step = t.stride(t.dimension() - 1);
+    // Run the loop
+    value_type prod_value = 1;
+    for (size_type i = 0; i < x_left_length; ++i) {
+      for (size_type j = 0; j < x_right_length; ++j) {
+        prod_value = 1;
+        for (size_type k = 0; k < x_length; ++k) {
+          prod_value *= x_data[i * x_left_step + j * x_right_step + k * x_step];
+        }
+        t_data[i * t_left_step + j * t_right_step] = prod_value;
+      }
+    }
+  } else {
+    size_storage position;
+    size_type size_d = size_[d];
+    value_type prod_value = 1;
+    for (reference_iterator begin = t.reference_begin(),
+             end = t.reference_end(); begin != end; ++begin) {
+      prod_value = 1;
+      position = begin.position();
+      for (size_type i = 0; i < size_d; ++i) {
+        position[d] = i;
+        prod_value *= (*this)(position);
+      }
+      *begin = prod_value;
+    }
+  }
+  return t;
 }
 
 template < typename S >
