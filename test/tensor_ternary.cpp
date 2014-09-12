@@ -38,7 +38,9 @@ void fmaTest() {
   T t1_result = T::fma(t1, 9, -7);
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(*begin, 9, -7), t1_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(::std::fma(*begin, 9, -7)),
+        t1_result(begin.position()));
   }
 
   T t2(10, 20, 7);
@@ -51,8 +53,10 @@ void fmaTest() {
   T t2_result = T::fma(t2, t1, -5);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(*begin, t1(begin.position()), -5),
-                    t2_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(
+            ::std::fma(*begin, t1(begin.position()), -5)),
+        t2_result(begin.position()));
   }
 
   T t3(10, 20, 7);
@@ -65,8 +69,10 @@ void fmaTest() {
   T t3_result = T::fma(t3, 9, t1);
   for (typename T::reference_iterator begin = t3.reference_begin(),
            end = t3.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(*begin, 9, t1(begin.position())),
-                    t3_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(
+            ::std::fma(*begin, 9, t1(begin.position()))),
+        t3_result(begin.position()));
   }
 
   T t4(10, 20, 7);
@@ -79,9 +85,10 @@ void fmaTest() {
   T t4_result = T::fma(t4, t1, t2);
   for (typename T::reference_iterator begin = t4.reference_begin(),
            end = t4.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(
-        *begin, t1(begin.position()), t2(begin.position())),
-                    t4_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(
+            ::std::fma(*begin, t1(begin.position()), t2(begin.position()))),
+        t4_result(begin.position()));
   }
 
   T t5({10, 20, 7}, {161, 8, 1});
@@ -93,7 +100,9 @@ void fmaTest() {
   T t5_result = T::fma(t5, -5, 7);
   for (typename T::reference_iterator begin = t5.reference_begin(),
            end = t5.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(*begin, -5, 7), t5_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(::std::fma(*begin, -5, 7)),
+        t5_result(begin.position()));
   }
 
   T t6({10, 20, 7}, {161, 8, 1});
@@ -105,8 +114,10 @@ void fmaTest() {
   T t6_result = T::fma(t6, t1, 7);
   for (typename T::reference_iterator begin = t6.reference_begin(),
            end = t6.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(*begin, t1(begin.position()), 7),
-                    t6_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(
+            ::std::fma(*begin, t1(begin.position()), 7)),
+        t6_result(begin.position()));
   }
 
   T t7({10, 20, 7}, {161, 8, 1});
@@ -118,8 +129,10 @@ void fmaTest() {
   T t7_result = T::fma(t7, 4, t1);
   for (typename T::reference_iterator begin = t7.reference_begin(),
            end = t7.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(*begin, 4, t1(begin.position())),
-                    t7_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(
+            ::std::fma(*begin, 4, t1(begin.position()))),
+        t7_result(begin.position()));
   }
 
   T t8({10, 20, 7}, {161, 8, 1});
@@ -131,15 +144,17 @@ void fmaTest() {
   T t8_result = T::fma(t8, t1, t7);
   for (typename T::reference_iterator begin = t8.reference_begin(),
            end = t8.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(::std::fma(
-        *begin, t1(begin.position()), t7(begin.position())),
-                    t8_result(begin.position()));
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(
+            ::std::fma(*begin, t1(begin.position()), t7(begin.position()))),
+        t8_result(begin.position()));
   }
 }
 
 TEST(TensorTest, fmaTest) {
   fmaTest< DoubleTensor >();
   fmaTest< FloatTensor >();
+  fmaTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace
