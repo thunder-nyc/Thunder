@@ -41,8 +41,10 @@ namespace {
       if (::std::isnan(t1_result(begin.position()))) {                  \
         EXPECT_TRUE(::std::isnan(::std::func(*begin, 9)));              \
       } else {                                                          \
-        EXPECT_FLOAT_EQ(::std::func(*begin, 9),                         \
-                        t1_result(begin.position()));                   \
+        EXPECT_FLOAT_EQ(                                                \
+            static_cast< typename T::value_type >(                      \
+                ::std::func(*begin, 9)),                                \
+            t1_result(begin.position()));                               \
       }                                                                 \
     }                                                                   \
     T t2(10, 20, 7);                                                    \
@@ -59,8 +61,10 @@ namespace {
         EXPECT_TRUE(::std::isnan(                                       \
             ::std::func(*begin, t1(begin.position()))));                \
       } else {                                                          \
-        EXPECT_FLOAT_EQ(::std::func(*begin, t1(begin.position())),      \
-                        t2_result(begin.position()));                   \
+        EXPECT_FLOAT_EQ(                                                \
+            static_cast< typename T::value_type >(                      \
+                ::std::func(*begin, t1(begin.position()))),             \
+            t2_result(begin.position()));                               \
       }                                                                 \
     }                                                                   \
                                                                         \
@@ -76,8 +80,10 @@ namespace {
       if (::std::isnan(t3_result(begin.position()))) {                  \
         EXPECT_TRUE(::std::isnan(::std::func(*begin, 7)));              \
       } else {                                                          \
-        EXPECT_FLOAT_EQ(::std::func(*begin, 7),                         \
-                        t3_result(begin.position()))                    \
+        EXPECT_FLOAT_EQ(                                                \
+            static_cast< typename T::value_type >(                      \
+                ::std::func(*begin, 7)),                                \
+            t3_result(begin.position()))                                \
         << "Result mismatches at with *begin = " << *begin;             \
       }                                                                 \
     }                                                                   \
@@ -95,7 +101,9 @@ namespace {
         EXPECT_TRUE(::std::isnan(                                       \
             ::std::func(*begin, t3(begin.position()))));                \
       } else {                                                          \
-        EXPECT_FLOAT_EQ(::std::func(*begin, t3(begin.position())),      \
+        EXPECT_FLOAT_EQ(                                                \
+            static_cast< typename T::value_type >(                      \
+                ::std::func(*begin, t3(begin.position()))),             \
                         t4_result(begin.position()));                   \
       }                                                                 \
     }                                                                   \
@@ -103,6 +111,7 @@ namespace {
   TEST(TensorTest, func ## Test) {                                      \
     func ## Test< DoubleTensor >();                                     \
     func ## Test< FloatTensor >();                                      \
+    func ## Test< Tensor< Storage < int > > >();                        \
   }
 
 TEST_STD_BINARY(fmod);
@@ -142,7 +151,8 @@ void addTest() {
     if (::std::isnan(t1_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin + 9));
     } else {
-      EXPECT_FLOAT_EQ(*begin + 9, t1_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin + 9),
+                      t1_result(begin.position()));
     }
   }
   T t2(10, 20, 7);
@@ -158,8 +168,9 @@ void addTest() {
     if (::std::isnan(t2_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin + t1(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin + t1(begin.position()),
-                      t2_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin + t1(begin.position())),
+          t2_result(begin.position()));
     }
   }
   
@@ -175,7 +186,8 @@ void addTest() {
     if (::std::isnan(t3_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin + 7));
   } else {
-      EXPECT_FLOAT_EQ(*begin + 7, t3_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin + 7),
+                      t3_result(begin.position()));
     }
   }
   
@@ -191,14 +203,16 @@ void addTest() {
     if (::std::isnan(t4_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin + t3(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin + t3(begin.position()),
-                      t4_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin + t3(begin.position())),
+          t4_result(begin.position()));
     }
   }
 }
 TEST(TensorTest, addTest) {
   addTest< DoubleTensor >();
   addTest< FloatTensor >();
+  addTest< Tensor< Storage < int > > >();
 }
 
 template< typename T >
@@ -215,7 +229,8 @@ void subTest() {
     if (::std::isnan(t1_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin - 9));
     } else {
-      EXPECT_FLOAT_EQ(*begin - 9, t1_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin - 9),
+                      t1_result(begin.position()));
     }
   }
   T t2(10, 20, 7);
@@ -231,8 +246,9 @@ void subTest() {
     if (::std::isnan(t2_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin - t1(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin - t1(begin.position()),
-                      t2_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin - t1(begin.position())),
+          t2_result(begin.position()));
     }
   }
   
@@ -248,7 +264,8 @@ void subTest() {
     if (::std::isnan(t3_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin - 7));
   } else {
-      EXPECT_FLOAT_EQ(*begin - 7, t3_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin - 7),
+                      t3_result(begin.position()));
     }
   }
   
@@ -264,14 +281,16 @@ void subTest() {
     if (::std::isnan(t4_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin - t3(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin - t3(begin.position()),
-                      t4_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin - t3(begin.position())),
+          t4_result(begin.position()));
     }
   }
 }
 TEST(TensorTest, subTest) {
   subTest< DoubleTensor >();
   subTest< FloatTensor >();
+  subTest< Tensor< Storage < int > > >();
 }
 
 template< typename T >
@@ -288,7 +307,8 @@ void mulTest() {
     if (::std::isnan(t1_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin * 9));
     } else {
-      EXPECT_FLOAT_EQ(*begin * 9, t1_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin * 9),
+                      t1_result(begin.position()));
     }
   }
   T t2(10, 20, 7);
@@ -304,8 +324,9 @@ void mulTest() {
     if (::std::isnan(t2_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin * t1(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin * t1(begin.position()),
-                      t2_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin * t1(begin.position())),
+          t2_result(begin.position()));
     }
   }
   
@@ -321,7 +342,8 @@ void mulTest() {
     if (::std::isnan(t3_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin * 7));
   } else {
-      EXPECT_FLOAT_EQ(*begin * 7, t3_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin * 7),
+                      t3_result(begin.position()));
     }
   }
   
@@ -337,14 +359,16 @@ void mulTest() {
     if (::std::isnan(t4_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin * t3(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin * t3(begin.position()),
-                      t4_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin * t3(begin.position())),
+          t4_result(begin.position()));
     }
   }
 }
 TEST(TensorTest, mulTest) {
   mulTest< DoubleTensor >();
   mulTest< FloatTensor >();
+  mulTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -354,6 +378,9 @@ void divTest() {
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+    if (*begin == 0) {
+      *begin = 1;
+    }
   }
   T t1_result = T::div(t1, 9);
   for (typename T::reference_iterator begin = t1.reference_begin(),
@@ -361,7 +388,8 @@ void divTest() {
     if (::std::isnan(t1_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin / 9));
     } else {
-      EXPECT_FLOAT_EQ(*begin / 9, t1_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin / 9),
+                      t1_result(begin.position()));
     }
   }
   T t2(10, 20, 7);
@@ -377,8 +405,9 @@ void divTest() {
     if (::std::isnan(t2_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin / t1(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin / t1(begin.position()),
-                      t2_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin / t1(begin.position())),
+          t2_result(begin.position()));
     }
   }
   
@@ -387,6 +416,9 @@ void divTest() {
   for (typename T::reference_iterator begin = t3.reference_begin(),
          end = t3.reference_end(); begin != end; ++begin) {
     *begin = static_cast< typename T::value_type >(t3_val++) / 488;
+    if (*begin == 0) {
+      *begin = 1;
+    }
   }
   T t3_result = T::div(t3, 7);
   for (typename T::reference_iterator begin = t3.reference_begin(),
@@ -394,7 +426,8 @@ void divTest() {
     if (::std::isnan(t3_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin / 7));
   } else {
-      EXPECT_FLOAT_EQ(*begin / 7, t3_result(begin.position()));
+      EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(*begin / 7),
+                      t3_result(begin.position()));
     }
   }
   
@@ -410,14 +443,16 @@ void divTest() {
     if (::std::isnan(t4_result(begin.position()))) {
       EXPECT_TRUE(::std::isnan(*begin / t3(begin.position())));
     } else {
-      EXPECT_FLOAT_EQ(*begin / t3(begin.position()),
-                      t4_result(begin.position()));
+      EXPECT_FLOAT_EQ(
+          static_cast< typename T::value_type >(*begin / t3(begin.position())),
+          t4_result(begin.position()));
     }
   }
 }
 TEST(TensorTest, divTest) {
   divTest< DoubleTensor >();
   divTest< FloatTensor >();
+  divTest< Tensor < Storage< int > > >();
 }
 
 template< typename T >
@@ -449,6 +484,7 @@ void fillTest() {
 TEST(TensorTest, fillTest) {
   fillTest< DoubleTensor >();
   fillTest< FloatTensor >();
+  fillTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace
