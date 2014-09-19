@@ -700,9 +700,9 @@ class Tensor {
 
   // Templated constructor functions can only be static
   template < typename TR >
-  static Tensor polar(const_reference r, const TR& theta);
+  static Tensor polar(typename TR::const_reference r, const TR& theta);
   template < typename TR >
-  static Tensor polar(const TR& r, reference theta);
+  static Tensor polar(const TR& r, typename TR::const_reference theta);
   template < typename TR >
   static Tensor polar(const TR& r, const TR& theta);
 

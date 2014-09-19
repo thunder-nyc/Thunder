@@ -26,7 +26,80 @@
 namespace thunder {
 namespace tensor {
 
+template < typename S >
+Tensor< S > Tensor< S >::ones(size_type n) {
+  return Tensor(n).fill(1);
+}
 
+template < typename S >
+Tensor< S > Tensor< S >::ones(size_type m, size_type n) {
+  return Tensor(m, n).fill(1);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::ones(size_type n0, size_type n1, size_type n2) {
+  return Tensor(n0, n1, n2).fill(1);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::ones(
+    size_type n0, size_type n1, size_type n2, size_type n3) {
+  return Tensor(n0, n1, n2, n3).fill(1);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::ones(const size_storage &sz) {
+  return Tensor(sz).fill(1);
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::zeros(size_type n) {
+  return Tensor(n).zero();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::zeros(size_type m, size_type n) {
+  return Tensor(m, n).zero();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::zeros(size_type n0, size_type n1, size_type n2) {
+  return Tensor(n0, n1, n2).zero();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::zeros(
+    size_type n0, size_type n1, size_type n2, size_type n3) {
+  return Tensor(n0, n1, n2, n3).zero();
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::zeros(const size_storage &sz) {
+  return Tensor(sz).zero();
+}
+
+template < typename S >
+template < typename TR >
+Tensor< S > Tensor< S >::polar(
+    typename TR::const_reference r, const TR& theta) {
+  throw domain_error("Polar not applicable for real tensors");
+  return Tensor();
+}
+
+template < typename S >
+template < typename TR >
+Tensor< S > Tensor< S >::polar(
+    const TR& r, typename TR::const_reference theta) {
+  throw domain_error("Polar not applicable for real tensors");
+  return Tensor();
+}
+
+template < typename S >
+template < typename TR >
+Tensor< S > Tensor< S >::polar(const TR& r, const TR& theta) {
+  throw domain_error("Polar not applicable for real tensors");
+  return Tensor();
+}
 
 }  // namespace tensor
 }  // namespace thunder
