@@ -58,4 +58,7 @@
 // Mathematical reduction
 #include "thunder/tensor/tensor-inl-reduction.hpp"
 
+// Static constructors
+#include "thunder/tensor/tensor-inl-static.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP
