@@ -709,8 +709,12 @@ class Tensor {
   // Arithmetic operators with value are delegated
   Tensor operator+(const_reference value) const;
   Tensor operator-(const_reference value) const;
-  friend Tensor operator+(const_reference value, const Tensor &x);
-  friend Tensor operator-(const_reference value, const Tensor &x);
+  template < typename FS >
+  friend Tensor< FS > operator+(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
+  template < typename FS >
+  friend Tensor< FS > operator-(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
   Tensor& operator+=(const_reference value) const;
   Tensor& operator-=(const_reference value) const;
 
@@ -722,22 +726,37 @@ class Tensor {
 
   // Comparison operators with value are delegated
   Tensor operator==(const_reference value) const;
+  Tensor operator!=(const_reference value) const;
   Tensor operator>(const_reference value) const;
   Tensor operator<(const_reference value) const;
-  Tensor operator<=(const_reference value) const;
   Tensor operator>=(const_reference value) const;
-  friend Tensor operator==(const_reference value, const Tensor &x);
-  friend Tensor operator>(const_reference value, const Tensor &x);
-  friend Tensor operator<(const_reference value, const Tensor &x);
-  friend Tensor operator>=(const_reference value, const Tensor &x);
-  friend Tensor operator<=(const_reference value, const Tensor &x);
+  Tensor operator<=(const_reference value) const;
+  template < typename FS >
+  friend Tensor< FS > operator==(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
+  template < typename FS >
+  friend Tensor< FS > operator!=(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
+  template < typename FS >
+  friend Tensor< FS > operator>(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
+  template < typename FS >
+  friend Tensor< FS > operator<(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
+  template < typename FS >
+  friend Tensor< FS > operator>=(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
+  template < typename FS >
+  friend Tensor< FS > operator<=(
+      typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
 
   // Comparison operators with another tensor are delegated
   Tensor operator==(const Tensor &y) const;
+  Tensor operator!=(const Tensor &y) const;
   Tensor operator>(const Tensor &y) const;
   Tensor operator<(const Tensor &y) const;
-  Tensor operator<=(const Tensor &y) const;
   Tensor operator>=(const Tensor &y) const;
+  Tensor operator<=(const Tensor &y) const;
 
   /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
 

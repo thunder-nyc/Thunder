@@ -61,4 +61,7 @@
 // Static constructors
 #include "thunder/tensor/tensor-inl-static.hpp"
 
+// Mathematical operators
+#include "thunder/tensor/tensor-inl-operator.hpp"
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_HPP
