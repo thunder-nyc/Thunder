@@ -1,5 +1,7 @@
 # List all the test targets here
-targets = storage index_iterator tensor_access tensor_modify tensor_type tensor_unary tensor_binary tensor_ternary tensor_reduction tensor_static
+targets = storage index_iterator tensor_access tensor_modify tensor_type \
+	tensor_unary tensor_binary tensor_ternary tensor_reduction \
+	tensor_static tensor_operator
 
 CXXFLAGS += -std=c++11 -Wall -I..
 LDFLAGS += -lgtest -lgtest_main
@@ -24,7 +26,8 @@ test : $(targets)
 		fi; \
 		echo; \
 	done; \
-	echo "TOTAL: $(words $(targets)) | SUCCESS: $$success | FAILURE: $$failure";
+	echo \
+	"TOTAL: $(words $(targets)) | SUCCESS: $$success | FAILURE: $$failure";
 
 .PHONY : clean
 clean :

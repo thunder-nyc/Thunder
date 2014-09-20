@@ -49,12 +49,22 @@ Tensor< S > operator-(
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::operator+=(const_reference value) const {
+const Tensor< S >& Tensor< S >::operator+=(const_reference value) const {
   return add(value);
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::operator-=(const_reference value) const {
+const Tensor< S >& Tensor< S >::operator-=(const_reference value) const {
+  return sub(value);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::operator+=(const_reference value) {
+  return add(value);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::operator-=(const_reference value) {
   return sub(value);
 }
 
@@ -69,12 +79,22 @@ Tensor< S > Tensor< S >::operator-(const Tensor &y) const {
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::operator+=(const Tensor &y) const {
+const Tensor< S >& Tensor< S >::operator+=(const Tensor &y) const {
   return add(y);
 }
 
 template < typename S >
-Tensor< S >& Tensor< S >::operator-=(const Tensor &y) const {
+const Tensor< S >& Tensor< S >::operator-=(const Tensor &y) const {
+  return sub(y);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::operator+=(const Tensor &y) {
+  return add(y);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::operator-=(const Tensor &y) {
   return sub(y);
 }
 

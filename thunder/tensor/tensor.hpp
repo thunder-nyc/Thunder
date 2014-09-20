@@ -715,14 +715,18 @@ class Tensor {
   template < typename FS >
   friend Tensor< FS > operator-(
       typename Tensor< FS >::const_reference value, const Tensor< FS > &x);
-  Tensor& operator+=(const_reference value) const;
-  Tensor& operator-=(const_reference value) const;
+  const Tensor& operator+=(const_reference value) const;
+  const Tensor& operator-=(const_reference value) const;
+  Tensor& operator+=(const_reference value);
+  Tensor& operator-=(const_reference value);
 
   // Arithmetic operators are delegated
   Tensor operator+(const Tensor &y) const;
   Tensor operator-(const Tensor &y) const;
-  Tensor& operator+=(const Tensor &y) const;
-  Tensor& operator-=(const Tensor &y) const;
+  const Tensor& operator+=(const Tensor &y) const;
+  const Tensor& operator-=(const Tensor &y) const;
+  Tensor& operator+=(const Tensor &y);
+  Tensor& operator-=(const Tensor &y);
 
   // Comparison operators with value are delegated
   Tensor operator==(const_reference value) const;
