@@ -706,16 +706,6 @@ class Tensor {
   template < typename TR >
   static Tensor polar(const TR& r, const TR& theta);
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
-  // Printing functions
-  void printToStream(::std::ostream *ostr) const;
-  void printToString(::std::string *str) const;
-
-  // Static printing functions are delegated
-  static void printToStream(::std::ostream *ostr);
-  static void printToString(::std::string *str);
-
   // Arithmetic operators with value are delegated
   Tensor operator+(const_reference value) const;
   Tensor operator-(const_reference value) const;
@@ -748,6 +738,16 @@ class Tensor {
   Tensor operator<(const Tensor &y) const;
   Tensor operator<=(const Tensor &y) const;
   Tensor operator>=(const Tensor &y) const;
+
+  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
+
+  // Printing functions
+  void printToStream(::std::ostream *ostr) const;
+  void printToString(::std::string *str) const;
+
+  // Static printing functions are delegated
+  static void printToStream(::std::ostream *ostr);
+  static void printToString(::std::string *str);
 
   !!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
 
