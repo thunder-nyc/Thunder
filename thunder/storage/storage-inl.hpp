@@ -168,6 +168,17 @@ typename Storage< D, A >::size_type Storage< D, A >::size() const {
   return size_;
 }
 
+template < typename D, typename A >
+template < typename C >
+void Storage< D, A >::serialize(C &ar, const unsigned int version) {
+  size_type count = size_;
+  ar & count;
+  resize(count);
+  for (size_type i = 0; i < size_; ++i) {
+    ar & data_[i];
+  }
+}
+
 }  // namespace storage
 }  // namespace thunder
 
