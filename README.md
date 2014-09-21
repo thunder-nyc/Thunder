@@ -136,11 +136,14 @@ For example
 ```cpp
 using namespace thunder;
 
+// Create a random number generator
+DoubleRandom generator;
+
 // Create a tensor of size 3x9x7x10
 DoubleTensor tensor(3, 9, 7, 10);
 
 // Generate from gamma distribution with alpha = 1.0, beta = 1.0.
-tensor.gamma(1.0, 1.0);
+generator.gamma(1.0, 1.0, &tensor);
 ```
 
 ### Serialization
@@ -158,4 +161,24 @@ serialization::text_archive archive(std::ofstream("tensor.tdt"));
 
 // Serialize to the file
 archive << tensor;
+```
+
+### Batched BLAS
+
+Our BLAS routines support batch mode. The batch mode offers possiblity of speeding up BLAS routines in CPU or GPU without changing the underlying single-core implementation. This design should be more practical and easier to speed up.
+```cpp
+using namespace thunder;
+
+// Create a BLAS computing device
+DoubleBlas blas_device;
+
+// Create a tensor of size 3x9x7x10
+DoubleTensor tensor1(3, 9, 7, 10);
+
+// Create another tensor of size 3x9x10
+DoubleTensor tensor2(3, 9, 10);
+
+// Computing matrix-vector multiplication in batch mode
+// Now, 'result' is a tensor of size 3x9x7.
+DoubleTensor result = blas_device.gemv(tensor1, tensor2);
 ```
