@@ -133,8 +133,6 @@ We use the [boost serialization](http://www.boost.org/doc/libs/release/libs/seri
 using namespace thunder;
 using namespace boost;
 
-// Create a string stream
-
 // Create a tensor of size 3x9x7x10
 DoubleTensor tensor(3, 9, 7, 10);
 
@@ -144,7 +142,7 @@ std::stringstream stream;
 // Create an output archive link to the string stream
 serialization::text_archive archive(stream);
 
-// Serialize to the archive
+// Serialize the tensor to the archive
 archive << tensor;
 
 // Now you can see the content of the serialized data
