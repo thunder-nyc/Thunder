@@ -163,7 +163,7 @@ serialization::text_archive archive(std::ofstream("tensor.tdt"));
 archive << tensor;
 ```
 
-### Batched BLAS
+### Batch BLAS
 
 Our BLAS routines support batch mode. The batch mode offers possiblity of speeding up BLAS routines in CPU or GPU without changing the underlying single-core implementation. This design should be more practical and easier to speed up.
 ```cpp
