@@ -133,14 +133,22 @@ We use the [boost serialization](http://www.boost.org/doc/libs/release/libs/seri
 using namespace thunder;
 using namespace boost;
 
+// Create a string stream
+
 // Create a tensor of size 3x9x7x10
 DoubleTensor tensor(3, 9, 7, 10);
 
-// Create an output archive link to file tensor.tdt
-serialization::text_archive archive(std::ofstream("tensor.tdt"));
+// Create a string stream
+std::stringstream stream;
 
-// Serialize to the file
+// Create an output archive link to the string stream
+serialization::text_archive archive(stream);
+
+// Serialize to the archive
 archive << tensor;
+
+// Now you can see the content of the serialized data
+printf("Serialized data: %s\n", stream.str().c_str());
 ```
 
 ### Random Generators
