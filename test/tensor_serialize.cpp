@@ -74,7 +74,6 @@ void serializeTest() {
        begin != end; ++begin, ++t3_begin) {
     EXPECT_FLOAT_EQ(*begin, *t3_begin);
   }
-
 }
 TEST(TensorTest, serializeTest) {
   serializeTest< DoubleTensor >();
