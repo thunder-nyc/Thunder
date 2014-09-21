@@ -762,6 +762,10 @@ class Tensor {
   Tensor operator>=(const Tensor &y) const;
   Tensor operator<=(const Tensor &y) const;
 
+  // Serialization
+  template < typename C >
+  void serialize(C &ar, const unsigned int version);
+
  protected:
   size_storage size_;
   stride_storage stride_;
