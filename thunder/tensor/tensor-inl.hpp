@@ -46,7 +46,7 @@
 // Lambda application
 #include "thunder/tensor/tensor-inl-apply.hpp"
 
-// Unary Operations
+// Unary operations
 #include "thunder/tensor/tensor-inl-unary.hpp"
 
 // Binary operations

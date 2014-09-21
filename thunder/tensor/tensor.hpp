@@ -762,18 +762,6 @@ class Tensor {
   Tensor operator>=(const Tensor &y) const;
   Tensor operator<=(const Tensor &y) const;
 
-  /* !!!! THIS IS MARK FOR NOT IMPLEMENTED YET !!!!
-
-  // Printing functions
-  void printToStream(::std::ostream *ostr) const;
-  void printToString(::std::string *str) const;
-
-  // Static printing functions are delegated
-  static void printToStream(::std::ostream *ostr);
-  static void printToString(::std::string *str);
-
-  !!! THIS IS MARK FOR NOT IMPLEMENTED YET !!! */
-
  protected:
   size_storage size_;
   stride_storage stride_;
