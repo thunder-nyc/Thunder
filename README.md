@@ -112,6 +112,37 @@ tensor.apply(
     });
 ```
 
+### Complex Numbers
+
+Thunder library support complex numbers natively.
+```cpp
+using namespace thunder;
+
+// Create 2 tensors of size 3x9x7x10
+DoubleTensor tensor1(3, 9, 7, 10);
+DoubleTensor tensor2(3, 9, 7, 10);
+
+// Construct a complex tensor using polar
+DoubleComplexTensor complex = DoubleComplexTensor::polar(tensor1, tensor2);
+```
+
+### Serialization
+
+We use the [boost serialization](http://www.boost.org/doc/libs/release/libs/serialization) library to serialize all data structures in Thunder.
+```cpp
+using namespace thunder;
+using namespace boost;
+
+// Create a tensor of size 3x9x7x10
+DoubleTensor tensor(3, 9, 7, 10);
+
+// Create an output archive link to file tensor.tdt
+serialization::text_archive archive(std::ofstream("tensor.tdt"));
+
+// Serialize to the file
+archive << tensor;
+```
+
 ### Random Generators
 
 We support all [random generators provided by the C++11 standard library](http://en.cppreference.com/w/cpp/numeric/random). They include
@@ -144,23 +175,6 @@ DoubleTensor tensor(3, 9, 7, 10);
 
 // Generate from gamma distribution with alpha = 1.0, beta = 1.0.
 generator.gamma(1.0, 1.0, &tensor);
-```
-
-### Serialization
-
-We use the [boost serialization](http://www.boost.org/doc/libs/release/libs/serialization) library to serialize all data structures in Thunder.
-```cpp
-using namespace thunder;
-using namespace boost;
-
-// Create a tensor of size 3x9x7x10
-DoubleTensor tensor(3, 9, 7, 10);
-
-// Create an output archive link to file tensor.tdt
-serialization::text_archive archive(std::ofstream("tensor.tdt"));
-
-// Serialize to the file
-archive << tensor;
 ```
 
 ### Batch BLAS
