@@ -37,21 +37,21 @@
 namespace boost {
 namespace serialization {
 
-template< typename D, typename A >
+template < typename D, typename A >
 struct version< ::std::shared_ptr< ::thunder::Storage< D, A > > > {
   typedef mpl::integral_c_tag tag;
   typedef mpl::int_< 1 > type;
   BOOST_STATIC_CONSTANT(int, value = type::value);
 };
 
-template< typename D, typename A >
+template < typename D, typename A >
 struct tracking_level< ::thunder::Storage< D, A > > {
   typedef mpl::integral_c_tag tag;
   typedef mpl::int_< ::boost::serialization::track_never > type;
   BOOST_STATIC_CONSTANT(int, value = type::value);
 };
 
-template< typename C, typename D, typename A >
+template < typename C, typename D, typename A >
 void save(
     C &ar, const ::std::shared_ptr< ::thunder::Storage< D, A > > &t,
     const unsigned int version) {
@@ -59,7 +59,7 @@ void save(
   ar << boost::serialization::make_nvp("px", t_ptr);
 }
 
-template< typename C, typename D, typename A >
+template < typename C, typename D, typename A >
 void load(
     C &ar, ::std::shared_ptr< ::thunder::Storage< D, A > > &t,
     const unsigned int version) {
@@ -70,7 +70,7 @@ void load(
   h.reset(t, r);
 }
 
-template< typename C, typename D, typename A >
+template < typename C, typename D, typename A >
 void serialize(
     C &ar, ::std::shared_ptr< ::thunder::Storage< D, A > > &t,
     const unsigned int version) {
