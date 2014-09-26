@@ -27,28 +27,15 @@
 #include <complex>
 
 #include "thunder/exception.hpp"
+#include "thunder/tensor/math.hpp"
 
 namespace thunder {
 namespace tensor {
 
-#define THUNDER_TENSOR_DEFINE_STD_UNARY(func)                          \
+#define THUNDER_TENSOR_DEFINE_UNARY(func)                               \
   template < typename S >                                               \
   const Tensor< S >& Tensor< S >::func() const {                        \
-    if (partialContiguity(0, size_.size() - 1)) {                       \
-      pointer data_pointer = data();                                    \
-      difference_type data_step = stride_[stride_.size() - 1];          \
-      size_type data_length = length();                                 \
-      for (size_type i = 0; i < data_length; ++i) {                     \
-        data_pointer[i * data_step] = static_cast< value_type >(        \
-            ::std::func(data_pointer[i * data_step]));                  \
-      }                                                                 \
-    } else {                                                            \
-      for (reference_iterator begin = reference_begin(),                \
-               end = reference_end(); begin != end; ++begin) {          \
-        *begin = static_cast< value_type >(::std::func(*begin));        \
-      }                                                                 \
-    }                                                                   \
-    return *this;                                                       \
+    return math::func(*this);                                           \
   }                                                                     \
   template < typename S >                                               \
   Tensor< S >& Tensor< S >::func() {                                    \
@@ -60,142 +47,55 @@ namespace tensor {
     return x.clone().func();                                            \
   }
 
-THUNDER_TENSOR_DEFINE_STD_UNARY(fabs);
-THUNDER_TENSOR_DEFINE_STD_UNARY(exp);
-THUNDER_TENSOR_DEFINE_STD_UNARY(exp2);
-THUNDER_TENSOR_DEFINE_STD_UNARY(expm1);
-THUNDER_TENSOR_DEFINE_STD_UNARY(log);
-THUNDER_TENSOR_DEFINE_STD_UNARY(log10);
-THUNDER_TENSOR_DEFINE_STD_UNARY(log2);
-THUNDER_TENSOR_DEFINE_STD_UNARY(log1p);
-THUNDER_TENSOR_DEFINE_STD_UNARY(sqrt);
-THUNDER_TENSOR_DEFINE_STD_UNARY(cbrt);
-THUNDER_TENSOR_DEFINE_STD_UNARY(sin);
-THUNDER_TENSOR_DEFINE_STD_UNARY(cos);
-THUNDER_TENSOR_DEFINE_STD_UNARY(tan);
-THUNDER_TENSOR_DEFINE_STD_UNARY(asin);
-THUNDER_TENSOR_DEFINE_STD_UNARY(acos);
-THUNDER_TENSOR_DEFINE_STD_UNARY(atan);
-THUNDER_TENSOR_DEFINE_STD_UNARY(sinh);
-THUNDER_TENSOR_DEFINE_STD_UNARY(cosh);
-THUNDER_TENSOR_DEFINE_STD_UNARY(tanh);
-THUNDER_TENSOR_DEFINE_STD_UNARY(asinh);
-THUNDER_TENSOR_DEFINE_STD_UNARY(acosh);
-THUNDER_TENSOR_DEFINE_STD_UNARY(atanh);
-THUNDER_TENSOR_DEFINE_STD_UNARY(erf);
-THUNDER_TENSOR_DEFINE_STD_UNARY(erfc);
-THUNDER_TENSOR_DEFINE_STD_UNARY(tgamma);
-THUNDER_TENSOR_DEFINE_STD_UNARY(lgamma);
-THUNDER_TENSOR_DEFINE_STD_UNARY(ceil);
-THUNDER_TENSOR_DEFINE_STD_UNARY(floor);
-THUNDER_TENSOR_DEFINE_STD_UNARY(trunc);
-THUNDER_TENSOR_DEFINE_STD_UNARY(round);
-THUNDER_TENSOR_DEFINE_STD_UNARY(nearbyint);
-THUNDER_TENSOR_DEFINE_STD_UNARY(rint);
-THUNDER_TENSOR_DEFINE_STD_UNARY(logb);
-THUNDER_TENSOR_DEFINE_STD_UNARY(fpclassify);
-THUNDER_TENSOR_DEFINE_STD_UNARY(isfinite);
-THUNDER_TENSOR_DEFINE_STD_UNARY(isinf);
-THUNDER_TENSOR_DEFINE_STD_UNARY(isnan);
-THUNDER_TENSOR_DEFINE_STD_UNARY(isnormal);
-THUNDER_TENSOR_DEFINE_STD_UNARY(signbit);
-THUNDER_TENSOR_DEFINE_STD_UNARY(real);
-THUNDER_TENSOR_DEFINE_STD_UNARY(imag);
-THUNDER_TENSOR_DEFINE_STD_UNARY(arg);
+THUNDER_TENSOR_DEFINE_UNARY(abs);
+THUNDER_TENSOR_DEFINE_UNARY(fabs);
+THUNDER_TENSOR_DEFINE_UNARY(exp);
+THUNDER_TENSOR_DEFINE_UNARY(exp2);
+THUNDER_TENSOR_DEFINE_UNARY(expm1);
+THUNDER_TENSOR_DEFINE_UNARY(log);
+THUNDER_TENSOR_DEFINE_UNARY(log10);
+THUNDER_TENSOR_DEFINE_UNARY(log2);
+THUNDER_TENSOR_DEFINE_UNARY(log1p);
+THUNDER_TENSOR_DEFINE_UNARY(sqrt);
+THUNDER_TENSOR_DEFINE_UNARY(cbrt);
+THUNDER_TENSOR_DEFINE_UNARY(sin);
+THUNDER_TENSOR_DEFINE_UNARY(cos);
+THUNDER_TENSOR_DEFINE_UNARY(tan);
+THUNDER_TENSOR_DEFINE_UNARY(asin);
+THUNDER_TENSOR_DEFINE_UNARY(acos);
+THUNDER_TENSOR_DEFINE_UNARY(atan);
+THUNDER_TENSOR_DEFINE_UNARY(sinh);
+THUNDER_TENSOR_DEFINE_UNARY(cosh);
+THUNDER_TENSOR_DEFINE_UNARY(tanh);
+THUNDER_TENSOR_DEFINE_UNARY(asinh);
+THUNDER_TENSOR_DEFINE_UNARY(acosh);
+THUNDER_TENSOR_DEFINE_UNARY(atanh);
+THUNDER_TENSOR_DEFINE_UNARY(erf);
+THUNDER_TENSOR_DEFINE_UNARY(erfc);
+THUNDER_TENSOR_DEFINE_UNARY(tgamma);
+THUNDER_TENSOR_DEFINE_UNARY(lgamma);
+THUNDER_TENSOR_DEFINE_UNARY(ceil);
+THUNDER_TENSOR_DEFINE_UNARY(floor);
+THUNDER_TENSOR_DEFINE_UNARY(trunc);
+THUNDER_TENSOR_DEFINE_UNARY(round);
+THUNDER_TENSOR_DEFINE_UNARY(nearbyint);
+THUNDER_TENSOR_DEFINE_UNARY(rint);
+THUNDER_TENSOR_DEFINE_UNARY(logb);
+THUNDER_TENSOR_DEFINE_UNARY(fpclassify);
+THUNDER_TENSOR_DEFINE_UNARY(isfinite);
+THUNDER_TENSOR_DEFINE_UNARY(isinf);
+THUNDER_TENSOR_DEFINE_UNARY(isnan);
+THUNDER_TENSOR_DEFINE_UNARY(isnormal);
+THUNDER_TENSOR_DEFINE_UNARY(signbit);
+THUNDER_TENSOR_DEFINE_UNARY(zero);
+THUNDER_TENSOR_DEFINE_UNARY(real);
+THUNDER_TENSOR_DEFINE_UNARY(imag);
+THUNDER_TENSOR_DEFINE_UNARY(arg);
+THUNDER_TENSOR_DEFINE_UNARY(cnrm);
+THUNDER_TENSOR_DEFINE_UNARY(conj);
+THUNDER_TENSOR_DEFINE_UNARY(proj);
 
-#undef THUNDER_TENSOR_DEFINE_STD_UNARY
-
-template < typename S >
-const Tensor< S >& Tensor< S >::abs() const {
-  return this->fabs();
-}
-template < typename S >
-Tensor< S >& Tensor< S >::abs() {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->abs());
-}
-template < typename S >
-Tensor< S > Tensor< S >::abs(const Tensor &x) {
-  return x.clone().abs();
-}
-
-template < typename S >
-const Tensor< S >& Tensor< S >::cnrm() const {
-  if (partialContiguity(0, size_.size() - 1)) {
-    pointer data_pointer = data();
-    difference_type data_step = stride_[stride_.size() - 1];
-    size_type data_length = length();
-    for (size_type i = 0; i < data_length; ++i) {
-      data_pointer[i * data_step] = static_cast< value_type >(
-          ::std::norm(data_pointer[i * data_step]));
-    }
-  } else {
-    for (reference_iterator begin = reference_begin(),
-             end = reference_end(); begin != end; ++begin) {
-      *begin = static_cast< value_type >(::std::norm(*begin));
-    }
-  }
-  return *this;
-}
-template < typename S >
-Tensor< S >& Tensor< S >::cnrm() {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->cnrm());
-}
-template < typename S >
-Tensor< S > Tensor< S >::cnrm(const Tensor &x) {
-  return x.clone().cnrm();
-}
-
-template < typename S >
-const Tensor< S >& Tensor< S >::zero() const {
-  if (partialContiguity(0, size_.size() - 1)) {
-    pointer data_pointer = data();
-    difference_type data_step = stride_[stride_.size() - 1];
-    size_type data_length = length();
-    for (size_type i = 0; i < data_length; ++i) {
-      data_pointer[i * data_step] = 0;
-    }
-  } else {
-    for (reference_iterator begin = reference_begin(),
-             end = reference_end(); begin != end; ++begin) {
-      *begin = 0;
-    }
-  }
-  return *this;
-}
-template < typename S >
-Tensor< S >& Tensor< S >::zero() {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->zero());
-}
-template < typename S >
-Tensor< S > Tensor< S >::zero(const Tensor &x) {
-  return x.clone().zero();
-}
-
-template < typename S >
-const Tensor< S >& Tensor< S >::conj() const {
-  return *this;
-}
-template < typename S >
-Tensor< S >& Tensor< S >::conj() {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->conj());
-}
-template < typename S >
-Tensor< S > Tensor< S >::conj(const Tensor &x) {
-  return x.clone().conj();
-}
-
-template < typename S >
-const Tensor< S >& Tensor< S >::proj() const {
-  return *this;
-}
-template < typename S >
-Tensor< S >& Tensor< S >::proj() {
-  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->proj());
-}
-template < typename S >
-Tensor< S > Tensor< S >::proj(const Tensor &x) {
-  return x.clone().proj();
-}
+#undef THUNDER_TENSOR_DEFINE_UNARY
 
 }  // namespace tensor
 }  // namespace thunder
