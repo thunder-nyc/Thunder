@@ -31,4 +31,7 @@
 // Ternary mathematical operations
 #include "thunder/tensor/math-inl-ternary.hpp"
 
+// Reduction operations
+#include "thunder/tensor/math-inl-reduction.hpp"
+
 #endif  // THUNDER_TENSOR_MATH_INL_HPP_

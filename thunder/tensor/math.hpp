@@ -20,6 +20,8 @@
 #ifndef THUNDER_TENSOR_MATH_HPP_
 #define THUNDER_TENSOR_MATH_HPP_
 
+#include "thunder/tensor/tensor.hpp"
+
 namespace thunder {
 namespace tensor {
 namespace math {
@@ -232,6 +234,50 @@ template < typename T >
 const T& fma(const T &x, typename T::const_reference y, const T &z);
 template < typename T >
 const T& fma(const T &x, const T &y, const T &z);
+
+// Reduction functions to a single value
+template < typename T >
+const typename T::value_type max(
+    const T &x, Tensor< typename T::size_storage > *pos);
+template < typename T >
+const typename T::value_type min(
+    const T &x, Tensor< typename T::size_storage > *pos);
+template < typename T >
+const typename T::value_type max(const T &x);
+template < typename T >
+const typename T::value_type min(const T &x);
+template < typename T >
+const typename T::value_type sum(const T &x);
+template < typename T >
+const typename T::value_type prod(const T &x);
+template < typename T >
+const typename T::value_type mean(const T &x);
+template < typename T >
+const typename T::value_type var(const T &x);
+template < typename T >
+const typename T::value_type std(const T &x);
+
+// Reduction functions along a particular dimension
+template < typename T >
+T max(const T &x, typename T::dim_type d,
+      Tensor< typename T::size_storage > *pos);
+template < typename T >
+T min(const T &x, typename T::dim_type d,
+      Tensor< typename T::size_storage > *pos);
+template < typename T >
+T max(const T &x, typename T::dim_type d);
+template < typename T >
+T min(const T &x, typename T::dim_type d);
+template < typename T >
+T sum(const T &x, typename T::dim_type d);
+template < typename T >
+T prod(const T &x, typename T::dim_type d);
+template < typename T >
+T mean(const T &x, typename T::dim_type d);
+template < typename T >
+T var(const T &x, typename T::dim_type d);
+template < typename T >
+T std(const T &x, typename T::dim_type d);
 
 }  // namespace math
 }  // namespace tensor

@@ -46,7 +46,8 @@ const T& fma(
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
              x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
-      *x_begin = static_cast< typename T::value_type >(::std::fma(*x_begin, y, z));
+      *x_begin = static_cast< typename T::value_type >(
+          ::std::fma(*x_begin, y, z));
     }
   }
   return x;
