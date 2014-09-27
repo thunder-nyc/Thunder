@@ -24,6 +24,7 @@ namespace thunder {
 namespace tensor {
 namespace math {
 
+// Unary operations
 template < typename T >
 const T& abs(const T &x);
 template < typename T >
@@ -118,6 +119,119 @@ template < typename T >
 const T& conj(const T &x);
 template < typename T >
 const T& proj(const T &x);
+
+// Element-wise operations with a value
+template < typename T >
+const T& add(const T &x, typename T::const_reference y);
+template < typename T >
+const T& sub(const T &x, typename T::const_reference y);
+template < typename T >
+const T& mul(const T &x, typename T::const_reference y);
+template < typename T >
+const T& div(const T &x, typename T::const_reference y);
+template < typename T >
+const T& fmod(const T &x, typename T::const_reference y);
+template < typename T >
+const T& remainder(const T &x, typename T::const_reference y);
+template < typename T >
+const T& fmax(const T &x, typename T::const_reference y);
+template < typename T >
+const T& fmin(const T &x, typename T::const_reference y);
+template < typename T >
+const T& fdim(const T &x, typename T::const_reference y);
+template < typename T >
+const T& pow(const T &x, typename T::const_reference y);
+template < typename T >
+const T& hypot(const T &x, typename T::const_reference y);
+template < typename T >
+const T& atan2(const T &x, typename T::const_reference y);
+template < typename T >
+const T& ldexp(const T &x, typename T::const_reference y);
+template < typename T >
+const T& scalbn(const T &x, typename T::const_reference y);
+template < typename T >
+const T& scalbln(const T &x, typename T::const_reference y);
+template < typename T >
+const T& nextafter(const T &x, typename T::const_reference y);
+template < typename T >
+const T& nexttoward(const T &x, typename T::const_reference y);
+template < typename T >
+const T& copysign(const T &x, typename T::const_reference y);
+template < typename T >
+const T& isgreater(const T &x, typename T::const_reference y);
+template < typename T >
+const T& isgreaterequal(const T &x, typename T::const_reference y);
+template < typename T >
+const T& isless(const T &x, typename T::const_reference y);
+template < typename T >
+const T& islessequal(const T &x, typename T::const_reference y);
+template < typename T >
+const T& islessgreater(const T &x, typename T::const_reference y);
+template < typename T >
+const T& isunordered(const T &x, typename T::const_reference y);
+template < typename T >
+const T& fill(const T &x, typename T::const_reference y);
+
+// Element-wise operations with another tensor
+template < typename T >
+const T& add(const T &x, const T &y);
+template < typename T >
+const T& sub(const T &x, const T &y);
+template < typename T >
+const T& mul(const T &x, const T &y);
+template < typename T >
+const T& div(const T &x, const T &y);
+template < typename T >
+const T& fmod(const T &x, const T &y);
+template < typename T >
+const T& remainder(const T &x, const T &y);
+template < typename T >
+const T& fmax(const T &x, const T &y);
+template < typename T >
+const T& fmin(const T &x, const T &y);
+template < typename T >
+const T& fdim(const T &x, const T &y);
+template < typename T >
+const T& pow(const T &x, const T &y);
+template < typename T >
+const T& hypot(const T &x, const T &y);
+template < typename T >
+const T& atan2(const T &x, const T &y);
+template < typename T >
+const T& ldexp(const T &x, const T &y);
+template < typename T >
+const T& scalbn(const T &x, const T &y);
+template < typename T >
+const T& scalbln(const T &x, const T &y);
+template < typename T >
+const T& nextafter(const T &x, const T &y);
+template < typename T >
+const T& nexttoward(const T &x, const T &y);
+template < typename T >
+const T& copysign(const T &x, const T &y);
+template < typename T >
+const T& isgreater(const T &x, const T &y);
+template < typename T >
+const T& isgreaterequal(const T &x, const T &y);
+template < typename T >
+const T& isless(const T &x, const T &y);
+template < typename T >
+const T& islessequal(const T &x, const T &y);
+template < typename T >
+const T& islessgreater(const T &x, const T &y);
+template < typename T >
+const T& isunordered(const T &x, const T &y);
+
+// Ternary functions
+template < typename T >
+const T& fma(
+    const T &x, typename T::const_reference y, typename T::const_reference z);
+template < typename T >
+const T& fma(const T &x, const T &y, typename T::const_reference z);
+template < typename T >
+const T& fma(const T &x, typename T::const_reference y, const T &z);
+template < typename T >
+const T& fma(const T &x, const T &y, const T &z);
 
 }  // namespace math
 }  // namespace tensor

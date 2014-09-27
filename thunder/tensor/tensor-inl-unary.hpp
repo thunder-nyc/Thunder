@@ -23,9 +23,6 @@
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
 
-#include <cmath>
-#include <complex>
-
 #include "thunder/exception.hpp"
 #include "thunder/tensor/math.hpp"
 

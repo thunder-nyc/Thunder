@@ -23,6 +23,9 @@
 #include "thunder/tensor/math.hpp"
 #include "thunder/tensor/math-inl.hpp"
 
+#include <cmath>
+#include <complex>
+
 namespace thunder {
 namespace tensor {
 namespace math {

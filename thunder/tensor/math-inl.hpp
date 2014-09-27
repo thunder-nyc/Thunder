@@ -25,4 +25,10 @@
 // Unary mathematical operations
 #include "thunder/tensor/math-inl-unary.hpp"
 
+// Binary mathematical operations
+#include "thunder/tensor/math-inl-binary.hpp"
+
+// Ternary mathematical operations
+#include "thunder/tensor/math-inl-ternary.hpp"
+
 #endif  // THUNDER_TENSOR_MATH_INL_HPP_
