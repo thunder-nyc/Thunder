@@ -51,6 +51,7 @@ namespace math {
     return x;                                                           \
   }
 
+THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(abs);
 THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(fabs);
 THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(exp);
 THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(exp2);
@@ -93,8 +94,14 @@ THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(signbit);
 
 #undef THUNDER_TENSOR_MATH_DEFINE_STD_UNARY
 
-template < typename T >
-const T& abs(const T &x) {
+template < typename A >
+const Tensor< Storage< double, A > >& abs(
+    const Tensor< Storage< double, A > > &x) {
+  return fabs(x);
+}
+template < typename A >
+const Tensor< Storage< float, A > >& abs(
+    const Tensor< Storage< float, A > > &x) {
   return fabs(x);
 }
 

@@ -40,6 +40,7 @@ namespace math {
     return x;                                                           \
   }
 
+THUNDER_TENSOR_MATH_UNDEFINED_UNARY_COMPLEX(fabs);
 THUNDER_TENSOR_MATH_UNDEFINED_UNARY_COMPLEX(exp2);
 THUNDER_TENSOR_MATH_UNDEFINED_UNARY_COMPLEX(expm1);
 THUNDER_TENSOR_MATH_UNDEFINED_UNARY_COMPLEX(log1p);
