@@ -51,18 +51,6 @@ void modifyTest() {
   T::resizeAs(&tensor3, tensor4);
   EXPECT_TRUE(T::isSameSizeAs(tensor3, tensor4));
 
-  // Test on copy
-  tensor2(3) = 17;
-  T::copy(&tensor1, tensor2);
-  EXPECT_FLOAT_EQ(17, tensor1(3));
-  T::copy(&tensor5, tensor2);
-  EXPECT_FLOAT_EQ(17, tensor5(3));
-  tensor4(3, 2) = 19;
-  T::copy(&tensor1, tensor4);
-  EXPECT_FLOAT_EQ(19, tensor1(3, 2));
-  T::copy(&tensor5, tensor4);
-  EXPECT_FLOAT_EQ(19, tensor5(3, 2));
-
   // Test on set with storage
   typename T::storage_pointer s
       = std::make_shared< typename T::storage_type >(1000);

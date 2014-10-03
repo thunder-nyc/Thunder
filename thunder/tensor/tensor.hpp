@@ -159,13 +159,7 @@ class Tensor {
 
   // Non-templated modifiers
   template < typename T >
-  Tensor& copy(const T &y);
-  template < typename T >
   Tensor& resizeAs(const T &y);
-
-  // Static non-templated modifiers are delegated
-  template < typename T >
-  static Tensor& copy(Tensor *x, const T &y);
   template < typename T >
   static Tensor& resizeAs(Tensor *x, const T &y);
 
@@ -545,6 +539,12 @@ class Tensor {
   static Tensor islessgreater(const Tensor &x, const_reference y);
   static Tensor isunordered(const Tensor &x, const_reference y);
   static Tensor fill(const Tensor &x, const_reference y);
+
+  // Templated element-wise operations with another tensor
+  template < typename T >
+  const Tensor& copy(const T &y) const;
+  template < typename T >
+  Tensor& copy(const T& y);
 
   // Element-wise operations with another tensor
   const Tensor& add(const Tensor &y) const;

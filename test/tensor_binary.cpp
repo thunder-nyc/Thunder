@@ -487,5 +487,34 @@ TEST(TensorTest, fillTest) {
   fillTest< Tensor< Storage < int > > >();
 }
 
+template< typename T >
+void copyTest() {
+  T t1(10, 20, 7);
+  int t1_val = -800;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+  }
+
+  T t2(10, 20, 7);
+  t2.copy(t1);
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(t1(begin.position()), *begin);
+  }
+
+  FloatTensor t3(10, 20, 7);
+  t3.copy(t1);
+  for (FloatTensor::reference_iterator begin = t3.reference_begin(),
+           end = t3.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(t1(begin.position()), *begin);
+  }
+}
+TEST(TensorTest, copyTest) {
+  copyTest< DoubleTensor >();
+  copyTest< FloatTensor >();
+  copyTest< Tensor< Storage < int > > >();
+}
+
 }  // namespace
 }  // namespace thunder

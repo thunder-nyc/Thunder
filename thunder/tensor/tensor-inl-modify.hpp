@@ -32,29 +32,6 @@ namespace tensor {
 
 template < typename S >
 template < typename T >
-Tensor< S >& Tensor< S >::copy(const T &y) {
-  if (length() != y.length()) {
-    throw length_error("Data have inconsistent length for copy");
-  }
-  if (isContiguous() && y.isContiguous()) {
-    size_type x_length = length();
-    pointer x_data = data();
-    typename T::pointer y_data = y.data();
-    for (size_type i = 0; i < x_length; ++i) {
-      x_data[i] = static_cast< value_type >(y_data[i]);
-    }
-  } else {
-    typename T::reference_iterator y_begin = y.reference_begin();
-    for (reference_iterator x_begin = reference_begin(),
-             x_end = reference_end(); x_begin != x_end; ++x_begin, ++y_begin) {
-      *x_begin = static_cast< value_type>(*y_begin);
-    }
-  }
-  return *this;
-}
-
-template < typename S >
-template < typename T >
 Tensor< S >& Tensor< S >::resizeAs(const T &y) {
   size_storage sz(y.dimension());
   for (dim_type i = 0; i < sz.size(); ++i) {
@@ -63,20 +40,12 @@ Tensor< S >& Tensor< S >::resizeAs(const T &y) {
   return this->resize(sz);
 }
 
-// Static non-virtual templated modifiers are delegated
-template < typename S >
-template < typename T >
-Tensor< S >& Tensor< S >::copy(Tensor *x, const T &y) {
-  return x->copy(y);
-}
-
 template < typename S >
 template < typename T >
 Tensor< S >& Tensor< S >::resizeAs(Tensor *x, const T &y) {
   return x->resizeAs(y);
 }
 
-// Normal modifiers
 template < typename S >
 Tensor< S >& Tensor< S >::set(const Tensor &y) {
   return this->set(y.storage_, y.offset_);

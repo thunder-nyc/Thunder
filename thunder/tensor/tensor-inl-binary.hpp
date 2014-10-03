@@ -97,6 +97,17 @@ Tensor< S > Tensor< S >::fill(const Tensor &x, const_reference y) {
   return x.clone().fill(y);
 }
 
+template < typename S >
+template < typename T >
+const Tensor< S >& Tensor< S >::copy(const T &y) const {
+  return math::copy(*this, y);
+}
+template < typename S >
+template < typename T >
+Tensor< S >& Tensor< S >::copy(const T &y) {
+  return const_cast< Tensor& >(const_cast< const Tensor *>(this)->copy(y));
+}
+
 }  // namespace tensor
 }  // namespace thunder
 

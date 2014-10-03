@@ -174,6 +174,10 @@ const T& isunordered(const T &x, typename T::const_reference y);
 template < typename T >
 const T& fill(const T &x, typename T::const_reference y);
 
+// Template element-wise operations with another tensor
+template< typename T1, typename T2 >
+const T1& copy(const T1 &x, const T2 &y);
+
 // Element-wise operations with another tensor
 template < typename T >
 const T& add(const T &x, const T &y);

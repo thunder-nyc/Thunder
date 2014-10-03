@@ -288,6 +288,29 @@ const T& fill(const T &x, typename T::const_reference y) {
   return x;
 }
 
+template< typename T1, typename T2 >
+const T1& copy(const T1 &x, const T2 &y) {
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.isContiguous() && y.isContiguous()) {
+    typename T1::size_type x_length = x.length();
+    typename T1::pointer x_data = x.data();
+    typename T2::pointer y_data = y.data();
+    for (typename T1::size_type i = 0; i < x_length; ++i) {
+      x_data[i] = static_cast< typename T1::value_type >(y_data[i]);
+    }
+  } else {
+    typename T2::reference_iterator y_begin = y.reference_begin();
+    for (typename T1::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = static_cast< typename T1::value_type>(*y_begin);
+    }
+  }
+  return x;
+}
+
 }  // namespace math
 }  // namespace tensor
 }  // namespace thunder
