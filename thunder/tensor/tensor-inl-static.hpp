@@ -23,6 +23,8 @@
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
 
+#include "thunder/tensor/math.hpp"
+
 namespace thunder {
 namespace tensor {
 
@@ -82,23 +84,20 @@ template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polar(
     typename TR::const_reference r, const TR& theta) {
-  throw domain_error("Polar not applicable for real tensors");
-  return Tensor();
+  return math::polar< Tensor >(r, theta);
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polar(
     const TR& r, typename TR::const_reference theta) {
-  throw domain_error("Polar not applicable for real tensors");
-  return Tensor();
+  return math::polar< Tensor >(r, theta);
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polar(const TR& r, const TR& theta) {
-  throw domain_error("Polar not applicable for real tensors");
-  return Tensor();
+  return math::polar< Tensor >(r, theta);
 }
 
 }  // namespace tensor

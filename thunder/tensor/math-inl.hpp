@@ -22,6 +22,9 @@
 
 #include "thunder/tensor/math.hpp"
 
+// Transformations
+#include "thunder/tensor/math-inl-transform.hpp"
+
 // Unary mathematical operations
 #include "thunder/tensor/math-inl-unary.hpp"
 
@@ -36,5 +39,8 @@
 
 // Complex specialization
 #include "thunder/tensor/math-inl-complex.hpp"
+
+// Static constructors
+#include "thunder/tensor/math-inl-static.hpp"
 
 #endif  // THUNDER_TENSOR_MATH_INL_HPP_

@@ -209,6 +209,14 @@ class Tensor {
   Tensor extract(const T &y) const;
   template < typename T >
   Tensor shuffle(const T &y) const;
+  template < typename TR >
+  TR real() const;
+  template < typename TR >
+  TR imag() const;
+  template < typename TR >
+  TR arg() const;
+  template < typename TR >
+  TR cnrm() const;
 
 
   // Static templated subtensor extractors are delegated
@@ -224,6 +232,14 @@ class Tensor {
   static Tensor extract(const Tensor &x, const T &y);
   template < typename T >
   static Tensor shuffle(const Tensor &x, const T &y);
+  template < typename TR >
+  static TR real(const Tensor &x);
+  template < typename TR >
+  static TR imag(const Tensor &x);
+  template < typename TR >
+  static TR arg(const Tensor &x);
+  template < typename TR >
+  static TR cnrm(const Tensor &x);
 
   // Extract subtensors or transformations -- no need for non-const overload
   Tensor narrow(dim_type dim, size_type pos, size_type size) const;
@@ -354,10 +370,6 @@ class Tensor {
   const Tensor& isnormal() const;
   const Tensor& signbit() const;
   const Tensor& zero() const;
-  const Tensor& real() const;
-  const Tensor& imag() const;
-  const Tensor& arg() const;
-  const Tensor& cnrm() const;
   const Tensor& conj() const;
   const Tensor& proj() const;
 
@@ -403,10 +415,6 @@ class Tensor {
   Tensor& isnormal();
   Tensor& signbit();
   Tensor& zero();
-  Tensor& real();
-  Tensor& imag();
-  Tensor& arg();
-  Tensor& cnrm();
   Tensor& conj();
   Tensor& proj();
 
@@ -452,10 +460,6 @@ class Tensor {
   static Tensor isnormal(const Tensor &x);
   static Tensor signbit(const Tensor &x);
   static Tensor zero(const Tensor &x);
-  static Tensor real(const Tensor &x);
-  static Tensor imag(const Tensor &x);
-  static Tensor arg(const Tensor &x);
-  static Tensor cnrm(const Tensor &x);
   static Tensor conj(const Tensor &x);
   static Tensor proj(const Tensor &x);
 

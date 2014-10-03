@@ -27,6 +27,7 @@
 
 #include "thunder/exception.hpp"
 #include "thunder/tensor/index_iterator.hpp"
+#include "thunder/tensor/math.hpp"
 
 namespace thunder {
 namespace tensor {
@@ -68,109 +69,37 @@ Tensor< S > Tensor< S >::viewAs(const Tensor &y, stride_storage st,
 template < typename S >
 template < typename T >
 Tensor< S > Tensor< S >::extract(const T &y) const {
-  if (dimension() < y.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
-  }
-  dim_type y_dimension = static_cast< dim_type >(y.dimension());
-  for (dim_type i = 0; i < y_dimension; ++i) {
-    if (size_[i] != static_cast< size_type >(y.size(i))) {
-      throw out_of_range("Size does not match");
-    }
-  }
-  size_storage sz(size_.size() - y_dimension + 1);
-  for (dim_type i = y_dimension; i < size_.size(); ++i) {
-    sz[i - y_dimension + 1] = size_[i];
-  }
-  // Get the size of returning tensor
-  sz[0] = 0;
-  typename T::size_type y_length = y.length();
-  typename T::pointer y_data = y.data();
-  if (y.isContiguous()) {
-    for (typename T::size_type i = 0; i < y_length; ++i) {
-      if (static_cast< bool >(y_data[i]) == true) {
-        ++sz[0];
-      }
-    }
-  } else {
-    for (typename T::reference_iterator begin = y.reference_begin(),
-             end = y.reference_end(); begin != end; ++begin) {
-      if (static_cast< bool >(*begin) == true) {
-        ++sz[0];
-      }
-    }
-  }
-
-  // Create the new tensor and do the copy
-  Tensor t(sz);
-  if (isContiguous() && y.isContiguous()) {
-    difference_type st = stride_[y_dimension - 1];
-    pointer t_data = t.data();
-    pointer dt = data();
-    size_type current = 0;
-    for (typename T::size_type i = 0; i < y_length; ++i) {
-      if (static_cast< bool >(y_data[i]) == true) {
-        for (size_type j = 0; j < st; ++j) {
-          t_data[current++] = dt[i * st + j];
-        }
-      }
-    }
-  } else {
-    size_storage y_size(y.dimension());
-    for (dim_type i = 0; i < y_size.size(); ++i) {
-      y_size[i] = y.size(i);
-    }
-    size_type pos = 0;
-    IndexIterator< size_storage > t_begin =
-        IndexIterator< size_storage>::begin(y_size);
-    for (IndexIterator< typename T::size_storage > begin =
-             IndexIterator< typename T::size_storage >::begin(y.size()),
-             end = IndexIterator< typename T::size_storage >::end(y.size());
-         begin != end; ++begin, ++t_begin) {
-      if (static_cast< bool >(y[*begin]()) == true) {
-        t[pos++].copy((*this)[*t_begin]);
-      }
-    }
-  }
-  return t;
+  return math::extract(*this, y);
 }
 
 template < typename S >
 template < typename T >
 Tensor< S > Tensor< S >::shuffle(const T &y) const {
-  if (static_cast< dim_type >(y.size(y.dimension() - 1)) != size_.size()) {
-    throw out_of_range("Shuffle dimension mismatches");
-  }
-  if (y.dimension() == 1) {
-    Tensor t;
-    size_storage ind(size_.size());
-    for (typename T::dim_type i = 0; i < y.size(0); ++i) {
-      ind[i] = static_cast< size_type >(y(i));
-      if (ind[i] >= size_[i]) {
-        throw out_of_range("Shuffle index exceeds limit");
-      }
-    }
-    t() = (*this)(ind);
-    return t;
-  }
-  size_storage sz(y.dimension() - 1);
-  for (dim_type i = 0; i < sz.size(); ++i) {
-    sz[i] = y.size(i);
-  }
-  Tensor t(sz);
-  size_storage ind(size_.size());
-  for (IndexIterator< size_storage > begin =
-           IndexIterator< size_storage >::begin(sz),
-           end = IndexIterator< size_storage >::end(sz);
-       begin != end; ++begin) {
-    for (dim_type i = 0; i < ind.size(); ++i) {
-      ind[i] = static_cast< size_type >(y[*begin](i));
-      if (ind[i] >= size_[i]) {
-        throw out_of_range("Shuffle index exceeds limit");
-      }
-    }
-    t(*begin) = (*this)(ind);
-  }
-  return t;
+  return math::shuffle(*this, y);
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::real() const {
+  return math::real< Tensor, TR >(*this);
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::imag() const {
+  return math::imag< Tensor, TR >(*this);
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::arg() const {
+  return math::arg< Tensor, TR >(*this);
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::cnrm() const {
+  return math::cnrm< Tensor, TR >(*this);
 }
 
 
@@ -210,6 +139,30 @@ template < typename S >
 template < typename T >
 Tensor< S > Tensor< S >::shuffle(const Tensor &x, const T &y) {
   return x.shuffle(y);
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::real(const Tensor &x) {
+  return x.real< TR >();
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::imag(const Tensor &x) {
+  return x.imag< TR >();
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::arg(const Tensor &x) {
+  return x.arg< TR >();
+}
+
+template < typename S >
+template < typename TR >
+TR Tensor< S >::cnrm(const Tensor &x) {
+  return x.cnrm< TR >();
 }
 
 template < typename S >

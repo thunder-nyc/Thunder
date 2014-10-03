@@ -26,6 +26,20 @@ namespace thunder {
 namespace tensor {
 namespace math {
 
+// Transformers
+template < typename T1, typename T2 >
+T1 extract(const T1 &x, const T2 &y);
+template < typename T1, typename T2 >
+T1 shuffle(const T1 &x, const T2 &y);
+template < typename T1, typename T2 >
+T2 real(const T1 &x);
+template < typename T1, typename T2 >
+T2 imag(const T1 &x);
+template < typename T1, typename T2 >
+T2 arg(const T1 &x);
+template < typename T1, typename T2 >
+T2 cnrm(const T1 &x);
+
 // Unary operations
 template < typename T >
 const T& abs(const T &x);
@@ -109,14 +123,6 @@ template < typename T >
 const T& signbit(const T &x);
 template < typename T >
 const T& zero(const T &x);
-template < typename T >
-const T& real(const T &x);
-template < typename T >
-const T& imag(const T &x);
-template < typename T >
-const T& arg(const T &x);
-template < typename T >
-const T& cnrm(const T &x);
 template < typename T >
 const T& conj(const T &x);
 template < typename T >
@@ -282,6 +288,14 @@ template < typename T >
 T var(const T &x, typename T::dim_type d);
 template < typename T >
 T std(const T &x, typename T::dim_type d);
+
+// Static constructors
+template < typename T1, typename T2 >
+T1 polar(typename T2::const_reference r, const T2& theta);
+template < typename T1, typename T2 >
+T1 polar(const T2& r, typename T2::const_reference theta);
+template < typename T1, typename T2 >
+T1 polar(const T2& r, const T2& theta);
 
 }  // namespace math
 }  // namespace tensor
