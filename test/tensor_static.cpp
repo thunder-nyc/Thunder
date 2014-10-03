@@ -17,11 +17,18 @@
 
 #include "thunder/tensor.hpp"
 
+#include <complex>
 #include <memory>
 #include <typeinfo>
 
 #include "gtest/gtest.h"
 #include "thunder/storage.hpp"
+
+namespace thunder {
+namespace tensor {
+template class Tensor< Storage< ::std::complex< double > > >;
+}  // namespace tensor
+}  // namespace thunder
 
 namespace thunder {
 namespace {

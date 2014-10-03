@@ -54,6 +54,7 @@ typename Tensor< S >::iterator& Tensor< S >::iterator::operator=(iterator it) {
   ::std::swap(tensor_, it.tensor_);
   ::std::swap(position_, it.position_);
   ::std::swap(current_, it.current_);
+  return *this;
 }
 
 template < typename S >

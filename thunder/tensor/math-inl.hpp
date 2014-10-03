@@ -34,4 +34,7 @@
 // Reduction operations
 #include "thunder/tensor/math-inl-reduction.hpp"
 
+// Complex specialization
+#include "thunder/tensor/math-inl-complex.hpp"
+
 #endif  // THUNDER_TENSOR_MATH_INL_HPP_
