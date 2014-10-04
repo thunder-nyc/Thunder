@@ -210,13 +210,13 @@ class Tensor {
   template < typename T >
   Tensor shuffle(const T &y) const;
   template < typename TR >
-  TR real() const;
+  TR getReal() const;
   template < typename TR >
-  TR imag() const;
+  TR getImag() const;
   template < typename TR >
-  TR arg() const;
+  TR getArg() const;
   template < typename TR >
-  TR cnrm() const;
+  TR getCnrm() const;
 
 
   // Static templated subtensor extractors are delegated
@@ -233,13 +233,13 @@ class Tensor {
   template < typename T >
   static Tensor shuffle(const Tensor &x, const T &y);
   template < typename TR >
-  static TR real(const Tensor &x);
+  static TR getReal(const Tensor &x);
   template < typename TR >
-  static TR imag(const Tensor &x);
+  static TR getImag(const Tensor &x);
   template < typename TR >
-  static TR arg(const Tensor &x);
+  static TR getArg(const Tensor &x);
   template < typename TR >
-  static TR cnrm(const Tensor &x);
+  static TR getCnrm(const Tensor &x);
 
   // Extract subtensors or transformations -- no need for non-const overload
   Tensor narrow(dim_type dim, size_type pos, size_type size) const;

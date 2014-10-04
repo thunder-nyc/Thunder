@@ -143,9 +143,9 @@ T1 shuffle(const T1 &x, const T2 &y) {
   return t;
 }
 
-#define THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(func)                  \
+#define THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(tfunc, sfunc)          \
   template < typename T1, typename T2 >                                 \
-  T2 func(const T1 &x) {                                                \
+  T2 tfunc(const T1 &x) {                                               \
     T2 t;                                                               \
     t.resizeAs(x);                                                      \
     typename T2::pointer t_pointer = t.data();                          \
@@ -156,51 +156,26 @@ T1 shuffle(const T1 &x, const T2 &y) {
       typename T1::size_type x_length = x.length();                     \
       for (typename T1::size_type i = 0; i < x_length; ++i) {           \
         t_pointer[i * t_step] = static_cast< typename T2::value_type >( \
-            ::std::func(x_pointer[i * x_step]));                        \
+            ::std::sfunc(x_pointer[i * x_step]));                       \
       }                                                                 \
     } else {                                                            \
       typename T2::size_type i = 0;                                     \
       for (typename T1::reference_iterator x_begin = x.reference_begin(), \
                x_end = x.reference_end(); x_begin != x_end; ++x_begin) { \
         t_pointer[i * t_step] =                                         \
-            static_cast< typename T2::value_type >(::std::func(*x_begin)); \
+            static_cast< typename T2::value_type >(::std::sfunc(*x_begin)); \
         ++i;                                                            \
       }                                                                 \
     }                                                                   \
     return t;                                                           \
   }
 
-THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(real);
-THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(imag);
-THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(arg);
+THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(getReal, real);
+THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(getImag, imag);
+THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(getArg, arg);
+THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(getCnrm, norm);
 
 #undef THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM
-
-template < typename T1, typename T2 >
-T2 cnrm(const T1 &x) {
-  T2 t;
-  t.resizeAs(x);
-  typename T2::pointer t_pointer = t.data();
-  typename T2::difference_type t_step = t.stride(t.dimension() - 1);
-  if (x.partialContiguity(0, x.dimension() - 1)) {
-    typename T1::pointer x_pointer = x.data();
-    typename T1::difference_type x_step = x.stride(x.dimension() - 1);
-    typename T1::size_type x_length = x.length();
-    for (typename T1::size_type i = 0; i < x_length; ++i) {
-      t_pointer[i * t_step] = static_cast< typename T2::value_type >(
-          ::std::norm(x_pointer[i * x_step]));
-    }
-  } else {
-    typename T2::size_type i = 0;
-    for (typename T1::reference_iterator x_begin = x.reference_begin(),
-             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
-      t_pointer[i * t_step] =
-          static_cast< typename T2::value_type >(::std::norm(*x_begin));
-      ++i;
-    }
-  }
-  return t;
-}
 
 }  // namespace math
 }  // namespace tensor

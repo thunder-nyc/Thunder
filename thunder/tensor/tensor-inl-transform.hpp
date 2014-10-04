@@ -80,26 +80,26 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::real() const {
-  return math::real< Tensor, TR >(*this);
+TR Tensor< S >::getReal() const {
+  return math::getReal< Tensor, TR >(*this);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::imag() const {
-  return math::imag< Tensor, TR >(*this);
+TR Tensor< S >::getImag() const {
+  return math::getImag< Tensor, TR >(*this);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::arg() const {
-  return math::arg< Tensor, TR >(*this);
+TR Tensor< S >::getArg() const {
+  return math::getArg< Tensor, TR >(*this);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::cnrm() const {
-  return math::cnrm< Tensor, TR >(*this);
+TR Tensor< S >::getCnrm() const {
+  return math::getCnrm< Tensor, TR >(*this);
 }
 
 
@@ -143,26 +143,26 @@ Tensor< S > Tensor< S >::shuffle(const Tensor &x, const T &y) {
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::real(const Tensor &x) {
-  return x.real< TR >();
+TR Tensor< S >::getReal(const Tensor &x) {
+  return x.getReal< TR >();
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::imag(const Tensor &x) {
-  return x.imag< TR >();
+TR Tensor< S >::getImag(const Tensor &x) {
+  return x.getImag< TR >();
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::arg(const Tensor &x) {
-  return x.arg< TR >();
+TR Tensor< S >::getArg(const Tensor &x) {
+  return x.getArg< TR >();
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::cnrm(const Tensor &x) {
-  return x.cnrm< TR >();
+TR Tensor< S >::getCnrm(const Tensor &x) {
+  return x.getCnrm< TR >();
 }
 
 template < typename S >

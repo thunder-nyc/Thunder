@@ -186,6 +186,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& fma(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y,
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
+  throw domain_error("fma is undefined for complex numbers");
   return x;
 }
 
@@ -194,6 +195,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& fma(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     const Tensor< Storage< ::std::complex< D >, A > > &y,
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
+  throw domain_error("fma is undefined for complex numbers");
   return x;
 }
 

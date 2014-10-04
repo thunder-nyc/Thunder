@@ -32,13 +32,13 @@ T1 extract(const T1 &x, const T2 &y);
 template < typename T1, typename T2 >
 T1 shuffle(const T1 &x, const T2 &y);
 template < typename T1, typename T2 >
-T2 real(const T1 &x);
+T2 getReal(const T1 &x);
 template < typename T1, typename T2 >
-T2 imag(const T1 &x);
+T2 getImag(const T1 &x);
 template < typename T1, typename T2 >
-T2 arg(const T1 &x);
+T2 getArg(const T1 &x);
 template < typename T1, typename T2 >
-T2 cnrm(const T1 &x);
+T2 getCnrm(const T1 &x);
 
 // Unary operations
 template < typename T >
