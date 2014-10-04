@@ -124,6 +124,14 @@ const T& signbit(const T &x);
 template < typename T >
 const T& zero(const T &x);
 template < typename T >
+const T& real(const T &x);
+template < typename T >
+const T& imag(const T &x);
+template < typename T >
+const T& arg(const T &x);
+template < typename T >
+const T& cnrm(const T &x);
+template < typename T >
 const T& conj(const T &x);
 template < typename T >
 const T& proj(const T &x);

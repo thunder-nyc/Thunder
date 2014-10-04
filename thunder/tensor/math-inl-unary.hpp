@@ -91,6 +91,9 @@ THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(isinf);
 THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(isnan);
 THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(isnormal);
 THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(signbit);
+THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(real);
+THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(imag);
+THUNDER_TENSOR_MATH_DEFINE_STD_UNARY(arg);
 
 #undef THUNDER_TENSOR_MATH_DEFINE_STD_UNARY
 
@@ -103,6 +106,26 @@ template < typename A >
 const Tensor< Storage< float, A > >& abs(
     const Tensor< Storage< float, A > > &x) {
   return fabs(x);
+}
+
+template < typename T >
+const T& cnrm(const T &x) {
+  if (x.partialContiguity(0, x.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = static_cast< typename T::value_type >(
+          ::std::norm(x_pointer[i * x_step]));
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
+      *x_begin = static_cast< typename T::value_type >(
+          ::std::norm(*x_begin));
+    }
+  }
+  return x;
 }
 
 template < typename T >
