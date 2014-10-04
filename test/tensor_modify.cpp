@@ -453,5 +453,139 @@ TEST(TensorTest, transformTest) {
   transformTest< Tensor< Storage< int > > >();
 }
 
+#define TEST_COMPLEX_TRANSFORM(func)                                    \
+  template< typename T >                                                \
+  void func ## Test() {                                                 \
+    T t1(10, 20, 7);                                                    \
+    int t1_val = -800;                                                  \
+    for (typename T::reference_iterator begin = t1.reference_begin(),   \
+             end = t1.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t1_val++) / 300;   \
+    }                                                                   \
+    T t1_result = T::template func< T >(t1);                            \
+    for (typename T::reference_iterator begin = t1.reference_begin(),   \
+             end = t1.reference_end(); begin != end; ++begin) {         \
+      EXPECT_FLOAT_EQ(                                                  \
+          static_cast< typename T::value_type >(::std::func(*begin)),   \
+          t1_result(begin.position()));                                 \
+    }                                                                   \
+                                                                        \
+    T t2({10, 20, 7}, {161 , 8, 1});                                    \
+    int t2_val = -800;                                                  \
+    for (typename T::reference_iterator begin = t2.reference_begin(),   \
+             end = t2.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t2_val++) / 300;   \
+    }                                                                   \
+    T t2_result = T::template func< T >(t2);                            \
+    for (typename T::reference_iterator begin = t2.reference_begin(),   \
+             end = t2.reference_end(); begin != end; ++begin) {         \
+      EXPECT_FLOAT_EQ(                                                  \
+          static_cast< typename T::value_type >(::std::func(*begin)),   \
+          t2_result(begin.position()));                                 \
+    }                                                                   \
+                                                                        \
+    T t3(10, 20, 7);                                                    \
+    int t3_val = -800;                                                  \
+    for (typename T::reference_iterator begin = t3.reference_begin(),   \
+             end = t3.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t3_val++) / 300;   \
+    }                                                                   \
+    DoubleTensor t3_result = T::template func< DoubleTensor >(t3);      \
+    for (typename T::reference_iterator begin = t3.reference_begin(),   \
+             end = t3.reference_end(); begin != end; ++begin) {         \
+      EXPECT_FLOAT_EQ(                                                  \
+          static_cast< double >(::std::func(*begin)),                   \
+          t3_result(begin.position()));                                 \
+    }                                                                   \
+                                                                        \
+    T t4({10, 20, 7}, {161 , 8, 1});                                    \
+    int t4_val = -800;                                                  \
+    for (typename T::reference_iterator begin = t4.reference_begin(),   \
+             end = t4.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t4_val++) / 300;   \
+    }                                                                   \
+    DoubleTensor t4_result = T::template func< DoubleTensor >(t2);      \
+    for (typename T::reference_iterator begin = t4.reference_begin(),   \
+             end = t4.reference_end(); begin != end; ++begin) {         \
+      EXPECT_FLOAT_EQ(                                                  \
+          static_cast< double >(::std::func(*begin)),                   \
+          t4_result(begin.position()));                                 \
+    }                                                                   \
+  }                                                                     \
+  TEST(TensorTest, func ## Test) {                                      \
+    func ## Test< DoubleTensor >();                                     \
+    func ## Test< FloatTensor >();                                      \
+    func ## Test< Tensor< Storage< int > > >();                         \
+  }
+
+TEST_COMPLEX_TRANSFORM(real);
+TEST_COMPLEX_TRANSFORM(imag);
+TEST_COMPLEX_TRANSFORM(arg);
+
+#undef TEST_COMPLEX_TRANSFORM
+
+template< typename T >
+void cnrmTest() {
+  T t1(10, 20, 7);
+  int t1_val = -800;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+  }
+  T t1_result = T::template cnrm< T >(t1);
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(::std::norm(*begin)),
+        t1_result(begin.position()));
+  }
+  
+  T t2({10, 20, 7}, {161 , 8, 1});
+  int t2_val = -800;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
+  }
+  T t2_result = T::template cnrm< T >(t2);
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(
+        static_cast< typename T::value_type >(::std::norm(*begin)),
+        t2_result(begin.position()));
+  }
+  
+  T t3(10, 20, 7);
+  int t3_val = -800;
+  for (typename T::reference_iterator begin = t3.reference_begin(),
+           end = t3.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t3_val++) / 300;
+    }
+  DoubleTensor t3_result = T::template cnrm< DoubleTensor >(t3);
+  for (typename T::reference_iterator begin = t3.reference_begin(),
+           end = t3.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(
+        static_cast< double >(::std::norm(*begin)),
+        t3_result(begin.position()));
+  }
+  T t4({10, 20, 7}, {161 , 8, 1});
+  int t4_val = -800;
+  for (typename T::reference_iterator begin = t4.reference_begin(),
+           end = t4.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t4_val++) / 300;
+  }
+  DoubleTensor t4_result = T::template cnrm< DoubleTensor >(t2);
+  for (typename T::reference_iterator begin = t4.reference_begin(),
+           end = t4.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(
+        static_cast< double >(::std::norm(*begin)),
+        t4_result(begin.position()));
+  }
+}
+TEST(TensorTest, cnrmTest) {
+  cnrmTest< DoubleTensor >();
+  cnrmTest< FloatTensor >();
+  cnrmTest< Tensor< Storage< int > > >();
+}
+
 }  // namespace
 }  // namespace thunder

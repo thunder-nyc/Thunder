@@ -167,7 +167,7 @@ T1 shuffle(const T1 &x, const T2 &y) {
         ++i;                                                            \
       }                                                                 \
     }                                                                   \
-    return x;                                                           \
+    return t;                                                           \
   }
 
 THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(real);
@@ -178,7 +178,8 @@ THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(arg);
 
 template < typename T1, typename T2 >
 T2 cnrm(const T1 &x) {
-  T2 t = T2().resize(x);
+  T2 t;
+  t.resizeAs(x);
   typename T2::pointer t_pointer = t.data();
   typename T2::difference_type t_step = t.stride(t.dimension() - 1);
   if (x.partialContiguity(0, x.dimension() - 1)) {
@@ -198,7 +199,7 @@ T2 cnrm(const T1 &x) {
       ++i;
     }
   }
-  return x;
+  return t;
 }
 
 }  // namespace math

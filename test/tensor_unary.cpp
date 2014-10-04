@@ -62,7 +62,7 @@ namespace {
       } else {                                                          \
         EXPECT_FLOAT_EQ(                                                \
             static_cast< typename T::value_type >(::std::func(*begin)), \
-            t1_result(begin.position()));                               \
+            t2_result(begin.position()));                               \
       }                                                                 \
     }                                                                   \
   }                                                                     \
