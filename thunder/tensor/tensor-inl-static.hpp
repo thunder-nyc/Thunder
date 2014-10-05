@@ -84,20 +84,20 @@ template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(
     typename TR::const_reference r, const TR& theta) {
-  return math::polars< Tensor >(r, theta);
+  return math::polars(r, theta);
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(
     const TR& r, typename TR::const_reference theta) {
-  return math::polars< Tensor >(r, theta);
+  return math::polars(r, theta);
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(const TR& r, const TR& theta) {
-  return math::polars< Tensor >(r, theta);
+  return math::polars(r, theta);
 }
 
 }  // namespace tensor
