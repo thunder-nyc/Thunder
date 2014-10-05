@@ -56,7 +56,7 @@ T1 polars(const T2 &r, const T2 &theta) {
 template < typename D, typename A, typename T2 >
 THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(
     typename T2::const_reference r, const T2 &theta) {
-  typedef typename THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
+  typedef THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
   T1 t;
   t.resizeAs(theta);
   if (theta.partialContiguity(0, theta.dimension() - 1)) {
@@ -82,7 +82,7 @@ THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(
 template < typename D, typename A, typename T2 >
 THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(
     const T2 &r, typename T2::cont_reference theta) {
-  typedef typename THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
+  typedef THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
   T1 t;
   t.resizeAs(r);
   if (r.partialContiguity(0, r.dimension() - 1)) {
@@ -108,7 +108,7 @@ THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(const T2 &r, const T2 &theta) {
   if (r.length() != theta.length()) {
     throw out_of_range("Tensors have difference length");
   }
-  typedef typename THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
+  typedef THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
   T1 t;
   t.resizeAs(r);
   if (r.partialContiguity(0, r.dimension() - 1) &&

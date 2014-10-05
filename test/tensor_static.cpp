@@ -152,18 +152,18 @@ TEST(TensorTest, zerosTest) {
 }
 
 template < typename T >
-void polarTest() {
+void polarsTest() {
   T t1(5);
 
-  EXPECT_THROW(t1.polar(T::zeros(5), 9), domain_error);
-  EXPECT_THROW(t1.polar(5, T::ones(5)), domain_error);
-  EXPECT_THROW(t1.polar(T::zeros(5), T::ones(5)), domain_error);
+  EXPECT_THROW(t1.polars(T::zeros(5), 9), domain_error);
+  EXPECT_THROW(t1.polars(5, T::ones(5)), domain_error);
+  EXPECT_THROW(t1.polars(T::zeros(5), T::ones(5)), domain_error);
 }
 
-TEST(TensorTest, polarTest) {
-  polarTest< DoubleTensor >();
-  polarTest< FloatTensor >();
-  polarTest< Tensor< Storage< int > > >();
+TEST(TensorTest, polarsTest) {
+  polarsTest< DoubleTensor >();
+  polarsTest< FloatTensor >();
+  polarsTest< Tensor< Storage< int > > >();
 }
 
 }  // namespace
