@@ -82,21 +82,21 @@ Tensor< S > Tensor< S >::zeros(const size_storage &sz) {
 
 template < typename S >
 template < typename TR >
-Tensor< S > Tensor< S >::polar(
+Tensor< S > Tensor< S >::polars(
     typename TR::const_reference r, const TR& theta) {
   return math::polar< Tensor >(r, theta);
 }
 
 template < typename S >
 template < typename TR >
-Tensor< S > Tensor< S >::polar(
+Tensor< S > Tensor< S >::polars(
     const TR& r, typename TR::const_reference theta) {
   return math::polar< Tensor >(r, theta);
 }
 
 template < typename S >
 template < typename TR >
-Tensor< S > Tensor< S >::polar(const TR& r, const TR& theta) {
+Tensor< S > Tensor< S >::polars(const TR& r, const TR& theta) {
   return math::polar< Tensor >(r, theta);
 }
 

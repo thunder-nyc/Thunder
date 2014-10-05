@@ -26,7 +26,6 @@ namespace thunder {
 namespace tensor {
 namespace math {
 
-// Transformers
 template < typename T1, typename T2 >
 T1 extract(const T1 &x, const T2 &y);
 template < typename T1, typename T2 >
@@ -299,11 +298,11 @@ T std(const T &x, typename T::dim_type d);
 
 // Static constructors
 template < typename T1, typename T2 >
-T1 polar(typename T2::const_reference r, const T2& theta);
+T1 polars(typename T2::const_reference r, const T2& theta);
 template < typename T1, typename T2 >
-T1 polar(const T2& r, typename T2::const_reference theta);
+T1 polars(const T2& r, typename T2::const_reference theta);
 template < typename T1, typename T2 >
-T1 polar(const T2& r, const T2& theta);
+T1 polars(const T2& r, const T2& theta);
 
 }  // namespace math
 }  // namespace tensor

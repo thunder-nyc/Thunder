@@ -716,11 +716,11 @@ class Tensor {
 
   // Templated constructor functions can only be static
   template < typename TR >
-  static Tensor polar(typename TR::const_reference r, const TR& theta);
+  static Tensor polars(typename TR::const_reference r, const TR& theta);
   template < typename TR >
-  static Tensor polar(const TR& r, typename TR::const_reference theta);
+  static Tensor polars(const TR& r, typename TR::const_reference theta);
   template < typename TR >
-  static Tensor polar(const TR& r, const TR& theta);
+  static Tensor polars(const TR& r, const TR& theta);
 
   // Arithmetic operators with value are delegated
   Tensor operator+(const_reference value) const;

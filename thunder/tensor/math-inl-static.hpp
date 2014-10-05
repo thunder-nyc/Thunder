@@ -38,22 +38,23 @@ namespace math {
   Tensor< Storage< ::std::complex< D >, A > >
 
 template < typename T1, typename T2 >
-T1 polar(typename T2::const_reference r, const T2 &theta) {
+T1 polars(typename T2::const_reference r, const T2 &theta) {
   throw domain_error("polar is undefined for real numbers");
   return T1();
 }
 template < typename T1, typename T2 >
-T1 polar(const T2 &r, typename T2::const_reference theta) {
+T1 polars(const T2 &r, typename T2::const_reference theta) {
   throw domain_error("polar is undefined for real numbers");
   return T1();
 }
 template < typename T1, typename T2 >
-T1 polar(const T2 &r, const T2 &theta) {
+T1 polars(const T2 &r, const T2 &theta) {
   throw domain_error("polar is undefined for real numbers");
   return T1();
 }
+
 template < typename D, typename A, typename T2 >
-THUNDER_MATH_COMPLEX_TENSOR(D, A) polar(
+THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(
     typename T2::const_reference r, const T2 &theta) {
   typedef typename THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
   T1 t;
@@ -79,7 +80,7 @@ THUNDER_MATH_COMPLEX_TENSOR(D, A) polar(
   return t;
 }
 template < typename D, typename A, typename T2 >
-THUNDER_MATH_COMPLEX_TENSOR(D, A) polar(
+THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(
     const T2 &r, typename T2::cont_reference theta) {
   typedef typename THUNDER_MATH_COMPLEX_TENSOR(D, A) T1;
   T1 t;
@@ -103,7 +104,7 @@ THUNDER_MATH_COMPLEX_TENSOR(D, A) polar(
   return t;
 }
 template < typename D, typename A, typename T2 >
-THUNDER_MATH_COMPLEX_TENSOR(D, A) polar(const T2 &r, const T2 &theta) {
+THUNDER_MATH_COMPLEX_TENSOR(D, A) polars(const T2 &r, const T2 &theta) {
   if (r.length() != theta.length()) {
     throw out_of_range("Tensors have difference length");
   }
