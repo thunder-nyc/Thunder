@@ -1,3 +1,9 @@
+ ________                __       
+/_  __/ /  __ _____  ___/ /__ ____
+ / / / _ \/ // / _ \/ _  / -_) __/
+/_/ /_//_/\_,_/_//_/\_,_/\__/_/   
+                                  
+
 # Thunder
 
 Thunder is a [C++11](http://en.wikipedia.org/wiki/C%2B%2B11) library to provide device-transparent Tensor mathematical operations. We are currently working on a first proof-of-idea version of the library, focusing on applications in [Deep Learning](http://en.wikipedia.org/wiki/Deep_learning) using high-level parallelization and numerical optimization with GPUs and computer clusters.
