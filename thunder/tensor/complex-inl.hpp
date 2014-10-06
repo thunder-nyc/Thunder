@@ -17,24 +17,21 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_MATH_INL_HPP_
-#define THUNDER_TENSOR_MATH_INL_HPP_
+#ifndef THUNDER_TENSOR_COMPLEX_INL_HPP_
+#define THUNDER_TENSOR_COMPLEX_INL_HPP_
 
-#include "thunder/tensor/math.hpp"
-
-// Transformations
-#include "thunder/tensor/math-inl-transform.hpp"
+#include "thunder/tensor/complex.hpp"
 
 // Unary mathematical operations
-#include "thunder/tensor/math-inl-unary.hpp"
+#include "thunder/tensor/complex-inl-unary.hpp"
 
 // Binary mathematical operations
-#include "thunder/tensor/math-inl-binary.hpp"
+#include "thunder/tensor/complex-inl-binary.hpp"
 
 // Ternary mathematical operations
-#include "thunder/tensor/math-inl-ternary.hpp"
+#include "thunder/tensor/complex-inl-ternary.hpp"
 
 // Reduction operations
-#include "thunder/tensor/math-inl-reduction.hpp"
+#include "thunder/tensor/complex-inl-reduction.hpp"
 
-#endif  // THUNDER_TENSOR_MATH_INL_HPP_
+#endif  // THUNDER_TENSOR_COMPLEX_INL_HPP_

@@ -29,6 +29,7 @@
 #include "thunder/exception.hpp"
 #include "thunder/tensor/index_iterator.hpp"
 #include "thunder/tensor/math.hpp"
+#include "thunder/tensor/complex.hpp"
 
 namespace thunder {
 namespace tensor {
