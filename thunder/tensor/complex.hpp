@@ -28,80 +28,74 @@
 namespace thunder {
 namespace tensor {
 namespace math {
-/* These forward declarations seem to be not working.
-   First, C++11 does not allow partial template function specialization.
-   However, C++11 has partial order of function templates (POFT). But it is
-   not clear how nested function templates are handled. This has to be figured
-   out before continuing.
-
 // Unary operations
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& erf(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& erfc(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& tgamma(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& lgamma(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& ceil(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& floor(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& trunc(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& round(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& nearbyint(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& rint(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& fpclassify(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& isfinite(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& isinf(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& isnan(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& isnormal(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& signbit(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& fabs(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& exp2(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& expm1(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& log1p(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& cbrt(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& log2(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
-template < typename A, typename D >
+template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& logb(
     const Tensor< Storage < ::std::complex< D >, A > > &x);
 
@@ -342,7 +336,6 @@ template < typename D, typename A >
 Tensor< Storage< ::std::complex< D >, A > > min(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d);
-*/
 
 }  // namespace math
 }  // namespace tensor
