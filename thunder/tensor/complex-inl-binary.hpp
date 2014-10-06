@@ -84,7 +84,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& hypot(
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
              x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
-      *x_begin = ::std::hypot(*x_begin, y_norm);
+      *x_begin = ::std::hypot(::std::norm(*x_begin), y_norm);
     }
   }
   return x;

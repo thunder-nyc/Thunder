@@ -257,6 +257,18 @@ const Tensor< Storage< ::std::complex< D >, A > >& isunordered(
     const Tensor< Storage< ::std::complex< D >, A > > &y);
 
 // Ternary functions
+template < typename D, typename A, typename T2 >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const T2 &y, typename T2::const_reference z);
+template < typename D, typename A, typename T2 >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename T2::const_reference y, const T2 &z);
+template < typename D, typename A, typename S >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< S > &y, const Tensor< S > &z);
 template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,

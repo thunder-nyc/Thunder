@@ -47,6 +47,7 @@ const T1& polar(const T1 &x, const T2 &r, const T2 &theta) {
   throw domain_error("polar is undefined for real numbers");
   return x;
 }
+
 template < typename T >
 const T& fma(
     const T &x, typename T::const_reference y, typename T::const_reference z) {

@@ -27,17 +27,42 @@
 #include <complex>
 
 #include "thunder/tensor/math.hpp"
+#include "thunder/tensor/tensor.hpp"
 
 namespace thunder {
 namespace tensor {
 namespace math {
 
+template < typename D, typename A, typename T2 >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const T2 &y, typename T2::const_reference z) {
+  throw domain_error("polar is undefined for complex numbers");
+  return x;
+}
+
+template < typename D, typename A, typename T2 >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename T2::const_reference y, const T2 &z) {
+  throw domain_error("polar is undefined for complex numbers");
+  return x;
+}
+
+template < typename D, typename A, typename S >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< S > &y, const Tensor< S > &z) {
+  throw domain_error("polar is undefined for complex numbers");
+  return x;
+}
+
 template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference z) {
-  throw domain_error("fma is undefined for complex numbers");
+  throw domain_error("polar is undefined for complex numbers");
   return x;
 }
 
@@ -46,7 +71,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     const Tensor< Storage< ::std::complex< D >, A > > &y,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference z) {
-  throw domain_error("fma is undefined for complex numbers");
+  throw domain_error("polar is undefined for complex numbers");
   return x;
 }
 
@@ -55,7 +80,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y,
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
-  throw domain_error("fma is undefined for complex numbers");
+  throw domain_error("polar is undefined for complex numbers");
   return x;
 }
 
@@ -64,7 +89,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     const Tensor< Storage< ::std::complex< D >, A > > &y,
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
-  throw domain_error("fma is undefined for complex numbers");
+  throw domain_error("polar is undefined for complex numbers");
   return x;
 }
 
