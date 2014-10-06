@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <complex>
+#include <limits>
 
 #include "thunder/tensor/math.hpp"
 
@@ -54,11 +55,6 @@ THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(remainder);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(fmax);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(fmin);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(fdim);
-THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(hypot);
-THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(atan2);
-THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(ldexp);
-THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(scalbn);
-THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(scalbln);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(nextafter);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(nexttoward);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(copysign);
@@ -70,6 +66,220 @@ THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(islessgreater);
 THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY(isunordered);
 
 #undef THUNDER_TENSOR_COMPLEX_UNDEFINED_BINARY
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& hypot(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  D y_norm = ::std::norm(y);
+  if (x.partialContiguity(0, x.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] =
+          ::std::hypot(::std::norm(x_pointer[i * x_step]), y_norm);
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
+      *x_begin = ::std::hypot(*x_begin, y_norm);
+    }
+  }
+  return x;
+}
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& hypot(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< Storage< ::std::complex< D >, A > > &y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+        y.partialContiguity(0, y.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    typename T::pointer y_pointer = y.data();
+    typename T::difference_type y_step = y.stride(y.dimension() - 1);
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = ::std::hypot(::std::norm(x_pointer[i * x_step]),
+                                           ::std::norm(y_pointer[i * y_step]));
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(), y_begin = y.reference_begin();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = ::std::hypot(::std::norm(*x_begin), ::std::norm(*y_begin));
+    }
+  }
+  return x;
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& atan2(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  if (x.partialContiguity(0, x.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = ::std::atan(x_pointer[i * x_step] / y);
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
+      *x_begin = ::std::atan((*x_begin) / y);
+    }
+  }
+  return x;
+}
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& atan2(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< Storage< ::std::complex< D >, A > > &y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+        y.partialContiguity(0, y.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    typename T::pointer y_pointer = y.data();
+    typename T::difference_type y_step = y.stride(y.dimension() - 1);
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] =
+          ::std::atan(x_pointer[i * x_step] / y_pointer[i * y_step]);
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(), y_begin = y.reference_begin();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = ::std::atan((*x_begin) / (*y_begin));
+    }
+  }
+  return x;
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& ldexp(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  ::std::complex< D > y_exp = ::std::pow(2, y);
+  if (x.partialContiguity(0, x.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = x_pointer[i * x_step] * y_exp;
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
+      *x_begin = (*x_begin) * y_exp;
+    }
+  }
+  return x;
+}
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& ldexp(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< Storage< ::std::complex< D >, A > > &y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+        y.partialContiguity(0, y.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    typename T::pointer y_pointer = y.data();
+    typename T::difference_type y_step = y.stride(y.dimension() - 1);
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] =
+          x_pointer[i * x_step] * ::std::pow(2, y_pointer[i * y_step]);
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(), y_begin = y.reference_begin();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = (*x_begin) * ::std::pow(2, *y_begin);
+    }
+  }
+  return x;
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& scalbn(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  ::std::complex< D > y_exp = ::std::pow(::std::numeric_limits< D >::radix, y);
+  if (x.partialContiguity(0, x.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = x_pointer[i * x_step] * y_exp;
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
+      *x_begin = (*x_begin) * y_exp;
+    }
+  }
+  return x;
+}
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& scalbn(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< Storage< ::std::complex< D >, A > > &y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+        y.partialContiguity(0, y.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    typename T::pointer y_pointer = y.data();
+    typename T::difference_type y_step = y.stride(y.dimension() - 1);
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = x_pointer[i * x_step] *
+          ::std::pow(::std::numeric_limits< D >::radix, y_pointer[i * y_step]);
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(), y_begin = y.reference_begin();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = (*x_begin) *
+          ::std::pow(::std::numeric_limits< D >::radix, *y_begin);
+    }
+  }
+  return x;
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& scalbln(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
+  return scalbn(x, y);
+}
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& scalbln(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< Storage< ::std::complex< D >, A > > &y) {
+  return scalbn(x, y);
+}
 
 }  // namespace math
 }  // namespace tensor
