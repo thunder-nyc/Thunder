@@ -156,6 +156,62 @@ const T& proj(const T &x) {
   return x;
 }
 
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& fabs(
+    const Tensor< Storage < ::std::complex< D >, A > > &x) {
+  return abs(x);
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& exp2(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  if (x.partialContiguity(0, x.dimension() - 1)) {
+    typename T::pointer x_pointer = x.data();
+    typename T::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T::size_type x_length = x.length();
+    for (typename T::size_type i = 0; i < x_length; ++i) {
+      x_pointer[i * x_step] = ::std::pow(2, x_pointer[i * x_step]);
+    }
+  } else {
+    for (typename T::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
+      *x_begin = ::std::pow(2, *x_begin);
+    }
+  }
+  return x;
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& expm1(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  return sub(exp(x), 1);
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& log1p(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  return log(add(x, 1));
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& cbrt(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  return pow(x, 1/3);
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& log2(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  return div(log(x), ::std::log(2));
+}
+
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& logb(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  return div(log(abs(x)), ::std::log(::std::numeric_limits< D >::radix));
+}
+
 }  // namespace math
 }  // namespace tensor
 }  // namespace thunder
