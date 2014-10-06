@@ -28,6 +28,11 @@
 namespace thunder {
 namespace tensor {
 namespace math {
+/* These forward declarations seem to be not working.
+   First, C++11 does not allow partial template function specialization.
+   However, C++11 has partial order of function templates (POFT). But it is
+   not clear how nested function templates are handled. This has to be figured
+   out before continuing.
 
 // Unary operations
 template < typename A, typename D >
@@ -337,6 +342,7 @@ template < typename D, typename A >
 Tensor< Storage< ::std::complex< D >, A > > min(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d);
+*/
 
 }  // namespace math
 }  // namespace tensor
