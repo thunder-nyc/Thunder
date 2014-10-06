@@ -28,6 +28,7 @@
 namespace thunder {
 namespace tensor {
 namespace math {
+
 // Unary operations
 template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& erf(

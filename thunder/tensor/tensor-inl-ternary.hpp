@@ -94,15 +94,18 @@ const Tensor< S >& Tensor< S >::polar(
   return math::polar(*this, y, z);
 }
 template < typename S >
-const Tensor< S >& Tensor< S >::polar(const Tensor &y, const_reference z) const {
+const Tensor< S >& Tensor< S >::polar(
+    const Tensor &y, const_reference z) const {
   return math::polar(*this, y, z);
 }
 template < typename S >
-const Tensor< S >& Tensor< S >::polar(const_reference y, const Tensor& z) const {
+const Tensor< S >& Tensor< S >::polar(
+    const_reference y, const Tensor& z) const {
   return math::polar(*this, y, z);
 }
 template < typename S >
-const Tensor< S >& Tensor< S >::polar(const Tensor &y, const Tensor &z) const {
+const Tensor< S >& Tensor< S >::polar(
+    const Tensor &y, const Tensor &z) const {
   return math::polar(*this, y, z);
 }
 

@@ -22,11 +22,7 @@
 
 #include <functional>
 #include <initializer_list>
-#include <limits>
 #include <memory>
-#include <ostream>
-#include <string>
-#include <utility>
 
 #include "thunder/storage.hpp"
 
