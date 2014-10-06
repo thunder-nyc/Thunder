@@ -23,14 +23,22 @@
 #include "thunder/storage/storage.hpp"
 
 #include <memory>
+#include <complex>
 
 namespace thunder {
 
-template< typename D = double, typename A = ::std::allocator< D > >
+template < typename D = double, typename A = ::std::allocator< D > >
 using Storage = storage::Storage< D, A >;
-
 typedef Storage< double, ::std::allocator< double > > DoubleStorage;
 typedef Storage< float, ::std::allocator< float > > FloatStorage;
+
+template < typename D = double,
+           typename A = ::std::allocator< ::std::complex< D > > >
+using ComplexStorage = storage::Storage< ::std::complex< D >, A >;
+typedef ComplexStorage< double, ::std::allocator< ::std::complex< double > > >
+DoubleComplexStorage;
+typedef ComplexStorage< float, ::std::allocator< ::std::complex< float > > >
+FloatComplexStorage;
 
 }  // namespace thunder
 

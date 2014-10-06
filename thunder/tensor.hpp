@@ -20,17 +20,26 @@
 #ifndef THUNDER_TENSOR_HPP
 #define THUNDER_TENSOR_HPP
 
-#include "thunder/storage.hpp"
-
 #include "thunder/tensor/tensor.hpp"
+
+#include <complex>
+
+#include "thunder/storage.hpp"
 
 namespace thunder {
 
 template < typename S = DoubleStorage >
 using Tensor = tensor::Tensor< S >;
-
 typedef Tensor< DoubleStorage > DoubleTensor;
 typedef Tensor< FloatStorage > FloatTensor;
+
+template < typename D = double,
+           typename A = ::std::allocator< ::std::complex< D > > >
+using ComplexTensor = tensor::Tensor< ComplexStorage< D, A > >;
+typedef ComplexTensor< double, ::std::allocator< ::std::complex< double > > >
+DoubleComplexTensor;
+typedef ComplexTensor< float, ::std::allocator< ::std::complex< float > > >
+FloatComplexTensor;
 
 }  // namespace thunder
 
