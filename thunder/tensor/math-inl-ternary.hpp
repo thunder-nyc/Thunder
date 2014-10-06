@@ -32,6 +32,21 @@ namespace thunder {
 namespace tensor {
 namespace math {
 
+template < typename T1, typename T2 >
+const T1& polar(const T1 &x, typename T2::const_reference r, const T2& theta) {
+  throw domain_error("polar is undefined for real numbers");
+  return x;
+}
+template < typename T1, typename T2 >
+const T1& polar(const T1 &x, const T2 &r, typename T2::const_reference theta) {
+  throw domain_error("polar is undefined for real numbers");
+  return x;
+}
+template < typename T1, typename T2 >
+const T1& polar(const T1 &x, const T2 &r, const T2 &theta) {
+  throw domain_error("polar is undefined for real numbers");
+  return x;
+}
 template < typename T >
 const T& fma(
     const T &x, typename T::const_reference y, typename T::const_reference z) {

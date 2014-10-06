@@ -40,7 +40,4 @@
 // Complex specialization
 #include "thunder/tensor/math-inl-complex.hpp"
 
-// Static constructors
-#include "thunder/tensor/math-inl-static.hpp"
-
 #endif  // THUNDER_TENSOR_MATH_INL_HPP_

@@ -84,20 +84,29 @@ template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(
     typename TR::const_reference r, const TR& theta) {
-  return math::polars(r, theta);
+  Tensor x;
+  x.resizeAs(theta);
+  return x.polar(r, theta);
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(
     const TR& r, typename TR::const_reference theta) {
-  return math::polars(r, theta);
+  Tensor x;
+  x.resizeAs(r);
+  return x.polar(r, theta);
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(const TR& r, const TR& theta) {
-  return math::polars(r, theta);
+  if (r.length() != theta.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  Tensor x;
+  x.resizeAs(r);
+  return x.polar(r, theta);
 }
 
 }  // namespace tensor

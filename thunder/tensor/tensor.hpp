@@ -640,19 +640,58 @@ class Tensor {
   static Tensor islessgreater(const Tensor &x, const Tensor &y);
   static Tensor isunordered(const Tensor &x, const Tensor &y);
 
-  // Fused operations with values and tensors
+  // Templated ternary functions
+  template < typename TR >
+  const Tensor& polar(typename TR::const_reference r, const TR& theta) const;
+  template < typename TR >
+  const Tensor& polar(const TR& r, typename TR::const_reference theta) const;
+  template < typename TR >
+  const Tensor& polar(const TR& r, const TR& theta) const;
+
+  // Non-const templated ternary functions are delegated using const_cast
+  template < typename TR >
+  Tensor& polar(typename TR::const_reference r, const TR& theta);
+  template < typename TR >
+  Tensor& polar(const TR& r, typename TR::const_reference theta);
+  template < typename TR >
+  Tensor& polar(const TR& r, const TR& theta);
+
+  // Static templated ternary functions are delegated
+  template < typename TR >
+  static Tensor polar(
+      const Tensor &x, typename TR::const_reference r, const TR& theta);
+  template < typename TR >
+  static Tensor polar(
+      const Tensor &x, const TR& r, typename TR::const_reference theta);
+  template < typename TR >
+  static Tensor polar(
+      const Tensor &x, const TR& r, const TR& theta);
+
+  // Ternary operations with values and tensors
+  const Tensor& polar(const_reference y, const_reference z) const;
+  const Tensor& polar(const Tensor& y, const_reference z) const;
+  const Tensor& polar(const_reference y, const Tensor& z) const;
+  const Tensor& polar(const Tensor& y, const Tensor& z) const;
   const Tensor& fma(const_reference y, const_reference z) const;
   const Tensor& fma(const Tensor& y, const_reference z) const;
   const Tensor& fma(const_reference y, const Tensor& z) const;
   const Tensor& fma(const Tensor& y, const Tensor& z) const;
 
-  // Non-const fused operations are delegated using const_cast
+  // Non-const ternary operations are delegated using const_cast
+  Tensor& polar(const_reference y, const_reference z);
+  Tensor& polar(const Tensor &y, const_reference z);
+  Tensor& polar(const_reference y, const Tensor& z);
+  Tensor& polar(const Tensor &y, const Tensor& z);
   Tensor& fma(const_reference y, const_reference z);
   Tensor& fma(const Tensor &y, const_reference z);
   Tensor& fma(const_reference y, const Tensor& z);
   Tensor& fma(const Tensor &y, const Tensor& z);
 
-  // Static fused operations are delegated
+  // Static ternary operations are delegated
+  static Tensor polar(const Tensor &x, const_reference y, const_reference z);
+  static Tensor polar(const Tensor &x, const Tensor &y, const_reference z);
+  static Tensor polar(const Tensor &x, const_reference y, const Tensor &z);
+  static Tensor polar(const Tensor &x, const Tensor &y, const Tensor &z);
   static Tensor fma(const Tensor &x, const_reference y, const_reference z);
   static Tensor fma(const Tensor &x, const Tensor &y, const_reference z);
   static Tensor fma(const Tensor &x, const_reference y, const Tensor &z);
@@ -714,7 +753,7 @@ class Tensor {
   static Tensor zeros(size_type n0, size_type n1, size_type n2, size_type n3);
   static Tensor zeros(const size_storage &sz);
 
-  // Templated constructor functions can only be static
+  // Templated constructor functions
   template < typename TR >
   static Tensor polars(typename TR::const_reference r, const TR& theta);
   template < typename TR >

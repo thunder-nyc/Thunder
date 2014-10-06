@@ -30,21 +30,132 @@ namespace thunder {
 namespace tensor {
 
 template < typename S >
+template < typename TR >
+const Tensor< S >& Tensor< S >::polar(
+    typename TR::const_reference r, const TR& theta) const {
+  return math::polar(*this, r, theta);
+}
+template < typename S >
+template < typename TR >
+const Tensor< S >& Tensor< S >::polar(
+    const TR& r, typename TR::const_reference theta) const {
+  return math::polar(*this, r, theta);
+}
+template < typename S >
+template < typename TR >
+const Tensor< S >& Tensor< S >::polar(const TR& r, const TR& theta) const {
+  return math::polar(*this, r, theta);
+}
+
+template < typename S >
+template < typename TR >
+Tensor< S >& Tensor< S >::polar(
+    typename TR::const_reference r, const TR& theta) {
+  return const_cast< Tensor& >(
+      const_cast< const Tensor& >(this)->polar(r, theta));
+}
+template < typename S >
+template < typename TR >
+Tensor< S >& Tensor< S >::polar(
+    const TR& r, typename TR::const_reference theta) {
+  return const_cast< Tensor& >(
+      const_cast< const Tensor& >(this)->polar(r, theta));
+}
+template < typename S >
+template < typename TR >
+Tensor< S >& Tensor< S >::polar(const TR& r, const TR& theta) {
+  return const_cast< Tensor& >(
+      const_cast< const Tensor& >(this)->polar(r, theta));
+}
+
+template < typename S >
+template < typename TR >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, typename TR::const_reference r, const TR& theta) {
+  return x.clone().polar(r, theta);
+}
+template < typename S >
+template < typename TR >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, const TR& r, typename TR::const_reference theta) {
+  return x.clone().polar(r, theta);
+}
+template < typename S >
+template < typename TR >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, const TR& r, const TR& theta) {
+  return x.clone().polar(r, theta);
+}
+
+template < typename S >
+const Tensor< S >& Tensor< S >::polar(
+    const_reference y, const_reference z) const {
+  return math::polar(*this, y, z);
+}
+template < typename S >
+const Tensor< S >& Tensor< S >::polar(const Tensor &y, const_reference z) const {
+  return math::polar(*this, y, z);
+}
+template < typename S >
+const Tensor< S >& Tensor< S >::polar(const_reference y, const Tensor& z) const {
+  return math::polar(*this, y, z);
+}
+template < typename S >
+const Tensor< S >& Tensor< S >::polar(const Tensor &y, const Tensor &z) const {
+  return math::polar(*this, y, z);
+}
+
+template < typename S >
+Tensor< S >& Tensor< S >::polar(const_reference y, const_reference z) {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->polar(y, z));
+}
+template < typename S >
+Tensor< S >& Tensor< S >::polar(const Tensor &y, const_reference z) {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->polar(y, z));
+}
+template < typename S >
+Tensor< S >& Tensor< S >::polar(const_reference y, const Tensor &z) {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->polar(y, z));
+}
+template < typename S >
+Tensor< S >& Tensor< S >::polar(const Tensor &y, const Tensor &z) {
+  return const_cast< Tensor& >(const_cast< const Tensor* >(this)->polar(y, z));
+}
+
+template < typename S >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, const_reference y, const_reference z) {
+  return x.clone().polar(y, z);
+}
+template < typename S >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, const Tensor &y, const_reference z) {
+  return x.clone().polar(y, z);
+}
+template < typename S >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, const_reference y, const Tensor &z) {
+  return x.clone().polar(y, z);
+}
+template < typename S >
+Tensor< S > Tensor< S >::polar(
+    const Tensor &x, const Tensor &y, const Tensor &z) {
+  return x.clone().polar(y, z);
+}
+
+template < typename S >
 const Tensor< S >& Tensor< S >::fma(
     const_reference y, const_reference z) const {
   return math::fma(*this, y, z);
 }
-
 template < typename S >
 const Tensor< S >& Tensor< S >::fma(const Tensor &y, const_reference z) const {
   return math::fma(*this, y, z);
 }
-
 template < typename S >
 const Tensor< S >& Tensor< S >::fma(const_reference y, const Tensor& z) const {
   return math::fma(*this, y, z);
 }
-
 template < typename S >
 const Tensor< S >& Tensor< S >::fma(const Tensor &y, const Tensor &z) const {
   return math::fma(*this, y, z);

@@ -242,6 +242,12 @@ template < typename T >
 const T& isunordered(const T &x, const T &y);
 
 // Ternary functions
+template < typename T1, typename T2 >
+const T1& polar(const T1 &x, typename T2::const_reference r, const T2 &theta);
+template < typename T1, typename T2 >
+const T1& polar(const T1 &x, const T2& r, typename T2::const_reference theta);
+template < typename T1, typename T2 >
+const T1& polar(const T1 &x, const T2& r, const T2 &theta);
 template < typename T >
 const T& fma(
     const T &x, typename T::const_reference y, typename T::const_reference z);
@@ -295,14 +301,6 @@ template < typename T >
 T var(const T &x, typename T::dim_type d);
 template < typename T >
 T std(const T &x, typename T::dim_type d);
-
-// Static constructors
-template < typename T1, typename T2 >
-T1 polars(typename T2::const_reference r, const T2& theta);
-template < typename T1, typename T2 >
-T1 polars(const T2& r, typename T2::const_reference theta);
-template < typename T1, typename T2 >
-T1 polars(const T2& r, const T2& theta);
 
 }  // namespace math
 }  // namespace tensor
