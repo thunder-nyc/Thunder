@@ -35,7 +35,7 @@ typedef Tensor< FloatStorage > FloatTensor;
 
 template < typename D = double,
            typename A = ::std::allocator< ::std::complex< D > > >
-using ComplexTensor = tensor::Tensor< ComplexStorage< D, A > >;
+using ComplexTensor = Tensor< ComplexStorage< D, A > >;
 typedef ComplexTensor< double, ::std::allocator< ::std::complex< double > > >
 DoubleComplexTensor;
 typedef ComplexTensor< float, ::std::allocator< ::std::complex< float > > >

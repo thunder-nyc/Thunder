@@ -24,6 +24,7 @@
 #include "boost/archive/binary_iarchive.hpp"
 #include "boost/archive/text_oarchive.hpp"
 #include "boost/archive/text_iarchive.hpp"
+#include "boost/serialization/complex.hpp"
 #include "gtest/gtest.h"
 #include "thunder/storage.hpp"
 
@@ -36,7 +37,8 @@ void serializeTest() {
   int t1_val = -800;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+    *begin = static_cast< typename T::value_type >(t1_val++) /
+        static_cast< typename T::value_type >(300);
   }
 
   ::std::stringstream s1;
@@ -54,7 +56,7 @@ void serializeTest() {
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(), t2_begin = t2.reference_begin();
        begin != end; ++begin, ++t2_begin) {
-    EXPECT_FLOAT_EQ(*begin, *t2_begin);
+    EXPECT_EQ(*begin, *t2_begin);
   }
 
   ::std::stringstream s2;
@@ -72,12 +74,14 @@ void serializeTest() {
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(), t3_begin = t3.reference_begin();
        begin != end; ++begin, ++t3_begin) {
-    EXPECT_FLOAT_EQ(*begin, *t3_begin);
+    EXPECT_EQ(*begin, *t3_begin);
   }
 }
 TEST(TensorTest, serializeTest) {
   serializeTest< DoubleTensor >();
   serializeTest< FloatTensor >();
+  serializeTest< DoubleComplexTensor >();
+  serializeTest< FloatComplexTensor >();
   serializeTest< Tensor< Storage< int > > >();
 }
 

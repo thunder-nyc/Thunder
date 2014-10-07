@@ -40,7 +40,7 @@ void onesTest() {
   EXPECT_EQ(9, t1.size(0));
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(1, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(1), *begin);
   }
 
   T t2 = T::ones(9, 7);
@@ -49,7 +49,7 @@ void onesTest() {
   EXPECT_EQ(7, t2.size(1));
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(1, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(1), *begin);
   }
 
   T t3 = T::ones(9, 7, 8);
@@ -59,7 +59,7 @@ void onesTest() {
   EXPECT_EQ(8, t3.size(2));
   for (typename T::reference_iterator begin = t3.reference_begin(),
            end = t3.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(1, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(1), *begin);
   }
 
   T t4 = T::ones(9, 7, 8, 4);
@@ -70,7 +70,7 @@ void onesTest() {
   EXPECT_EQ(4, t4.size(3));
   for (typename T::reference_iterator begin = t4.reference_begin(),
            end = t4.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(1, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(1), *begin);
   }
 
   T t5 = T::ones({9, 7, 8, 4, 5});
@@ -82,13 +82,15 @@ void onesTest() {
   EXPECT_EQ(5, t5.size(4));
   for (typename T::reference_iterator begin = t5.reference_begin(),
            end = t5.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(1, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(1), *begin);
   }
 }
 
 TEST(TensorTest, onesTest) {
   onesTest< DoubleTensor >();
   onesTest< FloatTensor >();
+  onesTest< DoubleComplexTensor >();
+  onesTest< FloatComplexTensor >();
   onesTest< Tensor< Storage< int > > >();
 }
 
@@ -99,7 +101,7 @@ void zerosTest() {
   EXPECT_EQ(9, t1.size(0));
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(0, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(0), *begin);
   }
 
   T t2 = T::zeros(9, 7);
@@ -108,7 +110,7 @@ void zerosTest() {
   EXPECT_EQ(7, t2.size(1));
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(0, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(0), *begin);
   }
 
   T t3 = T::zeros(9, 7, 8);
@@ -118,7 +120,7 @@ void zerosTest() {
   EXPECT_EQ(8, t3.size(2));
   for (typename T::reference_iterator begin = t3.reference_begin(),
            end = t3.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(0, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(0), *begin);
   }
 
   T t4 = T::zeros(9, 7, 8, 4);
@@ -129,7 +131,7 @@ void zerosTest() {
   EXPECT_EQ(4, t4.size(3));
   for (typename T::reference_iterator begin = t4.reference_begin(),
            end = t4.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(0, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(0), *begin);
   }
 
   T t5 = T::zeros({9, 7, 8, 4, 5});
@@ -141,20 +143,21 @@ void zerosTest() {
   EXPECT_EQ(5, t5.size(4));
   for (typename T::reference_iterator begin = t5.reference_begin(),
            end = t5.reference_end(); begin != end; ++begin) {
-    EXPECT_EQ(0, *begin);
+    EXPECT_EQ(static_cast< typename T::value_type >(0), *begin);
   }
 }
 
 TEST(TensorTest, zerosTest) {
   zerosTest< DoubleTensor >();
   zerosTest< FloatTensor >();
+  zerosTest< DoubleComplexTensor >();
+  zerosTest< FloatComplexTensor >();
   zerosTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
 void polarsTest() {
   T t1(5);
-
   EXPECT_THROW(t1.polars(T::zeros(5), 9), domain_error);
   EXPECT_THROW(t1.polars(5, T::ones(5)), domain_error);
   EXPECT_THROW(t1.polars(T::zeros(5), T::ones(5)), domain_error);

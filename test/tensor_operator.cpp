@@ -32,13 +32,14 @@ void valueNumericalTest() {
   int t1_val = -800;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+    *begin = static_cast< typename T::value_type >(t1_val++) /
+        static_cast< typename T::value_type >(300);
   }
 
   T t2 = t1 + static_cast< typename T::value_type >(14);
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(
+    EXPECT_EQ(
         t1(begin.position()) + static_cast< typename T::value_type >(14),
         *begin);
   }
@@ -46,7 +47,7 @@ void valueNumericalTest() {
   T t3 = static_cast< typename T::value_type >(7) + t1;
   for (typename T::reference_iterator begin = t3.reference_begin(),
            end = t3.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(
+    EXPECT_EQ(
         static_cast< typename T::value_type >(7) + t1(begin.position()),
         *begin);
   }
@@ -54,7 +55,7 @@ void valueNumericalTest() {
   T t4 = t1 - static_cast< typename T::value_type >(11);
   for (typename T::reference_iterator begin = t4.reference_begin(),
            end = t4.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(
+    EXPECT_EQ(
         t1(begin.position()) - static_cast< typename T::value_type >(11),
         *begin);
   }
@@ -63,7 +64,7 @@ void valueNumericalTest() {
   t5 += static_cast< typename T::value_type >(8);
   for (typename T::reference_iterator begin = t5.reference_begin(),
            end = t5.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(
+    EXPECT_EQ(
         t1(begin.position()) + static_cast< typename T::value_type >(8),
         *begin);
   }
@@ -72,7 +73,7 @@ void valueNumericalTest() {
   t6 -= static_cast< typename T::value_type >(4);
   for (typename T::reference_iterator begin = t6.reference_begin(),
            end = t6.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(
+    EXPECT_EQ(
         t1(begin.position()) - static_cast< typename T::value_type >(4),
         *begin);
   }
@@ -81,6 +82,8 @@ void valueNumericalTest() {
 TEST(TensorTest, valueNumericalTest) {
   valueNumericalTest< DoubleTensor >();
   valueNumericalTest< FloatTensor >();
+  valueNumericalTest< DoubleComplexTensor >();
+  valueNumericalTest< FloatComplexTensor >();
   valueNumericalTest< Tensor< Storage< int > > >();
 }
 
@@ -91,46 +94,50 @@ void tensorNumericalTest() {
   int t1_val = -800;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+    *begin = static_cast< typename T::value_type >(t1_val++) /
+        static_cast< typename T::value_type >(300);
   }
 
   T t2(10, 20, 7);
   int t2_val = -900;
   for (typename T::reference_iterator begin = t2.reference_begin(),
            end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 372;
+    *begin = static_cast< typename T::value_type >(t2_val++) /
+        static_cast< typename T::value_type >(372);
   }
 
   T t3 = t1 + t2;
   for (typename T::reference_iterator begin = t3.reference_begin(),
            end = t3.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(t1(begin.position()) + t2(begin.position()), *begin);
+    EXPECT_EQ(t1(begin.position()) + t2(begin.position()), *begin);
   }
 
   T t4 = t1 - t2;
   for (typename T::reference_iterator begin = t4.reference_begin(),
            end = t4.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(t1(begin.position()) - t2(begin.position()), *begin);
+    EXPECT_EQ(t1(begin.position()) - t2(begin.position()), *begin);
   }
 
   T t5 = t1.clone();
   t5 += t2;
   for (typename T::reference_iterator begin = t5.reference_begin(),
            end = t5.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(t1(begin.position()) + t2(begin.position()), *begin);
+    EXPECT_EQ(t1(begin.position()) + t2(begin.position()), *begin);
   }
 
   T t6 = t1.clone();
   t6 -= t2;
   for (typename T::reference_iterator begin = t6.reference_begin(),
            end = t6.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(t1(begin.position()) - t2(begin.position()), *begin);
+    EXPECT_EQ(t1(begin.position()) - t2(begin.position()), *begin);
   }
 }
 
 TEST(TensorTest, tensorNumericalTest) {
   tensorNumericalTest< DoubleTensor >();
   tensorNumericalTest< FloatTensor >();
+  tensorNumericalTest< DoubleComplexTensor >();
+  tensorNumericalTest< FloatComplexTensor >();
   tensorNumericalTest< Tensor< Storage< int > > >();
 }
 
