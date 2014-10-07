@@ -32,11 +32,9 @@ using namespace thunder;
 // Create a tensor of size 3x9x7x10
 DoubleTensor cpu_tensor(3, 9, 7, 10);
 
-// Create a tensor living on NVIDIA GPU
-FloatCudaTensor gpu_tensor;
-
-// Resize and copy from the CPU tensor
-gpu_tensor.resizeAs(cpu_tensor).copy(cpu_tensor);
+// Create a tensor living on NVIDIA GPU and copy from CPU tensor.
+// Only explicit static cast is needed.
+FloatCudaTensor gpu_tensor = static_cast< FloatCudaTensor >(cpu_tensor);
 ```
 
 ### Reference Semantics
@@ -82,10 +80,10 @@ DoubleTensor vector(10);
 DoubleTensor result = DoubleTensor::zeros(7);
 
 // Create a default blas device
-Blas blas_device;
+DoubleBlas blas_device;
 
 // Create a default random device
-Random rand_device;
+DoubleRandom rand_device;
 
 // Each t is of size 9x7x10
 for (const DoubleTensor &t : tensor) {
@@ -93,7 +91,7 @@ for (const DoubleTensor &t : tensor) {
     for (const DoubleTensor &s : t) {
         // Do matrix-vector multiplication with vector sampled
         // from normal distribution with mean = 0 and std = 1
-    	result += blas_device.gemv(s, rand_device.normal(&vector, 0, 1));
+    	result += blas_device.gemv(s, rand_device.normal(vector, 0, 1));
     }
 }
 ```
