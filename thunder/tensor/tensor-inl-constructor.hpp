@@ -187,6 +187,16 @@ Tensor< S >::Tensor(Tensor &&y)
       storage_(std::move(y.storage_)), offset_(std::move(y.offset_)) {}
 
 template < typename S >
+template < typename Other_S >
+Tensor< S >::Tensor(const Tensor< Other_S > &y) {
+  Tensor y_typed = y.template type< Tensor >();
+  ::std::swap(size_, y_typed.size_);
+  ::std::swap(stride_, y_typed.stride_);
+  ::std::swap(storage_, y_typed.storage_);
+  ::std::swap(offset_, y_typed.offset_);
+}
+
+template < typename S >
 Tensor< S >::~Tensor() {}
 
 }  // namespace tensor

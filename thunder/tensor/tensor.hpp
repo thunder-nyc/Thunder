@@ -64,6 +64,10 @@ class Tensor {
   Tensor(const Tensor &y);
   Tensor(Tensor &&y);
 
+  // Templated conversion constructors
+  template < typename Other_S >
+  explicit Tensor(const Tensor< Other_S > &y);
+
   // Destructor
   ~Tensor();
 
