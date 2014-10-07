@@ -81,13 +81,19 @@ DoubleTensor vector(10);
 // Create a vector of size 7 storing result data
 DoubleTensor result = DoubleTensor::zeros(7);
 
+// Create a default blas device
+Blas blas_device;
+
+// Create a default random device
+Random rand_device;
+
 // Each t is of size 9x7x10
 for (const DoubleTensor &t : tensor) {
     // Each s is of size 7x10
     for (const DoubleTensor &s : t) {
         // Do matrix-vector multiplication with vector sampled
         // from normal distribution with mean = 0 and std = 1
-    	result += blas::gemv(s, vector.normal(0, 1));
+    	result += blas_device.gemv(s, rand_device.normal(&vector, 0, 1));
     }
 }
 ```
@@ -123,7 +129,10 @@ DoubleTensor tensor1(3, 9, 7, 10);
 DoubleTensor tensor2(3, 9, 7, 10);
 
 // Construct a complex tensor using polar
-DoubleComplexTensor complex = DoubleComplexTensor::polar(tensor1, tensor2);
+DoubleComplexTensor complex_tensor = DoubleComplexTensor::polar(tensor1, tensor2);
+
+// Get the complex norm of the tensor
+DoubleTensor norm_tensor = complex_tensor.getCnrm();
 ```
 
 ### Serialization
