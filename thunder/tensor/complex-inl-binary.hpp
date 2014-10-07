@@ -281,6 +281,64 @@ const Tensor< Storage< ::std::complex< D >, A > >& scalbln(
   return scalbn(x, y);
 }
 
+template< typename D, typename A, typename T1 >
+const T1& copy(const T1 &x,
+               const Tensor< Storage< ::std::complex< D >, A > > &y) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T2;
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.isContiguous() && y.isContiguous()) {
+    typename T1::size_type x_length = x.length();
+    typename T1::pointer x_data = x.data();
+    typename T2::pointer y_data = y.data();
+    for (typename T1::size_type i = 0; i < x_length; ++i) {
+      x_data[i] = static_cast< typename T1::value_type >(
+          ::std::real(y_data[i]));
+    }
+  } else {
+    typename T2::reference_iterator y_begin = y.reference_begin();
+    for (typename T1::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = static_cast< typename T1::value_type>(
+          ::std::real(*y_begin));
+    }
+  }
+  return x;
+}
+
+template< typename D1, typename D2, typename A1, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& copy(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &y) {
+  typedef Tensor< Storage< ::std::complex< D1 >, A1 > > T1;
+  typedef Tensor< Storage< ::std::complex< D2 >, A2 > > T2;
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length");
+  }
+  if (x.isContiguous() && y.isContiguous()) {
+    typename T1::size_type x_length = x.length();
+    typename T1::pointer x_data = x.data();
+    typename T2::pointer y_data = y.data();
+    for (typename T1::size_type i = 0; i < x_length; ++i) {
+      x_data[i] = typename T1::value_type(
+          static_cast< D1 >(::std::real(y_data[i])),
+          static_cast< D1 >(::std::imag(y_data[i])));
+    }
+  } else {
+    typename T2::reference_iterator y_begin = y.reference_begin();
+    for (typename T1::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      *x_begin = typename T1::value_type(
+          static_cast< D1 >(::std::real(*y_begin)),
+          static_cast< D1 >(::std::imag(*y_begin)));
+    }
+  }
+  return x;
+}
+
 }  // namespace math
 }  // namespace tensor
 }  // namespace thunder

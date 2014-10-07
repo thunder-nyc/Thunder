@@ -17,27 +17,40 @@
 
 #include "thunder/storage.hpp"
 
+#include <complex>
 #include <sstream>
 
 #include "boost/archive/binary_oarchive.hpp"
 #include "boost/archive/binary_iarchive.hpp"
 #include "boost/archive/text_oarchive.hpp"
 #include "boost/archive/text_iarchive.hpp"
+#include "boost/serialization/complex.hpp"
 #include "gtest/gtest.h"
 
-#define TEST_ALL_TYPES(FUNC)           \
-  TEST(StorageTest, FUNC) {            \
-    FUNC< double > ();                 \
-    FUNC< float > ();                  \
-    FUNC< int > ();                    \
-    FUNC< unsigned int > ();           \
-    FUNC< long > ();                   \
-    FUNC< unsigned long > ();          \
-    FUNC< long long > ();              \
-    FUNC< unsigned long long > ();     \
-    FUNC< char > ();                   \
-    FUNC< signed char > ();            \
-    FUNC< unsigned char > ();          \
+#define TEST_ALL_TYPES(FUNC)				 \
+  TEST(StorageTest, FUNC) {				 \
+    FUNC< double > ();					 \
+    FUNC< float > ();					 \
+    FUNC< int > ();					 \
+    FUNC< unsigned int > ();				 \
+    FUNC< long > ();					 \
+    FUNC< unsigned long > ();				 \
+    FUNC< long long > ();				 \
+    FUNC< unsigned long long > ();			 \
+    FUNC< char > ();					 \
+    FUNC< signed char > ();				 \
+    FUNC< unsigned char > ();				 \
+    FUNC< ::std::complex< double > > ();                 \
+    FUNC< ::std::complex< float > > ();                  \
+    FUNC< ::std::complex< int > > ();                    \
+    FUNC< ::std::complex< unsigned int > > ();           \
+    FUNC< ::std::complex< long > > ();                   \
+    FUNC< ::std::complex< unsigned long > > ();          \
+    FUNC< ::std::complex< long long > > ();              \
+    FUNC< ::std::complex< unsigned long long > > ();     \
+    FUNC< ::std::complex< char > > ();                   \
+    FUNC< ::std::complex< signed char > > ();            \
+    FUNC< ::std::complex< unsigned char > > ();          \
   }
 
 template < typename T >

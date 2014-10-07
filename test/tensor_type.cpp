@@ -17,6 +17,7 @@
 
 #include "thunder/tensor.hpp"
 
+#include <complex>
 #include <memory>
 #include <typeinfo>
 
@@ -45,7 +46,7 @@ void typeTest() {
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_FLOAT_EQ(static_cast< float >(t1(i, j, k)), t2(i, j, k));
+        EXPECT_FLOAT_EQ(static_cast< float >(::std::real(t1(i, j, k))), t2(i, j, k));
       }
     }
   }
@@ -70,7 +71,7 @@ void typeTest() {
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_FLOAT_EQ(static_cast< float >(t3(i, j, k)), t4(i, j, k));
+        EXPECT_FLOAT_EQ(static_cast< float >(::std::real(t3(i, j, k))), t4(i, j, k));
       }
     }
   }
@@ -79,6 +80,8 @@ void typeTest() {
 TEST(TensorTest, typeTest) {
   typeTest< DoubleTensor >();
   typeTest< FloatTensor >();
+  typeTest< DoubleComplexTensor >();
+  typeTest< FloatComplexTensor >();
   typeTest< Tensor< Storage< int > > >();
 }
 
@@ -89,20 +92,22 @@ void applyTest() {
   double t1_sum = 0.0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    t1_sum += static_cast< double >(t1_val);
+    t1_sum += static_cast< double >(::std::real(t1_val));
     *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   double sum = 0;
   T t2 = T::apply(
       t1, ::std::function< typename T::value_type(typename T::value_type x) >(
-          [&sum](typename T::value_type x) {sum += static_cast< double >(x);
-                                            return x + 1;}));
+          [&sum](typename T::value_type x) {
+            sum += static_cast< double >(::std::real(x));
+            return x + static_cast< typename T::value_type >(1);}));
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t2(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t2(i, j, k));
       }
     }
   }
@@ -111,41 +116,44 @@ void applyTest() {
   T t3 = T::apply(t1, ::std::function< typename T::value_type(
       const typename T::value_type&) > (
           [&sum](const typename T::value_type &x) {
-            sum += static_cast< double >(x);
-            return x + 1;} ));
+            sum += static_cast< double >(::std::real(x));
+            return x + static_cast< typename T::value_type >(1);} ));
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t3(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t3(i, j, k));
       }
     }
   }
 
   sum = 0;
   T t4 = T::apply(t1, [&sum](typename T::value_type &x) {
-      sum += static_cast< double >(x);
-      x += 1;
+      sum += static_cast< double >(::std::real(x));
+      x += static_cast< typename T::value_type >(1);
     });
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t4(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t4(i, j, k));
       }
     }
   }
 
   sum = 0;
   T t5 = T::apply(t1, [&sum](typename T::value_type *x) {
-      sum += static_cast< double >(*x);
+      sum += static_cast< double >(::std::real(*x));
       *x += 1;
     });
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t5(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t5(i, j, k));
       }
     }
   }
@@ -154,6 +162,8 @@ void applyTest() {
 TEST(TensorTest, applyTest) {
   applyTest< DoubleTensor >();
   applyTest< FloatTensor >();
+  applyTest< DoubleComplexTensor >();
+  applyTest< FloatComplexTensor >();
   applyTest< Tensor< Storage< int > > >();
 }
 
@@ -164,20 +174,22 @@ void noncontiguousApplyTest() {
   double t1_sum = 0.0;
   for (typename T::reference_iterator begin = t1.reference_begin(),
            end = t1.reference_end(); begin != end; ++begin) {
-    t1_sum += static_cast< double >(t1_val);
+    t1_sum += static_cast< double >(::std::real(t1_val));
     *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
   double sum = 0;
   T t2 = T::apply(
       t1, ::std::function< typename T::value_type(typename T::value_type x) >(
-          [&sum](typename T::value_type x) {sum += static_cast< double >(x);
-                                            return x + 1;}));
+          [&sum](typename T::value_type x) {
+            sum += static_cast< double >(::std::real(x));
+            return x + static_cast< typename T::value_type >(1);}));
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t2(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t2(i, j, k));
       }
     }
   }
@@ -186,41 +198,44 @@ void noncontiguousApplyTest() {
   T t3 = T::apply(t1, ::std::function< typename T::value_type(
       const typename T::value_type&) > (
           [&sum](const typename T::value_type &x) {
-            sum += static_cast< double >(x);
-            return x + 1;} ));
+            sum += static_cast< double >(::std::real(x));
+            return x + static_cast< typename T::value_type >(1);} ));
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t3(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t3(i, j, k));
       }
     }
   }
 
   sum = 0;
   T t4 = T::apply(t1, [&sum](typename T::value_type &x) {
-      sum += static_cast< double >(x);
-      x += 1;
+      sum += static_cast< double >(::std::real(x));
+      x += static_cast< typename T::value_type >(1);
     });
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t4(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t4(i, j, k));
       }
     }
   }
 
   sum = 0;
   T t5 = T::apply(t1, [&sum](typename T::value_type *x) {
-      sum += static_cast< double >(*x);
-      *x += 1;
+      sum += static_cast< double >(::std::real(*x));
+      *x += static_cast< typename T::value_type >(1);
     });
   EXPECT_FLOAT_EQ(t1_sum, sum);
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_EQ(t1(i, j, k) + 1, t5(i, j, k));
+        EXPECT_EQ(t1(i, j, k) + static_cast< typename T::value_type >(1),
+                  t5(i, j, k));
       }
     }
   }
@@ -229,6 +244,8 @@ void noncontiguousApplyTest() {
 TEST(TensorTest, noncontiguousApplyTest) {
   noncontiguousApplyTest< DoubleTensor >();
   noncontiguousApplyTest< FloatTensor >();
+  noncontiguousApplyTest< DoubleComplexTensor >();
+  noncontiguousApplyTest< FloatComplexTensor >();
   noncontiguousApplyTest< Tensor< Storage< int > > >();
 }
 

@@ -256,6 +256,15 @@ const Tensor< Storage< ::std::complex< D >, A > >& isunordered(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     const Tensor< Storage< ::std::complex< D >, A > > &y);
 
+// Template element-wise operations with another tensor
+template< typename D, typename A, typename T1 >
+const T1& copy(const T1 &x,
+               const Tensor< Storage< ::std::complex< D >, A > > &y);
+template< typename D1, typename D2, typename A1, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& copy(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &y);
+
 // Ternary functions
 template < typename D, typename A, typename T2 >
 const Tensor< Storage< ::std::complex< D >, A > >& polar(
