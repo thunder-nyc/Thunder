@@ -36,7 +36,7 @@ void typeTest() {
     *begin = static_cast< typename T::value_type >(t1_val++);
   }
 
-  FloatTensor t2 = t1.template type< FloatTensor >();
+  FloatTensor t2 = static_cast< FloatTensor >(t1);
   EXPECT_NE(static_cast< void* >(t1.storage().get()),
             static_cast< void* >(t2.storage().get()));
   EXPECT_EQ(3, t2.dimension());
@@ -59,7 +59,7 @@ void typeTest() {
     *begin = static_cast< typename T::value_type >(t3_val++);
   }
 
-  FloatTensor t4 = t3.template type< FloatTensor >();
+  FloatTensor t4 = static_cast< FloatTensor >(t3);
   EXPECT_NE(static_cast< void* >(t3.storage().get()),
             static_cast< void* >(t4.storage().get()));
   EXPECT_EQ(3, t4.dimension());
@@ -81,7 +81,6 @@ void typeTest() {
 
 TEST(TensorTest, typeTest) {
   typeTest< DoubleTensor >();
-  typeTest< FloatTensor >();
   typeTest< DoubleComplexTensor >();
   typeTest< FloatComplexTensor >();
   typeTest< Tensor< Storage< int > > >();
