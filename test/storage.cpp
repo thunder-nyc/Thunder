@@ -27,19 +27,19 @@
 #include "boost/serialization/complex.hpp"
 #include "gtest/gtest.h"
 
-#define TEST_ALL_TYPES(FUNC)				 \
-  TEST(StorageTest, FUNC) {				 \
-    FUNC< double > ();					 \
-    FUNC< float > ();					 \
-    FUNC< int > ();					 \
-    FUNC< unsigned int > ();				 \
-    FUNC< long > ();					 \
-    FUNC< unsigned long > ();				 \
-    FUNC< long long > ();				 \
-    FUNC< unsigned long long > ();			 \
-    FUNC< char > ();					 \
-    FUNC< signed char > ();				 \
-    FUNC< unsigned char > ();				 \
+#define TEST_ALL_TYPES(FUNC)                             \
+  TEST(StorageTest, FUNC) {                              \
+    FUNC< double > ();                                   \
+    FUNC< float > ();                                    \
+    FUNC< int > ();                                      \
+    FUNC< unsigned int > ();                             \
+    FUNC< long > ();                                     \
+    FUNC< unsigned long > ();                            \
+    FUNC< long long > ();                                \
+    FUNC< unsigned long long > ();                       \
+    FUNC< char > ();                                     \
+    FUNC< signed char > ();                              \
+    FUNC< unsigned char > ();                            \
     FUNC< ::std::complex< double > > ();                 \
     FUNC< ::std::complex< float > > ();                  \
     FUNC< ::std::complex< int > > ();                    \

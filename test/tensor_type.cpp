@@ -46,7 +46,8 @@ void typeTest() {
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_FLOAT_EQ(static_cast< float >(::std::real(t1(i, j, k))), t2(i, j, k));
+        EXPECT_FLOAT_EQ(static_cast< float >(::std::real(t1(i, j, k))),
+                        t2(i, j, k));
       }
     }
   }
@@ -71,7 +72,8 @@ void typeTest() {
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 20; ++j) {
       for (int k = 0; k < 7; ++k) {
-        EXPECT_FLOAT_EQ(static_cast< float >(::std::real(t3(i, j, k))), t4(i, j, k));
+        EXPECT_FLOAT_EQ(static_cast< float >(::std::real(t3(i, j, k))),
+                        t4(i, j, k));
       }
     }
   }

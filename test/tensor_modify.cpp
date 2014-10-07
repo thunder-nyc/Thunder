@@ -474,13 +474,13 @@ TEST(TensorTest, transformTest) {
     int t1_val = -800;                                                  \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
              end = t1.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t1_val++) /	\
-	static_cast< typename T::value_type >(300);			\
+      *begin = static_cast< typename T::value_type >(t1_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     T t1_result = T::template tfunc< T >(t1);                           \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
              end = t1.reference_end(); begin != end; ++begin) {         \
-      EXPECT_EQ(							\
+      EXPECT_EQ(                                                        \
           static_cast< typename T::value_type >(::std::sfunc(*begin)),  \
           t1_result(begin.position()));                                 \
     }                                                                   \
@@ -489,13 +489,13 @@ TEST(TensorTest, transformTest) {
     int t2_val = -800;                                                  \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
              end = t2.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t2_val++) /	\
-	static_cast< typename T::value_type >(300);			\
+      *begin = static_cast< typename T::value_type >(t2_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     T t2_result = T::template tfunc< T >(t2);                           \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
              end = t2.reference_end(); begin != end; ++begin) {         \
-      EXPECT_EQ(							\
+      EXPECT_EQ(                                                        \
           static_cast< typename T::value_type >(::std::sfunc(*begin)),  \
           t2_result(begin.position()));                                 \
     }                                                                   \
@@ -504,13 +504,13 @@ TEST(TensorTest, transformTest) {
     int t3_val = -800;                                                  \
     for (typename T::reference_iterator begin = t3.reference_begin(),   \
              end = t3.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t3_val++) /	\
-	static_cast< typename T::value_type >(300);			\
+      *begin = static_cast< typename T::value_type >(t3_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     DoubleTensor t3_result = T::template tfunc< DoubleTensor >(t3);     \
     for (typename T::reference_iterator begin = t3.reference_begin(),   \
              end = t3.reference_end(); begin != end; ++begin) {         \
-      EXPECT_EQ(							\
+      EXPECT_EQ(                                                        \
           static_cast< double >(::std::sfunc(*begin)),                  \
           t3_result(begin.position()));                                 \
     }                                                                   \
@@ -519,13 +519,13 @@ TEST(TensorTest, transformTest) {
     int t4_val = -800;                                                  \
     for (typename T::reference_iterator begin = t4.reference_begin(),   \
              end = t4.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t4_val++) /	\
-	static_cast< typename T::value_type >(300);			\
+      *begin = static_cast< typename T::value_type >(t4_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     DoubleTensor t4_result = T::template tfunc< DoubleTensor >(t2);     \
     for (typename T::reference_iterator begin = t4.reference_begin(),   \
              end = t4.reference_end(); begin != end; ++begin) {         \
-      EXPECT_EQ(							\
+      EXPECT_EQ(                                                        \
           static_cast< double >(::std::sfunc(*begin)),                  \
           t4_result(begin.position()));                                 \
     }                                                                   \
@@ -534,7 +534,7 @@ TEST(TensorTest, transformTest) {
     tfunc ## Test< DoubleTensor >();                                    \
     tfunc ## Test< FloatTensor >();                                     \
     tfunc ## Test< DoubleComplexTensor >();                             \
-    tfunc ## Test< FloatComplexTensor >();				\
+    tfunc ## Test< FloatComplexTensor >();                              \
     tfunc ## Test< Tensor< Storage< int > > >();                        \
   }
 
