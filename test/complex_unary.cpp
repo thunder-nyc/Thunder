@@ -27,24 +27,22 @@
 namespace thunder {
 namespace {
 
-#define TEST_STD_UNARY(func)                                            \
+#define TEST_UNARY(func, expr)                                          \
   template< typename T >                                                \
   void func ## Test() {                                                 \
     T t1(10, 20, 7);                                                    \
     int t1_val = -800;                                                  \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
              end = t1.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t1_val++) / 300;   \
+      *begin = static_cast< typename T::value_type >(t1_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     T t1_result = T::func(t1);                                          \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
               end = t1.reference_end(); begin != end; ++begin) {        \
-      if (::std::isnan(t1_result(begin.position()))) {                  \
-        EXPECT_TRUE(::std::isnan(::std::func(*begin)));                 \
-      } else {                                                          \
-        EXPECT_FLOAT_EQ(                                                \
-            static_cast< typename T::value_type >(::std::func(*begin)), \
-            t1_result(begin.position()));                               \
+      if (!::std::isnan(::std::real(t1_result(begin.position()))) &&    \
+          !::std::isnan(::std::imag(t1_result(begin.position())))) {    \
+        EXPECT_EQ(expr, t1_result(begin.position()));                   \
       }                                                                 \
     }                                                                   \
                                                                         \
@@ -52,37 +50,32 @@ namespace {
     int t2_val = -800;                                                  \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
              end = t2.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t2_val++) / 300;   \
+      *begin = static_cast< typename T::value_type >(t2_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     T t2_result = T::func(t2);                                          \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
               end = t2.reference_end(); begin != end; ++begin) {        \
-      if (::std::isnan(t2_result(begin.position()))) {                  \
-        EXPECT_TRUE(::std::isnan(::std::func(*begin)));                 \
-      } else {                                                          \
-        EXPECT_FLOAT_EQ(                                                \
-            static_cast< typename T::value_type >(::std::func(*begin)), \
-            t2_result(begin.position()));                               \
+      if (!::std::isnan(::std::real(t2_result(begin.position()))) ||     \
+          !::std::isnan(::std::imag(t2_result(begin.position())))) {     \
+        EXPECT_EQ(expr, t2_result(begin.position()));                   \
       }                                                                 \
     }                                                                   \
   }                                                                     \
   TEST(TensorTest, func ## Test) {                                      \
-    func ## Test< DoubleTensor >();                                     \
-    func ## Test< FloatTensor >();                                      \
-    func ## Test< Tensor< Storage< int > > >();                         \
+    func ## Test< DoubleComplexTensor >();                              \
+    func ## Test< FloatComplexTensor >();                               \
   }
 
+#define TEST_STD_UNARY(func)                                            \
+  TEST_UNARY(func, static_cast< typename T::value_type >(               \
+      ::std::func(*begin)));                                            \
+
 TEST_STD_UNARY(abs);
-TEST_STD_UNARY(fabs);
 TEST_STD_UNARY(exp);
-TEST_STD_UNARY(exp2);
-TEST_STD_UNARY(expm1);
 TEST_STD_UNARY(log);
 TEST_STD_UNARY(log10);
-TEST_STD_UNARY(log2);
-TEST_STD_UNARY(log1p);
 TEST_STD_UNARY(sqrt);
-TEST_STD_UNARY(cbrt);
 TEST_STD_UNARY(sin);
 TEST_STD_UNARY(cos);
 TEST_STD_UNARY(tan);
@@ -95,158 +88,58 @@ TEST_STD_UNARY(tanh);
 TEST_STD_UNARY(asinh);
 TEST_STD_UNARY(acosh);
 TEST_STD_UNARY(atanh);
-TEST_STD_UNARY(erf);
-TEST_STD_UNARY(erfc);
-TEST_STD_UNARY(tgamma);
-TEST_STD_UNARY(lgamma);
-TEST_STD_UNARY(ceil);
-TEST_STD_UNARY(floor);
-TEST_STD_UNARY(trunc);
-TEST_STD_UNARY(round);
-TEST_STD_UNARY(nearbyint);
-TEST_STD_UNARY(rint);
-TEST_STD_UNARY(logb);
-TEST_STD_UNARY(fpclassify);
-TEST_STD_UNARY(isfinite);
-TEST_STD_UNARY(isinf);
-TEST_STD_UNARY(isnan);
-TEST_STD_UNARY(isnormal);
-TEST_STD_UNARY(signbit);
 TEST_STD_UNARY(real);
 TEST_STD_UNARY(imag);
 TEST_STD_UNARY(arg);
 
 #undef TEST_STD_UNARY
 
-template< typename T >
-void zeroTest() {
-  T t1(10, 20, 7);
-  int t1_val = -800;
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
-  }
-  T t1_result = T::zero(t1);
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(0, t1_result(begin.position()));
+#undef TEST_UNARY
+
+#define TEST_UNARY_DOMAIN_ERROR(func)                                   \
+  template< typename T >                                                \
+  void func ## Test() {                                                 \
+    T t1(10, 20, 7);                                                    \
+    int t1_val = -800;                                                  \
+    for (typename T::reference_iterator begin = t1.reference_begin(),   \
+             end = t1.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t1_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
+    }                                                                   \
+    T t1_result;                                                        \
+    EXPECT_THROW(t1_result = T::func(t1), domain_error);                \
+                                                                        \
+    T t2({10, 20, 7}, {161 , 8, 1});                                    \
+    int t2_val = -800;                                                  \
+    for (typename T::reference_iterator begin = t2.reference_begin(),   \
+             end = t2.reference_end(); begin != end; ++begin) {         \
+      *begin = static_cast< typename T::value_type >(t2_val++) /        \
+          static_cast< typename T::value_type >(300);                   \
+    }                                                                   \
+    T t2_result;                                                        \
+    EXPECT_THROW(t2_result = T::func(t2), domain_error);                \
+  }                                                                     \
+  TEST(TensorTest, func ## Test) {                                      \
+    func ## Test< DoubleComplexTensor >();                              \
+    func ## Test< FloatComplexTensor >();                               \
   }
 
-  T t2({10, 20, 7}, {161 , 8, 1});
-  int t2_val = -800;
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
-  }
-  T t2_result = T::zero(t2);
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(0, t2_result(begin.position()));
-  }
-}
-TEST(TensorTest, zeroTest) {
-  zeroTest< DoubleTensor >();
-  zeroTest< FloatTensor >();
-  zeroTest< Tensor< Storage< int > > >();
-}
-
-template< typename T >
-void cnrmTest() {
-  T t1(10, 20, 7);
-  int t1_val = -800;
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
-  }
-  T t1_result = T::cnrm(t1);
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(::std::norm(*begin)),
-                    t1_result(begin.position()));
-  }
-
-  T t2({10, 20, 7}, {161 , 8, 1});
-  int t2_val = -800;
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
-  }
-  T t2_result = T::cnrm(t2);
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(static_cast< typename T::value_type >(::std::norm(*begin)),
-                    t2_result(begin.position()));
-  }
-}
-TEST(TensorTest, cnrmTest) {
-  cnrmTest< DoubleTensor >();
-  cnrmTest< FloatTensor >();
-  cnrmTest< Tensor< Storage< int > > >();
-}
-
-template< typename T >
-void conjTest() {
-  T t1(10, 20, 7);
-  int t1_val = -800;
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
-  }
-  T t1_result = T::conj(t1);
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(*begin, t1_result(begin.position()));
-  }
-
-  T t2({10, 20, 7}, {161 , 8, 1});
-  int t2_val = -800;
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
-  }
-  T t2_result = T::conj(t2);
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(*begin, t2_result(begin.position()));
-  }
-}
-TEST(TensorTest, conjTest) {
-  conjTest< DoubleTensor >();
-  conjTest< FloatTensor >();
-  conjTest< Tensor< Storage< int > > >();
-}
-
-template< typename T >
-void projTest() {
-  T t1(10, 20, 7);
-  int t1_val = -800;
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
-  }
-  T t1_result = T::proj(t1);
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(*begin, t1_result(begin.position()));
-  }
-
-  T t2({10, 20, 7}, {161 , 8, 1});
-  int t2_val = -800;
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    *begin = static_cast< typename T::value_type >(t2_val++) / 300;
-  }
-  T t2_result = T::proj(t2);
-  for (typename T::reference_iterator begin = t2.reference_begin(),
-           end = t2.reference_end(); begin != end; ++begin) {
-    EXPECT_FLOAT_EQ(*begin, t2_result(begin.position()));
-  }
-}
-TEST(TensorTest, projTest) {
-  projTest< DoubleTensor >();
-  projTest< FloatTensor >();
-  projTest< Tensor< Storage < int > > >();
-}
+TEST_UNARY_DOMAIN_ERROR(erf);
+TEST_UNARY_DOMAIN_ERROR(erfc);
+TEST_UNARY_DOMAIN_ERROR(tgamma);
+TEST_UNARY_DOMAIN_ERROR(lgamma);
+TEST_UNARY_DOMAIN_ERROR(ceil);
+TEST_UNARY_DOMAIN_ERROR(floor);
+TEST_UNARY_DOMAIN_ERROR(thunc);
+TEST_UNARY_DOMAIN_ERROR(round);
+TEST_UNARY_DOMAIN_ERROR(nearbyint);
+TEST_UNARY_DOMAIN_ERROR(rint);
+TEST_UNARY_DOMAIN_ERROR(fpclassify);
+TEST_UNARY_DOMAIN_ERROR(isfinite);
+TEST_UNARY_DOMAIN_ERROR(isinf);
+TEST_UNARY_DOMAIN_ERROR(isnan);
+TEST_UNARY_DOMAIN_ERROR(isnormal);
+TEST_UNARY_DOMAIN_ERROR(signbit);
 
 }  // namespace
 }  // namespace thunder
