@@ -18,6 +18,7 @@
 #include "thunder/tensor.hpp"
 
 #include <complex>
+#include <limits>
 #include <memory>
 #include <typeinfo>
 
@@ -31,10 +32,11 @@ namespace {
   template< typename T >                                                \
   void func ## Test() {                                                 \
     T t1(10, 20, 7);                                                    \
-    int t1_val = -800;                                                  \
+    int t1_val_real = -800;                                             \
+    int t1_val_imag = 977;                                              \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
              end = t1.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t1_val++) /        \
+      *begin = typename T::value_type(t1_val_real++, t1_val_imag--) /   \
           static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     T t1_result = T::func(t1);                                          \
@@ -47,29 +49,30 @@ namespace {
     }                                                                   \
                                                                         \
     T t2({10, 20, 7}, {161 , 8, 1});                                    \
-    int t2_val = -800;                                                  \
+    int t2_val_real = -800;                                             \
+    int t2_val_imag = 787;                                              \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
              end = t2.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t2_val++) /        \
+      *begin = typename T::value_type(t2_val_real++, t2_val_imag--) /   \
           static_cast< typename T::value_type >(300);                   \
     }                                                                   \
     T t2_result = T::func(t2);                                          \
     for (typename T::reference_iterator begin = t2.reference_begin(),   \
               end = t2.reference_end(); begin != end; ++begin) {        \
-      if (!::std::isnan(::std::real(t2_result(begin.position()))) ||     \
-          !::std::isnan(::std::imag(t2_result(begin.position())))) {     \
+      if (!::std::isnan(::std::real(t2_result(begin.position()))) &&    \
+          !::std::isnan(::std::imag(t2_result(begin.position())))) {    \
         EXPECT_EQ(expr, t2_result(begin.position()));                   \
       }                                                                 \
     }                                                                   \
   }                                                                     \
-  TEST(TensorTest, func ## Test) {                                      \
+  TEST(ComplexTest, func ## Test) {                                     \
     func ## Test< DoubleComplexTensor >();                              \
     func ## Test< FloatComplexTensor >();                               \
   }
 
 #define TEST_STD_UNARY(func)                                            \
   TEST_UNARY(func, static_cast< typename T::value_type >(               \
-      ::std::func(*begin)));                                            \
+      ::std::func(*begin)));
 
 TEST_STD_UNARY(abs);
 TEST_STD_UNARY(exp);
@@ -94,52 +97,54 @@ TEST_STD_UNARY(arg);
 
 #undef TEST_STD_UNARY
 
+TEST_UNARY(fabs, static_cast< typename T::value_type >(::std::abs(*begin)));
+TEST_UNARY(exp2, static_cast< typename T::value_type >(::std::pow(2, *begin)));
+TEST_UNARY(expm1, static_cast< typename T::value_type >(
+    ::std::exp(*begin) - typename T::value_type(1)));
+TEST_UNARY(log1p, static_cast< typename T::value_type >(
+    ::std::log(*begin + typename T::value_type(1))));
+TEST_UNARY(cbrt, static_cast< typename T::value_type >(
+    ::std::pow(*begin, 1/3)));
+TEST_UNARY(log2, static_cast< typename T::value_type >(
+    ::std::log(*begin)/::std::log(typename T::value_type(2))));
+TEST_UNARY(logb, ::std::log(::std::abs(*begin))/::std::log(
+    typename T::value_type(
+        ::std::numeric_limits<typename T::value_type::value_type >::radix)));
+
 #undef TEST_UNARY
 
-#define TEST_UNARY_DOMAIN_ERROR(func)                                   \
-  template< typename T >                                                \
-  void func ## Test() {                                                 \
-    T t1(10, 20, 7);                                                    \
-    int t1_val = -800;                                                  \
-    for (typename T::reference_iterator begin = t1.reference_begin(),   \
-             end = t1.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t1_val++) /        \
-          static_cast< typename T::value_type >(300);                   \
-    }                                                                   \
-    T t1_result;                                                        \
-    EXPECT_THROW(t1_result = T::func(t1), domain_error);                \
-                                                                        \
-    T t2({10, 20, 7}, {161 , 8, 1});                                    \
-    int t2_val = -800;                                                  \
-    for (typename T::reference_iterator begin = t2.reference_begin(),   \
-             end = t2.reference_end(); begin != end; ++begin) {         \
-      *begin = static_cast< typename T::value_type >(t2_val++) /        \
-          static_cast< typename T::value_type >(300);                   \
-    }                                                                   \
-    T t2_result;                                                        \
-    EXPECT_THROW(t2_result = T::func(t2), domain_error);                \
-  }                                                                     \
-  TEST(TensorTest, func ## Test) {                                      \
-    func ## Test< DoubleComplexTensor >();                              \
-    func ## Test< FloatComplexTensor >();                               \
-  }
+template < typename T >
+void errorTest() {
+    T t1(10, 20, 7);
+    int t1_val = -800;
+    for (typename T::reference_iterator begin = t1.reference_begin(),
+             end = t1.reference_end(); begin != end; ++begin) {
+      *begin = static_cast< typename T::value_type >(t1_val++) /
+          static_cast< typename T::value_type >(300);
+    }
+    T t1_result;
+    EXPECT_THROW(t1_result = T::erf(t1), domain_error);
+    EXPECT_THROW(t1_result = T::erfc(t1), domain_error);
+    EXPECT_THROW(t1_result = T::tgamma(t1), domain_error);
+    EXPECT_THROW(t1_result = T::lgamma(t1), domain_error);
+    EXPECT_THROW(t1_result = T::ceil(t1), domain_error);
+    EXPECT_THROW(t1_result = T::floor(t1), domain_error);
+    EXPECT_THROW(t1_result = T::trunc(t1), domain_error);
+    EXPECT_THROW(t1_result = T::round(t1), domain_error);
+    EXPECT_THROW(t1_result = T::nearbyint(t1), domain_error);
+    EXPECT_THROW(t1_result = T::rint(t1), domain_error);
+    EXPECT_THROW(t1_result = T::fpclassify(t1), domain_error);
+    EXPECT_THROW(t1_result = T::isfinite(t1), domain_error);
+    EXPECT_THROW(t1_result = T::isinf(t1), domain_error);
+    EXPECT_THROW(t1_result = T::isnan(t1), domain_error);
+    EXPECT_THROW(t1_result = T::isnormal(t1), domain_error);
+    EXPECT_THROW(t1_result = T::signbit(t1), domain_error);
+}
 
-TEST_UNARY_DOMAIN_ERROR(erf);
-TEST_UNARY_DOMAIN_ERROR(erfc);
-TEST_UNARY_DOMAIN_ERROR(tgamma);
-TEST_UNARY_DOMAIN_ERROR(lgamma);
-TEST_UNARY_DOMAIN_ERROR(ceil);
-TEST_UNARY_DOMAIN_ERROR(floor);
-TEST_UNARY_DOMAIN_ERROR(thunc);
-TEST_UNARY_DOMAIN_ERROR(round);
-TEST_UNARY_DOMAIN_ERROR(nearbyint);
-TEST_UNARY_DOMAIN_ERROR(rint);
-TEST_UNARY_DOMAIN_ERROR(fpclassify);
-TEST_UNARY_DOMAIN_ERROR(isfinite);
-TEST_UNARY_DOMAIN_ERROR(isinf);
-TEST_UNARY_DOMAIN_ERROR(isnan);
-TEST_UNARY_DOMAIN_ERROR(isnormal);
-TEST_UNARY_DOMAIN_ERROR(signbit);
+TEST(ComplexTest, errorTest) {
+  errorTest< FloatComplexTensor >();
+  errorTest< DoubleComplexTensor >();
+}
 
 }  // namespace
 }  // namespace thunder
