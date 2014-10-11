@@ -1,7 +1,8 @@
 # List all the test targets here
 targets = storage index_iterator tensor_access tensor_modify tensor_type \
 	tensor_unary tensor_binary tensor_ternary tensor_reduction \
-	tensor_static tensor_operator tensor_serialize complex_unary
+	tensor_static tensor_operator tensor_serialize complex_unary \
+	complex_binary
 
 CXXFLAGS += -std=c++11 -Wall -I..
 LDFLAGS += -lgtest -lgtest_main -lboost_serialization

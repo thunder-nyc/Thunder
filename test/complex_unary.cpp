@@ -44,7 +44,11 @@ namespace {
               end = t1.reference_end(); begin != end; ++begin) {        \
       if (!::std::isnan(::std::real(t1_result(begin.position()))) &&    \
           !::std::isnan(::std::imag(t1_result(begin.position())))) {    \
-        EXPECT_EQ(expr, t1_result(begin.position()));                   \
+        typename T::value_type result = expr;                           \
+        EXPECT_FLOAT_EQ(::std::real(result),                            \
+                        ::std::real(t1_result(begin.position())));      \
+        EXPECT_FLOAT_EQ(::std::imag(result),                            \
+                        ::std::imag(t1_result(begin.position())));      \
       }                                                                 \
     }                                                                   \
                                                                         \
@@ -61,7 +65,11 @@ namespace {
               end = t2.reference_end(); begin != end; ++begin) {        \
       if (!::std::isnan(::std::real(t2_result(begin.position()))) &&    \
           !::std::isnan(::std::imag(t2_result(begin.position())))) {    \
-        EXPECT_EQ(expr, t2_result(begin.position()));                   \
+        typename T::value_type result = expr;                           \
+        EXPECT_FLOAT_EQ(::std::real(result),                            \
+                        ::std::real(t2_result(begin.position())));      \
+        EXPECT_FLOAT_EQ(::std::imag(result),                            \
+                        ::std::imag(t2_result(begin.position())));      \
       }                                                                 \
     }                                                                   \
   }                                                                     \

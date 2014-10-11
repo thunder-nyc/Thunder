@@ -78,13 +78,14 @@ const Tensor< Storage< ::std::complex< D >, A > >& hypot(
     typename T::difference_type x_step = x.stride(x.dimension() - 1);
     typename T::size_type x_length = x.length();
     for (typename T::size_type i = 0; i < x_length; ++i) {
-      x_pointer[i * x_step] =
-          ::std::hypot(::std::norm(x_pointer[i * x_step]), y_norm);
+      x_pointer[i * x_step] = static_cast< typename T::value_type >(
+          ::std::hypot(::std::norm(x_pointer[i * x_step]), y_norm));
     }
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
              x_end = x.reference_end(); x_begin != x_end; ++x_begin) {
-      *x_begin = ::std::hypot(::std::norm(*x_begin), y_norm);
+      *x_begin = static_cast< typename T::value_type >(
+          ::std::hypot(::std::norm(*x_begin), y_norm));
     }
   }
   return x;
@@ -105,14 +106,16 @@ const Tensor< Storage< ::std::complex< D >, A > >& hypot(
     typename T::pointer y_pointer = y.data();
     typename T::difference_type y_step = y.stride(y.dimension() - 1);
     for (typename T::size_type i = 0; i < x_length; ++i) {
-      x_pointer[i * x_step] = ::std::hypot(::std::norm(x_pointer[i * x_step]),
-                                           ::std::norm(y_pointer[i * y_step]));
+      x_pointer[i * x_step] = static_cast< typename T::value_type >(::std::hypot(
+          ::std::norm(x_pointer[i * x_step]),
+          ::std::norm(y_pointer[i * y_step])));
     }
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
              x_end = x.reference_end(), y_begin = y.reference_begin();
          x_begin != x_end; ++x_begin, ++y_begin) {
-      *x_begin = ::std::hypot(::std::norm(*x_begin), ::std::norm(*y_begin));
+      *x_begin = static_cast< typename T::value_type >(
+          ::std::hypot(::std::norm(*x_begin), ::std::norm(*y_begin)));
     }
   }
   return x;
@@ -172,7 +175,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& ldexp(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
-  ::std::complex< D > y_exp = ::std::pow(2, y);
+  ::std::complex< D > y_exp = ::std::pow(
+       static_cast< typename T::value_type >(2), y);
   if (x.partialContiguity(0, x.dimension() - 1)) {
     typename T::pointer x_pointer = x.data();
     typename T::difference_type x_step = x.stride(x.dimension() - 1);
@@ -205,13 +209,15 @@ const Tensor< Storage< ::std::complex< D >, A > >& ldexp(
     typename T::difference_type y_step = y.stride(y.dimension() - 1);
     for (typename T::size_type i = 0; i < x_length; ++i) {
       x_pointer[i * x_step] =
-          x_pointer[i * x_step] * ::std::pow(2, y_pointer[i * y_step]);
+          x_pointer[i * x_step] * ::std::pow(
+              static_cast< typename T::value_type >(2), y_pointer[i * y_step]);
     }
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
              x_end = x.reference_end(), y_begin = y.reference_begin();
          x_begin != x_end; ++x_begin, ++y_begin) {
-      *x_begin = (*x_begin) * ::std::pow(2, *y_begin);
+      *x_begin = (*x_begin) * ::std::pow(
+          static_cast< typename T::value_type >(2), *y_begin);
     }
   }
   return x;
@@ -222,7 +228,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& scalbn(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
-  ::std::complex< D > y_exp = ::std::pow(::std::numeric_limits< D >::radix, y);
+  ::std::complex< D > y_exp = ::std::pow(static_cast< typename T::value_type >(
+       ::std::numeric_limits< D >::radix), y);
   if (x.partialContiguity(0, x.dimension() - 1)) {
     typename T::pointer x_pointer = x.data();
     typename T::difference_type x_step = x.stride(x.dimension() - 1);
@@ -255,14 +262,16 @@ const Tensor< Storage< ::std::complex< D >, A > >& scalbn(
     typename T::difference_type y_step = y.stride(y.dimension() - 1);
     for (typename T::size_type i = 0; i < x_length; ++i) {
       x_pointer[i * x_step] = x_pointer[i * x_step] *
-          ::std::pow(::std::numeric_limits< D >::radix, y_pointer[i * y_step]);
+          ::std::pow(static_cast< typename T::value_type >(
+               ::std::numeric_limits< D >::radix), y_pointer[i * y_step]);
     }
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
              x_end = x.reference_end(), y_begin = y.reference_begin();
          x_begin != x_end; ++x_begin, ++y_begin) {
       *x_begin = (*x_begin) *
-          ::std::pow(::std::numeric_limits< D >::radix, *y_begin);
+          ::std::pow(static_cast< typename T::value_type >(
+               ::std::numeric_limits< D >::radix), *y_begin);
     }
   }
   return x;

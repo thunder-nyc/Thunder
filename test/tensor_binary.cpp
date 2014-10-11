@@ -83,8 +83,7 @@ namespace {
         EXPECT_FLOAT_EQ(                                                \
             static_cast< typename T::value_type >(                      \
                 ::std::func(*begin, 7)),                                \
-            t3_result(begin.position()))                                \
-        << "Result mismatches at with *begin = " << *begin;             \
+            t3_result(begin.position()));                               \
       }                                                                 \
     }                                                                   \
                                                                         \
