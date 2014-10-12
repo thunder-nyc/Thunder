@@ -36,13 +36,13 @@ namespace math {
 template < typename T1, typename T2 >
 T1 extract(const T1 &x, const T2 &y) {
   if (x.dimension() < y.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T1::dim_type y_dimension =
       static_cast< typename T1::dim_type >(y.dimension());
   for (typename T1::dim_type i = 0; i < y_dimension; ++i) {
     if (x.size(i) != static_cast< typename T1::size_type >(y.size(i))) {
-      throw out_of_range("Size does not match");
+      throw out_of_range("Size does not match.");
     }
   }
   typename T1::size_storage sz(x.dimension() - y_dimension + 1);
@@ -108,7 +108,7 @@ template < typename T1, typename T2 >
 T1 shuffle(const T1 &x, const T2 &y) {
   if (static_cast< typename T1::dim_type >(
           y.size(y.dimension() - 1)) != x.dimension()) {
-    throw out_of_range("Shuffle dimension mismatches");
+    throw out_of_range("Shuffle dimension mismatches.");
   }
   if (y.dimension() == 1) {
     T1 t;
@@ -116,7 +116,7 @@ T1 shuffle(const T1 &x, const T2 &y) {
     for (typename T2::dim_type i = 0; i < y.size(0); ++i) {
       ind[i] = static_cast< typename T1::size_type >(y(i));
       if (ind[i] >= x.size(i)) {
-        throw out_of_range("Shuffle index exceeds limit");
+        throw out_of_range("Shuffle index exceeds limit.");
       }
     }
     t() = x(ind);
@@ -135,7 +135,7 @@ T1 shuffle(const T1 &x, const T2 &y) {
     for (typename T1::dim_type i = 0; i < ind.size(); ++i) {
       ind[i] = static_cast< typename T1::size_type >(y[*begin](i));
       if (ind[i] >= x.size(i)) {
-        throw out_of_range("Shuffle index exceeds limit");
+        throw out_of_range("Shuffle index exceeds limit.");
       }
     }
     t(*begin) = x(ind);

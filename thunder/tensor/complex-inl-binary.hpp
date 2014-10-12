@@ -39,14 +39,14 @@ namespace math {
       const Tensor< Storage< ::std::complex< D >, A > > &x,             \
       typename Tensor< Storage< ::std::complex< D >, A > >::            \
       const_reference y) {                                              \
-    throw domain_error(#func " is undefined for complex numbers");      \
+    throw domain_error(#func " is undefined for complex numbers.");      \
     return x;                                                           \
   }                                                                     \
   template < typename D, typename A >                                   \
   const Tensor< Storage< ::std::complex< D >, A > >& func(              \
       const Tensor< Storage< ::std::complex< D >, A > > &x,             \
       const Tensor< Storage< ::std::complex< D >, A > > &y) {           \
-    throw domain_error(#func " is undefined for complex numbers");      \
+    throw domain_error(#func " is undefined for complex numbers.");      \
     return x;                                                           \
   }
 
@@ -251,7 +251,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& scalbn(
     const Tensor< Storage< ::std::complex< D >, A > > &y) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
         y.partialContiguity(0, y.dimension() - 1)) {
@@ -295,7 +295,7 @@ const T1& copy(const T1 &x,
                const Tensor< Storage< ::std::complex< D >, A > > &y) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T2;
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.isContiguous() && y.isContiguous()) {
     typename T1::size_type x_length = x.length();
@@ -324,7 +324,7 @@ const Tensor< Storage< ::std::complex< D1 >, A1 > >& copy(
   typedef Tensor< Storage< ::std::complex< D1 >, A1 > > T1;
   typedef Tensor< Storage< ::std::complex< D2 >, A2 > > T2;
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.isContiguous() && y.isContiguous()) {
     typename T1::size_type x_length = x.length();

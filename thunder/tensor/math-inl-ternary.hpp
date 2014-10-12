@@ -34,17 +34,17 @@ namespace math {
 
 template < typename T1, typename T2 >
 const T1& polar(const T1 &x, typename T2::const_reference r, const T2& theta) {
-  throw domain_error("polar is undefined for real numbers");
+  throw domain_error("polar is undefined for real numbers.");
   return x;
 }
 template < typename T1, typename T2 >
 const T1& polar(const T1 &x, const T2 &r, typename T2::const_reference theta) {
-  throw domain_error("polar is undefined for real numbers");
+  throw domain_error("polar is undefined for real numbers.");
   return x;
 }
 template < typename T1, typename T2 >
 const T1& polar(const T1 &x, const T2 &r, const T2 &theta) {
-  throw domain_error("polar is undefined for real numbers");
+  throw domain_error("polar is undefined for real numbers.");
   return x;
 }
 
@@ -72,7 +72,7 @@ const T& fma(
 template < typename T >
 const T& fma(const T &x, const T &y, typename T::const_reference z) {
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1)) {
@@ -99,7 +99,7 @@ const T& fma(const T &x, const T &y, typename T::const_reference z) {
 template < typename T >
 const T& fma(const T &x, typename T::const_reference y, const T &z) {
   if (x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       z.partialContiguity(0, z.dimension() - 1)) {
@@ -126,7 +126,7 @@ const T& fma(const T &x, typename T::const_reference y, const T &z) {
 template < typename T >
 const T& fma(const T &x, const T &y, const T &z) {
   if (x.length() != y.length() || x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1) &&

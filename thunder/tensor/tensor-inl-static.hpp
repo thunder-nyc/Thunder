@@ -102,7 +102,7 @@ template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(const TR& r, const TR& theta) {
   if (r.length() != theta.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   Tensor x;
   x.resizeAs(r);

@@ -169,10 +169,10 @@ template < typename S >
 Tensor< S > Tensor< S >::narrow(dim_type dim, size_type pos,
                                 size_type size) const {
   if (dim >= size_.size()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   if (pos + size > size_[dim]) {
-    throw out_of_range("Position and size exceed limit");
+    throw out_of_range("Position and size exceed limit.");
   }
   size_storage sz = size_;
   sz[dim] = size;
@@ -182,10 +182,10 @@ Tensor< S > Tensor< S >::narrow(dim_type dim, size_type pos,
 template < typename S >
 Tensor< S > Tensor< S >::select(dim_type dim, size_type pos) const {
   if (dim >= size_.size()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   if (pos >= size_[dim]) {
-    throw out_of_range("Position exceed limit");
+    throw out_of_range("Position exceed limit.");
   }
   if (size_.size() == 1) {
     size_storage sz(1, 1);
@@ -252,10 +252,10 @@ template < typename S >
 Tensor< S > Tensor< S >::unfold(dim_type dim, size_type size,
                                 size_type step) const {
   if (dim >= size_.size()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   if (size > size_[dim]) {
-    throw out_of_range("Size exceeds limit");
+    throw out_of_range("Size exceeds limit.");
   }
   size_storage sz(size_.size() + 1);
   stride_storage st(stride_.size() + 1);
@@ -282,19 +282,19 @@ Tensor< S > Tensor< S >::clone() const {
 template < typename S >
 Tensor< S > Tensor< S >::cat(const Tensor &y, dim_type dim) const {
   if (size_.size() != y.dimension()) {
-    throw out_of_range("Dimension mismatches");
+    throw out_of_range("Dimension mismatches.");
   }
   if (dim >= size_.size()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   for (dim_type i = 0; i < dim; ++i) {
     if (size_[i] != y.size(i)) {
-      throw out_of_range("Size mismatches");
+      throw out_of_range("Size mismatches.");
     }
   }
   for (dim_type i = dim + 1; i < size_.size(); ++i) {
     if (size_[i] != y.size(i)) {
-      throw out_of_range("Size mismatches");
+      throw out_of_range("Size mismatches.");
     }
   }
   size_storage sz(size_);
@@ -308,10 +308,11 @@ Tensor< S > Tensor< S >::cat(const Tensor &y, dim_type dim) const {
 template < typename S >
 Tensor< S > Tensor< S >::reshape(size_type sz0) const {
   if (!partialContiguity(0, size_.size() - 1)) {
-    throw contiguity_error("Reshaping is impossible because of non-contiguity");
+    throw contiguity_error(
+        "Reshaping is impossible because of non-contiguity.");
   }
   if (sz0 != length()) {
-    throw out_of_range("Length mismatches");
+    throw out_of_range("Length mismatches.");
   }
   return Tensor(
       size_storage({sz0}), stride_storage({stride_[stride_.size() - 1]}),
@@ -321,10 +322,11 @@ Tensor< S > Tensor< S >::reshape(size_type sz0) const {
 template < typename S >
 Tensor< S > Tensor< S >::reshape(size_type sz0, size_type sz1) const {
   if (!partialContiguity(0, size_.size() - 1)) {
-    throw contiguity_error("Reshaping is impossible because of non-contiguity");
+    throw contiguity_error(
+        "Reshaping is impossible because of non-contiguity.");
   }
   if (sz0 * sz1 != length()) {
-    throw out_of_range("Length mismatches");
+    throw out_of_range("Length mismatches.");
   }
   stride_storage st(2);
   st[1] = stride_[stride_.size() - 1];
@@ -336,10 +338,11 @@ template < typename S >
 Tensor< S > Tensor< S >::reshape(size_type sz0, size_type sz1,
                                  size_type sz2) const {
   if (!partialContiguity(0, size_.size() - 1)) {
-    throw contiguity_error("Reshaping is impossible because of non-contiguity");
+    throw contiguity_error(
+        "Reshaping is impossible because of non-contiguity.");
   }
   if (sz0 * sz1 * sz2 != length()) {
-    throw out_of_range("Length mismatches");
+    throw out_of_range("Length mismatches.");
   }
   stride_storage st(3);
   st[2] = stride_[stride_.size() - 1];
@@ -352,10 +355,11 @@ template < typename S >
 Tensor< S > Tensor< S >::reshape(size_type sz0, size_type sz1, size_type sz2,
                                  size_type sz3) const {
   if (!partialContiguity(0, size_.size() - 1)) {
-    throw contiguity_error("Reshaping is impossible because of non-contiguity");
+    throw contiguity_error(
+        "Reshaping is impossible because of non-contiguity.");
   }
   if (sz0 * sz1 * sz2 * sz3 != length()) {
-    throw out_of_range("Length mismatches");
+    throw out_of_range("Length mismatches.");
   }
   stride_storage st(4);
   st[3] = stride_[stride_.size() - 1];
@@ -368,14 +372,15 @@ Tensor< S > Tensor< S >::reshape(size_type sz0, size_type sz1, size_type sz2,
 template < typename S >
 Tensor< S > Tensor< S >::reshape(size_storage sz) const {
   if (!partialContiguity(0, size_.size() - 1)) {
-    throw contiguity_error("Reshaping is impossible because of non-contiguity");
+    throw contiguity_error(
+        "Reshaping is impossible because of non-contiguity.");
   }
   size_type t_length = 1;
   for (dim_type i = 0; i < sz.size(); ++i) {
     t_length *= sz[i];
   }
   if (t_length != length()) {
-    throw out_of_range("Length mismatches");
+    throw out_of_range("Length mismatches.");
   }
   stride_storage st(sz.size());
   st[st.size() - 1] = stride_[stride_.size() - 1];

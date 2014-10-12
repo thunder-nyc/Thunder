@@ -52,7 +52,7 @@ const T& add(const T &x, typename T::const_reference y) {
 template < typename T >
 const T& add(const T &x, const T &y) {
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
         y.partialContiguity(0, y.dimension() - 1)) {
@@ -94,7 +94,7 @@ const T& sub(const T &x, typename T::const_reference y) {
 template < typename T >
 const T& sub(const T &x, const T &y) {
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
         y.partialContiguity(0, y.dimension() - 1)) {
@@ -136,7 +136,7 @@ const T& mul(const T &x, typename T::const_reference y) {
 template < typename T >
 const T& mul(const T &x, const T &y) {
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
         y.partialContiguity(0, y.dimension() - 1)) {
@@ -178,7 +178,7 @@ const T& div(const T &x, typename T::const_reference y) {
 template < typename T >
 const T& div(const T &x, const T &y) {
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
         y.partialContiguity(0, y.dimension() - 1)) {
@@ -223,7 +223,7 @@ const T& div(const T &x, const T &y) {
   template < typename T >                                               \
   const T& func(const T &x, const T &y) {                               \
     if (x.length() != y.length()) {                                     \
-      throw out_of_range("Tensors have different length");              \
+      throw out_of_range("Tensors have different length.");              \
     }                                                                   \
     if (x.partialContiguity(0, x.dimension() - 1) &&                    \
         y.partialContiguity(0, y.dimension() - 1)) {                    \
@@ -291,7 +291,7 @@ const T& fill(const T &x, typename T::const_reference y) {
 template< typename T1, typename T2 >
 const T1& copy(const T1 &x, const T2 &y) {
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.isContiguous() && y.isContiguous()) {
     typename T1::size_type x_length = x.length();

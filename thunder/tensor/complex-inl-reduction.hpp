@@ -37,7 +37,7 @@ typename Tensor< Storage< ::std::complex< D >, A > >::value_type max(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     Tensor< typename Tensor< Storage< ::std::complex< D >, A > >
     ::size_storage> *pos) {
-  throw domain_error("max is undefined for complex numbers");
+  throw domain_error("max is undefined for complex numbers.");
   return ::std::complex< D >(0, 0);
 }
 
@@ -46,21 +46,21 @@ typename Tensor< Storage< ::std::complex< D >, A > >::value_type min(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     Tensor< typename Tensor< Storage< ::std::complex< D >, A > >
     ::size_storage> *pos) {
-  throw domain_error("max is undefined for complex numbers");
+  throw domain_error("max is undefined for complex numbers.");
   return ::std::complex< D >(0, 0);
 }
 
 template < typename D, typename A >
 typename Tensor< Storage< ::std::complex< D >, A > >::value_type max(
     const Tensor< Storage< ::std::complex< D >, A > > &x) {
-  throw domain_error("max is undefined for complex numbers");
+  throw domain_error("max is undefined for complex numbers.");
   return ::std::complex< D >(0, 0);
 }
 
 template < typename D, typename A >
 typename Tensor< Storage< ::std::complex< D >, A > >::value_type min(
     const Tensor< Storage< ::std::complex< D >, A > > &x) {
-  throw domain_error("min is undefined for complex numbers");
+  throw domain_error("min is undefined for complex numbers.");
   return ::std::complex< D >(0, 0);
 }
 
@@ -93,7 +93,7 @@ Tensor< Storage< ::std::complex< D >, A > > max(
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d,
     Tensor< typename Tensor< Storage< ::std::complex< D >, A > >
     ::size_storage> *pos) {
-  throw domain_error("max is undefined for complex numbers");
+  throw domain_error("max is undefined for complex numbers.");
   return Tensor< Storage< ::std::complex< D >, A > >();
 }
 
@@ -103,7 +103,7 @@ Tensor< Storage< ::std::complex< D >, A > > min(
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d,
     Tensor< typename Tensor< Storage< ::std::complex< D >, A > >
     ::size_storage> *pos) {
-  throw domain_error("max is undefined for complex numbers");
+  throw domain_error("max is undefined for complex numbers.");
   return Tensor< Storage< ::std::complex< D >, A > >();
 }
 
@@ -111,7 +111,7 @@ template < typename D, typename A >
 Tensor< Storage< ::std::complex< D >, A > > max(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d) {
-  throw domain_error("max is undefined for complex numbers");
+  throw domain_error("max is undefined for complex numbers.");
   return Tensor< Storage< ::std::complex< D >, A > >();
 }
 
@@ -119,7 +119,7 @@ template < typename D, typename A >
 Tensor< Storage< ::std::complex< D >, A > > min(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d) {
-  throw domain_error("min is undefined for complex numbers");
+  throw domain_error("min is undefined for complex numbers.");
   return Tensor< Storage< ::std::complex< D >, A > >();
 }
 
@@ -129,7 +129,7 @@ Tensor< Storage< ::std::complex< D >, A > > var(
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   T t = x.mean(d);
   if (x.partialContiguity(0, d)

@@ -39,7 +39,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const T2 &y, typename T2::const_reference z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T1;
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1)) {
@@ -70,7 +70,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     typename T2::const_reference y, const T2 &z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T1;
   if (x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       z.partialContiguity(0, z.dimension() - 1)) {
@@ -102,7 +102,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
   typedef Tensor< Storage< ::std::complex< D >, A > > T1;
   typedef Tensor< S > T2;
   if (x.length() != y.length() || x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1) &&
@@ -149,7 +149,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   typename T::value_type z_exp = ::std::exp(z * (typename T::value_type(0, 1)));
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1)) {
@@ -179,7 +179,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       z.partialContiguity(0, z.dimension() - 1)) {
@@ -212,7 +212,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (x.length() != y.length() || x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1) &&
@@ -271,7 +271,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& fma(
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (x.length() != y.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1)) {
@@ -302,7 +302,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& fma(
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       z.partialContiguity(0, z.dimension() - 1)) {
@@ -333,7 +333,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& fma(
     const Tensor< Storage< ::std::complex< D >, A > > &z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   if (x.length() != y.length() || x.length() != z.length()) {
-    throw out_of_range("Tensors have different length");
+    throw out_of_range("Tensors have different length.");
   }
   if (x.partialContiguity(0, x.dimension() - 1) &&
       y.partialContiguity(0, y.dimension() - 1) &&

@@ -36,7 +36,7 @@ namespace math {
   template < typename D, typename A >                                   \
   const Tensor< Storage< ::std::complex< D >, A > >& func(              \
       const Tensor< Storage< ::std::complex< D >, A > > &x) {           \
-    throw domain_error(#func " is undefined for complex numbers");      \
+    throw domain_error(#func " is undefined for complex numbers.");      \
     return x;                                                           \
   }
 

@@ -235,7 +235,7 @@ template < typename T >
 T max(const T &x, typename T::dim_type d,
       Tensor< typename T::size_storage > *pos) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
@@ -320,7 +320,7 @@ template < typename T >
 T min(const T &x, typename T::dim_type d,
       Tensor< typename T::size_storage > *pos) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
@@ -406,7 +406,7 @@ T min(const T &x, typename T::dim_type d,
 template < typename T >
 T max(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
@@ -474,7 +474,7 @@ T max(const T &x, typename T::dim_type d) {
 template < typename T >
 T min(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
@@ -542,7 +542,7 @@ T min(const T &x, typename T::dim_type d) {
 template < typename T >
 T sum(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
@@ -604,7 +604,7 @@ T sum(const T &x, typename T::dim_type d) {
 template < typename T >
 T prod(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
@@ -666,7 +666,7 @@ T prod(const T &x, typename T::dim_type d) {
 template < typename T >
 T mean(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   T t = x.sum(d);
   t.div(static_cast< typename T::value_type >(x.size(d)));
@@ -676,7 +676,7 @@ T mean(const T &x, typename T::dim_type d) {
 template < typename T >
 T var(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   T t = x.mean(d);
   if (x.partialContiguity(0, d)
@@ -744,7 +744,7 @@ T var(const T &x, typename T::dim_type d) {
 template < typename T >
 T std(const T &x, typename T::dim_type d) {
   if (d >= x.dimension()) {
-    throw out_of_range("Dimension exceeds limit");
+    throw out_of_range("Dimension exceeds limit.");
   }
   T t = x.var(d);
   return t.sqrt();

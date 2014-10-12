@@ -111,7 +111,7 @@ typename Tensor< S >::reference Tensor< S >::get() const {
 template < typename S >
 typename Tensor< S >::reference Tensor< S >::get(size_type pos) const {
   if (pos >= size_[0]) {
-    throw out_of_range("Position exceeds size limit");
+    throw out_of_range("Position exceeds size limit.");
   }
   return (*this)(pos);
 }
@@ -120,7 +120,7 @@ template < typename S >
 typename Tensor< S >::reference Tensor< S >::get(
     size_type pos0, size_type pos1) const {
   if (size_.size() < 2 || pos0 >= size_[0] || pos1 >= size_[1]) {
-    throw out_of_range("Position exceeds size limit");
+    throw out_of_range("Position exceeds size limit.");
   }
   return (*this)(pos0, pos1);
 }
@@ -130,7 +130,7 @@ typename Tensor< S >::reference Tensor< S >::get(
     size_type pos0, size_type pos1, size_type pos2) const {
   if (size_.size() < 3 || pos0 >= size_[0] || pos1 >= size_[1]
       || pos2 >= size_[2]) {
-    throw out_of_range("Position exceeds size limit");
+    throw out_of_range("Position exceeds size limit.");
   }
   return (*this)(pos0, pos1, pos2);
 }
@@ -140,7 +140,7 @@ typename Tensor< S >::reference Tensor< S >::get(
     size_type pos0, size_type pos1, size_type pos2, size_type pos3) const {
   if (size_.size() < 4 || pos0 >= size_[0] || pos1 >= size_[1]
       || pos2 >= size_[2] || pos3 >= size_[3]) {
-    throw out_of_range("Position exceeds size limit");
+    throw out_of_range("Position exceeds size limit.");
   }
   return (*this)(pos0, pos1, pos2, pos3);
 }
@@ -148,11 +148,11 @@ template < typename S >
 typename Tensor< S >::reference Tensor< S >::get(
     const size_storage &pos) const {
   if (size_.size() < pos.size()) {
-    throw out_of_range("Position exceeds size limit");
+    throw out_of_range("Position exceeds size limit.");
   }
   for (dim_type i = 0; i < pos.size(); ++i) {
     if (pos[i] >= size_[i]) {
-      throw out_of_range("Position exceeds size limit");
+      throw out_of_range("Position exceeds size limit.");
     }
   }
   return (*this)(pos);
