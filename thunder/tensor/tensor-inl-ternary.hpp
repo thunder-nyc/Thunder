@@ -53,20 +53,20 @@ template < typename TR >
 Tensor< S >& Tensor< S >::polar(
     typename TR::const_reference r, const TR& theta) {
   return const_cast< Tensor& >(
-      const_cast< const Tensor& >(this)->polar(r, theta));
+      const_cast< const Tensor* >(this)->polar(r, theta));
 }
 template < typename S >
 template < typename TR >
 Tensor< S >& Tensor< S >::polar(
     const TR& r, typename TR::const_reference theta) {
   return const_cast< Tensor& >(
-      const_cast< const Tensor& >(this)->polar(r, theta));
+      const_cast< const Tensor* >(this)->polar(r, theta));
 }
 template < typename S >
 template < typename TR >
 Tensor< S >& Tensor< S >::polar(const TR& r, const TR& theta) {
   return const_cast< Tensor& >(
-      const_cast< const Tensor& >(this)->polar(r, theta));
+      const_cast< const Tensor* >(this)->polar(r, theta));
 }
 
 template < typename S >

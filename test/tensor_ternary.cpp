@@ -157,5 +157,77 @@ TEST(TensorTest, fmaTest) {
   fmaTest< Tensor< Storage < int > > >();
 }
 
+template < typename T >
+void polarTest() {
+  T t1(10, 20, 7);
+  int t1_val = -800;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++) / 300;
+  }
+  T t1_result;
+  EXPECT_THROW(t1_result = T::polar(t1, 3, 4), domain_error);
+
+  T t2(10, 20, 7);
+  int t2_val = -744;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++) / 392;
+  }
+  T t2_result;
+  EXPECT_THROW(t2_result = T::polar(t2, t1, 3), domain_error);
+
+  T t3(10, 20, 7);
+  int t3_val = -944;
+  for (typename T::reference_iterator begin = t3.reference_begin(),
+           end = t3.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t3_val++) / 392;
+  }
+  T t3_result;
+  EXPECT_THROW(t3_result = T::polar(t3, 7, t1), domain_error);
+
+  T t4(10, 20, 7);
+  int t4_val = -974;
+  for (typename T::reference_iterator begin = t4.reference_begin(),
+           end = t4.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t4_val++) / 392;
+  }
+  T t4_result;
+  EXPECT_THROW(t4_result = T::polar(t4, t1, t2), domain_error);
+
+  FloatTensor t5(10, 20, 7);
+  int t5_val = -988;
+  for (FloatTensor::reference_iterator begin = t5.reference_begin(),
+           end = t5.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< float >(t5_val++) / 392;
+  }
+  FloatTensor t5_result;
+  EXPECT_THROW(t5_result = FloatTensor::polar(t5, 4, t1), domain_error);
+
+  FloatTensor t6(10, 20, 7);
+  int t6_val = -845;
+  for (FloatTensor::reference_iterator begin = t6.reference_begin(),
+           end = t6.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< float >(t6_val++) / 392;
+  }
+  FloatTensor t6_result;
+  EXPECT_THROW(t6_result = FloatTensor::polar(t6, t1, 8), domain_error);
+
+  FloatTensor t7(10, 20, 7);
+  int t7_val = -824;
+  for (FloatTensor::reference_iterator begin = t7.reference_begin(),
+           end = t7.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< float >(t7_val++) / 392;
+  }
+  FloatTensor t7_result;
+  EXPECT_THROW(t7_result = FloatTensor::polar(t7, t1, t2), domain_error);
+}
+
+TEST(TensorTest, polarTest) {
+  polarTest< DoubleTensor >();
+  polarTest< FloatTensor >();
+  polarTest< Tensor< Storage< int > > >();
+}
+
 }  // namespace
 }  // namespace thunder

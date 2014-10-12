@@ -137,7 +137,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference y,
     typename Tensor< Storage< ::std::complex< D >, A > >::const_reference z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
-  x.fill(y + z * (typename T::value_type(0, 1)));
+  x.fill(y * ::std::exp(z * (typename T::value_type(0, 1))));
   return x;
 }
 
