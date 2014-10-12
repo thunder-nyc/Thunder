@@ -189,7 +189,7 @@ Tensor< S >& Tensor< S >::resize(size_storage sz, stride_storage st) {
 
 template < typename S >
 Tensor< S >& Tensor< S >::contiguous() {
-  if (isContiguous()) {
+  if (!isContiguous()) {
     Tensor< S > t(size_);
     t.copy(*this);
     ::std::swap(size_, t.size_);
@@ -197,7 +197,7 @@ Tensor< S >& Tensor< S >::contiguous() {
     ::std::swap(storage_, t.storage_);
     ::std::swap(offset_, t.offset_);
   }
-  return resize(size_);
+  return *this;
 }
 
 template < typename S >
