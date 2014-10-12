@@ -336,6 +336,9 @@ typename Tensor< Storage< ::std::complex< D >, A > >::value_type max(
 template < typename D, typename A >
 typename Tensor< Storage< ::std::complex< D >, A > >::value_type min(
     const Tensor< Storage< ::std::complex< D >, A > > &x);
+template < typename D, typename A >
+typename Tensor< Storage< ::std::complex< D >, A > >::value_type var(
+    const Tensor< Storage< ::std::complex< D >, A > > &x);
 
 // Reduction functions along a dimension
 template < typename D, typename A >
@@ -356,6 +359,10 @@ Tensor< Storage< ::std::complex< D >, A > > max(
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d);
 template < typename D, typename A >
 Tensor< Storage< ::std::complex< D >, A > > min(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d);
+template < typename D, typename A >
+Tensor< Storage< ::std::complex< D >, A > > var(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d);
 
