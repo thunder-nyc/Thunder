@@ -886,8 +886,6 @@ class Tensor< S >::reference_iterator {
   size_storage position_;
 };
 
-#include "thunder/tensor/tensor-inl.hpp"
-
 }  // namespace tensor
 }  // namespace thunder
 

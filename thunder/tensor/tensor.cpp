@@ -17,28 +17,20 @@
  * @}
  */
 
-#ifndef THUNDER_EXCEPTION_EXCEPTION_HPP_
-#define THUNDER_EXCEPTION_EXCEPTION_HPP_
+#include "thunder/tensor/tensor.hpp"
+#include "thunder/tensor/tensor-inl.hpp"
 
-#include <stdexcept>
+#include <complex>
+
+#include "thunder/storage.hpp"
 
 namespace thunder {
-namespace exception {
+namespace tensor {
 
-using ::std::exception;
-using ::std::logic_error;
-using ::std::runtime_error;
-using ::std::invalid_argument;
-using ::std::domain_error;
-using ::std::length_error;
-using ::std::out_of_range;
-using ::std::range_error;
-using ::std::overflow_error;
-using ::std::underflow_error;
+template class Tensor< Storage< double > >;
+template class Tensor< Storage< float > >;
+template class Tensor< Storage< ::std::complex< double > > >;
+template class Tensor< Storage< ::std::complex< float > > >;
 
-}  // namespace exception
+}  // namespace tensor
 }  // namespace thunder
-
-#include "thunder/exception/contiguity_error.hpp"
-
-#endif  // THUNDER_EXCEPTION_EXCEPTION_HPP_
