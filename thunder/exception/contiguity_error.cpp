@@ -17,23 +17,19 @@
  * @}
  */
 
-#ifndef THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
-#define THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
+#include "thunder/exception/contiguity_error.hpp"
 
+#include <exception>
 #include <string>
-
-#include "thunder/exception/exception.hpp"
 
 namespace thunder {
 namespace exception {
 
-class contiguity_error : public runtime_error {
- public:
-  explicit contiguity_error(const std::string& what_arg);
-  explicit contiguity_error(const char* what_arg);
-};
+contiguity_error::contiguity_error(const ::std::string& what_arg)
+    : runtime_error(what_arg) {};
+
+contiguity_error::contiguity_error(const char* what_arg)
+    : runtime_error(what_arg) {};
 
 }  // namespace exception
 }  // namespace thunder
-
-#endif  // THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_

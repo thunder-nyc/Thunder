@@ -20,7 +20,7 @@
 #ifndef THUNDER_EXCEPTION_EXCEPTION_HPP_
 #define THUNDER_EXCEPTION_EXCEPTION_HPP_
 
-#include <exception>
+#include <stdexcept>
 
 #include "thunder/exception/contiguity_error.hpp"
 

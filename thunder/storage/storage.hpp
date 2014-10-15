@@ -109,6 +109,4 @@ class Storage {
 }  // namespace storage
 }  // namespace thunder
 
-#include "thunder/storage/storage-inl.hpp"
-
 #endif  // THUNDER_STORAGE_STORAGE_HPP_

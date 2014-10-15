@@ -5,7 +5,8 @@ targets = storage index_iterator tensor_access tensor_modify tensor_type \
 	complex_binary complex_ternary complex_reduction complex_operator
 
 CXXFLAGS += -std=c++11 -Wall -I..
-LDFLAGS += -lgtest -lgtest_main -lboost_serialization
+LDFLAGS += -L../thunder -lgtest -lgtest_main -lboost_serialization \
+	-lthunder_exception -lthunder_storage -lthunder_tensor
 
 .PHONY : all
 all: $(targets)

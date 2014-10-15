@@ -17,23 +17,18 @@
  * @}
  */
 
-#ifndef THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
-#define THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
+#include "thunder/storage/storage.hpp"
+#include "thunder/storage/storage-inl.hpp"
 
-#include <string>
-
-#include "thunder/exception/exception.hpp"
+#include <complex>
 
 namespace thunder {
-namespace exception {
+namespace storage {
 
-class contiguity_error : public runtime_error {
- public:
-  explicit contiguity_error(const std::string& what_arg);
-  explicit contiguity_error(const char* what_arg);
-};
+template class Storage< double >;
+template class Storage< float >;
+template class Storage< ::std::complex< double > >;
+template class Storage< ::std::complex< float > >;
 
-}  // namespace exception
+}  // namespace storage
 }  // namespace thunder
-
-#endif  // THUNDER_EXCEPTION_CONTIGUITY_ERROR_HPP_
