@@ -74,6 +74,4 @@ class IndexIterator {
 }  // namespace tensor
 }  // namespace thunder
 
-#include "thunder/tensor/index_iterator-inl.hpp"
-
 #endif  // THUNDER_TENSOR_INDEX_ITERATOR_HPP_

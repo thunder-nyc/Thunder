@@ -4,9 +4,12 @@ targets = storage index_iterator tensor_access tensor_modify tensor_type \
 	tensor_static tensor_operator tensor_serialize complex_unary \
 	complex_binary complex_ternary complex_reduction complex_operator
 
-CXXFLAGS += -std=c++11 -Wall -I..
-LDFLAGS += -L../thunder -lgtest -lgtest_main -lboost_serialization \
-	-lthunder_exception -lthunder_storage -lthunder_tensor
+# Google test path
+gtest_path = gtest-1.7.0
+
+CXXFLAGS += -std=c++11 -g -Wall -Wextra -I.. -I$(gtest_path)
+LDFLAGS += -Wl,-rpath=../thunder -L=../thunder -lboost_serialization \
+	-lthunder_exception -lthunder_storage -lthunder_tensor -pthread
 
 .PHONY : all
 all: $(targets)
@@ -34,5 +37,9 @@ test : $(targets)
 .PHONY : clean
 clean :
 	-$(RM) $(targets)
+	cd $(gtest_path) && make clean
 
-$(targets) : % : %.cpp
+$(gtest_path)/libgtest.a $(gtest_path)/libgtest_main.a :
+	cd $(gtest_path) && make
+
+$(targets) : % : %.cpp $(gtest_path)/libgtest.a $(gtest_path)/libgtest_main.a

@@ -306,6 +306,4 @@ T std(const T &x, typename T::dim_type d);
 }  // namespace tensor
 }  // namespace thunder
 
-#include "thunder/tensor/math-inl.hpp"
-
 #endif  // THUNDER_TENSOR_MATH_HPP_

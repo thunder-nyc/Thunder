@@ -74,6 +74,10 @@ void constructorTest() {
 
   // Construct an storage with some size
   thunder::Storage< T > size_storage(5);
+  int size_storage_val = 0;
+  for (typename thunder::Storage< T >::size_type i = 0; i < 5; ++i) {
+    size_storage[i] = static_cast< T >(size_storage_val++);
+  }
   EXPECT_EQ(5, size_storage.size());
   EXPECT_NE(nullptr, size_storage.data());
 

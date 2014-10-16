@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <complex>
+#include <utility>
 
 namespace thunder {
 
@@ -31,6 +32,7 @@ template < typename D = double, typename A = ::std::allocator< D > >
 using Storage = storage::Storage< D, A >;
 typedef Storage< double, ::std::allocator< double > > DoubleStorage;
 typedef Storage< float, ::std::allocator< float > > FloatStorage;
+typedef Storage< ::std::size_t, ::std::allocator< ::std::size_t > > SizeStorage;
 
 template < typename D = double,
            typename A = ::std::allocator< ::std::complex< D > > >

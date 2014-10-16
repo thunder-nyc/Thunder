@@ -400,6 +400,4 @@ Tensor< Storage< ::std::complex< D >, A > > var(
 }  // namespace tensor
 }  // namespace thunder
 
-#include "thunder/tensor/complex-inl.hpp"
-
 #endif  // THUNDER_TENSOR_COMPLEX_HPP_

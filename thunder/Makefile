@@ -1,8 +1,6 @@
 # List all the packages here
 pkgs = exception storage tensor
 libs = $(addsuffix .so, $(addprefix libthunder_, $(pkgs)))
-# List all headers that will be installed here
-hdrs = $(wildcard *.hpp) $(wildcard */*.hpp)
 # Set the location of installation here
 prefix ?= /usr/local
 exec_prefix ?= $(prefix)
@@ -10,7 +8,7 @@ includedir ?= $(prefix)/include
 libdir ?= $(exec_prefix)/lib
 
 # Compliler flags
-CXXFLAGS += -std=c++11 -O3 -Wall -I.. -fPIC
+CXXFLAGS += -std=c++11 -O3 -Wall -Wextra -I.. -fPIC
 # Loader flags
 LDFLAGS += -shared -L.
 
@@ -22,7 +20,22 @@ all: $(libs)
 # The 'install' PHONY target is used for executing installation commands
 .PHONY : install
 install : $(libs)
-	@echo \"make install \" is not yet available
+	test -d $(prefix) || mkdir $(prefix)
+	test -d $(includedir) || mkdir $(includedir)
+	test -d $(includedir)/thunder || mkdir $(includedir)/thunder
+	for hdr in *.hpp; do \
+		install -m 0644 $$hdr $(includedir)/thunder; \
+	done
+	for pkg in $(pkgs); do \
+		test -d $(includedir)/thunder/$$pkg || mkdir $(includedir)/thunder/$$pkg; \
+		for hdr in $$pkg/*.hpp; do \
+			install -m 0644 $$hdr $(includedir)/thunder/$$pkg; \
+		done; \
+	done
+	test -d $(libdir) || mkdir $(libdir)
+	for lib in $(libs); do \
+		install -m 0755 $$lib $(libdir); \
+	done
 
 # The 'clean' PHONY target is used for cleanup the compiled object code
 .PHONY : clean

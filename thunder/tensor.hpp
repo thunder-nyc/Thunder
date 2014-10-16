@@ -30,6 +30,7 @@ namespace thunder {
 
 template < typename S = DoubleStorage >
 using Tensor = tensor::Tensor< S >;
+typedef Tensor< SizeStorage > SizeTensor;
 typedef Tensor< DoubleStorage > DoubleTensor;
 typedef Tensor< FloatStorage > FloatTensor;
 
