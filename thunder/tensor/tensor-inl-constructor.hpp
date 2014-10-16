@@ -171,7 +171,8 @@ Tensor< S >::Tensor(size_storage sz, stride_storage st, storage_pointer s,
       max_offset = max_offset + (size_[i]-1)*stride_[i];
     }
   }
-  if (min_offset < 0 || max_offset >= storage_->size()) {
+  if (min_offset < 0 ||
+      max_offset >= static_cast< difference_type >(storage_->size())) {
     throw out_of_range("Offset, size and stride exceed storage size.");
   }
 }

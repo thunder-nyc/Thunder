@@ -164,7 +164,8 @@ bool Tensor< S >::isContiguous() const {
     return false;
   }
   for (dim_type i = stride_.size() - 1; i > 0; --i) {
-    if (stride_[i - 1] != stride_[i]*size_[i]) {
+    if (stride_[i - 1] !=
+        stride_[i] * static_cast< difference_type >(size_[i])) {
       return false;
     }
   }
@@ -175,7 +176,8 @@ template < typename S >
 bool Tensor< S >::partialContiguity(dim_type a, dim_type b) const {
   if (b < size_.size()) {
     for (dim_type i = a; i < b; ++i) {
-      if (stride_[i] != stride_[i + 1] * size_[i + 1]) {
+      if (stride_[i] !=
+          stride_[i + 1] * static_cast< difference_type >(size_[i + 1])) {
         return false;
       }
     }
@@ -184,7 +186,8 @@ bool Tensor< S >::partialContiguity(dim_type a, dim_type b) const {
       return false;
     }
     for (dim_type i = a; i < size_.size() - 1; ++i) {
-      if (stride_[i] != stride_[i + 1] * size_[i + 1]) {
+      if (stride_[i] !=
+          stride_[i + 1] * static_cast< difference_type >(size_[i + 1])) {
         return false;
       }
     }

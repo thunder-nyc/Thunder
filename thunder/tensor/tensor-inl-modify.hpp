@@ -61,7 +61,8 @@ Tensor< S >& Tensor< S >::set(storage_pointer s, size_type os) {
       max_offset = max_offset + (size_[i]-1)*stride_[i];
     }
   }
-  if (min_offset < 0 || max_offset >= s->size()) {
+  if (min_offset < 0 ||
+      max_offset >= static_cast< difference_type >(s->size())) {
     throw out_of_range("Offset, size and stride exceed storage size.");
   }
   ::std::swap(storage_, s);
@@ -102,7 +103,8 @@ Tensor< S >& Tensor< S >::set(
       max_offset = max_offset + (sz[i]-1)*st[i];
     }
   }
-  if (min_offset < 0 || max_offset >= s->size()) {
+  if (min_offset < 0 ||
+      max_offset >= static_cast< difference_type >(s->size())) {
     throw out_of_range("Offset, size and stride exceed storage size.");
   }
   ::std::swap(size_, sz);

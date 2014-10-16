@@ -75,13 +75,15 @@ T1 extract(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y) {
     typename T2::size_type y_length = y.length();
     typename T2::pointer y_data = y.data();
     typename T1::difference_type x_step = x.stride(y_dimension - 1);
+    typename T1::size_type x_step_size = ::std::abs(x_step);
+    typename T1::difference_type x_step_increment = x_step > 0 ? 1 : -1;
     typename T1::pointer t_data = t.data();
     typename T1::pointer x_data = x.data();
     typename T1::size_type current = 0;
     for (typename T2::size_type i = 0; i < y_length; ++i) {
       if (static_cast< bool >(::std::real(y_data[i])) == true) {
-        for (typename T1::size_type j = 0; j < x_step; ++j) {
-          t_data[current++] = x_data[i * x_step + j];
+        for (typename T1::size_type j = 0; j < x_step_size; ++j) {
+          t_data[current++] = x_data[i * x_step + j * x_step_increment];
         }
       }
     }

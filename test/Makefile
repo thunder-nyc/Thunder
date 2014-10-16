@@ -7,7 +7,7 @@ targets = storage index_iterator tensor_access tensor_modify tensor_type \
 # Google test path
 gtest_path = gtest-1.7.0
 
-CXXFLAGS += -std=c++11 -g -Wall -Wextra -I.. -I$(gtest_path)
+CXXFLAGS += -std=c++11 -g -Wall -I.. -I$(gtest_path)
 LDFLAGS += -Wl,-rpath=../thunder -L=../thunder -lboost_serialization \
 	-lthunder_exception -lthunder_storage -lthunder_tensor -pthread
 

@@ -8,7 +8,7 @@ includedir ?= $(prefix)/include
 libdir ?= $(exec_prefix)/lib
 
 # Compliler flags
-CXXFLAGS += -std=c++11 -O3 -Wall -Wextra -I.. -fPIC
+CXXFLAGS += -std=c++11 -O3 -Wall -I.. -fPIC
 # Loader flags
 LDFLAGS += -shared -L.
 
