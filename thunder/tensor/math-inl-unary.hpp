@@ -107,6 +107,11 @@ const Tensor< Storage< float, A > >& abs(
     const Tensor< Storage< float, A > > &x) {
   return fabs(x);
 }
+template < typename A >
+const Tensor< Storage< ::std::size_t, A > >& abs(
+    const Tensor< Storage< ::std::size_t, A > > &x) {
+  return x;
+}
 
 template < typename T >
 const T& cnrm(const T &x) {

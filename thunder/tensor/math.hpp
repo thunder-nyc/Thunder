@@ -20,6 +20,7 @@
 #ifndef THUNDER_TENSOR_MATH_HPP_
 #define THUNDER_TENSOR_MATH_HPP_
 
+#include <utility>
 #include "thunder/tensor/tensor.hpp"
 
 namespace thunder {
@@ -42,6 +43,15 @@ T2 getCnrm(const T1 &x);
 // Unary operations
 template < typename T >
 const T& abs(const T &x);
+template < typename A >
+const Tensor< Storage< double, A > >& abs(
+    const Tensor< Storage< double, A > > &x);
+template < typename A >
+const Tensor< Storage< float, A > >& abs(
+    const Tensor< Storage< float, A > > &x);
+template < typename A >
+const Tensor< Storage< ::std::size_t, A > >& abs(
+    const Tensor< Storage< ::std::size_t, A > > &x);
 template < typename T >
 const T& fabs(const T &x);
 template < typename T >

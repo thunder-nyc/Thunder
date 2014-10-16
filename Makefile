@@ -1,7 +1,6 @@
 .PHONY : all
 all:
 	cd thunder && $(MAKE) all
-	cd test && $(MAKE) all
 
 .PHONY : install
 install :
