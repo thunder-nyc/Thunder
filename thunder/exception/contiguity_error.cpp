@@ -26,10 +26,10 @@ namespace thunder {
 namespace exception {
 
 contiguity_error::contiguity_error(const ::std::string& what_arg)
-    : runtime_error(what_arg) {};
+    : runtime_error(what_arg) {}
 
 contiguity_error::contiguity_error(const char* what_arg)
-    : runtime_error(what_arg) {};
+    : runtime_error(what_arg) {}
 
 }  // namespace exception
 }  // namespace thunder
