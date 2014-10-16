@@ -143,7 +143,7 @@ TEST(ComplexTest, reductionTest) {
       }                                                                 \
     }                                                                   \
   }                                                                     \
-  TEST(TensorTest, func ## Test) {                                      \
+  TEST(ComplexTest, func ## Test) {                                     \
     func ## Test< DoubleComplexTensor >();                              \
     func ## Test< FloatComplexTensor >();                               \
   }
