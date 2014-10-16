@@ -22,7 +22,7 @@ all: $(libs)
 # The 'install' PHONY target is used for executing installation commands
 .PHONY : install
 install : $(libs)
-	@echo Install command is not yet available
+	@echo \"make install \" is not yet available
 
 # The 'clean' PHONY target is used for cleanup the compiled object code
 .PHONY : clean
