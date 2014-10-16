@@ -84,7 +84,6 @@ TEST(TensorTest, valueNumericalTest) {
   valueNumericalTest< FloatTensor >();
   valueNumericalTest< DoubleComplexTensor >();
   valueNumericalTest< FloatComplexTensor >();
-  valueNumericalTest< Tensor< Storage< int > > >();
 }
 
 
@@ -138,7 +137,6 @@ TEST(TensorTest, tensorNumericalTest) {
   tensorNumericalTest< FloatTensor >();
   tensorNumericalTest< DoubleComplexTensor >();
   tensorNumericalTest< FloatComplexTensor >();
-  tensorNumericalTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -227,7 +225,6 @@ void valueComparisonTest() {
 TEST(TensorTest, valueComparisonTest) {
   valueComparisonTest< DoubleTensor >();
   valueComparisonTest< FloatTensor >();
-  valueComparisonTest< Tensor< Storage < int > > >();
 }
 
 template< typename T >
@@ -320,7 +317,6 @@ void tensorComparisonTest() {
 TEST(TensorTest, tensorComparisonTest) {
   tensorComparisonTest< DoubleTensor >();
   tensorComparisonTest< FloatTensor >();
-  tensorComparisonTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace

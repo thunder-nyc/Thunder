@@ -60,7 +60,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     typename T2::difference_type y_step = y.stride(y.dimension() - 1);
     for (typename T1::size_type i = 0; i < x_length; ++i) {
       x_pointer[i * x_step] = static_cast< typename T1::value_type >(
-          ::std::polar(y_pointer[i * y_step], z));
+          ::std::polar(static_cast< D >(y_pointer[i * y_step]),
+                       static_cast< D >(z)));
     }
   } else {
     typename T2::reference_iterator y_begin = y.reference_begin();
@@ -68,7 +69,7 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
              x_end = x.reference_end();
          x_begin != x_end; ++x_begin, ++y_begin) {
       *x_begin = static_cast< typename T1::value_type >(
-          ::std::polar(*y_begin, z));
+          ::std::polar(static_cast< D >(*y_begin), static_cast< D >(z)));
     }
   }
   return x;
@@ -91,7 +92,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     typename T2::difference_type z_step = z.stride(z.dimension() - 1);
     for (typename T1::size_type i = 0; i < x_length; ++i) {
       x_pointer[i * x_step] = static_cast< typename T1::value_type >(
-          ::std::polar(y, z_pointer[i * z_step]));
+          ::std::polar(static_cast< D >(y),
+                       static_cast< D >(z_pointer[i * z_step])));
     }
   } else {
     typename T2::reference_iterator z_begin = z.reference_begin();
@@ -99,7 +101,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
              x_end = x.reference_end();
          x_begin != x_end; ++x_begin, ++z_begin) {
       *x_begin = static_cast< typename T1::value_type >(
-          ::std::polar(y, *z_begin));
+          ::std::polar(static_cast< D >(y),
+                       static_cast< D >(*z_begin)));
     }
   }
   return x;
@@ -126,7 +129,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     typename T2::difference_type z_step = z.stride(z.dimension() - 1);
     for (typename T1::size_type i = 0; i < x_length; ++i) {
       x_pointer[i * x_step] = static_cast< typename T1::value_type >(
-          ::std::polar(y_pointer[i * y_step], z_pointer[i * z_step]));
+          ::std::polar(static_cast< D >(y_pointer[i * y_step]),
+                       static_cast< D >(z_pointer[i * z_step])));
     }
   } else {
     typename T2::reference_iterator y_begin = y.reference_begin();
@@ -135,7 +139,8 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
              x_end = x.reference_end(); x_begin != x_end;
          ++x_begin, ++y_begin, ++z_begin) {
       *x_begin = static_cast< typename T1::value_type >(
-          ::std::polar(*y_begin, *z_begin));
+          ::std::polar(static_cast< D >(*y_begin),
+                       static_cast< D >(*z_begin)));
     }
   }
   return x;

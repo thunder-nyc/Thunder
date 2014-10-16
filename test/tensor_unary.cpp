@@ -68,7 +68,6 @@ namespace {
   TEST(TensorTest, func ## Test) {                                      \
     func ## Test< DoubleTensor >();                                     \
     func ## Test< FloatTensor >();                                      \
-    func ## Test< Tensor< Storage< int > > >();                         \
   }
 
 TEST_STD_UNARY(abs);
@@ -146,7 +145,6 @@ void zeroTest() {
 TEST(TensorTest, zeroTest) {
   zeroTest< DoubleTensor >();
   zeroTest< FloatTensor >();
-  zeroTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -180,7 +178,6 @@ void cnrmTest() {
 TEST(TensorTest, cnrmTest) {
   cnrmTest< DoubleTensor >();
   cnrmTest< FloatTensor >();
-  cnrmTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -212,7 +209,6 @@ void conjTest() {
 TEST(TensorTest, conjTest) {
   conjTest< DoubleTensor >();
   conjTest< FloatTensor >();
-  conjTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -244,7 +240,6 @@ void projTest() {
 TEST(TensorTest, projTest) {
   projTest< DoubleTensor >();
   projTest< FloatTensor >();
-  projTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace

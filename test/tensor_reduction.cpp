@@ -86,7 +86,6 @@ void reductionTest() {
 TEST(TensorTest, reductionTest) {
   reductionTest< DoubleTensor >();
   reductionTest< FloatTensor >();
-  reductionTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
@@ -186,7 +185,6 @@ void maxTest() {
 TEST(TensorTest, maxTest) {
   maxTest< DoubleTensor >();
   maxTest< FloatTensor >();
-  maxTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
@@ -286,7 +284,6 @@ void minTest() {
 TEST(TensorTest, minTest) {
   minTest< DoubleTensor >();
   minTest< FloatTensor >();
-  minTest< Tensor< Storage< int > > >();
 }
 
 #define TEST_DIM_REDUCTION(func)                                        \
@@ -335,7 +332,6 @@ TEST(TensorTest, minTest) {
   TEST(TensorTest, func ## Test) {                                      \
     func ## Test< DoubleTensor >();                                     \
     func ## Test< FloatTensor >();                                      \
-    func ## Test< Tensor< Storage< int > > >();                         \
   }
 
 TEST_DIM_REDUCTION(sum);

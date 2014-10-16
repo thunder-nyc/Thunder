@@ -82,7 +82,6 @@ TEST(TensorTest, serializeTest) {
   serializeTest< FloatTensor >();
   serializeTest< DoubleComplexTensor >();
   serializeTest< FloatComplexTensor >();
-  serializeTest< Tensor< Storage< int > > >();
 }
 
 }  // namespace

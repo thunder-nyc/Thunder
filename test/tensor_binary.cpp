@@ -110,7 +110,6 @@ namespace {
   TEST(TensorTest, func ## Test) {                                      \
     func ## Test< DoubleTensor >();                                     \
     func ## Test< FloatTensor >();                                      \
-    func ## Test< Tensor< Storage < int > > >();                        \
   }
 
 TEST_STD_BINARY(fmod);
@@ -211,7 +210,6 @@ void addTest() {
 TEST(TensorTest, addTest) {
   addTest< DoubleTensor >();
   addTest< FloatTensor >();
-  addTest< Tensor< Storage < int > > >();
 }
 
 template< typename T >
@@ -289,7 +287,6 @@ void subTest() {
 TEST(TensorTest, subTest) {
   subTest< DoubleTensor >();
   subTest< FloatTensor >();
-  subTest< Tensor< Storage < int > > >();
 }
 
 template< typename T >
@@ -367,7 +364,6 @@ void mulTest() {
 TEST(TensorTest, mulTest) {
   mulTest< DoubleTensor >();
   mulTest< FloatTensor >();
-  mulTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -451,7 +447,6 @@ void divTest() {
 TEST(TensorTest, divTest) {
   divTest< DoubleTensor >();
   divTest< FloatTensor >();
-  divTest< Tensor < Storage< int > > >();
 }
 
 template< typename T >
@@ -483,7 +478,6 @@ void fillTest() {
 TEST(TensorTest, fillTest) {
   fillTest< DoubleTensor >();
   fillTest< FloatTensor >();
-  fillTest< Tensor< Storage < int > > >();
 }
 
 template< typename T >
@@ -512,7 +506,6 @@ void copyTest() {
 TEST(TensorTest, copyTest) {
   copyTest< DoubleTensor >();
   copyTest< FloatTensor >();
-  copyTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace

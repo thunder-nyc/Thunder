@@ -22,6 +22,7 @@
 #include <typeinfo>
 
 #include "gtest/gtest.h"
+#include "thunder/exception.hpp"
 #include "thunder/storage.hpp"
 
 namespace thunder {
@@ -154,7 +155,6 @@ void fmaTest() {
 TEST(TensorTest, fmaTest) {
   fmaTest< DoubleTensor >();
   fmaTest< FloatTensor >();
-  fmaTest< Tensor< Storage < int > > >();
 }
 
 template < typename T >
@@ -166,7 +166,9 @@ void polarTest() {
     *begin = static_cast< typename T::value_type >(t1_val++) / 300;
   }
   T t1_result;
-  EXPECT_THROW(t1_result = T::polar(t1, 3, 4), domain_error);
+  EXPECT_THROW(t1_result = T::polar(
+      t1, static_cast< typename T::value_type >(3),
+      static_cast< typename T::value_type >(4)), domain_error);
 
   T t2(10, 20, 7);
   int t2_val = -744;
@@ -226,7 +228,6 @@ void polarTest() {
 TEST(TensorTest, polarTest) {
   polarTest< DoubleTensor >();
   polarTest< FloatTensor >();
-  polarTest< Tensor< Storage< int > > >();
 }
 
 }  // namespace

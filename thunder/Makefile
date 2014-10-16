@@ -35,18 +35,18 @@ exception_objs = exception/contiguity_error.o
 exception_deps =
 exception_ldflags =
 libthunder_exception.so : $(exception_objs) $(addsuffix .so, $(addprefix libthunder_, $(exception_deps)))
-	$(LD) $(LDFLAGS) $(addprefix -lthunder_, $(exception_deps)) $(exception_objs) $(exception_ldflags) -o $@
+	$(CXX) $(LDFLAGS) $(addprefix -lthunder_, $(exception_deps)) $(exception_objs) $(exception_ldflags) -o $@
 
 # The storage library
 storage_objs = storage/storage.o
 storage_deps =
-storage_ldflags =
+storage_ldflags = -lboost_serialization
 libthunder_storage.so : $(storage_objs) $(addsuffix .so, $(addprefix libthunder_, $(storage_deps)))
-	$(LD) $(LDFLAGS) $(addprefix -lthunder_, $(storage_deps)) $(storage_objs) $(storage_ldflags) -o $@
+	$(CXX) $(LDFLAGS) $(addprefix -lthunder_, $(storage_deps)) $(storage_objs) $(storage_ldflags) -o $@
 
 # The tensor library
 tensor_objs = tensor/tensor.o
 tensor_deps = exception storage
-tensor_ldflags =
+tensor_ldflags = -lboost_serialization
 libthunder_tensor.so : $(tensor_objs) $(addsuffix .so, $(addprefix libthunder_, $(tensor_deps)))
-	$(LD) $(LDFLAGS) $(addprefix -lthunder_, $(tensor_deps)) $(tensor_objs) $(tensor_ldflags) -o $@
+	$(CXX) $(LDFLAGS) $(addprefix -lthunder_, $(tensor_deps)) $(tensor_objs) $(tensor_ldflags) -o $@

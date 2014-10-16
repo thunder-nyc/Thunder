@@ -83,7 +83,6 @@ TEST(TensorTest, typeTest) {
   typeTest< DoubleTensor >();
   typeTest< DoubleComplexTensor >();
   typeTest< FloatComplexTensor >();
-  typeTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -165,7 +164,6 @@ TEST(TensorTest, applyTest) {
   applyTest< FloatTensor >();
   applyTest< DoubleComplexTensor >();
   applyTest< FloatComplexTensor >();
-  applyTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -247,7 +245,6 @@ TEST(TensorTest, noncontiguousApplyTest) {
   noncontiguousApplyTest< FloatTensor >();
   noncontiguousApplyTest< DoubleComplexTensor >();
   noncontiguousApplyTest< FloatComplexTensor >();
-  noncontiguousApplyTest< Tensor< Storage< int > > >();
 }
 
 }  // namespace

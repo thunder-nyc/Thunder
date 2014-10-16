@@ -123,7 +123,6 @@ TEST(TensorTest, constructorTest) {
   constructorTest< FloatTensor >();
   constructorTest< DoubleComplexTensor >();
   constructorTest< FloatComplexTensor >();
-  constructorTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
@@ -239,7 +238,6 @@ TEST(TensorTest, accessTest) {
   accessTest< FloatTensor >();
   accessTest< DoubleComplexTensor >();
   accessTest< FloatComplexTensor >();
-  accessTest< Tensor< Storage < int > > >();
 }
 
 template < typename T >
@@ -362,7 +360,6 @@ TEST(TensorTest, iteratorTest) {
   iteratorTest< FloatTensor >();
   iteratorTest< DoubleComplexTensor >();
   iteratorTest< FloatComplexTensor >();
-  iteratorTest< Tensor< Storage < int > > >();
 }
 
 }  // namespace

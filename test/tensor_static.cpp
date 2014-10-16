@@ -22,13 +22,8 @@
 #include <typeinfo>
 
 #include "gtest/gtest.h"
+#include "thunder/exception.hpp"
 #include "thunder/storage.hpp"
-
-namespace thunder {
-namespace tensor {
-template class Tensor< Storage< ::std::complex< double > > >;
-}  // namespace tensor
-}  // namespace thunder
 
 namespace thunder {
 namespace {
@@ -91,7 +86,6 @@ TEST(TensorTest, onesTest) {
   onesTest< FloatTensor >();
   onesTest< DoubleComplexTensor >();
   onesTest< FloatComplexTensor >();
-  onesTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -152,7 +146,6 @@ TEST(TensorTest, zerosTest) {
   zerosTest< FloatTensor >();
   zerosTest< DoubleComplexTensor >();
   zerosTest< FloatComplexTensor >();
-  zerosTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
@@ -166,7 +159,6 @@ void polarsTest() {
 TEST(TensorTest, polarsTest) {
   polarsTest< DoubleTensor >();
   polarsTest< FloatTensor >();
-  polarsTest< Tensor< Storage< int > > >();
 }
 
 }  // namespace

@@ -16,6 +16,8 @@
  */
 
 #include "thunder/storage.hpp"
+#include "thunder/storage/storage.hpp"
+#include "thunder/storage/storage-inl.hpp"
 
 #include <complex>
 #include <sstream>

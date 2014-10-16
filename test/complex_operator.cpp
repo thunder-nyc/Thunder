@@ -21,6 +21,7 @@
 #include <typeinfo>
 
 #include "gtest/gtest.h"
+#include "thunder/exception.hpp"
 #include "thunder/storage.hpp"
 
 namespace thunder {

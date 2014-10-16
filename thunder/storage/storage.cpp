@@ -21,6 +21,14 @@
 #include "thunder/storage/storage-inl.hpp"
 
 #include <complex>
+#include <utility>
+
+#include "boost/archive/binary_oarchive.hpp"
+#include "boost/archive/binary_iarchive.hpp"
+#include "boost/archive/text_oarchive.hpp"
+#include "boost/archive/text_iarchive.hpp"
+#include "boost/serialization/complex.hpp"
+#include "boost/serialization/utility.hpp"
 
 namespace thunder {
 namespace storage {
@@ -29,6 +37,41 @@ template class Storage< double >;
 template class Storage< float >;
 template class Storage< ::std::complex< double > >;
 template class Storage< ::std::complex< float > >;
+template class Storage< ::std::size_t >;
+template class Storage< ::std::ptrdiff_t >;
+template class Storage< ::std::pair< ::std::size_t, ::std::size_t > >;
+
+#define THUNDER_STORAGE_INSTANTIATE_SERIALIZE(D)                        \
+  template void Storage< D >::serialize(                                \
+      ::boost::archive::text_oarchive &ar, const unsigned int version); \
+  template void Storage< D >::serialize(                                \
+      ::boost::archive::text_iarchive &ar, const unsigned int version); \
+  template void Storage< D >::serialize(                                \
+      ::boost::archive::binary_oarchive &ar, const unsigned int version); \
+  template void Storage< D >::serialize(                                \
+      ::boost::archive::binary_iarchive &ar, const unsigned int version);
+
+#define THUNDER_STORAGE_EXPAND_SERIALIZE(INSTANTIATE)           \
+  INSTANTIATE(double);                                          \
+  INSTANTIATE(float);                                           \
+  INSTANTIATE(::std::complex< double >);                        \
+  INSTANTIATE(::std::complex< float >);                         \
+  INSTANTIATE(::std::size_t);                                   \
+  INSTANTIATE(::std::ptrdiff_t);                                \
+
+template void Storage< ::std::pair< ::std::size_t, ::std::size_t > >::serialize(
+    ::boost::archive::text_oarchive &ar, const unsigned int version);
+template void Storage< ::std::pair< ::std::size_t, ::std::size_t > >::serialize(
+    ::boost::archive::text_iarchive &ar, const unsigned int version);
+template void Storage< ::std::pair< ::std::size_t, ::std::size_t > >::serialize(
+    ::boost::archive::binary_oarchive &ar, const unsigned int version);
+template void Storage< ::std::pair< ::std::size_t, ::std::size_t > >::serialize(
+    ::boost::archive::binary_iarchive &ar, const unsigned int version);
+
+THUNDER_STORAGE_EXPAND_SERIALIZE(THUNDER_STORAGE_INSTANTIATE_SERIALIZE);
+
+#undef THUNDER_STORAGE_INSTANTIATE_SERIALIZE
+#undef THUNDER_STORAGE_EXPAND_SERIALIZE
 
 }  // namespace storage
 }  // namespace thunder

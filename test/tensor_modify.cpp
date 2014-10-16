@@ -105,7 +105,6 @@ TEST(TensorTest, modifyTest) {
   modifyTest< FloatTensor >();
   modifyTest< DoubleComplexTensor >();
   modifyTest< FloatComplexTensor >();
-  modifyTest< Tensor< Storage< int > > > ();
 }
 
 template < typename T >
@@ -140,7 +139,6 @@ TEST(TensorTest, viewAsTest) {
   viewAsTest< FloatTensor >();
   viewAsTest< DoubleComplexTensor >();
   viewAsTest< FloatComplexTensor >();
-  viewAsTest< Tensor< Storage < int > > >();
 }
 
 template < typename T >
@@ -189,7 +187,6 @@ TEST(TensorTest, extractTest) {
   extractTest< FloatTensor >();
   extractTest< DoubleComplexTensor >();
   extractTest< FloatComplexTensor >();
-  extractTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
@@ -229,7 +226,6 @@ TEST(TensorTest, shuffleTest) {
   shuffleTest< FloatTensor >();
   shuffleTest< DoubleComplexTensor >();
   shuffleTest< FloatComplexTensor >();
-  shuffleTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -296,7 +292,6 @@ TEST(TensorTest, viewTest) {
   viewTest< FloatTensor >();
   viewTest< DoubleComplexTensor >();
   viewTest< FloatComplexTensor >();
-  viewTest< Tensor< Storage< int > > >();
 }
 
 template< typename T >
@@ -349,7 +344,6 @@ TEST(TensorTest, reshapeTest) {
   reshapeTest< FloatTensor >();
   reshapeTest< DoubleComplexTensor >();
   reshapeTest< FloatComplexTensor >();
-  reshapeTest< Tensor< Storage< int > > >();
 }
 
 template < typename T >
@@ -438,6 +432,11 @@ void transformTest() {
   }
 
   T t2(10, 14, 7);
+  int t2_val = -200;
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t2_val++);
+  }
   T t3 = T::cat(t1, t2, 1);
   EXPECT_EQ(3, t3.dimension());
   EXPECT_EQ(10, t3.size(0));
@@ -464,7 +463,6 @@ TEST(TensorTest, transformTest) {
   transformTest< FloatTensor >();
   transformTest< DoubleComplexTensor >();
   transformTest< FloatComplexTensor >();
-  transformTest< Tensor< Storage< int > > >();
 }
 
 #define TEST_COMPLEX_TRANSFORM(tfunc, sfunc)                            \
@@ -535,7 +533,6 @@ TEST(TensorTest, transformTest) {
     tfunc ## Test< FloatTensor >();                                     \
     tfunc ## Test< DoubleComplexTensor >();                             \
     tfunc ## Test< FloatComplexTensor >();                              \
-    tfunc ## Test< Tensor< Storage< int > > >();                        \
   }
 
 TEST_COMPLEX_TRANSFORM(getReal, real);

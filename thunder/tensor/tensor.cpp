@@ -23,26 +23,12 @@
 #include <complex>
 #include <utility>
 
+#include "boost/archive/binary_oarchive.hpp"
+#include "boost/archive/binary_iarchive.hpp"
+#include "boost/archive/text_oarchive.hpp"
+#include "boost/archive/text_iarchive.hpp"
+#include "boost/serialization/complex.hpp"
 #include "thunder/storage.hpp"
-#include "thunder/storage/storage.hpp"
-#include "thunder/storage/storage-inl.hpp"
-
-namespace thunder {
-namespace storage {
-
-// Existing specializations
-extern template class Storage< double >;
-extern template class Storage< float >;
-extern template class Storage< ::std::complex< double > >;
-extern template class Storage< ::std::complex< float > >;
-
-// Specialization of additional storage class
-template class Storage< ::std::size_t >;
-template class Storage< ::std::ptrdiff_t >;
-template class Storage< ::std::pair< ::std::size_t, ::std::size_t > >;
-
-}  // namespace storage
-}  // namespace thunder
 
 namespace thunder {
 namespace tensor {
@@ -52,6 +38,7 @@ template class Tensor< DoubleStorage >;
 template class Tensor< FloatStorage >;
 template class Tensor< DoubleComplexStorage >;
 template class Tensor< FloatComplexStorage >;
+template class Tensor< Storage< ::std::size_t > >;
 
 #define THUNDER_TENSOR_INSTANTIATE_UNARY(S)                             \
   template Tensor< S > operator+(                                       \
@@ -75,7 +62,8 @@ template class Tensor< FloatComplexStorage >;
   INSTANTIATE(DoubleStorage);                           \
   INSTANTIATE(FloatStorage);                            \
   INSTANTIATE(DoubleComplexStorage);                    \
-  INSTANTIATE(FloatComplexStorage);
+  INSTANTIATE(FloatComplexStorage);                     \
+  INSTANTIATE(Storage< ::std::size_t >);
 
 THUNDER_TENSOR_EXPAND_UNARY(THUNDER_TENSOR_INSTANTIATE_UNARY);
 
@@ -148,6 +136,14 @@ THUNDER_TENSOR_EXPAND_UNARY(THUNDER_TENSOR_INSTANTIATE_UNARY);
   INSTANTIATE(FloatComplexStorage, DoubleStorage);                      \
   INSTANTIATE(FloatComplexStorage, FloatStorage);                       \
   INSTANTIATE(FloatComplexStorage, DoubleComplexStorage);               \
+  INSTANTIATE(DoubleStorage, Storage< ::std::size_t >);                 \
+  INSTANTIATE(FloatStorage, Storage< ::std::size_t >);                  \
+  INSTANTIATE(DoubleComplexStorage, Storage< ::std::size_t >);          \
+  INSTANTIATE(FloatComplexStorage, Storage< ::std::size_t >);           \
+  INSTANTIATE(Storage< ::std::size_t >, DoubleStorage);                 \
+  INSTANTIATE(Storage< ::std::size_t >, FloatStorage);                  \
+  INSTANTIATE(Storage< ::std::size_t >, DoubleComplexStorage);          \
+  INSTANTIATE(Storage< ::std::size_t >, FloatComplexStorage);
 
 THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
     THUNDER_TENSOR_INSTANTIATE_BINARY_INCOMPATIBLE);
@@ -209,12 +205,43 @@ THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
   INSTANTIATE(FloatComplexStorage, FloatStorage);                       \
   INSTANTIATE(FloatComplexStorage, DoubleComplexStorage);               \
   INSTANTIATE(FloatComplexStorage, FloatComplexStorage);                \
+  INSTANTIATE(Storage< ::std::size_t >, Storage< ::std::size_t >);      \
+  INSTANTIATE(DoubleStorage, Storage< ::std::size_t >);                 \
+  INSTANTIATE(FloatStorage, Storage< ::std::size_t >);                  \
+  INSTANTIATE(DoubleComplexStorage, Storage< ::std::size_t >);          \
+  INSTANTIATE(FloatComplexStorage, Storage< ::std::size_t >);           \
+  INSTANTIATE(Storage< ::std::size_t >, DoubleStorage);                 \
+  INSTANTIATE(Storage< ::std::size_t >, FloatStorage);                  \
+  INSTANTIATE(Storage< ::std::size_t >, DoubleComplexStorage);          \
+  INSTANTIATE(Storage< ::std::size_t >, FloatComplexStorage);
 
 THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE(
     THUNDER_TENSOR_INSTANTIATE_BINARY_COMPATIBLE);
 
 #undef THUNDER_TENSOR_INSTANTIATE_BINARY_COMPATIBLE
 #undef THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE
+
+#define THUNDER_TENSOR_INSTANTIATE_SERIALIZE(S)                         \
+  template void Tensor< S >::serialize(                                 \
+      ::boost::archive::text_oarchive &ar, const unsigned int version); \
+  template void Tensor< S >::serialize(                                 \
+      ::boost::archive::text_iarchive &ar, const unsigned int version); \
+  template void Tensor< S >::serialize(                                 \
+      ::boost::archive::binary_oarchive &ar, const unsigned int version); \
+  template void Tensor< S >::serialize(                                 \
+      ::boost::archive::binary_iarchive &ar, const unsigned int version);
+
+#define THUNDER_TENSOR_EXPAND_SERIALIZE(INSTANTIATE)    \
+  INSTANTIATE(DoubleStorage);                           \
+  INSTANTIATE(FloatStorage);                            \
+  INSTANTIATE(DoubleComplexStorage);                    \
+  INSTANTIATE(FloatComplexStorage);                     \
+  INSTANTIATE(Storage< ::std::size_t >);
+
+THUNDER_TENSOR_EXPAND_SERIALIZE(THUNDER_TENSOR_INSTANTIATE_SERIALIZE);
+
+#undef THUNDER_TENSOR_INSTANTIATE_SERIALIZE
+#undef THUNDER_TENSOR_EXPAND_SERIALIZE
 
 }  // namespace tensor
 }  // namespace thunder
