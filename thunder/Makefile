@@ -1,47 +1,52 @@
-# List all the libraries here
-libs = libthunder_exception.so libthunder_storage.so libthunder_tensor.so
-
+# List all the packages here
+pkgs = exception storage tensor
+libs = $(addsuffix .so, $(addprefix libthunder_, $(pkgs)))
 # List all headers that will be installed here
-hdrs = exception.hpp exception/exception.hpp exception/contiguity_error.hpp \
-	storage.hpp storage/storage.hpp storage/storage-inl.hpp
-
+hdrs = $(wildcard *.hpp) $(wildcard */*.hpp)
 # Set the location of installation here
-PREFIX ?= /usr/local
+prefix ?= /usr/local
+exec_prefix ?= $(prefix)
+includedir ?= $(prefix)/include
+libdir ?= $(exec_prefix)/lib
 
-# Complilation flags
+# Compliler flags
 CXXFLAGS += -std=c++11 -O3 -Wall -I.. -fPIC
-
 # Loader flags
 LDFLAGS += -shared -L.
 
-# The all PHONY target is used for compilation commands
+# The 'all' PHONY target is used for default compilation
 .PHONY : all
 all: $(libs)
 	@echo Run \"make install\" to install the library
 
-# The install PHONY target is used for executing installation commands
+# The 'install' PHONY target is used for executing installation commands
 .PHONY : install
 install : $(libs)
 	@echo Install command is not yet available
 
-# The clean PHONY target is used for cleanup the compilation
+# The 'clean' PHONY target is used for cleanup the compiled object code
 .PHONY : clean
 clean :
-	-rm $(libs)
-	-rm exception/*.o
-	-rm storage/*.o
-	-rm tensor/*.o
+	-$(RM) $(libs)
+	-for pkg in $(pkgs); do $(RM) $$pkg/*.o; done
 
 # The exception library
-libthunder_exception.so : exception/contiguity_error.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+exception_objs = exception/contiguity_error.o
+exception_deps =
+exception_ldflags =
+libthunder_exception.so : $(exception_objs) $(addsuffix .so, $(addprefix libthunder_, $(exception_deps)))
+	$(LD) $(LDFLAGS) $(addprefix -lthunder_, $(exception_deps)) $(exception_objs) $(exception_ldflags) -o $@
 
 # The storage library
-libthunder_storage.so : storage/storage.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+storage_objs = storage/storage.o
+storage_deps =
+storage_ldflags =
+libthunder_storage.so : $(storage_objs) $(addsuffix .so, $(addprefix libthunder_, $(storage_deps)))
+	$(LD) $(LDFLAGS) $(addprefix -lthunder_, $(storage_deps)) $(storage_objs) $(storage_ldflags) -o $@
 
 # The tensor library
 tensor_objs = tensor/tensor.o
-tensor_ldflags = -lthunder_exception -lthunder_storage
-libthunder_tensor.so : $(tensor_objs) libthunder_exception.so libthunder_storage.so
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(tensor_ldflags) $(tensor_objs) -o $@
+tensor_deps = exception storage
+tensor_ldflags =
+libthunder_tensor.so : $(tensor_objs) $(addsuffix .so, $(addprefix libthunder_, $(tensor_deps)))
+	$(LD) $(LDFLAGS) $(addprefix -lthunder_, $(tensor_deps)) $(tensor_objs) $(tensor_ldflags) -o $@

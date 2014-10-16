@@ -33,6 +33,6 @@ test : $(targets)
 
 .PHONY : clean
 clean :
-	-rm $(targets)
+	-$(RM) $(targets)
 
 $(targets) : % : %.cpp

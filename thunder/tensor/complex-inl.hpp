@@ -34,4 +34,7 @@
 // Reduction operations
 #include "thunder/tensor/complex-inl-reduction.hpp"
 
+// Transformations
+#include "thunder/tensor/complex-inl-transform.hpp"
+
 #endif  // THUNDER_TENSOR_COMPLEX_INL_HPP_

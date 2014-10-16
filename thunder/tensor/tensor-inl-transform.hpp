@@ -26,6 +26,7 @@
 #include <utility>
 
 #include "thunder/exception.hpp"
+#include "thunder/tensor/complex.hpp"
 #include "thunder/tensor/index_iterator.hpp"
 #include "thunder/tensor/math.hpp"
 

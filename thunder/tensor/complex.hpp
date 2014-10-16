@@ -29,6 +29,12 @@ namespace thunder {
 namespace tensor {
 namespace math {
 
+// Transformations
+template < typename D, typename A, typename T1 >
+T1 extract(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y);
+template < typename D, typename A, typename T1 >
+T1 shuffle(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y);
+
 // Unary operations
 template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& erf(
@@ -269,6 +275,10 @@ const Tensor< Storage< ::std::complex< D1 >, A1 > >& copy(
 template < typename D, typename A, typename T2 >
 const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename T2::const_reference y, typename T2::const_reference z);
+template < typename D, typename A, typename T2 >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
     const T2 &y, typename T2::const_reference z);
 template < typename D, typename A, typename T2 >
 const Tensor< Storage< ::std::complex< D >, A > >& polar(
@@ -298,6 +308,26 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
     const Tensor< Storage< ::std::complex< D >, A > > &y,
     const Tensor< Storage< ::std::complex< D >, A > > &z);
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference y,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference z);
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &y,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference z);
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference y,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &z);
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &y,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &z);
 template < typename D, typename A >
 const Tensor< Storage< ::std::complex< D >, A > >& fma(
     const Tensor< Storage< ::std::complex< D >, A > > &x,

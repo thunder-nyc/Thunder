@@ -36,6 +36,16 @@ namespace math {
 template < typename D, typename A, typename T2 >
 const Tensor< Storage< ::std::complex< D >, A > >& polar(
     const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename T2::const_reference y, typename T2::const_reference z) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T1;
+  x.fill(static_cast< typename T1::value_type >(
+      y * ::std::exp(z * (typename T1::value_type(0, 1)))));
+  return x;
+}
+
+template < typename D, typename A, typename T2 >
+const Tensor< Storage< ::std::complex< D >, A > >& polar(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
     const T2 &y, typename T2::const_reference z) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T1;
   if (x.length() != y.length()) {
@@ -236,6 +246,137 @@ const Tensor< Storage< ::std::complex< D >, A > >& polar(
          ++x_begin, ++y_begin, ++z_begin) {
       *x_begin = static_cast< typename T::value_type >(
           (*y_begin) * ::std::exp((*z_begin) * (typename T::value_type(0, 1))));
+    }
+  }
+  return x;
+}
+
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference y,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference z) {
+  typedef Tensor< Storage< ::std::complex< D1 >, A1 > > T1;
+  typedef Tensor< Storage< ::std::complex< D2 >, A2 > > T2;
+  typename T2::value_type result =
+      y * ::std::exp(z * (typename T2::value_type(0, 1)));
+  x.fill(typename T1::value_type(::std::real(result), ::std::imag(result)));
+  return x;
+}
+
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &y,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference z) {
+  typedef Tensor< Storage< ::std::complex< D1 >, A1 > > T1;
+  typedef Tensor< Storage< ::std::complex< D2 >, A2 > > T2;
+  typename T2::value_type z_exp
+      = ::std::exp(z * (typename T2::value_type(0, 1)));
+  if (x.length() != y.length()) {
+    throw out_of_range("Tensors have different length.");
+  }
+  typename T2::value_type result;
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+      y.partialContiguity(0, y.dimension() - 1)) {
+    typename T1::pointer x_pointer = x.data();
+    typename T1::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T1::size_type x_length = x.length();
+    typename T2::pointer y_pointer = y.data();
+    typename T2::difference_type y_step = y.stride(y.dimension() - 1);
+    for (typename T1::size_type i = 0; i < x_length; ++i) {
+      result = y_pointer[i * y_step] * z_exp;
+      x_pointer[i * x_step] = typename T1::value_type(
+          ::std::real(result), ::std::imag(result));
+    }
+  } else {
+    typename T2::reference_iterator y_begin = y.reference_begin();
+    for (typename T1::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end();
+         x_begin != x_end; ++x_begin, ++y_begin) {
+      result = (*y_begin) * z_exp;
+      *x_begin = typename T1::value_type(
+          ::std::real(result), ::std::imag(result));
+    }
+  }
+  return x;
+}
+
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    typename Tensor< Storage< ::std::complex< D2 >, A2 > >::const_reference y,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &z) {
+  typedef Tensor< Storage< ::std::complex< D1 >, A1 > > T1;
+  typedef Tensor< Storage< ::std::complex< D2 >, A2 > > T2;
+  if (x.length() != z.length()) {
+    throw out_of_range("Tensors have different length.");
+  }
+  typename T2::value_type result;
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+      z.partialContiguity(0, z.dimension() - 1)) {
+    typename T1::pointer x_pointer = x.data();
+    typename T1::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T1::size_type x_length = x.length();
+    typename T2::pointer z_pointer = z.data();
+    typename T2::difference_type z_step = z.stride(z.dimension() - 1);
+    for (typename T1::size_type i = 0; i < x_length; ++i) {
+      result = y * ::std::exp(
+          z_pointer[i * z_step] * (typename T2::value_type(0, 1)));
+      x_pointer[i * x_step] = typename T1::value_type(
+          ::std::real(result), ::std::imag(result));
+    }
+  } else {
+    typename T2::reference_iterator z_begin = z.reference_begin();
+    for (typename T1::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end();
+         x_begin != x_end; ++x_begin, ++z_begin) {
+      result = y * ::std::exp(
+          (*z_begin) * (typename T2::value_type(0, 1)));
+      *x_begin = typename T1::value_type(
+          ::std::real(result), ::std::imag(result));
+    }
+  }
+  return x;
+}
+
+template < typename D1, typename A1, typename D2, typename A2 >
+const Tensor< Storage< ::std::complex< D1 >, A1 > >& polar(
+    const Tensor< Storage< ::std::complex< D1 >, A1 > > &x,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &y,
+    const Tensor< Storage< ::std::complex< D2 >, A2 > > &z) {
+  typedef Tensor< Storage< ::std::complex< D1 >, A1 > > T1;
+  typedef Tensor< Storage< ::std::complex< D2 >, A2 > > T2;
+  if (x.length() != y.length() || x.length() != z.length()) {
+    throw out_of_range("Tensors have different length.");
+  }
+  typename T2::value_type result;
+  if (x.partialContiguity(0, x.dimension() - 1) &&
+      y.partialContiguity(0, y.dimension() - 1) &&
+      z.partialContiguity(0, z.dimension() - 1)) {
+    typename T1::pointer x_pointer = x.data();
+    typename T1::difference_type x_step = x.stride(x.dimension() - 1);
+    typename T1::size_type x_length = x.length();
+    typename T2::pointer y_pointer = y.data();
+    typename T2::difference_type y_step = y.stride(y.dimension() - 1);
+    typename T2::pointer z_pointer = z.data();
+    typename T2::difference_type z_step = z.stride(z.dimension() - 1);
+    for (typename T1::size_type i = 0; i < x_length; ++i) {
+      result = y_pointer[i * y_step] * ::std::exp(
+          z_pointer[i * z_step] * (typename T2::value_type(0, 1)));
+      x_pointer[i * x_step] = typename T1::value_type(
+          ::std::real(result), ::std::imag(result));
+    }
+  } else {
+    typename T2::reference_iterator z_begin = z.reference_begin();
+    typename T2::reference_iterator y_begin = y.reference_begin();
+    for (typename T1::reference_iterator x_begin = x.reference_begin(),
+             x_end = x.reference_end(); x_begin != x_end;
+         ++x_begin, ++y_begin, ++z_begin) {
+      result = (*y_begin) * ::std::exp(
+          (*z_begin) * (typename T2::value_type(0, 1)));
+      *x_begin = typename T1::value_type(
+          ::std::real(result), ::std::imag(result));
     }
   }
   return x;
