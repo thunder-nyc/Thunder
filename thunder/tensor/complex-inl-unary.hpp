@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <complex>
+#include <limits>
 
 #include "thunder/tensor/math.hpp"
 

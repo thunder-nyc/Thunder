@@ -95,7 +95,8 @@ void constructorTest() {
 
   // Create a tensor from size and stride
   T from_size_stride_tensor({5, 4}, {-1, 5});
-  constructorTestCase(from_size_stride_tensor, 2, {5, 4}, {-1, 5}, 20, 4, false);
+  constructorTestCase(
+      from_size_stride_tensor, 2, {5, 4}, {-1, 5}, 20, 4, false);
   EXPECT_EQ(20, from_size_stride_tensor.storage()->size());
 
   // Create a tensor from a storage with size and stride

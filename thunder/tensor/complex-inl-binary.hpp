@@ -106,9 +106,9 @@ const Tensor< Storage< ::std::complex< D >, A > >& hypot(
     typename T::pointer y_pointer = y.data();
     typename T::difference_type y_step = y.stride(y.dimension() - 1);
     for (typename T::size_type i = 0; i < x_length; ++i) {
-      x_pointer[i * x_step] = static_cast< typename T::value_type >(::std::hypot(
-          ::std::norm(x_pointer[i * x_step]),
-          ::std::norm(y_pointer[i * y_step])));
+      x_pointer[i * x_step] = static_cast< typename T::value_type >(
+          ::std::hypot(::std::norm(x_pointer[i * x_step]),
+                       ::std::norm(y_pointer[i * y_step])));
     }
   } else {
     for (typename T::reference_iterator x_begin = x.reference_begin(),
