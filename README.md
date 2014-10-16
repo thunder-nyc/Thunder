@@ -8,16 +8,18 @@ The library just had its development began. Contribution is very welcomed! Pleas
 
 ## Installation
 
-For now Thunder contains only a set of headers. The only installation instruction is to copy the directory "thunder" into your include directories, for example
+Thunder can be installed via a simple make command.
 ```sh
-cp -r thunder /usr/local/include/
+make install prefix=/usr/local
 ```
 
-Please note that the Thunder library is still quite new and immature. Many of its features are still under implementation. Therefore we do not yet provide a configuration or installation script. We will change this later when the library is ready to be released.
+Please note that the Thunder library is still quite new and immature. Many of its features are still under implementation. Current repository contains a development version of Thunder prior to a first release.
 
-### Compilers for C++11
+### Prerequisites
 
-Thunder requires a C++11 compiler. We target our tests to [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
+Here is a list of prerequisites you need to have to make sure Thunder compiles
+* A C++11 compiler that supports -std=c++11. We target our tests to [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
+* [Boost](http://www.boost.org) >= 1.56, with its [Serialization](http://www.boost.org/doc/libs/1_56_0/libs/serialization) package.
 
 ## Features
 
