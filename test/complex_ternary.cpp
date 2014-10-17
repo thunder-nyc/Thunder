@@ -208,10 +208,13 @@ void polarTest() {
            end = t1.reference_end(); begin != end; ++begin) {
     typename T::value_type result = typename T::value_type(9, 6) * ::std::exp(
         typename T::value_type(-7, 8) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t1_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t1_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t1_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t1_result(begin.position())));
+    }
   }
 
   T t2(10, 20, 7);
@@ -227,10 +230,13 @@ void polarTest() {
            end = t2.reference_end(); begin != end; ++begin) {
     typename T::value_type result = t1(begin.position()) * ::std::exp(
         typename T::value_type(-5, 4) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t2_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t2_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t2_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t2_result(begin.position())));
+    }
   }
 
   T t3(10, 20, 7);
@@ -246,10 +252,13 @@ void polarTest() {
            end = t3.reference_end(); begin != end; ++begin) {
     typename T::value_type result = typename T::value_type(9, -7) * ::std::exp(
         t1(begin.position()) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t3_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t3_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t3_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t3_result(begin.position())));
+    }
   }
 
   T t4(10, 20, 7);
@@ -265,10 +274,13 @@ void polarTest() {
            end = t4.reference_end(); begin != end; ++begin) {
     typename T::value_type result = t1(begin.position()) * ::std::exp(
         t2(begin.position()) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t4_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t4_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t4_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t4_result(begin.position())));
+    }
   }
 
   T t5({10, 20, 7}, {161, 8, 1});
@@ -285,10 +297,13 @@ void polarTest() {
            end = t5.reference_end(); begin != end; ++begin) {
     typename T::value_type result = typename T::value_type(-5, 8) * ::std::exp(
         typename T::value_type(7, 10) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t5_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t5_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t5_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t5_result(begin.position())));
+    }
   }
 
   T t6({10, 20, 7}, {161, 8, 1});
@@ -304,10 +319,13 @@ void polarTest() {
            end = t6.reference_end(); begin != end; ++begin) {
     typename T::value_type result = t1(begin.position()) * ::std::exp(
         typename T::value_type(7, -8) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t6_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t6_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t6_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t6_result(begin.position())));
+    }
   }
 
   T t7({10, 20, 7}, {161, 8, 1});
@@ -323,10 +341,13 @@ void polarTest() {
            end = t7.reference_end(); begin != end; ++begin) {
     typename T::value_type result = typename T::value_type(4, 7) * ::std::exp(
         t1(begin.position()) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t7_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t7_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t7_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t7_result(begin.position())));
+    }
   }
 
   T t8({10, 20, 7}, {161, 8, 1});
@@ -342,10 +363,13 @@ void polarTest() {
            end = t8.reference_end(); begin != end; ++begin) {
     typename T::value_type result = t1(begin.position()) * ::std::exp(
         t7(begin.position()) * typename T::value_type(0, 1));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t8_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t8_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t8_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t8_result(begin.position())));
+    }
   }
 
   FloatTensor t9(10, 20, 7);
@@ -359,10 +383,13 @@ void polarTest() {
            end = t9.reference_end(); begin != end; ++begin) {
     typename T::value_type result = ::std::polar(
         *begin, static_cast< float >(4));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t9_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t9_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t9_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t9_result(begin.position())));
+    }
   }
 
   FloatTensor t10(10, 20, 7);
@@ -376,10 +403,13 @@ void polarTest() {
            end = t10.reference_end(); begin != end; ++begin) {
     typename T::value_type result = ::std::polar(
         static_cast< float >(3), *begin);
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t10_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t10_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t10_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t10_result(begin.position())));
+    }
   }
 
   FloatTensor t11(10, 20, 7);
@@ -392,10 +422,13 @@ void polarTest() {
   for (FloatTensor::reference_iterator begin = t11.reference_begin(),
            end = t11.reference_end(); begin != end; ++begin) {
     typename T::value_type result = ::std::polar(t9(begin.position()), *begin);
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t11_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t11_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t11_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t11_result(begin.position())));
+    }
   }
 
   FloatTensor t12({10, 20, 7}, {161, 8, 1});
@@ -409,10 +442,13 @@ void polarTest() {
            end = t12.reference_end(); begin != end; ++begin) {
     typename T::value_type result = ::std::polar(
         *begin, static_cast< float >(4));
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t12_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t12_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t12_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t12_result(begin.position())));
+    }
   }
 
   FloatTensor t13({10, 20, 7}, {161, 8, 1});
@@ -426,10 +462,13 @@ void polarTest() {
            end = t13.reference_end(); begin != end; ++begin) {
     typename T::value_type result = ::std::polar(
         static_cast< float >(3), *begin);
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t13_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t13_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t13_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t13_result(begin.position())));
+    }
   }
 
   FloatTensor t14({10, 20, 7}, {161, 8, 1});
@@ -442,10 +481,13 @@ void polarTest() {
   for (FloatTensor::reference_iterator begin = t14.reference_begin(),
            end = t14.reference_end(); begin != end; ++begin) {
     typename T::value_type result = ::std::polar(t9(begin.position()), *begin);
-    EXPECT_FLOAT_EQ(::std::real(result),
-                    ::std::real(t14_result(begin.position())));
-    EXPECT_FLOAT_EQ(::std::imag(result),
-                    ::std::imag(t14_result(begin.position())));
+    if (!::std::isnan(::std::real(result)) &&
+        !::std::isnan(::std::imag(result))) {
+      EXPECT_FLOAT_EQ(::std::real(result),
+                      ::std::real(t14_result(begin.position())));
+      EXPECT_FLOAT_EQ(::std::imag(result),
+                      ::std::imag(t14_result(begin.position())));
+    }
   }
 }
 
