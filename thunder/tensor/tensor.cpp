@@ -145,13 +145,13 @@ THUNDER_TENSOR_EXPAND_UNARY(THUNDER_TENSOR_INSTANTIATE_UNARY);
   INSTANTIATE(FloatComplexStorage, DoubleStorage);                      \
   INSTANTIATE(FloatComplexStorage, FloatStorage);                       \
   INSTANTIATE(FloatComplexStorage, DoubleComplexStorage);               \
-  INSTANTIATE(DoubleStorage, SizeStorage);                 \
-  INSTANTIATE(FloatStorage, SizeStorage);                  \
-  INSTANTIATE(DoubleComplexStorage, SizeStorage);          \
-  INSTANTIATE(FloatComplexStorage, SizeStorage);           \
-  INSTANTIATE(SizeStorage, DoubleStorage);                 \
-  INSTANTIATE(SizeStorage, FloatStorage);                  \
-  INSTANTIATE(SizeStorage, DoubleComplexStorage);          \
+  INSTANTIATE(DoubleStorage, SizeStorage);                              \
+  INSTANTIATE(FloatStorage, SizeStorage);                               \
+  INSTANTIATE(DoubleComplexStorage, SizeStorage);                       \
+  INSTANTIATE(FloatComplexStorage, SizeStorage);                        \
+  INSTANTIATE(SizeStorage, DoubleStorage);                              \
+  INSTANTIATE(SizeStorage, FloatStorage);                               \
+  INSTANTIATE(SizeStorage, DoubleComplexStorage);                       \
   INSTANTIATE(SizeStorage, FloatComplexStorage);
 
 THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
