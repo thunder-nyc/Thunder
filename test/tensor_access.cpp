@@ -192,6 +192,7 @@ void accessTest() {
   EXPECT_TRUE(stride_tensor.partialContiguity(0, 0));
   EXPECT_FALSE(stride_tensor.partialContiguity(0, 1));
   EXPECT_FALSE(stride_tensor.partialContiguity(0, 2));
+  EXPECT_TRUE(stride_tensor.isUnique());
 
   // Test on evaluation operator
   for (int i = 0; i < 5; ++i) {
@@ -212,7 +213,10 @@ void accessTest() {
     EXPECT_EQ(stride_tensor.offset() - i, subtensor.offset());
     EXPECT_EQ(stride_tensor.data() - i, subtensor.data());
     EXPECT_FALSE(subtensor.isContiguous());
+    EXPECT_FALSE(subtensor.isUnique());
+    EXPECT_FALSE(stride_tensor.isUnique());
   }
+  EXPECT_TRUE(stride_tensor.isUnique());
 
   // Test on binary subtensor operator
   T binary_subtensor = stride_tensor[{1, 3}];
@@ -222,6 +226,7 @@ void accessTest() {
   EXPECT_EQ(stride_tensor.storage(), binary_subtensor.storage());
   EXPECT_EQ(stride_tensor.offset() - 1 + 3 * 5, binary_subtensor.offset());
   EXPECT_TRUE(binary_subtensor.isContiguous());
+  EXPECT_FALSE(binary_subtensor.isUnique());
 
   // Test on multiple subtensor operator
   T multiple_subtensor = stride_tensor[{{1, 3}, {2, 2}}];
@@ -233,6 +238,7 @@ void accessTest() {
   EXPECT_EQ(stride_tensor.storage(), multiple_subtensor.storage());
   EXPECT_EQ(stride_tensor.offset() - 1 + 10, multiple_subtensor.offset());
   EXPECT_FALSE(multiple_subtensor.isContiguous());
+  EXPECT_FALSE(multiple_subtensor.isUnique());
 }
 TEST(TensorTest, accessTest) {
   accessTest< DoubleTensor >();

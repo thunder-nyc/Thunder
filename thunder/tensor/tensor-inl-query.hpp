@@ -196,6 +196,11 @@ bool Tensor< S >::partialContiguity(dim_type a, dim_type b) const {
 }
 
 template < typename S >
+bool Tensor< S >::isUnique() const {
+  return storage_.unique();
+}
+
+template < typename S >
 typename Tensor< S >::dim_type Tensor< S >::dimension(const Tensor &x) {
   return x.dimension();
 }
@@ -286,6 +291,11 @@ bool Tensor< S >::isContiguous(const Tensor &x) {
 template < typename S >
 bool Tensor< S >::partialContiguity(const Tensor &x, dim_type a, dim_type b) {
   return x.partialContiguity(a, b);
+}
+
+template < typename S >
+bool Tensor< S >::isUnique(const Tensor &x) {
+  return x.isUnique();
 }
 
 }  // namespace tensor

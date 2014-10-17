@@ -99,6 +99,7 @@ class Tensor {
   reference get(const size_storage &pos) const;
   bool isContiguous() const;
   bool partialContiguity(dim_type a, dim_type b) const;
+  bool isUnique() const;
 
   // Static property queries are delegated
   static dim_type dimension(const Tensor &x);
@@ -120,6 +121,7 @@ class Tensor {
   static reference get(const Tensor &x, const size_storage &pos);
   static bool isContiguous(const Tensor &x);
   static bool partialContiguity(const Tensor &x, dim_type a, dim_type b);
+  static bool isUnique(const Tensor &x);
 
   // Assignment operators
   Tensor& operator=(Tensor y);
