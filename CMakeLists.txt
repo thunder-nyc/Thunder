@@ -6,6 +6,12 @@ set(THUNDER_VERSION_MAJOR 0)
 set(THUNDER_VERSION_MINOR 0)
 set(THUNDER_VERSION_PATCH 0)
 
+# By default, build shared library
+set(BUILD_SHARED_LIBS ON)
+
+# By default, build in release mode
+set(CMAKE_BUILD_TYPE Release)
+
 # Add -std=c++11 option
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-std=c++11" HAS_CXX11)
