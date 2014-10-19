@@ -34,6 +34,10 @@ add_library(gtest_main "${GTEST_ROOT}/gtest/gtest_main.cc")
 target_include_directories(gtest_main PUBLIC "${GTEST_ROOT}")
 target_link_libraries(gtest_main gtest)
 
+# Enable testing
+enable_testing ()
+
 # Add 1 test binary
-add_executable(storage test/storage.cpp)
-target_link_libraries(storage thunder_exception thunder_storage gtest gtest_main ${Boost_LIBRARIES})
+add_executable (storage test/storage.cpp)
+target_link_libraries (storage thunder_exception thunder_storage gtest gtest_main ${Boost_LIBRARIES})
+add_test (storage storage)
