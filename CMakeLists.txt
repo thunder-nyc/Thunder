@@ -1,19 +1,19 @@
-cmake_minimum_required (VERSION 2.6)
-project (Thunder)
+cmake_minimum_required(VERSION 2.6)
+project(Thunder)
 
 # The version number
-set (THUNDER_VERSION_MAJOR 0)
-set (THUNDER_VERSION_MINOR 0)
-set (THUNDER_VERSION_PATCH 0)
+set(THUNDER_VERSION_MAJOR 0)
+set(THUNDER_VERSION_MINOR 0)
+set(THUNDER_VERSION_PATCH 0)
 
 # Add -std=c++11 option
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-std=c++11" HAS_CXX11)
-if (HAS_CXX11)
+if(HAS_CXX11)
   add_compile_options("-std=c++11")
-else ()
+else()
   message(FATAL_ERROR, "The compiler does not support c++ 11")
-endif ()
+endif()
 
 # Find boost
 find_package(Boost 1.56.0 REQUIRED COMPONENTS serialization)
@@ -34,10 +34,12 @@ add_library(gtest_main "${GTEST_ROOT}/gtest/gtest_main.cc")
 target_include_directories(gtest_main PUBLIC "${GTEST_ROOT}")
 target_link_libraries(gtest_main gtest)
 
-# Enable testing
-enable_testing ()
-
-# Add 1 test binary
-add_executable (storage test/storage.cpp)
-target_link_libraries (storage thunder_exception thunder_storage gtest gtest_main ${Boost_LIBRARIES})
-add_test (storage storage)
+# Enable testing or not depending on build option
+option(BUILD_TESTS "Whether to build tests")
+if(BUILD_TESTS)
+  enable_testing()
+  # Add 1 test binary
+  add_executable(storage test/storage.cpp)
+  target_link_libraries(storage thunder_exception thunder_storage gtest gtest_main ${Boost_LIBRARIES})
+  add_test(storage storage)
+endif()
