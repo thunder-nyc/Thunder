@@ -12,7 +12,7 @@ target_link_libraries(thunder_tensor thunder_exception thunder_storage ${Boost_L
 install(TARGETS thunder_tensor DESTINATION lib)
 install(DIRECTORY include/thunder DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
-# Create a test
+# Create tests
 if(BUILD_THUNDER_TESTS)
   foreach(TEST_SOURCE ${TESTS})
     string(REPLACE ".cpp" "" TEST_TARGET ${TEST_SOURCE})
