@@ -200,3 +200,6 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+This product bundles Google Test 1.7.0, which is available under a
+"3-clause BSD" license. For details, see tools/gtest-1.7.0
