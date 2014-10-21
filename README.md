@@ -8,18 +8,37 @@ The library just had its development began. Contribution is very welcomed! Pleas
 
 ## Installation
 
-Thunder can be installed via a simple make command.
+Here is a list of prerequisites you need to have to make sure Thunder compiles
+* A compiler that supports C++11. Some examples are [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
+* [Boost](http://www.boost.org) >= 1.56, with its [Serialization](http://www.boost.org/doc/libs/1_56_0/libs/serialization) package.
+
+### Compile Thunder
+
+Thunder can be installed via cmake. To configure the project, please execute
 ```sh
-make install prefix=/usr/local
+cmake
+```
+Then, you can compile Thunder by
+```sh
+make
+```
+If you want to install the project, you can use the following command after cmake configuration.
+```sh
+make install
 ```
 
-Please note that the Thunder library is still quite new and immature. Many of its features are still under implementation. Current repository contains a development version of Thunder prior to a first release.
+To set the installation prefix, you can add an option like `-DCMAKE_INSTALL_PREFIX=/usr/local` to the cmake command.
 
-### Prerequisites
+Under Apple OS X you might get a warning regarding [CMP0042](http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html). Although it is safe to ignore the warning, you can also add an option `-DMACOSX_RPATH=ON` to supress it.
 
-Here is a list of prerequisites you need to have to make sure Thunder compiles
-* A C++11 compiler that supports -std=c++11. We target our tests to [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
-* [Boost](http://www.boost.org) >= 1.56, with its [Serialization](http://www.boost.org/doc/libs/1_56_0/libs/serialization) package.
+### Compile Tests
+
+To compile tests, you can add an option `-DBUILD_THUNDER_TESTS=ON` to the cmake command. Then, you can run the tests by
+```sh
+make test
+```
+
+In most systems the tests should be finished with no problems. However, it is possible that you may encounter occasional numerical precision errors depending on your compiler and standard C++ library. Checking the CTest logs manually is needed to make sure everything is okay.
 
 ## Features
 
