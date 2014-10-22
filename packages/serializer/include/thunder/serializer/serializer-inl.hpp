@@ -31,38 +31,7 @@
 namespace thunder {
 namespace serial {
 
-template < typename M >
-Serializer< M >::Serializer(stream_pointer m) : stream_(m) {}
-
-template < typename M >
-Serializer< M >::~Serializer() {}
-
-template < typename M >
-typename Serializer< M >::stream_pointer stream() {
-  return stream_;
-}
-
-template < typename M >
-template < typename T >
-void Serializer< M >::save(const T &t) {
-  if (dynamic_cast< BinarySerializer< M >* >(this) != nullptr) {
-    dynamic_cast< BinarySerializer< M >* >(this)->save(t);
-  } else if (dynamic_cast< TextSerializer< M >* >(this) != nullptr) {
-    dynamic_cast< TextSerializer< M >* >(this)->save(t);
-  }
-}
-
-template < typename M >
-template < typename T >
-void Serializer< M >::load(T *t) {
-  if (dynamic_cast< BinarySerializer< M >* >(this) != nullptr) {
-    dynamic_cast< BinarySerializer< M >* >(this)->load(t);
-  } else if (dynamic_cast< TextSerializer< M >* >(this) != nullptr) {
-    dynamic_cast< TextSerializer< M >* >(this)->load(t);
-  }
-}
-
-}  // namespace serial
+}  // namespace serializer
 }  // namespace thunder
 
 #endif  // THUNDER_SERIALIZER_SERIALIZER_INL_HPP_

@@ -26,4 +26,4 @@ namespace thunder {
 
 }  // namespace thunder
 
-#endif  // THUNDER_SERIAL_HPP
+#endif  // THUNDER_SERIALIZER_HPP

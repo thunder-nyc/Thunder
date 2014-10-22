@@ -48,7 +48,7 @@ class Serializer {
   stream_pointer *stream_;
 }
 
-}  // namespace serial
+}  // namespace serializer
 }  // namespace thunder
 
 #endif  // THUNDER_SERIALIZER_SERIALIZER_HPP_
