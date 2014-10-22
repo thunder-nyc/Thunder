@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_TENSOR_HPP
-#define THUNDER_TENSOR_HPP
+#ifndef THUNDER_TENSOR_HPP_
+#define THUNDER_TENSOR_HPP_
 
 #include "thunder/tensor/tensor.hpp"
 
@@ -44,4 +44,4 @@ FloatComplexTensor;
 
 }  // namespace thunder
 
-#endif  // THUNDER_TENSOR_HPP
+#endif  // THUNDER_TENSOR_HPP_

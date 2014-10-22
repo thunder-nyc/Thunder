@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_STORAGE_HPP
-#define THUNDER_STORAGE_HPP
+#ifndef THUNDER_STORAGE_HPP_
+#define THUNDER_STORAGE_HPP_
 
 #include "thunder/storage/storage.hpp"
 
@@ -44,4 +44,4 @@ FloatComplexStorage;
 
 }  // namespace thunder
 
-#endif  // THUNDER_STORAGE_HPP
+#endif  // THUNDER_STORAGE_HPP_
