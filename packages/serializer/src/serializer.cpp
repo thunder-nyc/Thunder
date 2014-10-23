@@ -17,42 +17,10 @@
  * @}
  */
 
-#ifndef THUNDER_SERIALIZER_SERIALIZER_HPP_
-#define THUNDER_SERIALIZER_SERIALIZER_HPP_
-
-#include <memory>
-#include <sstream>
-
-#include "thunder/serializer/text.hpp"
-
 namespace thunder {
 namespace serializer {
 
-template < typename P = Text< M >, typename M = ::std::stringstream >
-class Serializer {
- public:
-  typedef M stream_type;
-  typedef ::std::shared_ptr(M) stream_pointer;
-
-  template < typename... G >
-  Serializer(G... g);
-
-  ~Serializer();
-
-  stream_pointer stream();
-
-  template < typename T >
-  void save(const T &t);
-  template < typename T >
-  void load (T *t);
-
- private:
-  stream_pointer *stream_;
-  ::std::unordered_set< void* > saved_pointers_;
-  ::std::unordered_map< void*, void* > loaded_pointers_;
-};
+static const int serializer_dummy_variable = 5;
 
 }  // namespace serializer
 }  // namespace thunder
-
-#endif  // THUNDER_SERIALIZER_SERIALIZER_HPP_
