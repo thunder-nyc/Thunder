@@ -23,8 +23,6 @@
 #include <memory>
 #include <sstream>
 
-#include "thunder/serial/serial.hpp"
-
 namespace thunder {
 namespace serializer {
 

@@ -25,9 +25,6 @@
 #include <memory>
 #include <sstream>
 
-#include "thunder/serializer/binary_serializer.hpp"
-#include "thunder/serializer/text_serializer.hpp"
-
 namespace thunder {
 namespace serial {
 
