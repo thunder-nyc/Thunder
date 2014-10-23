@@ -5,8 +5,8 @@ file(GLOB_RECURSE TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/*.cpp")
 
 # Create the library
 add_library(thunder_serial ${HEADERS} ${SOURCES})
-target_include_directories(thunder_serial PUBLIC "include" ${Boost_INCLUDE_DIRS})
-target_link_libraries(thunder_serial thunder_exception thunder_storage ${Boost_LIBRARIES})
+target_include_directories(thunder_serial PUBLIC "include")
+target_link_libraries(thunder_serial thunder_exception)
 
 # Create installation
 install(TARGETS thunder_serial DESTINATION lib)
@@ -18,7 +18,7 @@ if(BUILD_THUNDER_TESTS)
     string(REPLACE ".cpp" "" TEST_TARGET ${TEST_SOURCE})
     string(REPLACE "test/" "" TEST_TARGET ${TEST_TARGET})
     add_executable(${TEST_TARGET} ${TEST_SOURCE})
-    target_link_libraries(${TEST_TARGET} thunder_exception thunder_storage thunder_tensor thunder_serial gtest gtest_main ${Boost_LIBRARIES})
+    target_link_libraries(${TEST_TARGET} thunder_exception thunder_serial gtest gtest_main)
     add_test(${TEST_TARGET} ${TEST_TARGET})
   endforeach()
 endif()
