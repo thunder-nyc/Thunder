@@ -28,16 +28,18 @@
 namespace thunder {
 namespace serializer {
 
-template < typename M = ::std::stringstream >
+template < typename M = ::std::stringstream, int P = 0 >
 class Serializer {
  public:
   typedef M stream_type;
   typedef ::std::shared_ptr(M) stream_pointer;
 
-  Serializer(stream_pointer m = ::std::make_shared< M >());
-  virtual ~Serializer();
+  template < typename... G >
+  Serializer(G... g);
 
-  virtual stream_pointer stream();
+  ~Serializer();
+
+  stream_pointer stream();
   
   template < typename T >
   void save(const T &t);
@@ -46,7 +48,7 @@ class Serializer {
 
  private:
   stream_pointer *stream_;
-}
+};
 
 }  // namespace serializer
 }  // namespace thunder
