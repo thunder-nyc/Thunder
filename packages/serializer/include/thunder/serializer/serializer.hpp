@@ -52,12 +52,6 @@ class Serializer {
   ::std::unordered_set< void* > saved_pointers_;
   ::std::unordered_map< void*, void* > loaded_pointers_;
   ::std::unordered_map< void*, void* > loaded_shared_;
-
-  // Const variables to identify types data
-  static const char_type kPrimitive = 0;
-  static const char_type kClass = 1;
-  static const char_type kPointer = 2;
-  static const char_type kShared = 3;
 };
 
 }  // namespace serializer
