@@ -28,10 +28,11 @@
 namespace thunder {
 namespace serializer {
 
-template < typename P = Text< M >, typename M = ::std::stringstream >
+template < typename M = ::std::stringstream, typename P = Text< M > >
 class Serializer {
  public:
   typedef M stream_type;
+  typedef typename M::char_type char_type;
   typedef ::std::shared_ptr(M) stream_pointer;
 
   template < typename... G >
@@ -50,6 +51,13 @@ class Serializer {
   stream_pointer *stream_;
   ::std::unordered_set< void* > saved_pointers_;
   ::std::unordered_map< void*, void* > loaded_pointers_;
+  ::std::unordered_map< void*, void* > loaded_shared_;
+
+  // Const variables to identify types data
+  static const char_type kPrimitive = 0;
+  static const char_type kClass = 1;
+  static const char_type kPointer = 2;
+  static const char_type kShared = 3;
 };
 
 }  // namespace serializer
