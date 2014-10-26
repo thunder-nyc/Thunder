@@ -30,12 +30,20 @@ template < typename M = ::std::stringstream >
 class Text {
  public:
   typedef M stream_type;
-  typedef ::std::shared_pointer< M > stream_pointer;
+  typedef ::std::shared_ptr< M > stream_pointer;
+
+  template < typename... G >
+  Text(G... g);
+
+  stream_pointer stream() const;
 
   template < typename T >
-  static void save(stream_pointer m, const T &t);
+  static void save(const T &t);
   template < typename T >
-  static void load (stream_pointer m, T *t);
+  static void load (T *t);
+
+ private:
+  stream_pointer stream_;
 };
 
 }  // namespace serializer

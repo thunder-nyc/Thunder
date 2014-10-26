@@ -22,36 +22,47 @@
 
 #include <memory>
 #include <sstream>
+#include <unordered_map>
 
 #include "thunder/serializer/text.hpp"
 
 namespace thunder {
 namespace serializer {
 
-template < typename M = ::std::stringstream, typename P = Text< M > >
+template < typename P = Text< ::std::stringstream > >
 class Serializer {
  public:
-  typedef M stream_type;
-  typedef typename M::char_type char_type;
-  typedef ::std::shared_ptr(M) stream_pointer;
+  typedef P protocol_type;
+  typedef typename P::stream_type stream_type;
+  typedef typename P::stream_pointer stream_pointer;
 
   template < typename... G >
   Serializer(G... g);
 
   ~Serializer();
 
-  stream_pointer stream();
+  P protocol() const;
 
   template < typename T >
   void save(const T &t);
   template < typename T >
-  void load (T *t);
+  void save(T *const &t);
+  template < typename T >
+  void save(const ::std::shared_ptr< T > &t);
+
+  template < typename T >
+  void load(T *t);
+  template < typename T >
+  void load(T* *t);
+  template < typename T >
+  void load(::std::shared_ptr< T > *t);
 
  private:
-  stream_pointer *stream_;
-  ::std::unordered_set< void* > saved_pointers_;
-  ::std::unordered_map< void*, void* > loaded_pointers_;
-  ::std::unordered_map< void*, void* > loaded_shared_;
+  P protocol_;
+  unsigned int saved_count_;
+  ::std::unordered_map< void*, unsigned int > saved_pointers_;
+  ::std::unordered_map< unsigned int, void* > loaded_pointers_;
+  ::std::unordered_map< unsigned int, void* > loaded_shared_;
 };
 
 }  // namespace serializer
