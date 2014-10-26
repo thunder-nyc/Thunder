@@ -46,7 +46,7 @@ class Serializer {
   template < typename T >
   void save(const T &t);
   template < typename T >
-  void save(T *const &t);
+  void save(T* const &t);
   template < typename T >
   void save(const ::std::shared_ptr< T > &t);
 

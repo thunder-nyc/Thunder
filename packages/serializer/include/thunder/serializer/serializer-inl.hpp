@@ -48,7 +48,7 @@ void Serializer< P >::save(const T &t) {
 
 template < typename P >
 template < typename T >
-void Serializer< P >::save(T *const &t) {
+void Serializer< P >::save(T* const &t) {
   if (saved_pointers_.find(static_cast< void* >(t)) == saved_pointers_.end()) {
     unsigned int key = saved_count_++;
     saved_pointers_[static_cast< void* >(t)] = key;
