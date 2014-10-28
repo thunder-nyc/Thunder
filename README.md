@@ -29,7 +29,7 @@ make install
 
 To set the installation prefix, you can add an option like `-DCMAKE_INSTALL_PREFIX=/usr/local` to the cmake command.
 
-Under Apple OS X you might get a warning regarding [CMP0042](http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html). Although it is safe to ignore the warning, you can also add an option `-DMACOSX_RPATH=ON` to supress it.
+Under Apple OS X you might get a warning regarding [CMP0042](http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html). Since it is safe to ignore the warning, you can add an option `-Wno-dev` to supress it.
 
 ### Compile Tests
 

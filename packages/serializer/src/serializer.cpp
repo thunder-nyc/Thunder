@@ -19,6 +19,8 @@
 
 #include "thunder/serializer/serializer.hpp"
 #include "thunder/serializer/serializer-inl.hpp"
+#include "thunder/serializer/text.hpp"
+#include "thunder/serializer/text-inl.hpp
 
 namespace thunder {
 namespace serializer {
