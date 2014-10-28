@@ -16,12 +16,14 @@ endif()
 
 # Add -std=c++11 option
 include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" HAS_CXX11)
-if(HAS_CXX11)
-  # For compatibility, Only CMake 2.8.12+ provides add_compile_options("-std=c++11")
-  add_definitions("-std=c++11")
-else()
-  message(FATAL_ERROR, "The compiler does not support c++ 11")
+if (UNIX)
+  check_cxx_compiler_flag("-std=c++11" HAS_CXX11)
+  if(HAS_CXX11)
+    # For compatibility, Only CMake 2.8.12+ provides add_compile_options("-std=c++11")
+    add_definitions("-std=c++11")
+  else()
+    message(FATAL_ERROR, "The compiler does not support c++ 11")
+  endif()
 endif()
 
 # Find boost
