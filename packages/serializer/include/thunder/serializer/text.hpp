@@ -20,7 +20,6 @@
 #ifndef THUNDER_SERIALIZER_TEXT_HPP_
 #define THUNDER_SERIALIZER_TEXT_HPP_
 
-#include <memory>
 #include <sstream>
 
 namespace thunder {
@@ -37,10 +36,42 @@ class Text {
 
   stream_pointer stream() const;
 
-  template < typename T >
-  static void save(const T &t);
-  template < typename T >
-  static void load (T *t);
+  // Listing of fundamental C++11 character type serialization
+  void save(const char &t);
+  void load(char *t);
+  void save(const unsigned char &t);
+  void load(unsigned char *t);
+  void save(const wchar_t &t);
+  void load(wchar_t *t);
+  void save(const char16_t &t);
+  void load(char16_t *t);
+  void save(const char32_t &t);
+  void load(char32_t *t);
+
+  // Listing of fundamental C++11 integer type serialization
+  void save(const short &t);
+  void load(short *t);
+  void save(const unsigned short &t);
+  void load(unsigned short *t);
+  void save(const int &t);
+  void load(int *t);
+  void save(const unsigned int &t);
+  void load(unsigned int &t);
+  void save(const long &t);
+  void load(long *t);
+  void save(const long long &t);
+  void load(long long *t);
+
+  // Listing of fundamental C++11 floating point type serialization
+  void save(const float &t);
+  void load(float *t);
+  void save(const double &t);
+  void load(double *t);
+  void save(const long double &t);
+  void load(long double *t);
+
+  void save(const void* &t);
+  void load(void* *t);
 
  private:
   stream_pointer stream_;
