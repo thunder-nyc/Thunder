@@ -22,7 +22,7 @@ if (UNIX)
     # For compatibility, Only CMake 2.8.12+ provides add_compile_options("-std=c++11")
     add_definitions("-std=c++11")
   else()
-    message(FATAL_ERROR, "The compiler does not support c++ 11")
+    message(FATAL_ERROR, "The compiler does not support C++ 11")
   endif()
 endif()
 
