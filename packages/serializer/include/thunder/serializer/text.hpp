@@ -36,45 +36,77 @@ class Text {
 
   stream_pointer stream() const;
 
+  // Save of generic type will call ::thunder::serializer::save(S *s, s, t)
+  template < typename S, typename T >
+  void save(S *s, const T &t);
+  template < typename S, typename T >
+  void load(S *s, T *t);
+
   // Listing of fundamental C++11 character type serialization
-  void save(const char &t);
-  void load(char *t);
-  void save(const unsigned char &t);
-  void load(unsigned char *t);
-  void save(const wchar_t &t);
-  void load(wchar_t *t);
-  void save(const char16_t &t);
-  void load(char16_t *t);
-  void save(const char32_t &t);
-  void load(char32_t *t);
+  template < typename S >
+  void save(S *s, const char &t);
+  template < typename S >
+  void load(S *s, char *t);
+  template < typename S >
+  void save(S *s, const unsigned char &t);
+  template < typename S >
+  void load(S *s, unsigned char *t);
+  template < typename S >
+  void save(S *s, const wchar_t &t);
+  template < typename S >
+  void load(S *s, wchar_t *t);
+  template < typename S >
+  void save(S *s, const char16_t &t);
+  template < typename S >
+  void load(S *s, char16_t *t);
+  template < typename S >
+  void save(S *s, const char32_t &t);
+  template < typename S >
+  void load(S *s, char32_t *t);
 
   // Listing of fundamental C++11 integer type serialization
-  void save(const short &t);
-  void load(short *t);
-  void save(const unsigned short &t);
-  void load(unsigned short *t);
-  void save(const int &t);
-  void load(int *t);
-  void save(const unsigned int &t);
-  void load(unsigned int &t);
-  void save(const long &t);
-  void load(long *t);
-  void save(const long long &t);
-  void load(long long *t);
+  template < typename S >
+  void save(S *s, const short &t);
+  template < typename S >
+  void load(S *s, short *t);
+  template < typename S >
+  void save(S *s, const unsigned short &t);
+  template < typename S >
+  void load(S *s, unsigned short *t);
+  template < typename S >
+  void save(S *s, const int &t);
+  template < typename S >
+  void load(S *s, int *t);
+  template < typename S >
+  void save(S *s, const unsigned int &t);
+  template < typename S >
+  void load(S *s, unsigned int &t);
+  template < typename S >
+  void save(S *s, const long &t);
+  template < typename S >
+  void load(S *s, long *t);
+  template < typename S >
+  void save(S *s, const long long &t);
+  template < typename S >
+  void load(S *s, long long *t);
 
   // Listing of fundamental C++11 floating point type serialization
-  void save(const float &t);
-  void load(float *t);
-  void save(const double &t);
-  void load(double *t);
-  void save(const long double &t);
-  void load(long double *t);
-
-  void save(const void* &t);
-  void load(void* *t);
+  template < typename S >
+  void save(S *s, const float &t);
+  template < typename S >
+  void load(S *s, float *t);
+  template < typename S >
+  void save(S *s, const double &t);
+  template < typename S >
+  void load(S *s, double *t);
+  template < typename S >
+  void save(S *s, const long double &t);
+  template < typename S >
+  void load(S *s, long double *t);
 
  private:
   stream_pointer stream_;
+  
 };
 
 }  // namespace serializer

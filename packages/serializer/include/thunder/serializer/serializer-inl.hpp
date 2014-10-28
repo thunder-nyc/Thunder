@@ -27,6 +27,16 @@
 namespace thunder {
 namespace serializer {
 
+template < typename S, typename T >
+void save(S *s, const T &t) {
+  t.save(s);
+}
+
+template < typename S, typename T >
+void load(S *s, T *t) {
+  t->load(s);
+}
+
 template < typename P >
 template < typename... G >
 Serializer< P >::Serializer(G ...g) :
@@ -43,7 +53,13 @@ P Serializer< P >::protocol() const {
 template < typename P >
 template < typename T >
 void Serializer< P >::save(const T &t) {
-  protocol_.save(t);
+  ::thunder::serializer::save(this, t);
+}
+
+template < typename P >
+template < typename T >
+void Serializer< P >::load(T *t) {
+  ::thunder::serializer::load(this, t);
 }
 
 template < typename P >
@@ -52,42 +68,22 @@ void Serializer< P >::save(T* const &t) {
   if (saved_pointers_.find(static_cast< void* >(t)) == saved_pointers_.end()) {
     unsigned int key = saved_count_++;
     saved_pointers_[static_cast< void* >(t)] = key;
-    protocol_.save(key);
-    protocol_.save(*t);
+    protocol_.save(this, key);
+    protocol_.save(this, *t);
   } else {
-    protocol_.save(saved_pointers_[static_cast< void * >(t)]);
+    protocol_.save(this, saved_pointers_[static_cast< void * >(t)]);
   }
-}
-
-template < typename P >
-template < typename T >
-void Serializer< P >::save(const ::std::shared_ptr< T > &t) {
-  if (saved_pointers_.find(static_cast< void* >(t.get())) ==
-      saved_pointers_.end()) {
-    unsigned int key = saved_count_++;
-    saved_pointers_[static_cast< void* >(t)] = key;
-    protocol_.save(key);
-    protocol_.save(*t);
-  } else {
-    protocol_.save(saved_pointers_[static_cast< void * >(t.get())]);
-  }
-}
-
-template < typename P >
-template < typename T >
-void Serializer< P >::load(T *t) {
-  protocol_.load(t);
 }
 
 template < typename P >
 template < typename T >
 void Serializer< P >::load(T* *t) {
   unsigned int key;
-  protocol_.load(&key);
+  protocol_.load(this, &key);
   if (loaded_pointers_.find(key) == loaded_pointers_.end() &&
       loaded_shared_.find(key) == loaded_shared_.end()) {
     *t = new T();
-    protocol_.load(*(*t));
+    protocol_.load(this, *t);
     loaded_pointers_[key] = static_cast< void* >(*t);
   } else if (loaded_pointers_.find(key) == loaded_pointers_.end()) {
     *t = static_cast< T* >(static_cast< ::std::shared_ptr< T >* >(
@@ -100,13 +96,27 @@ void Serializer< P >::load(T* *t) {
 
 template < typename P >
 template < typename T >
+void Serializer< P >::save(const ::std::shared_ptr< T > &t) {
+  if (saved_pointers_.find(static_cast< void* >(t.get())) ==
+      saved_pointers_.end()) {
+    unsigned int key = saved_count_++;
+    saved_pointers_[static_cast< void* >(t)] = key;
+    protocol_.save(this, key);
+    save(*t);
+  } else {
+    protocol_.save(this, saved_pointers_[static_cast< void * >(t.get())]);
+  }
+}
+
+template < typename P >
+template < typename T >
 void Serializer< P >::load(::std::shared_ptr< T > *t) {
   unsigned int key;
   protocol_.load(&key);
   if (loaded_shared_.find(key) == loaded_shared_.end() &&
       loaded_pointers_.find(key) == loaded_pointers_.end()) {
     *t = ::std::make_shared< T >();
-    protocol_.load(*(*t));
+    protocol_.load(this, (*t)->get());
     loaded_shared_[key] = static_cast< void* >(t);
   } else if (loaded_shared_.find(key) == loaded_shared_.end()) {
     *t = ::std::make_shared< T >(static_cast< T* >(loaded_pointers_[key]));

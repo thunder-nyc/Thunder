@@ -30,6 +30,12 @@
 namespace thunder {
 namespace serializer {
 
+// These global functions are needed for non-intrusive save and load
+template < typename S, typename T >
+void save(S *s, const T &t);
+template < typename S, typename T >
+void load(S *s, T *t);
+
 template < typename P = Text< ::std::stringstream > >
 class Serializer {
  public:
@@ -44,17 +50,24 @@ class Serializer {
 
   P protocol() const;
 
+  // Generic save: calls ::thunder::serializer::save(this, t)
   template < typename T >
   void save(const T &t);
-  template < typename T >
-  void save(T* const &t);
-  template < typename T >
-  void save(const ::std::shared_ptr< T > &t);
-
+  // Generic load: calls ::thunder::serializer::load(this, t)
   template < typename T >
   void load(T *t);
+
+  // Pointer save: record the saved pointer
+  template < typename T >
+  void save(T* const &t);
+  // Pointer load: record the loaded pointer
   template < typename T >
   void load(T* *t);
+
+  // shared_pointer save: similar to pointer save
+  template < typename T >
+  void save(const ::std::shared_ptr< T > &t);
+  // shared_pointer load: similar to pointer load
   template < typename T >
   void load(::std::shared_ptr< T > *t);
 

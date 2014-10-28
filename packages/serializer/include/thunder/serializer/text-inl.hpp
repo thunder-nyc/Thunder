@@ -22,8 +22,23 @@
 
 #include <sstream>
 
+#include "thunder/serializer/serializer.hpp"
+
 namespace thunder {
 namespace serializer {
+
+template < typename M >
+template < typename S, typename T >
+void Text< M >::save(S *s, const T &t) {
+  ::thunder::serializer::save(s, t);
+}
+
+template < typename M >
+template < typename S, typename T >
+void Text< M >::load(S *s, T *t) {
+  ::thunder::serializer::load(s, t);
+}
+
 }
 }
 
