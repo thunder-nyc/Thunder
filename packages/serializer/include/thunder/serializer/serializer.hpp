@@ -44,7 +44,7 @@ class Serializer {
   typedef typename P::stream_pointer stream_pointer;
 
   template < typename... G >
-  Serializer(G... g);
+  explicit Serializer(G... g);
 
   ~Serializer();
 

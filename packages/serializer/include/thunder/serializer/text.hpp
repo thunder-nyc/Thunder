@@ -32,11 +32,11 @@ class Text {
   typedef ::std::shared_ptr< M > stream_pointer;
 
   template < typename... G >
-  Text(G... g);
+  explicit Text(G... g);
 
   stream_pointer stream() const;
 
-  // Save of generic type will call ::thunder::serializer::save(S *s, s, t)
+  // Save of generic type will call static methods
   template < typename S, typename T >
   void save(S *s, const T &t);
   template < typename S, typename T >
@@ -118,7 +118,6 @@ class Text {
 
  private:
   stream_pointer stream_;
-  
 };
 
 }  // namespace serializer

@@ -31,6 +31,18 @@ namespace thunder {
 namespace serializer {
 
 template < typename M >
+template < typename S, typename T >
+void Text< M >::save(S *s, const T &t) {
+  ::thunder::serializer::save(s, t);
+}
+
+template < typename M >
+template < typename S, typename T >
+void Text< M >::load(S *s, T *t) {
+  ::thunder::serializer::load(s, t);
+}
+
+template < typename M >
 template < typename... G >
 Text< M >::Text(G... g) : stream_(::std::make_shared< M >(g...)) {}
 
@@ -95,19 +107,7 @@ THUNDER_SERIALIZER_TEXT_DEFINE_FLOAT(float);
 THUNDER_SERIALIZER_TEXT_DEFINE_FLOAT(double);
 THUNDER_SERIALIZER_TEXT_DEFINE_FLOAT(long double);
 
-template < typename M >
-template < typename S, typename T >
-void Text< M >::save(S *s, const T &t) {
-  ::thunder::serializer::save(s, t);
-}
+}  // namespace serializer
+}  // namespace thunder
 
-template < typename M >
-template < typename S, typename T >
-void Text< M >::load(S *s, T *t) {
-  ::thunder::serializer::load(s, t);
-}
-
-}
-}
-
-#endif // THUNDER_SERIALIZER_TEXT_INL_HPP_
+#endif  // THUNDER_SERIALIZER_TEXT_INL_HPP_
