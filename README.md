@@ -10,7 +10,6 @@ The library just had its development began. Contribution is very welcomed! Pleas
 
 Here is a list of prerequisites you need to have to make sure Thunder compiles
 * A compiler that supports C++11. Some examples are [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
-* [Boost](http://www.boost.org) >= 1.56, with its [Serialization](http://www.boost.org/doc/libs/1_56_0/libs/serialization) package.
 
 ### Compile Thunder
 
@@ -168,7 +167,7 @@ using namespace thunder;
 DoubleTensor tensor(3, 9, 7, 10);
 
 // Create a text serializer that serializes to a string
-serializer::StringTextSerializer string_serializer;
+StringTextSerializer string_serializer;
 
 // Serialize the tensor
 string_serializer.save(tensor);
