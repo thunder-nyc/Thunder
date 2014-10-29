@@ -892,4 +892,16 @@ class Tensor< S >::reference_iterator {
 }  // namespace tensor
 }  // namespace thunder
 
+namespace thunder {
+namespace serializer {
+
+template < typename C, typename S >
+void save(C *s, const tensor::Tensor< S > &t);
+
+template < typename C, typename S >
+void load(C *s, tensor::Tensor< S > *t);
+
+}  // namespace serializer
+}  // namespace thunder
+
 #endif  // THUNDER_TENSOR_TENSOR_HPP_

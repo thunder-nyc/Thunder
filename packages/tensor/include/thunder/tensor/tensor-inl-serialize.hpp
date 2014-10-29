@@ -95,4 +95,34 @@ void Tensor< S >::serialize(C &ar, const unsigned int version) {
 }  // namespace tensor
 }  // namespace thunder
 
+namespace thunder {
+namespace serializer {
+
+template < typename C, typename S >
+void save(C *s, const tensor::Tensor< S > &t) {
+  s->save(t.size());
+  s->save(t.stride());
+  s->save(t.storage());
+  s->save(t.offset());
+}
+
+template < typename C, typename S >
+void load(C *s, tensor::Tensor< S > *t) {
+  typedef tensor::Tensor< S > T;
+
+  typename T::size_storage size;
+  s->load(&size);
+  typename T::stride_storage stride;
+  s->load(&stride);
+  typename T::storage_pointer storage;
+  s->load(&storage);
+  typename T::size_type offset;
+  s->load(&offset);
+
+  t->set(size, stride, storage, offset);
+}
+
+}  // namespace serializer
+}  // namespace thunder
+
 #endif  // THUNDER_TENSOR_TENSOR_INL_SERIALIZE_HPP_
