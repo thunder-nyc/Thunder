@@ -25,7 +25,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "thunder/serializer/text.hpp"
+#include "thunder/serializer/text_protocol.hpp"
 
 namespace thunder {
 namespace serializer {
@@ -36,24 +36,24 @@ void save(S *s, const T &t);
 template < typename S, typename T >
 void load(S *s, T *t);
 
-template < typename P = Text< ::std::stringstream > >
+template < typename P = TextProtocol< ::std::stringstream > >
 class Serializer {
  public:
   typedef P protocol_type;
   typedef typename P::stream_type stream_type;
-  typedef typename P::stream_pointer stream_pointer;
 
   template < typename... G >
   explicit Serializer(G... g);
 
-  ~Serializer();
+  // Disable copy constructor and assignment
+  Serializer(const Serializer &s) = delete;
+  Serializer& operator=(Serializer s) = delete;
 
-  P protocol() const;
+  const protocol_type& protocol() const;
+  protocol_type& protocol();
 
-  // Generic save: calls ::thunder::serializer::save(this, t)
   template < typename T >
   void save(const T &t);
-  // Generic load: calls ::thunder::serializer::load(this, t)
   template < typename T >
   void load(T *t);
 

@@ -17,19 +17,19 @@
  * @}
  */
 
-#include "thunder/serializer/text.hpp"
+#include "thunder/serializer/text_protocol.hpp"
 
 #include <sstream>
 
 #include "gtest/gtest.h"
-#include "thunder/serializer/text-inl.hpp"
+#include "thunder/serializer/text_protocol-inl.hpp"
 
 namespace thunder {
 namespace serializer {
 
 template < typename T >
 void charTest() {
-  Text< ::std::stringstream> t;
+  TextProtocol< ::std::stringstream> t;
 
   T single_saved = 'A';
   t.save(&single_saved, single_saved);
@@ -50,7 +50,7 @@ void charTest() {
   }
 }
 
-TEST(TextTest, charTest) {
+TEST(TextProtocolTest, charTest) {
   charTest< char >();
   charTest< signed char >();
   charTest< unsigned char >();
@@ -61,7 +61,7 @@ TEST(TextTest, charTest) {
 
 template < typename T >
 void intTest() {
-  Text< ::std::stringstream> t;
+  TextProtocol< ::std::stringstream> t;
 
   T single_saved = 9;
   t.save(&single_saved, single_saved);
@@ -82,7 +82,7 @@ void intTest() {
   }
 }
 
-TEST(TextTest, intTest) {
+TEST(TexProtocolTest, intTest) {
   intTest< short >();
   intTest< unsigned short >();
   intTest< int >();
@@ -95,7 +95,7 @@ TEST(TextTest, intTest) {
 
 template < typename T >
 void floatTest() {
-  Text< ::std::stringstream> t;
+  TextProtocol< ::std::stringstream> t;
 
   T single_saved = 9.1154684568;
   t.save(&single_saved, single_saved);
@@ -116,7 +116,7 @@ void floatTest() {
   }
 }
 
-TEST(TextTest, floatTest) {
+TEST(TextProtocolTest, floatTest) {
   floatTest< float >();
   floatTest< double >();
   floatTest< long double >();

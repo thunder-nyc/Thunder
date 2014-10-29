@@ -17,25 +17,28 @@
  * @}
  */
 
-#ifndef THUNDER_SERIALIZER_TEXT_HPP_
-#define THUNDER_SERIALIZER_TEXT_HPP_
+#ifndef THUNDER_SERIALIZER_TEXT_PROTOCOL_HPP_
+#define THUNDER_SERIALIZER_TEXT_PROTOCOL_HPP_
 
-#include <memory>
 #include <sstream>
 
 namespace thunder {
 namespace serializer {
 
 template < typename M = ::std::stringstream >
-class Text {
+class TextProtocol {
  public:
   typedef M stream_type;
-  typedef ::std::shared_ptr< M > stream_pointer;
 
   template < typename... G >
-  explicit Text(G... g);
+  explicit TextProtocol(G... g);
 
-  stream_pointer stream() const;
+  // Disable copy constructor and assignment operator
+  TextProtocol(const TextProtocol& p) = delete;
+  TextProtocol& operator=(TextProtocol p) = delete;
+
+  const stream_type& stream() const;
+  stream_type& stream();
 
   // Save of generic type will call static methods
   template < typename S, typename T >
@@ -118,10 +121,10 @@ class Text {
   void load(S *s, long double *t);
 
  private:
-  stream_pointer stream_;
+  stream_type stream_;
 };
 
 }  // namespace serializer
 }  // namespace thunder
 
-#endif  // THUNDER_SERIALIZER_TEXT_HPP_
+#endif  // THUNDER_SERIALIZER_TEXT_PROTOCOL_HPP_

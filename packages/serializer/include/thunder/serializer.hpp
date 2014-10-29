@@ -20,9 +20,22 @@
 #ifndef THUNDER_SERIALIZER_HPP
 #define THUNDER_SERIALIZER_HPP
 
+#include <fstream>
+#include <sstream>
+
 #include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/text_protocol.hpp"
 
 namespace thunder {
+
+template < typename P = serializer::TextProtocol< ::std::stringstream > >
+using Serializer = serializer::Serializer< P >;
+
+template < typename M = ::std::stringstream >
+using TextSerializer = Serializer< serializer::TextProtocol< M > >;
+
+typedef TextSerializer< ::std::stringstream > StringTextSerializer;
+typedef TextSerializer< ::std::fstream > FileTextSerializer;
 
 }  // namespace thunder
 

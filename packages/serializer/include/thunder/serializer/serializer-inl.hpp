@@ -43,30 +43,38 @@ Serializer< P >::Serializer(G ...g) :
     protocol_(g...), saved_count_(0) {}
 
 template < typename P >
-Serializer< P >::~Serializer() {};
+const typename Serializer< P >::protocol_type&
+Serializer< P >::protocol() const {
+  return protocol_;
+}
 
 template < typename P >
-P Serializer< P >::protocol() const {
-  return protocol_;
+typename Serializer< P >::protocol_type& Serializer< P >::protocol() {
+  return const_cast< protocol_type& >(
+      const_cast< const Serializer* >(this)->protocol());
 }
 
 template < typename P >
 template < typename T >
 void Serializer< P >::save(const T &t) {
-  ::thunder::serializer::save(this, t);
+  protocol_.save(this, t);
 }
 
 template < typename P >
 template < typename T >
 void Serializer< P >::load(T *t) {
-  ::thunder::serializer::load(this, t);
+  protocol_.load(this, t);
 }
 
 template < typename P >
 template < typename T >
 void Serializer< P >::save(T* const &t) {
   if (saved_pointers_.find(static_cast< void* >(t)) == saved_pointers_.end()) {
-    unsigned int key = saved_count_++;
+    // Special key 0 mark new serializer record to support appending
+    if (saved_count_ == 0) {
+      protocol_.save(this, saved_count_);
+    }
+    unsigned int key = ++saved_count_;
     saved_pointers_[static_cast< void* >(t)] = key;
     protocol_.save(this, key);
     protocol_.save(this, *t);
@@ -80,6 +88,15 @@ template < typename T >
 void Serializer< P >::load(T* *t) {
   unsigned int key;
   protocol_.load(this, &key);
+
+  // When key is 0, a new serializer record. Clean up the tables!
+  if (key == 0) {
+    loaded_pointers_.clear();
+    loaded_shared_.clear();
+    protocol_.load(this, &key);
+  }
+
+  // Check the tables and load the data
   if (loaded_pointers_.find(key) == loaded_pointers_.end() &&
       loaded_shared_.find(key) == loaded_shared_.end()) {
     *t = new T();
@@ -99,8 +116,12 @@ template < typename T >
 void Serializer< P >::save(const ::std::shared_ptr< T > &t) {
   if (saved_pointers_.find(static_cast< void* >(t.get())) ==
       saved_pointers_.end()) {
-    unsigned int key = saved_count_++;
-    saved_pointers_[static_cast< void* >(t)] = key;
+    // Special key 0 appended if this archive is a new record
+    if (saved_count_ == 0) {
+      protocol_.save(this, saved_count_);
+    }
+    unsigned int key = ++saved_count_;
+    saved_pointers_[static_cast< void* >(t.get())] = key;
     protocol_.save(this, key);
     save(*t);
   } else {
@@ -112,14 +133,23 @@ template < typename P >
 template < typename T >
 void Serializer< P >::load(::std::shared_ptr< T > *t) {
   unsigned int key;
-  protocol_.load(&key);
+  protocol_.load(this, &key);
+
+  // If key is 0, new serialization record. Clean up the tables!
+  if (key == 0) {
+    loaded_pointers_.clear();
+    loaded_shared_.clear();
+    protocol_.load(this, &key);
+  }
+
+  // Check the tables and load the data
   if (loaded_shared_.find(key) == loaded_shared_.end() &&
       loaded_pointers_.find(key) == loaded_pointers_.end()) {
     *t = ::std::make_shared< T >();
-    protocol_.load(this, (*t)->get());
+    protocol_.load(this, t->get());
     loaded_shared_[key] = static_cast< void* >(t);
   } else if (loaded_shared_.find(key) == loaded_shared_.end()) {
-    *t = ::std::make_shared< T >(static_cast< T* >(loaded_pointers_[key]));
+    *t = ::std::shared_ptr< T >(static_cast< T* >(loaded_pointers_[key]));
     loaded_shared_[key] = static_cast< void* >(t);
   } else {
     *t = *(static_cast< ::std::shared_ptr< T >* >(loaded_shared_[key]));
