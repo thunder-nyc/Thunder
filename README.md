@@ -173,7 +173,7 @@ StringTextSerializer string_serializer;
 string_serializer.save(tensor);
 
 // Now you can see the content of the serialized data
-printf("Serialized data: %s\n", string_serializer.stream()->str().c_str());
+printf("Serialized data: %s\n", string_serializer.protocol().stream().str().c_str());
 ```
 
 ### Random Generators
