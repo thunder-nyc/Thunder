@@ -156,25 +156,25 @@ DoubleTensor norm_tensor = complex_tensor.getCnrm();
 
 ### Serialization
 
-We use the [boost serialization](http://www.boost.org/doc/libs/release/libs/serialization) library to serialize all data structures in Thunder.
+Thunder provides its own serialization functionalities that are very extensible. It can
+* Serialize all fundamental types
+* Avoid duplicated data saving for pointers
+* Track polymorphic types and do correct serialization
+* Easily extensible and non-intrusive for classes
 ```cpp
 using namespace thunder;
-using namespace boost;
 
 // Create a tensor of size 3x9x7x10
 DoubleTensor tensor(3, 9, 7, 10);
 
-// Create a string stream
-std::stringstream stream;
+// Create a text serializer that serializes to a string
+serializer::StringTextSerializer string_serializer;
 
-// Create an output archive link to the string stream
-serialization::text_archive archive(stream);
-
-// Serialize the tensor to the archive
-archive << tensor;
+// Serialize the tensor
+string_serializer.save(tensor);
 
 // Now you can see the content of the serialized data
-printf("Serialized data: %s\n", stream.str().c_str());
+printf("Serialized data: %s\n", string_serializer.stream()->str().c_str());
 ```
 
 ### Random Generators
