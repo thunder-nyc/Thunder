@@ -31,6 +31,15 @@ namespace thunder {
 namespace serializer {
 
 template < typename M >
+template < typename... G >
+Text< M >::Text(G... g) : stream_(::std::make_shared< M >(g...)) {}
+
+template < typename M >
+typename Text< M >::stream_pointer Text< M >::stream() const {
+  return stream_;
+}
+
+template < typename M >
 template < typename S, typename T >
 void Text< M >::save(S *s, const T &t) {
   ::thunder::serializer::save(s, t);
@@ -41,10 +50,6 @@ template < typename S, typename T >
 void Text< M >::load(S *s, T *t) {
   ::thunder::serializer::load(s, t);
 }
-
-template < typename M >
-template < typename... G >
-Text< M >::Text(G... g) : stream_(::std::make_shared< M >(g...)) {}
 
 #define THUNDER_SERIALIZER_TEXT_DEFINE_CHAR(CHAR_TYPE, INT_TYPE)        \
   template < typename M >                                               \
@@ -76,7 +81,7 @@ THUNDER_SERIALIZER_TEXT_DEFINE_CHAR(char32_t, long);
   template < typename M >                                       \
   template < typename S >                                       \
   void Text< M >::load(S *s, TYPE *t) {                         \
-    (*stream_) >> t;                                            \
+    (*stream_) >> (*t);                                         \
   }
 
 THUNDER_SERIALIZER_TEXT_DEFINE_INTEGER(short);
@@ -100,7 +105,7 @@ THUNDER_SERIALIZER_TEXT_DEFINE_INTEGER(unsigned long long);
   template < typename M >                                               \
   template < typename S >                                               \
   void Text< M >::load(S *s, TYPE *t) {                                 \
-    (*stream_) >> t;                                                    \
+    (*stream_) >> (*t);                                                 \
   }
 
 THUNDER_SERIALIZER_TEXT_DEFINE_FLOAT(float);

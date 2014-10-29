@@ -29,10 +29,19 @@ endif()
 # Find boost
 find_package(Boost 1.56.0 REQUIRED COMPONENTS serialization)
 
+# Find pthread
+set(CMAKE_THREAD_PREFER_PTHREAD true)
+find_package(Threads)
+
 # Enable testing or not depending on build option
 option(BUILD_THUNDER_TESTS "Whether to build tests for thunder")
 if(BUILD_THUNDER_TESTS)
-  enable_testing()
+  if(CMAKE_USE_PTHREADS_INIT)
+    enable_testing()
+  else()
+    message(WARNING "Could not find pthread. Tests disabled.")
+    set(BUILD_THUNDER_TESTS OFF)
+  endif()
 endif()
 
 # Add packages

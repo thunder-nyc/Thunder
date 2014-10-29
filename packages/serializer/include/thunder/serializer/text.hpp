@@ -20,6 +20,7 @@
 #ifndef THUNDER_SERIALIZER_TEXT_HPP_
 #define THUNDER_SERIALIZER_TEXT_HPP_
 
+#include <memory>
 #include <sstream>
 
 namespace thunder {
