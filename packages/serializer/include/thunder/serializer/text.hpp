@@ -48,6 +48,10 @@ class Text {
   template < typename S >
   void load(S *s, char *t);
   template < typename S >
+  void save(S *s, const signed char &t);
+  template < typename S >
+  void load(S *s, signed char *t);
+  template < typename S >
   void save(S *s, const unsigned char &t);
   template < typename S >
   void load(S *s, unsigned char *t);
@@ -80,15 +84,23 @@ class Text {
   template < typename S >
   void save(S *s, const unsigned int &t);
   template < typename S >
-  void load(S *s, unsigned int &t);
+  void load(S *s, unsigned int *t);
   template < typename S >
   void save(S *s, const long &t);
   template < typename S >
   void load(S *s, long *t);
   template < typename S >
+  void save(S *s, const unsigned long &t);
+  template < typename S >
+  void load(S *s, unsigned long *t);
+  template < typename S >
   void save(S *s, const long long &t);
   template < typename S >
   void load(S *s, long long *t);
+    template < typename S >
+  void save(S *s, const unsigned long long &t);
+  template < typename S >
+  void load(S *s, unsigned long long *t);
 
   // Listing of fundamental C++11 floating point type serialization
   template < typename S >
