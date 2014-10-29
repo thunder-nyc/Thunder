@@ -22,13 +22,18 @@
 #include <memory>
 #include <typeinfo>
 
-#include "boost/archive/binary_oarchive.hpp"
-#include "boost/archive/binary_iarchive.hpp"
-#include "boost/archive/text_oarchive.hpp"
-#include "boost/archive/text_iarchive.hpp"
-#include "boost/serialization/complex.hpp"
 #include "gtest/gtest.h"
+#include "thunder/serializer.hpp"
+#include "thunder/serializer/complex.hpp"
+#include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/text_protocol.hpp"
 #include "thunder/storage.hpp"
+
+#include "thunder/serializer/complex-inl.hpp"
+#include "thunder/serializer/serializer-inl.hpp"
+#include "thunder/serializer/text_protocol-inl.hpp"
+#include "thunder/storage/storage-inl.hpp"
+#include "thunder/tensor/tensor-inl-serialize.hpp"
 
 namespace thunder {
 namespace {
@@ -43,12 +48,10 @@ void serializeTest() {
         static_cast< typename T::value_type >(300);
   }
 
-  ::std::stringstream s1;
-  ::boost::archive::text_oarchive oa1(s1);
-  oa1 << t1;
-  ::boost::archive::text_iarchive ia1(s1);
+  StringTextSerializer s;
+  s.save(t1);
   T t2;
-  ia1 >> t2;
+  s.load(&t2);
   EXPECT_EQ(t1.dimension(), t2.dimension());
   EXPECT_EQ(t1.offset(), t2.offset());
   for (int i = 0; i < t1.dimension(); ++i) {
@@ -60,25 +63,8 @@ void serializeTest() {
        begin != end; ++begin, ++t2_begin) {
     EXPECT_EQ(*begin, *t2_begin);
   }
-
-  ::std::stringstream s2;
-  ::boost::archive::binary_oarchive oa2(s2);
-  oa2 << t1;
-  ::boost::archive::binary_iarchive ia2(s2);
-  T t3;
-  ia2 >> t3;
-  EXPECT_EQ(t1.dimension(), t3.dimension());
-  EXPECT_EQ(t1.offset(), t3.offset());
-  for (int i = 0; i < t1.dimension(); ++i) {
-    EXPECT_EQ(t1.size(i), t3.size(i));
-    EXPECT_EQ(t1.stride(i), t3.stride(i));
-  }
-  for (typename T::reference_iterator begin = t1.reference_begin(),
-           end = t1.reference_end(), t3_begin = t3.reference_begin();
-       begin != end; ++begin, ++t3_begin) {
-    EXPECT_EQ(*begin, *t3_begin);
-  }
 }
+
 TEST(TensorTest, serializeTest) {
   serializeTest< DoubleTensor >();
   serializeTest< FloatTensor >();

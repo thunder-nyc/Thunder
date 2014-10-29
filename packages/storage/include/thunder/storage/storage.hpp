@@ -98,10 +98,6 @@ class Storage {
   // Check the size of the storage
   size_type size() const;
 
-  // Serialization
-  template < typename C >
-  void serialize(C &ar, const unsigned int version);
-
  private:
   A alloc_;
   size_type size_;

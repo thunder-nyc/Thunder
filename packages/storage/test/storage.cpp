@@ -24,11 +24,6 @@
 #include <complex>
 #include <sstream>
 
-#include "boost/archive/binary_oarchive.hpp"
-#include "boost/archive/binary_iarchive.hpp"
-#include "boost/archive/text_oarchive.hpp"
-#include "boost/archive/text_iarchive.hpp"
-#include "boost/serialization/complex.hpp"
 #include "gtest/gtest.h"
 #include "thunder/serializer.hpp"
 #include "thunder/serializer/complex.hpp"
@@ -202,35 +197,13 @@ void serializeTest() {
     s1[i] = i + 4;
   }
 
-  ::std::stringstream t1;
-  ::boost::archive::text_oarchive oa1(t1);
-  oa1 << s1;
-  ::boost::archive::text_iarchive ia1(t1);
+  ::thunder::StringTextSerializer a;
   thunder::Storage< T > s2;
-  ia1 >> s2;
+  a.save(s1);
+  a.load(&s2);
   EXPECT_EQ(s1.size(), s2.size());
   for (int i = 0; i < s1.size(); ++i) {
     EXPECT_EQ(s1[i], s2[i]);
-  }
-
-  ::std::stringstream t2;
-  ::boost::archive::binary_oarchive oa2(t2);
-  oa2 << s1;
-  ::boost::archive::binary_iarchive ia2(t2);
-  thunder::Storage< T > s3;
-  ia2 >> s3;
-  EXPECT_EQ(s1.size(), s3.size());
-  for (int i = 0; i < s1.size(); ++i) {
-    EXPECT_EQ(s1[i], s3[i]);
-  }
-
-  ::thunder::StringTextSerializer a;
-  thunder::Storage< T > s4;
-  a.save(s1);
-  a.load(&s4);
-  EXPECT_EQ(s1.size(), s4.size());
-  for (int i = 0; i < s1.size(); ++i) {
-    EXPECT_EQ(s1[i], s4[i]);
   }
 }
 TEST_ALL_TYPES(serializeTest);

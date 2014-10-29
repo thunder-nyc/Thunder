@@ -230,27 +230,5 @@ THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE(
 #undef THUNDER_TENSOR_INSTANTIATE_BINARY_COMPATIBLE
 #undef THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE
 
-#define THUNDER_TENSOR_INSTANTIATE_SERIALIZE(S)                         \
-  template void Tensor< S >::serialize(                                 \
-      ::boost::archive::text_oarchive &ar, const unsigned int version); \
-  template void Tensor< S >::serialize(                                 \
-      ::boost::archive::text_iarchive &ar, const unsigned int version); \
-  template void Tensor< S >::serialize(                                 \
-      ::boost::archive::binary_oarchive &ar, const unsigned int version); \
-  template void Tensor< S >::serialize(                                 \
-      ::boost::archive::binary_iarchive &ar, const unsigned int version);
-
-#define THUNDER_TENSOR_EXPAND_SERIALIZE(INSTANTIATE)    \
-  INSTANTIATE(DoubleStorage);                           \
-  INSTANTIATE(FloatStorage);                            \
-  INSTANTIATE(DoubleComplexStorage);                    \
-  INSTANTIATE(FloatComplexStorage);                     \
-  INSTANTIATE(SizeStorage);
-
-THUNDER_TENSOR_EXPAND_SERIALIZE(THUNDER_TENSOR_INSTANTIATE_SERIALIZE);
-
-#undef THUNDER_TENSOR_INSTANTIATE_SERIALIZE
-#undef THUNDER_TENSOR_EXPAND_SERIALIZE
-
 }  // namespace tensor
 }  // namespace thunder

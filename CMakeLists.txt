@@ -26,9 +26,6 @@ if (UNIX)
   endif()
 endif()
 
-# Find boost
-find_package(Boost 1.56.0 REQUIRED COMPONENTS serialization)
-
 # Find pthread
 set(CMAKE_THREAD_PREFER_PTHREAD true)
 find_package(Threads)
