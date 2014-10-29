@@ -30,6 +30,14 @@
 #include "boost/archive/text_iarchive.hpp"
 #include "boost/serialization/complex.hpp"
 #include "gtest/gtest.h"
+#include "thunder/serializer.hpp"
+#include "thunder/serializer/complex.hpp"
+#include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/text_protocol.hpp"
+
+#include "thunder/serializer/complex-inl.hpp"
+#include "thunder/serializer/serializer-inl.hpp"
+#include "thunder/serializer/text_protocol-inl.hpp"
 
 #define TEST_ALL_TYPES(FUNC)                             \
   TEST(StorageTest, FUNC) {                              \
@@ -214,6 +222,15 @@ void serializeTest() {
   EXPECT_EQ(s1.size(), s3.size());
   for (int i = 0; i < s1.size(); ++i) {
     EXPECT_EQ(s1[i], s3[i]);
+  }
+
+  ::thunder::StringTextSerializer a;
+  thunder::Storage< T > s4;
+  a.save(s1);
+  a.load(&s4);
+  EXPECT_EQ(s1.size(), s4.size());
+  for (int i = 0; i < s1.size(); ++i) {
+    EXPECT_EQ(s1[i], s4[i]);
   }
 }
 TEST_ALL_TYPES(serializeTest);
