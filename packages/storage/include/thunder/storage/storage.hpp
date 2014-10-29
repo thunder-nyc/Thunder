@@ -23,6 +23,8 @@
 #include <initializer_list>
 #include <memory>
 
+#include "thunder/serializer.hpp"
+
 namespace thunder {
 namespace storage {
 
@@ -107,6 +109,18 @@ class Storage {
 };
 
 }  // namespace storage
+}  // namespace thunder
+
+namespace thunder {
+namespace serializer {
+
+template < typename S, typename D, typename A >
+void save(S *s, const storage::Storage< D, A > &t);
+
+template < typename S, typename D, typename A >
+void load(S *s, storage::Storage< D, A > *t);
+
+}  // namespace serializer
 }  // namespace thunder
 
 #endif  // THUNDER_STORAGE_STORAGE_HPP_

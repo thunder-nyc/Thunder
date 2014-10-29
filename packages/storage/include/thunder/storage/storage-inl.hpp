@@ -182,4 +182,41 @@ void Storage< D, A >::serialize(C &ar, const unsigned int version) {
 }  // namespace storage
 }  // namespace thunder
 
+namespace thunder {
+namespace serializer {
+
+template < typename S, typename D, typename A >
+void save(S *s, const storage::Storage< D, A > &t) {
+  typedef storage::Storage< D, A > T;
+
+  // Save size of storage
+  typename T::size_type size = t.size();
+  s->save(size);
+
+  // Save data of storage
+  typename T::const_pointer data = t.data();
+  for (typename T::size_type i = 0; i < size; ++i) {
+    s->save(data[i]);
+  }
+}
+
+template < typename S, typename D, typename A >
+void load(S *s, storage::Storage< D, A > *t) {
+  typedef storage::Storage< D, A > T;
+
+  // Load size of storage
+  typename T::size_type size;
+  s->load(&size);
+  t->resize(size);
+
+  // Restore data of storage
+  typename T::pointer data = t->data();
+  for (typename T::size_type i = 0; i < size; ++i) {
+    s->load(&data[i]);
+  }
+}
+
+}  // namespace serializer
+}  // namespace thunder
+
 #endif  // THUNDER_STORAGE_STORAGE_INL_HPP
