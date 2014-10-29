@@ -98,7 +98,7 @@ class Text {
   void save(S *s, const long long &t);
   template < typename S >
   void load(S *s, long long *t);
-    template < typename S >
+  template < typename S >
   void save(S *s, const unsigned long long &t);
   template < typename S >
   void load(S *s, unsigned long long *t);
