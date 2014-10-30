@@ -17,15 +17,25 @@
  * @}
  */
 
-#ifndef THUNDER_SERIALIZER_COMPLEX_INL_HPP_
-#define THUNDER_SERIALIZER_COMPLEX_INL_HPP_
+#ifndef THUNDER_SERIALIZER_STATIC_INL_HPP_
+#define THUNDER_SERIALIZER_STATIC_INL_HPP_
+
+#include "thunder/serializer/static.hpp"
 
 #include <complex>
 
-#include "thunder/serializer/complex.hpp"
-
 namespace thunder {
 namespace serializer {
+
+template < typename S, typename T >
+void save(S *s, const T &t) {
+  t.save(s);
+}
+
+template < typename S, typename T >
+void load(S *s, T *t) {
+  t->load(s);
+}
 
 template < typename S, typename T >
 void save(S *s, const ::std::complex< T > &t) {
@@ -39,11 +49,10 @@ void load(S *s, ::std::complex< T > *t) {
   s->load(&real);
   T imag;
   s->load(&imag);
-
   *t = ::std::complex< T >(real, imag);
 }
 
 }  // namespace serializer
 }  // namespace thunder
 
-#endif  // THUNDER_SERIALIZER_COMPLEX_INL_HPP_
+#endif  // THUNDER_SERIALIZER_STATIC_INL_HPP_

@@ -26,6 +26,7 @@
 #include <limits>
 
 #include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/static.hpp"
 
 namespace thunder {
 namespace serializer {
@@ -79,6 +80,8 @@ THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_CHAR(wchar_t, long long);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_CHAR(char16_t, short);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_CHAR(char32_t, long);
 
+#undef THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_CHAR
+
 #define THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER(TYPE)           \
   template < typename M >                                               \
   template < typename S >                                               \
@@ -100,7 +103,7 @@ THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER(unsigned long);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER(long long);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER(unsigned long long);
 
-
+#undef THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER
 
 #define THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_FLOAT(TYPE)             \
   template < typename M >                                               \
@@ -118,6 +121,8 @@ THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER(unsigned long long);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_FLOAT(float);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_FLOAT(double);
 THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_FLOAT(long double);
+
+#undef THUNDER_SERIALIZATION_TEXT_PROTOCOL_DEFINE_FLOAT
 
 }  // namespace serializer
 }  // namespace thunder

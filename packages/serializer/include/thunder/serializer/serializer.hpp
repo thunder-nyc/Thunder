@@ -30,12 +30,6 @@
 namespace thunder {
 namespace serializer {
 
-// These global functions are needed for non-intrusive save and load
-template < typename S, typename T >
-void save(S *s, const T &t);
-template < typename S, typename T >
-void load(S *s, T *t);
-
 template < typename P = TextProtocol< ::std::stringstream > >
 class Serializer {
  public:

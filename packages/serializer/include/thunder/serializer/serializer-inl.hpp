@@ -27,16 +27,6 @@
 namespace thunder {
 namespace serializer {
 
-template < typename S, typename T >
-void save(S *s, const T &t) {
-  t.save(s);
-}
-
-template < typename S, typename T >
-void load(S *s, T *t) {
-  t->load(s);
-}
-
 template < typename P >
 template < typename... G >
 Serializer< P >::Serializer(G ...g) :

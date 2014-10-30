@@ -24,14 +24,14 @@
 
 #include "gtest/gtest.h"
 #include "thunder/serializer.hpp"
-#include "thunder/serializer/complex.hpp"
 #include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/static.hpp"
 #include "thunder/serializer/text_protocol.hpp"
 #include "thunder/storage.hpp"
 
-#include "thunder/serializer/complex-inl.hpp"
 #include "thunder/serializer/serializer-inl.hpp"
 #include "thunder/serializer/text_protocol-inl.hpp"
+#include "thunder/serializer/static-inl.hpp"
 #include "thunder/storage/storage-inl.hpp"
 #include "thunder/tensor/tensor-inl-serialize.hpp"
 

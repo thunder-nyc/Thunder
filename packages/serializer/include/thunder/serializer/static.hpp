@@ -17,23 +17,27 @@
  * @}
  */
 
-#ifndef THUNDER_SERIALIZER_COMPLEX_HPP_
-#define THUNDER_SERIALIZER_COMPLEX_HPP_
+#ifndef THUNDER_SERIALIZER_STATIC_HPP_
+#define THUNDER_SERIALIZER_STATIC_HPP_
 
 #include <complex>
-
-#include "thunder/serializer/serializer.hpp"
 
 namespace thunder {
 namespace serializer {
 
+// These static functions are needed for non-intrusive save and load
+template < typename S, typename T >
+void save(S *s, const T &t);
+template < typename S, typename T >
+void load(S *s, T *t);
+
+// Specialization of ::std::complex
 template < typename S, typename T >
 void save(S *s, const ::std::complex< T > &t);
-
 template < typename S, typename T >
 void load(S *s, ::std::complex< T > *t);
 
 }  // namespace serializer
 }  // namespace thunder
 
-#endif  // THUNDER_SERIALIZER_COMPLEX_HPP_
+#endif  // THUNDER_SERIALIZER_STATIC_HPP_
