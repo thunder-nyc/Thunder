@@ -23,7 +23,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "thunder/serializer/binary_protocol.hpp"
 #include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/static.hpp"
 #include "thunder/serializer/text_protocol.hpp"
 
 namespace thunder {
@@ -32,8 +34,12 @@ template < typename P = serializer::TextProtocol< ::std::stringstream > >
 using Serializer = serializer::Serializer< P >;
 
 template < typename M = ::std::stringstream >
-using TextSerializer = Serializer< serializer::TextProtocol< M > >;
+using BinarySerializer = Serializer< serializer::BinaryProtocol< M > >;
+typedef BinarySerializer< ::std::stringstream > StringBinarySerializer;
+typedef BinarySerializer< ::std::fstream > FileBinarySerializer;
 
+template < typename M = ::std::stringstream >
+using TextSerializer = Serializer< serializer::TextProtocol< M > >;
 typedef TextSerializer< ::std::stringstream > StringTextSerializer;
 typedef TextSerializer< ::std::fstream > FileTextSerializer;
 

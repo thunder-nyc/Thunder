@@ -17,9 +17,13 @@
  * @}
  */
 
-#include <sstream>
-#include <fstream>
+#ifndef THUNDER_SERIALIZER_INL_HPP
+#define THUNDER_SERIALIZER_INL_HPP
 
+#include <fstream>
+#include <sstream>
+
+#include "thunder/serializer.hpp"
 #include "thunder/serializer/binary_protocol.hpp"
 #include "thunder/serializer/serializer.hpp"
 #include "thunder/serializer/static.hpp"
@@ -33,15 +37,17 @@
 namespace thunder {
 namespace serializer {
 
-template class BinaryProtocol< ::std::stringstream >;
-template class BinaryProtocol< ::std::fstream >;
-template class TextProtocol< ::std::stringstream >;
-template class TextProtocol< ::std::fstream >;
+extern template class BinaryProtocol< ::std::stringstream >;
+extern template class BinaryProtocol< ::std::fstream >;
+extern template class TextProtocol< ::std::stringstream >;
+extern template class TextProtocol< ::std::fstream >;
 
-template class Serializer< BinaryProtocol< ::std::stringstream > >;
-template class Serializer< BinaryProtocol< ::std::fstream > >;
-template class Serializer< TextProtocol< ::std::stringstream > >;
-template class Serializer< TextProtocol< ::std::fstream > >;
+extern template class Serializer< BinaryProtocol< ::std::stringstream > >;
+extern template class Serializer< BinaryProtocol< ::std::fstream > >;
+extern template class Serializer< TextProtocol< ::std::stringstream > >;
+extern template class Serializer< TextProtocol< ::std::fstream > >;
 
 }  // namespace serializer
 }  // namespace thunder
+
+#endif  // THUNDER_SERIALIZER_INL_HPP

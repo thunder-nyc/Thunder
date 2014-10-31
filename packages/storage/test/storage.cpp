@@ -25,13 +25,8 @@
 
 #include "gtest/gtest.h"
 #include "thunder/serializer.hpp"
-#include "thunder/serializer/serializer.hpp"
-#include "thunder/serializer/static.hpp"
-#include "thunder/serializer/text_protocol.hpp"
 
-#include "thunder/serializer/serializer-inl.hpp"
-#include "thunder/serializer/static-inl.hpp"
-#include "thunder/serializer/text_protocol-inl.hpp"
+#include "thunder/serializer-inl.hpp"
 #include "thunder/storage/storage-inl.hpp"
 
 #define TEST_ALL_TYPES(FUNC)                             \
