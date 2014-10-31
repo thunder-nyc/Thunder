@@ -17,8 +17,10 @@
  * @}
  */
 
-#include <sstream>
 #include <fstream>
+#include <ios>
+#include <sstream>
+#include <string>
 
 #include "thunder/serializer/binary_protocol.hpp"
 #include "thunder/serializer/serializer.hpp"
@@ -42,6 +44,36 @@ template class Serializer< BinaryProtocol< ::std::stringstream > >;
 template class Serializer< BinaryProtocol< ::std::fstream > >;
 template class Serializer< TextProtocol< ::std::stringstream > >;
 template class Serializer< TextProtocol< ::std::fstream > >;
+
+#define THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(P)      \
+  template Serializer< P >::Serializer();                               \
+  template Serializer< P >::Serializer(::std::ios_base::openmode mode); \
+  template Serializer< P >::Serializer(const ::std::string &str);       \
+  template Serializer< P >::Serializer(                                 \
+      const ::std::string &str, ::std::ios_base::openmode mode);
+
+THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
+    BinaryProtocol< ::std::stringstream >);
+THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
+    TextProtocol< ::std::stringstream >);
+
+#undef THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR
+
+#define THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(P)           \
+  template Serializer< P >::Serializer();                               \
+  template Serializer< P >::Serializer(const char * filename);          \
+  template Serializer< P >::Serializer(                                 \
+      const char * filename, ::std::ios_base::openmode mode);           \
+  template Serializer< P >::Serializer(const ::std::string &filename);  \
+  template Serializer< P >::Serializer(                                 \
+      const ::std::string &filename, ::std::ios_base::openmode mode);
+
+THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
+    BinaryProtocol< ::std::fstream >);
+THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
+    TextProtocol< ::std::fstream >);
+
+#undef THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR
 
 }  // namespace serializer
 }  // namespace thunder

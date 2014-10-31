@@ -23,6 +23,7 @@
 #include "thunder/serializer/text_protocol.hpp"
 
 #include <iomanip>
+#include <ios>
 #include <limits>
 
 #include "thunder/serializer/serializer.hpp"
@@ -109,7 +110,8 @@ THUNDER_SERIALIZER_TEXT_PROTOCOL_DEFINE_INTEGER(unsigned long long);
   template < typename M >                                               \
   template < typename S >                                               \
   void TextProtocol< M >::save(S *s, const TYPE &t) {                   \
-    stream_ << ::std::scientific << ::std::setprecision(                \
+    stream_.unsetf(::std::ios_base::floatfield);                        \
+    stream_ << ::std::setprecision(                                     \
         ::std::numeric_limits< TYPE >::max_digits10) << t << ' ';       \
   }                                                                     \
   template < typename M >                                               \

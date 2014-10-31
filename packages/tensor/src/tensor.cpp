@@ -18,23 +18,28 @@
  */
 
 #include "thunder/tensor/tensor.hpp"
-#include "thunder/tensor/tensor-inl.hpp"
 
 #include <complex>
 #include <utility>
 
-#include "boost/archive/binary_oarchive.hpp"
-#include "boost/archive/binary_iarchive.hpp"
-#include "boost/archive/text_oarchive.hpp"
-#include "boost/archive/text_iarchive.hpp"
-#include "boost/serialization/complex.hpp"
+#include "thunder/serializer.hpp"
+#include "thunder/serializer/binary_protocol.hpp"
+#include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/static.hpp"
+#include "thunder/serializer/text_protocol.hpp"
 #include "thunder/storage.hpp"
 #include "thunder/tensor/index_iterator.hpp"
-#include "thunder/tensor/index_iterator-inl.hpp"
 #include "thunder/tensor/math.hpp"
-#include "thunder/tensor/math-inl.hpp"
 #include "thunder/tensor/complex.hpp"
+
+#include "thunder/serializer/binary_protocol-inl.hpp"
+#include "thunder/serializer/serializer-inl.hpp"
+#include "thunder/serializer/static-inl.hpp"
+#include "thunder/serializer/text_protocol-inl.hpp"
+#include "thunder/tensor/index_iterator-inl.hpp"
+#include "thunder/tensor/math-inl.hpp"
 #include "thunder/tensor/complex-inl.hpp"
+#include "thunder/tensor/tensor-inl.hpp"
 
 namespace thunder {
 namespace tensor {
@@ -214,14 +219,14 @@ THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
   INSTANTIATE(FloatComplexStorage, FloatStorage);                       \
   INSTANTIATE(FloatComplexStorage, DoubleComplexStorage);               \
   INSTANTIATE(FloatComplexStorage, FloatComplexStorage);                \
-  INSTANTIATE(SizeStorage, SizeStorage);      \
-  INSTANTIATE(DoubleStorage, SizeStorage);                 \
-  INSTANTIATE(FloatStorage, SizeStorage);                  \
-  INSTANTIATE(DoubleComplexStorage, SizeStorage);          \
-  INSTANTIATE(FloatComplexStorage, SizeStorage);           \
-  INSTANTIATE(SizeStorage, DoubleStorage);                 \
-  INSTANTIATE(SizeStorage, FloatStorage);                  \
-  INSTANTIATE(SizeStorage, DoubleComplexStorage);          \
+  INSTANTIATE(SizeStorage, SizeStorage);                                \
+  INSTANTIATE(DoubleStorage, SizeStorage);                              \
+  INSTANTIATE(FloatStorage, SizeStorage);                               \
+  INSTANTIATE(DoubleComplexStorage, SizeStorage);                       \
+  INSTANTIATE(FloatComplexStorage, SizeStorage);                        \
+  INSTANTIATE(SizeStorage, DoubleStorage);                              \
+  INSTANTIATE(SizeStorage, FloatStorage);                               \
+  INSTANTIATE(SizeStorage, DoubleComplexStorage);                       \
   INSTANTIATE(SizeStorage, FloatComplexStorage);
 
 THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE(
@@ -231,4 +236,40 @@ THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE(
 #undef THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE
 
 }  // namespace tensor
+}  // namespace thunder
+
+namespace thunder {
+namespace serializer {
+
+#define THUNDER_TENSOR_INSTANTIATE_SERIALIZE(D)                         \
+  template void StringBinarySerializer::save(                           \
+      const ::thunder::tensor::Tensor< D > &t);                         \
+  template void StringBinarySerializer::load(                           \
+      ::thunder::tensor::Tensor< D > *t);                               \
+  template void FileBinarySerializer::save(                             \
+      const ::thunder::tensor::Tensor< D > &t);                         \
+  template void FileBinarySerializer::load(                             \
+      ::thunder::tensor::Tensor< D > *t);                               \
+  template void StringTextSerializer::save(                             \
+      const ::thunder::tensor::Tensor< D > &t);                         \
+  template void StringTextSerializer::load(                             \
+      ::thunder::tensor::Tensor< D > *t);                               \
+  template void FileTextSerializer::save(                               \
+      const ::thunder::tensor::Tensor< D > &t);                         \
+  template void FileTextSerializer::load(                               \
+      ::thunder::tensor::Tensor< D > *t);
+
+#define THUNDER_TENSOR_EXPAND_SERIALIZE(INSTANTIATE)    \
+  INSTANTIATE(DoubleStorage);                           \
+  INSTANTIATE(FloatStorage);                            \
+  INSTANTIATE(DoubleComplexStorage);                    \
+  INSTANTIATE(FloatComplexStorage);                     \
+  INSTANTIATE(SizeStorage);
+
+THUNDER_TENSOR_EXPAND_SERIALIZE(THUNDER_TENSOR_INSTANTIATE_SERIALIZE);
+
+#undef THUNDER_TENSOR_INSTANTIATE_SERIALIZE
+#undef THUNDER_TENSOR_EXPAND_SERIALIZE
+
+}  // namespace serializer
 }  // namespace thunder

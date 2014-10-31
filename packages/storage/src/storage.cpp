@@ -18,10 +18,21 @@
  */
 
 #include "thunder/storage/storage.hpp"
-#include "thunder/storage/storage-inl.hpp"
 
 #include <complex>
 #include <utility>
+
+#include "thunder/serializer.hpp"
+#include "thunder/serializer/binary_protocol.hpp"
+#include "thunder/serializer/serializer.hpp"
+#include "thunder/serializer/static.hpp"
+#include "thunder/serializer/text_protocol.hpp"
+
+#include "thunder/serializer/binary_protocol-inl.hpp"
+#include "thunder/serializer/serializer-inl.hpp"
+#include "thunder/serializer/static-inl.hpp"
+#include "thunder/serializer/text_protocol-inl.hpp"
+#include "thunder/storage/storage-inl.hpp"
 
 namespace thunder {
 namespace storage {
@@ -35,4 +46,66 @@ template class Storage< ::std::ptrdiff_t >;
 template class Storage< ::std::pair< ::std::size_t, ::std::size_t > >;
 
 }  // namespace storage
+}  // namespace thunder
+
+namespace thunder {
+namespace serializer {
+
+#define THUNDER_STORAGE_INSTANTIATE_SERIALIZE(D)                        \
+  template void StringBinarySerializer::save(                           \
+      const ::thunder::storage::Storage< D > &t);                       \
+  template void StringBinarySerializer::load(                           \
+      ::thunder::storage::Storage< D > *t);                             \
+  template void FileBinarySerializer::save(                             \
+      const ::thunder::storage::Storage< D > &t);                       \
+  template void FileBinarySerializer::load(                             \
+      ::thunder::storage::Storage< D > *t);                             \
+  template void StringTextSerializer::save(                             \
+      const ::thunder::storage::Storage< D > &t);                       \
+  template void StringTextSerializer::load(                             \
+      ::thunder::storage::Storage< D > *t);                             \
+  template void FileTextSerializer::save(                               \
+      const ::thunder::storage::Storage< D > &t);                       \
+  template void FileTextSerializer::load(                               \
+      ::thunder::storage::Storage< D > *t);
+
+#define THUNDER_STORAGE_EXPAND_SERIALIZE(INSTANTIATE)           \
+  INSTANTIATE(double);                                          \
+  INSTANTIATE(float);                                           \
+  INSTANTIATE(::std::complex< double >);                        \
+  INSTANTIATE(::std::complex< float >);                         \
+  INSTANTIATE(::std::size_t);                                   \
+  INSTANTIATE(::std::ptrdiff_t);
+
+template void StringBinarySerializer::save(
+    const ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > &t);
+template void StringBinarySerializer::load(
+    ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > *t);
+template void FileBinarySerializer::save(
+    const ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > &t);
+template void FileBinarySerializer::load(
+    ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > *t);
+template void StringTextSerializer::save(
+    const ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > &t);
+template void StringTextSerializer::load(
+    ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > *t);
+template void FileTextSerializer::save(
+    const ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > &t);
+template void FileTextSerializer::load(
+    ::thunder::storage::Storage<
+    ::std::pair< ::std::size_t, ::std::size_t > > *t);
+
+THUNDER_STORAGE_EXPAND_SERIALIZE(THUNDER_STORAGE_INSTANTIATE_SERIALIZE);
+
+#undef THUNDER_STORAGE_INSTANTIATE_SERIALIZE
+#undef THUNDER_STORAGE_EXPAND_SERIALIZE
+
+}  // namespace serializer
 }  // namespace thunder

@@ -21,6 +21,7 @@
 #define THUNDER_SERIALIZER_STATIC_HPP_
 
 #include <complex>
+#include <utility>
 
 namespace thunder {
 namespace serializer {
@@ -36,6 +37,12 @@ template < typename S, typename T >
 void save(S *s, const ::std::complex< T > &t);
 template < typename S, typename T >
 void load(S *s, ::std::complex< T > *t);
+
+// Specialization of ::std::pair
+template < typename S, typename T1, typename T2 >
+void save(S *s, const ::std::pair< T1, T2 > &t);
+template < typename S, typename T1, typename T2 >
+void load(S *s, ::std::pair< T1, T2 > *t);
 
 }  // namespace serializer
 }  // namespace thunder

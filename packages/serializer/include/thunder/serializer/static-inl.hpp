@@ -52,6 +52,21 @@ void load(S *s, ::std::complex< T > *t) {
   *t = ::std::complex< T >(real, imag);
 }
 
+template < typename S, typename T1, typename T2 >
+void save(S *s, const ::std::pair< T1, T2 > &t) {
+  s->save(t.first);
+  s->save(t.second);
+}
+
+template < typename S, typename T1, typename T2 >
+void load(S *s, ::std::pair< T1, T2 > *t) {
+  T1 first;
+  s->load(&first);
+  T2 second;
+  s->load(&second);
+  *t = ::std::pair< T1, T2 >(first, second);
+}
+
 }  // namespace serializer
 }  // namespace thunder
 

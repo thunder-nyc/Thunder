@@ -20,6 +20,7 @@
 #ifndef THUNDER_STORAGE_STORAGE_INL_HPP
 #define THUNDER_STORAGE_STORAGE_INL_HPP
 
+#include "thunder/serializer.hpp"
 #include "thunder/storage/storage.hpp"
 
 #include <memory>

@@ -111,10 +111,10 @@ namespace thunder {
 namespace serializer {
 
 template < typename S, typename D, typename A >
-void save(S *s, const storage::Storage< D, A > &t);
+void save(S *s, const ::thunder::storage::Storage< D, A > &t);
 
 template < typename S, typename D, typename A >
-void load(S *s, storage::Storage< D, A > *t);
+void load(S *s, ::thunder::storage::Storage< D, A > *t);
 
 }  // namespace serializer
 }  // namespace thunder

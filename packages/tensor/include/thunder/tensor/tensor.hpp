@@ -31,6 +31,35 @@ namespace thunder {
 namespace tensor {
 
 template < typename S = DoubleStorage >
+class Tensor;
+
+template < typename S >
+Tensor< S > operator+(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+template < typename S >
+Tensor< S > operator-(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+
+template < typename S >
+Tensor< S > operator==(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+template < typename S >
+Tensor< S > operator!=(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+template < typename S >
+Tensor< S > operator>(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+template < typename S >
+Tensor< S > operator<(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+template < typename S >
+Tensor< S > operator>=(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+template < typename S >
+Tensor< S > operator<=(
+    typename Tensor< S >::const_reference value, const Tensor< S > &x);
+
+template < typename S >
 class Tensor {
  public:
   // Typedefs from storage
@@ -892,10 +921,10 @@ namespace thunder {
 namespace serializer {
 
 template < typename C, typename S >
-void save(C *s, const tensor::Tensor< S > &t);
+void save(C *s, const ::thunder::tensor::Tensor< S > &t);
 
 template < typename C, typename S >
-void load(C *s, tensor::Tensor< S > *t);
+void load(C *s, ::thunder::tensor::Tensor< S > *t);
 
 }  // namespace serializer
 }  // namespace thunder
