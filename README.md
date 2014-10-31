@@ -15,15 +15,15 @@ Here is a list of prerequisites you need to have to make sure Thunder compiles
 
 Thunder can be installed via cmake. To configure the project, please execute
 ```sh
-cmake
+$ cmake
 ```
 Then, you can compile Thunder by
 ```sh
-make
+$ make
 ```
 If you want to install the project, you can use the following command after cmake configuration.
 ```sh
-make install
+$ make install
 ```
 
 To set the installation prefix, you can add an option like `-DCMAKE_INSTALL_PREFIX=/usr/local` to the cmake command.
@@ -34,7 +34,7 @@ Under Apple OS X you might get a warning regarding [CMP0042](http://www.cmake.or
 
 To compile tests, you can add an option `-DBUILD_THUNDER_TESTS=ON` to the cmake command. Then, you can run the tests by
 ```sh
-make test
+$ make test
 ```
 
 In most systems the tests should be finished with no problems. However, it is possible that you may encounter occasional numerical precision errors depending on your compiler and standard C++ library. Checking the CTest logs manually is needed to make sure everything is okay.
