@@ -192,13 +192,22 @@ void serializeTest() {
     s1[i] = i + 4;
   }
 
-  ::thunder::StringTextSerializer a;
+  ::thunder::StringBinarySerializer a1;
   thunder::Storage< T > s2;
-  a.save(s1);
-  a.load(&s2);
+  a1.save(s1);
+  a1.load(&s2);
   EXPECT_EQ(s1.size(), s2.size());
   for (int i = 0; i < s1.size(); ++i) {
     EXPECT_EQ(s1[i], s2[i]);
+  }
+
+  ::thunder::StringTextSerializer a2;
+  thunder::Storage< T > s3;
+  a2.save(s1);
+  a2.load(&s3);
+  EXPECT_EQ(s1.size(), s3.size());
+  for (int i = 0; i < s1.size(); ++i) {
+    EXPECT_EQ(s1[i], s3[i]);
   }
 }
 TEST_ALL_TYPES(serializeTest);

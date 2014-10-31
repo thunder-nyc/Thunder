@@ -43,10 +43,10 @@ void serializeTest() {
         static_cast< typename T::value_type >(300);
   }
 
-  StringTextSerializer s;
-  s.save(t1);
+  StringBinarySerializer s1;
+  s1.save(t1);
   T t2;
-  s.load(&t2);
+  s1.load(&t2);
   EXPECT_EQ(t1.dimension(), t2.dimension());
   EXPECT_EQ(t1.offset(), t2.offset());
   for (int i = 0; i < t1.dimension(); ++i) {
@@ -57,6 +57,22 @@ void serializeTest() {
            end = t1.reference_end(), t2_begin = t2.reference_begin();
        begin != end; ++begin, ++t2_begin) {
     EXPECT_EQ(*begin, *t2_begin);
+  }
+
+  StringTextSerializer s2;
+  s2.save(t1);
+  T t3;
+  s2.load(&t3);
+  EXPECT_EQ(t1.dimension(), t3.dimension());
+  EXPECT_EQ(t1.offset(), t3.offset());
+  for (int i = 0; i < t1.dimension(); ++i) {
+    EXPECT_EQ(t1.size(i), t3.size(i));
+    EXPECT_EQ(t1.stride(i), t3.stride(i));
+  }
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(), t3_begin = t3.reference_begin();
+       begin != end; ++begin, ++t3_begin) {
+    EXPECT_EQ(*begin, *t3_begin);
   }
 }
 
