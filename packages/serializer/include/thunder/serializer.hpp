@@ -45,4 +45,50 @@ typedef TextSerializer< ::std::fstream > FileTextSerializer;
 
 }  // namespace thunder
 
+namespace thunder {
+namespace serializer {
+
+extern template class BinaryProtocol< ::std::stringstream >;
+extern template class BinaryProtocol< ::std::fstream >;
+extern template class TextProtocol< ::std::stringstream >;
+extern template class TextProtocol< ::std::fstream >;
+
+extern template class Serializer< BinaryProtocol< ::std::stringstream > >;
+extern template class Serializer< BinaryProtocol< ::std::fstream > >;
+extern template class Serializer< TextProtocol< ::std::stringstream > >;
+extern template class Serializer< TextProtocol< ::std::fstream > >;
+
+#define THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(P)      \
+  extern template Serializer< P >::Serializer();                        \
+  extern template Serializer< P >::Serializer(::std::ios_base::openmode mode); \
+  extern template Serializer< P >::Serializer(const ::std::string &str); \
+  extern template Serializer< P >::Serializer(                          \
+      const ::std::string &str, ::std::ios_base::openmode mode);
+
+THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
+    BinaryProtocol< ::std::stringstream >);
+THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
+    TextProtocol< ::std::stringstream >);
+
+#undef THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR
+
+#define THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(P)           \
+  extern template Serializer< P >::Serializer();                        \
+  extern template Serializer< P >::Serializer(const char * filename);   \
+  extern template Serializer< P >::Serializer(                          \
+      const char * filename, ::std::ios_base::openmode mode);           \
+  extern template Serializer< P >::Serializer(const ::std::string &filename); \
+  extern template Serializer< P >::Serializer(                          \
+      const ::std::string &filename, ::std::ios_base::openmode mode);
+
+THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
+    BinaryProtocol< ::std::fstream >);
+THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
+    TextProtocol< ::std::fstream >);
+
+#undef THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR
+
+}  // namespace serializer
+}  // namespace thunder
+
 #endif  // THUNDER_SERIALIZER_HPP
