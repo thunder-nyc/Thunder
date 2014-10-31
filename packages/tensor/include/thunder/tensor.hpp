@@ -248,22 +248,46 @@ THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE(
 namespace thunder {
 namespace serializer {
 
-#define THUNDER_TENSOR_INSTANTIATE_SERIALIZE(D)                         \
-  extern template void StringBinarySerializer::save(                    \
-      const ::thunder::tensor::Tensor< D > &t);                         \
-  extern template void StringBinarySerializer::load(                    \
-      ::thunder::tensor::Tensor< D > *t);                               \
-  extern template void FileBinarySerializer::save(                      \
-      const ::thunder::tensor::Tensor< D > &t);                         \
-  extern template void FileBinarySerializer::load(                      \
-      ::thunder::tensor::Tensor< D > *t);                               \
-  extern template void StringTextSerializer::save(                      \
-      const ::thunder::tensor::Tensor< D > &t);                         \
-  extern template void StringTextSerializer::load(                      \
-      ::thunder::tensor::Tensor< D > *t);                               \
-  extern template void FileTextSerializer::save(                        \
-      const ::thunder::tensor::Tensor< D > &t);                         \
-  extern template void FileTextSerializer::load(                        \
+#define THUNDER_TENSOR_INSTANTIATE_SERIALIZE(D)         \
+  extern template void save(                            \
+      StringBinarySerializer *s,                        \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void StringBinarySerializer::save(    \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void load(                            \
+      StringBinarySerializer *s,                        \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void StringBinarySerializer::load(    \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void save(                            \
+      FileBinarySerializer *s,                          \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void FileBinarySerializer::save(      \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void load(                            \
+      FileBinarySerializer *s,                          \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void FileBinarySerializer::load(      \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void save(                            \
+      StringTextSerializer *s,                          \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void StringTextSerializer::save(      \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void load(                            \
+      StringTextSerializer *s,                          \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void StringTextSerializer::load(      \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void save(                            \
+      FileTextSerializer *s,                            \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void FileTextSerializer::save(        \
+      const ::thunder::tensor::Tensor< D > &t);         \
+  extern template void load(                            \
+      FileTextSerializer *s,                            \
+      ::thunder::tensor::Tensor< D > *t);               \
+  extern template void FileTextSerializer::load(        \
       ::thunder::tensor::Tensor< D > *t);
 
 #define THUNDER_TENSOR_EXPAND_SERIALIZE(INSTANTIATE)    \
