@@ -17,9 +17,12 @@
  * @}
  */
 
+#include "thunder/serializer/binary_protocol.hpp"
 #include "thunder/serializer/serializer.hpp"
-#include "thunder/serializer/serializer-inl.hpp"
 #include "thunder/serializer/text_protocol.hpp"
+
+#include "thunder/serializer/binary_protocol-inl.hpp"
+#include "thunder/serializer/serializer-inl.hpp"
 #include "thunder/serializer/text_protocol-inl.hpp"
 
 namespace thunder {
