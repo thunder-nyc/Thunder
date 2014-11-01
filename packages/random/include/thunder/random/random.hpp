@@ -65,8 +65,8 @@ class Random {
   void poisson(const T &t, F mean = 1.0);
   T poisson(const size_storage &size, F mean = 1.0);
 
-  void exponential(const T &t, F mean = 1.0);
-  T exponential(const size_storage &size, F mean = 1.0);
+  void exponential(const T &t, F lambda = 1.0);
+  T exponential(const size_storage &size, F lambda = 1.0);
 
   void gamma(const T &t, F alpha = 1.0, F beta = 1.0);
   T gamma(const size_storage &size, F alpha = 1.0, F beta = 1.0);

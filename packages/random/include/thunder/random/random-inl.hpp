@@ -126,14 +126,14 @@ T Random< T, G, I, F >::poisson(const size_storage &size, F mean) {
 }
 
 template< typename T, typename G, typename I, typename F >
-void Random< T, G, I, F >::exponential(const T &t, F mean) {
-  math::exponential< Random >(this, t, mean);
+void Random< T, G, I, F >::exponential(const T &t, F lambda) {
+  math::exponential< Random >(this, t, lambda);
 }
 
 template< typename T, typename G, typename I, typename F >
-T Random< T, G, I, F >::exponential(const size_storage &size, F mean) {
+T Random< T, G, I, F >::exponential(const size_storage &size, F lambda) {
   T t(size);
-  exponential(t, mean);
+  exponential(t, lambda);
   return t;
 }
 

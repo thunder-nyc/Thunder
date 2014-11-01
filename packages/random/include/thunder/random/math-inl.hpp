@@ -22,7 +22,6 @@
 
 #include "thunder/random/math.hpp"
 
-#include <limits>
 #include <random>
 
 namespace thunder {
@@ -31,71 +30,428 @@ namespace math {
 
 template < typename R >
 void random(R *r, const typename R::tensor_type &t,
-            typename R::integer_type a, typename R::integer_type b);
+            typename R::integer_type a, typename R::integer_type b) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::uniform_int_distribution< I > distribution(a, b);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void uniform(R *r, const typename R::tensor_type &t,
-             typename R::float_type a, typename R::float_type b);
+             typename R::float_type a, typename R::float_type b){
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::uniform_real_distribution< F > distribution(a, b);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void bernoulli(R *r, const typename R::tensor_type &t,
-               typename R::float_type p);
+               typename R::float_type p) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::bernoulli_distribution distribution(p);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void binomial(R *r, const typename R::tensor_type &t,
-              typename R::integer_type s, typename R::float_type p);
+              typename R::integer_type s, typename R::float_type p) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::binomial_distribution< I > distribution(s, p);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void negativeBinomial(R *r, const typename R::tensor_type &t,
-                      typename R::integer_type k, typename R::float_type p);
+                      typename R::integer_type k, typename R::float_type p) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::negative_binomial_distribution< I > distribution(k, p);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void geometric(R *r, const typename R::tensor_type &t,
-               typename R::float_type p);
+               typename R::float_type p) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::geometric_distribution< I > distribution(p);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void poisson(R *r, const typename R::tensor_type &t,
-             typename R::float_type mean);
+             typename R::float_type mean) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::poisson_distribution< I > distribution(mean);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void exponential(R *r, const typename R::tensor_type &t,
-                 typename R::float_type mean);
+                 typename R::float_type lambda) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::exponential_distribution< F > distribution(lambda);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void gamma(R *r, const typename R::tensor_type &t,
-           typename R::float_type alpha, typename R::float_type beta);
+           typename R::float_type alpha, typename R::float_type beta) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::gamma_distribution< F > distribution(alpha, beta);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void weibull(R *r, const typename R::tensor_type &t,
-             typename R::float_type a, typename R::float_type b);
+             typename R::float_type a, typename R::float_type b) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::weibull_distribution< F > distribution(a, b);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void extremeValue(R *r, const typename R::tensor_type &t,
-                  typename R::float_type a, typename R::float_type b);
+                  typename R::float_type a, typename R::float_type b) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::extreme_value_distribution< F > distribution(a, b);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void normal(R *r, const typename R::tensor_type &t,
-            typename R::float_type mean, typename R::float_type stddev);
+            typename R::float_type mean, typename R::float_type stddev) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::normal_distribution< F > distribution(mean, stddev);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void logNormal(R *r, const typename R::tensor_type &t,
-               typename R::float_type m, typename R::float_type s);
+               typename R::float_type m, typename R::float_type s) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::lognormal_distribution< F > distribution(m, s);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void chiSquared(R *r, const typename R::tensor_type &t,
-                typename R::float_type n);
+                typename R::float_type n) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::chi_squared_distribution< F > distribution(n);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void cauchy(R *r, const typename R::tensor_type &t,
-            typename R::float_type a, typename R::float_type b);
+            typename R::float_type a, typename R::float_type b) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::cauchy_distribution< F > distribution(a, b);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void fisherF(R *r, const typename R::tensor_type &t,
-             typename R::float_type m, typename R::float_type n);
+             typename R::float_type m, typename R::float_type n) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::fisher_f_distribution< F > distribution(m, n);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 template < typename R >
 void studentT(R *r, const typename R::tensor_type &t,
-              typename R::float_type n);
+              typename R::float_type n) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  ::std::student_t_distribution< F > distribution(n);
+  if (t.partialContiguity(0, t.dimension() - 1)) {
+    typename T::pointer t_pointer = t.data();
+    typename T::size_type t_length = t.length();
+    typename T::difference_type t_step = t.stride(t.dimension() - 1);
+    for (typename T::size_type i = 0; i < t_length; ++i) {
+      t_pointer[i * t_step] = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  } else {
+    for (typename T::reference_iterator t_begin = t.reference_begin(),
+             t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
+      *t_begin = static_cast< typename T::value_type >(
+          distribution(r->generator()));
+    }
+  }
+}
 
 }  // namespace math
 }  // namespace random

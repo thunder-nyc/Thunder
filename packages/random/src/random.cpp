@@ -17,8 +17,12 @@
  * @}
  */
 
-#include "thunder/random/math.hpp"
 #include "thunder/random/random.hpp"
+
+#include <random>
+
+#include "thunder/random/math.hpp"
+#include "thunder/tensor.hpp"
 
 #include "thunder/random/math-inl.hpp"
 #include "thunder/random/random-inl.hpp"
@@ -26,7 +30,7 @@
 namespace thunder {
 namespace random {
 
-static const int dummy_variable = 0;
+template class Random< DoubleTensor, ::std::mt19937, int, double >;
 
 }  // namespace random
 }  // namespace thunder

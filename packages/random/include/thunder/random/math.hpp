@@ -54,7 +54,7 @@ void poisson(R *r, const typename R::tensor_type &t,
 
 template < typename R >
 void exponential(R *r, const typename R::tensor_type &t,
-                 typename R::float_type mean);
+                 typename R::float_type lambda);
 
 template < typename R >
 void gamma(R *r, const typename R::tensor_type &t,
