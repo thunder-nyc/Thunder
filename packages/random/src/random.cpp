@@ -17,7 +17,11 @@
  * @}
  */
 
+#include "thunder/random/math.hpp"
 #include "thunder/random/random.hpp"
+
+#include "thunder/random/math-inl.hpp"
+#include "thunder/random/random-inl.hpp"
 
 namespace thunder {
 namespace random {
