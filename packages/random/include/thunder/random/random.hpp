@@ -49,8 +49,8 @@ class Random {
   T& bernoulli(T &t, F p = 0.5);
   T bernoulli(size_storage, F p = 0.5);
 
-  const T& binomial(const T &t, I t = 1, F p = 0.5);
-  T& binomial(T &t, I t = 1, F p = 0.5);
+  const T& binomial(const T &t, I s = 1, F p = 0.5);
+  T& binomial(T &t, I s = 1, F p = 0.5);
   T binomial(size_storage, I t = 1, F p = 0.5);
 
   const T& negativeBinomial(const T &t, I k = 1, F p = 0.5);
