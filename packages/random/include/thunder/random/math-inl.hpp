@@ -55,7 +55,7 @@ void random(R *r, const typename R::tensor_type &t,
 
 template < typename R >
 void uniform(R *r, const typename R::tensor_type &t,
-             typename R::float_type a, typename R::float_type b){
+             typename R::float_type a, typename R::float_type b) {
   typedef typename R::tensor_type T;
   typedef typename R::generator_type G;
   typedef typename R::integer_type I;
