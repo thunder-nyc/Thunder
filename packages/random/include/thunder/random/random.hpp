@@ -43,57 +43,56 @@ class Random {
   const G& generator() const;
   G& generator();
 
-  void random(const T &t, I a = 0, I b = ::std::numeric_limits< I >::max);
-  T random(const size_storage &size, I a = 0,
-           I b = ::std::numeric_limits< I >::max);
+  const T& random(const T &t, I a = 0, I b = ::std::numeric_limits< I >::max());
+  T& random(T &t, I a = 0, I b = ::std::numeric_limits< I >::max());
 
-  void uniform(const T &t, F a = 0.0, F b = 1.0);
-  T uniform(const size_storage &size, F a = 0.0, F b = 1.0);
+  const T& uniform(const T &t, F a = 0.0, F b = 1.0);
+  T& uniform(T &t, F a = 0.0, F b = 1.0);
 
-  void bernoulli(const T &t, F p = 0.5);
-  T bernoulli(const size_storage &size, F p = 0.5);
+  const T& bernoulli(const T &t, F p = 0.5);
+  T& bernoulli(T &t, F p = 0.5);
 
-  void binomial(const T &t, I s = 1, F p = 0.5);
-  T binomial(const size_storage &size, I s = 1, F p = 0.5);
+  const T& binomial(const T &t, I s = 1, F p = 0.5);
+  T& binomial(T &t, I s = 1, F p = 0.5);
 
-  void negativeBinomial(const T &t, I k = 1, F p = 0.5);
-  T negativeBinomial(const size_storage &size, I k = 1, F p = 0.5);
+  const T& negativeBinomial(const T &t, I k = 1, F p = 0.5);
+  T& negativeBinomial(T &t, I k = 1, F p = 0.5);
 
-  void geometric(const T &t, F p = 0.5);
-  T geometric(const size_storage &size, F p = 0.5);
+  const T& geometric(const T &t, F p = 0.5);
+  T& geometric(T &t, F p = 0.5);
 
-  void poisson(const T &t, F mean = 1.0);
-  T poisson(const size_storage &size, F mean = 1.0);
+  const T& poisson(const T &t, F mean = 1.0);
+  T& poisson(T &t, F mean = 1.0);
 
-  void exponential(const T &t, F lambda = 1.0);
-  T exponential(const size_storage &size, F lambda = 1.0);
+  const T& exponential(const T &t, F lambda = 1.0);
+  T& exponential(T &t, F lambda = 1.0);
 
-  void gamma(const T &t, F alpha = 1.0, F beta = 1.0);
-  T gamma(const size_storage &size, F alpha = 1.0, F beta = 1.0);
+  const T& gamma(const T &t, F alpha = 1.0, F beta = 1.0);
+  T& gamma(T &t, F alpha = 1.0, F beta = 1.0);
 
-  void weibull(const T &t, F a = 1.0, F b = 1.0);
-  T weibull(const size_storage &size, F a = 1.0, F b = 1.0);
+  const T& weibull(const T &t, F a = 1.0, F b = 1.0);
+  T& weibull(T &t, F a = 1.0, F b = 1.0);
 
-  void extremeValue(const T &t, F a = 0.0, F b = 1.0);
-  T extremeValue(const size_storage &size, F a = 0.0, F b = 1.0);
+  const T& extremeValue(const T &t, F a = 0.0, F b = 1.0);
+  T& extremeValue(T &t, F a = 0.0, F b = 1.0);
 
-  void normal(const T &t, F mean = 0.0, F stddev = 1.0);
-  T normal(const size_storage &size, F mean = 0.0, F stddev = 1.0);
+  const T& normal(const T &t, F mean = 0.0, F stddev = 1.0);
+  T& normal(T &t, F mean = 0.0, F stddev = 1.0);
 
-  void logNormal(const T &t, F m = 0.0, F s = 1.0);
-  T logNormal(const size_storage &size, F m = 0.0, F s = 1.0);
+  const T& logNormal(const T &t, F m = 0.0, F s = 1.0);
+  T& logNormal(T &t, F m = 0.0, F s = 1.0);
 
-  void chiSquared(const T &t, F n = 1.0);
-  T chiSquared(const size_storage &size, F n = 1.0);
+  const T& chiSquared(const T &t, F n = 1.0);
+  T& chiSquared(T &t, F n = 1.0);
 
-  void cauchy(const T &t, F a = 0.0, F b = 1.0);
-  T cauchy(const size_storage &size, F a = 0.0, F b = 1.0);
+  const T& cauchy(const T &t, F a = 0.0, F b = 1.0);
+  T& cauchy(T &t, F a = 0.0, F b = 1.0);
 
-  void fisherF(const T &t, F m = 1.0, F n = 1.0);
-  T fisherF(const size_storage &size, F m = 1.0, F n = 1.0);
+  const T& fisherF(const T &t, F m = 1.0, F n = 1.0);
+  T& fisherF(T &t, F m = 1.0, F n = 1.0);
 
-  void studentT(const T &t, F n = 1.0);
-  T studentT(const size_storage &size, F n = 1.0);
+  const T& studentT(const T &t, F n = 1.0);
+  T& studentT(T &t, F n = 1.0);
 
  private:
   G generator_;

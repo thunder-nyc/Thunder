@@ -30,7 +30,22 @@
 namespace thunder {
 namespace random {
 
-template class Random< DoubleTensor, ::std::mt19937, int, double >;
+#define THUNDER_RANDOM_INSTANTIATE_MT19937(T, I, F)                     \
+  template class Random< T, ::std::mt19937, I, F >;                     \
+  template Random< T, ::std::mt19937, I, F >::Random();                 \
+  template Random< T, ::std::mt19937, I, F >::Random::                  \
+  Random(typename ::std::mt19937::result_type val);                     \
+  template Random< T, ::std::mt19937, I, F >::Random::                  \
+  Random(::std::seed_seq q);
+
+THUNDER_RANDOM_INSTANTIATE_MT19937(
+    DoubleTensor, int, typename DoubleTensor::value_type);
+THUNDER_RANDOM_INSTANTIATE_MT19937(
+    FloatTensor, int, typename FloatTensor::value_type);
+THUNDER_RANDOM_INSTANTIATE_MT19937(
+    SizeTensor, typename SizeTensor::value_type, double);
+
+#undef THUNDR_RANDOM_INSTANTIATE_MT19937
 
 }  // namespace random
 }  // namespace thunder

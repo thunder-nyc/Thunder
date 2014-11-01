@@ -25,72 +25,83 @@ namespace random {
 namespace math {
 
 template < typename R >
-void random(R *r, const typename R::tensor_type &t,
-            typename R::integer_type a, typename R::integer_type b);
+const typename R::tensor_type& random(
+    R *r, const typename R::tensor_type &t, typename R::integer_type a,
+    typename R::integer_type b);
 
 template < typename R >
-void uniform(R *r, const typename R::tensor_type &t,
-             typename R::float_type a, typename R::float_type b);
+const typename R::tensor_type& uniform(
+    R *r, const typename R::tensor_type &t, typename R::float_type a,
+    typename R::float_type b);
 
 template < typename R >
-void bernoulli(R *r, const typename R::tensor_type &t,
-               typename R::float_type p);
+const typename R::tensor_type& bernoulli(
+    R *r, const typename R::tensor_type &t, typename R::float_type p);
 
 template < typename R >
-void binomial(R *r, const typename R::tensor_type &t,
-              typename R::integer_type s, typename R::float_type p);
+const typename R::tensor_type& binomial(
+    R *r, const typename R::tensor_type &t, typename R::integer_type s,
+    typename R::float_type p);
 
 template < typename R >
-void negativeBinomial(R *r, const typename R::tensor_type &t,
-                      typename R::integer_type k, typename R::float_type p);
+const typename R::tensor_type& negativeBinomial(
+    R *r, const typename R::tensor_type &t, typename R::integer_type k,
+    typename R::float_type p);
 
 template < typename R >
-void geometric(R *r, const typename R::tensor_type &t,
-               typename R::float_type p);
+const typename R::tensor_type& geometric(
+    R *r, const typename R::tensor_type &t, typename R::float_type p);
 
 template < typename R >
-void poisson(R *r, const typename R::tensor_type &t,
-             typename R::float_type mean);
+const typename R::tensor_type& poisson(
+    R *r, const typename R::tensor_type &t, typename R::float_type mean);
 
 template < typename R >
-void exponential(R *r, const typename R::tensor_type &t,
-                 typename R::float_type lambda);
+const typename R::tensor_type& exponential(
+    R *r, const typename R::tensor_type &t, typename R::float_type lambda);
 
 template < typename R >
-void gamma(R *r, const typename R::tensor_type &t,
-           typename R::float_type alpha, typename R::float_type beta);
+const typename R::tensor_type& gamma(
+    R *r, const typename R::tensor_type &t, typename R::float_type alpha,
+    typename R::float_type beta);
 
 template < typename R >
-void weibull(R *r, const typename R::tensor_type &t,
-             typename R::float_type a, typename R::float_type b);
+const typename R::tensor_type& weibull(
+    R *r, const typename R::tensor_type &t, typename R::float_type a,
+    typename R::float_type b);
 
 template < typename R >
-void extremeValue(R *r, const typename R::tensor_type &t,
-                  typename R::float_type a, typename R::float_type b);
+const typename R::tensor_type& extremeValue(
+    R *r, const typename R::tensor_type &t, typename R::float_type a,
+    typename R::float_type b);
 
 template < typename R >
-void normal(R *r, const typename R::tensor_type &t,
-            typename R::float_type mean, typename R::float_type stddev);
+const typename R::tensor_type& normal(
+    R *r, const typename R::tensor_type &t, typename R::float_type mean,
+    typename R::float_type stddev);
 
 template < typename R >
-void logNormal(R *r, const typename R::tensor_type &t,
-               typename R::float_type m, typename R::float_type s);
+const typename R::tensor_type& logNormal(
+    R *r, const typename R::tensor_type &t, typename R::float_type m,
+    typename R::float_type s);
 
 template < typename R >
-void chiSquared(R *r, const typename R::tensor_type &t,
-                typename R::float_type n);
+const typename R::tensor_type& chiSquared(
+    R *r, const typename R::tensor_type &t, typename R::float_type n);
 
 template < typename R >
-void cauchy(R *r, const typename R::tensor_type &t,
-            typename R::float_type a, typename R::float_type b);
+const typename R::tensor_type& cauchy(
+    R *r, const typename R::tensor_type &t, typename R::float_type a,
+    typename R::float_type b);
 
 template < typename R >
-void fisherF(R *r, const typename R::tensor_type &t,
-             typename R::float_type m, typename R::float_type n);
+const typename R::tensor_type& fisherF(
+    R *r, const typename R::tensor_type &t, typename R::float_type m,
+    typename R::float_type n);
 
 template < typename R >
-void studentT(R *r, const typename R::tensor_type &t,
-              typename R::float_type n);
+const typename R::tensor_type& studentT(
+    R *r, const typename R::tensor_type &t, typename R::float_type n);
 
 }  // namespace math
 }  // namespace random
