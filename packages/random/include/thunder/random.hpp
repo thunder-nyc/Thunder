@@ -17,8 +17,13 @@
  * @}
  */
 
+#ifndef THUNDER_RANDOM_HPP_
+#define THUNDER_RANDOM_HPP_
+
 namespace thunder {
 
 
 
 }  // namespace thunder
+
+#endif  // THUNDER_RANDOM_HPP_
