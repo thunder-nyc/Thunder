@@ -17,6 +17,8 @@
  * @}
  */
 
+#include "thunder/random/random.hpp"
+
 namespace thunder {
 namespace random {
 
