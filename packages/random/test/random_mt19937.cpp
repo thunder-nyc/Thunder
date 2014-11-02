@@ -51,6 +51,13 @@ namespace {
              end = t2.reference_end(); begin != end; ++begin) {         \
       EXPECT_EQ(static_cast< typename T::value_type >(dist2(gen)), *begin); \
     }                                                                   \
+                                                                        \
+    DIST dist3;                                                         \
+    T t3 = rand.FUNC(T({5, 18, 7}, {271, 15, 2}));                      \
+    for (typename T::reference_iterator begin = t3.reference_begin(),   \
+             end = t3.reference_end(); begin != end; ++begin) {         \
+      EXPECT_EQ(static_cast< typename T::value_type >(dist3(gen)), *begin); \
+    }                                                                   \
   }                                                                     \
                                                                         \
   TEST(RandomTest, FUNC ## VerifyTest) {                                \
