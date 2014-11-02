@@ -179,7 +179,8 @@ printf("Serialized data: %s\n", string_serializer.protocol().stream().str().c_st
 ### Random Generators
 
 We support all [random generators provided by the C++11 standard library](http://en.cppreference.com/w/cpp/numeric/random). They include
-* Uniform distribution
+* Discrete uniform distribution
+* Continuous uniform distribution
 * Bernoulli distribution
 * Binomial distribution
 * Negative binomial distribution
@@ -203,11 +204,9 @@ using namespace thunder;
 // Create a random number generator
 DoubleRandom generator;
 
-// Create a tensor of size 3x9x7x10
-DoubleTensor tensor(3, 9, 7, 10);
-
-// Generate from gamma distribution with alpha = 1.0, beta = 1.0.
-generator.gamma(1.0, 1.0, &tensor);
+// Generate a tensor of size 3x9x7x10 from a gamma distribution
+// with alpha = 1.0 and beta = 1.0.
+DoubleTensor tensor = generator.gamma({3, 9, 7, 10}, 1.0, 1.0);
 ```
 
 ### Batch BLAS
