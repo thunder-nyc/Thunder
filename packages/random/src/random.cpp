@@ -19,6 +19,7 @@
 
 #include "thunder/random/random.hpp"
 
+#include <ctime>
 #include <random>
 
 #include "thunder/random/math.hpp"
@@ -33,10 +34,11 @@ namespace random {
 #define THUNDER_RANDOM_INSTANTIATE_MT19937(T, I, F)                     \
   template class Random< T, ::std::mt19937, I, F >;                     \
   template Random< T, ::std::mt19937, I, F >::Random();                 \
-  template Random< T, ::std::mt19937, I, F >::Random::                  \
+  template Random< T, ::std::mt19937, I, F >::                          \
   Random(typename ::std::mt19937::result_type val);                     \
-  template Random< T, ::std::mt19937, I, F >::Random::                  \
-  Random(::std::seed_seq q);
+  template Random< T, ::std::mt19937, I, F >::Random(int val);          \
+  template Random< T, ::std::mt19937, I, F >::Random(::std::time_t val); \
+  template Random< T, ::std::mt19937, I, F >::Random(::std::seed_seq q);
 
 THUNDER_RANDOM_INSTANTIATE_MT19937(
     DoubleTensor, int, typename DoubleTensor::value_type);

@@ -34,7 +34,7 @@ namespace {
     typedef typename R::integer_type I;                                 \
     typedef typename R::float_type F;                                   \
                                                                         \
-    R rand(typename G::result_type(91857));                             \
+    R rand(91857);                                                      \
     G gen(91857);                                                       \
                                                                         \
     DIST dist1;                                                         \
