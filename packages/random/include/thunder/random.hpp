@@ -22,6 +22,7 @@
 
 #include "thunder/random/random.hpp"
 
+#include <ctime>
 #include <random>
 
 #include "thunder/random/math.hpp"
