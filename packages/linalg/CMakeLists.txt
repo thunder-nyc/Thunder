@@ -9,7 +9,7 @@ target_include_directories(thunder_linalg PUBLIC "include")
 target_link_libraries(thunder_linalg thunder_exception thunder_storage thunder_tensor)
 
 # Create installation
-install(TARGETS thunder_random DESTINATION lib)
+install(TARGETS thunder_linalg DESTINATION lib)
 install(DIRECTORY include/thunder DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
 # Create tests
