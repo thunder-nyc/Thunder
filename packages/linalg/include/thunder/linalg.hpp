@@ -26,6 +26,6 @@ namespace thunder {
 
 
 
-}
+}  // namespace thunder
 
 #endif  // THUNDER_LINALG_HPP_
