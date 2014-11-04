@@ -6,7 +6,7 @@ file(GLOB_RECURSE TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/*.cpp")
 # Create the library
 add_library(thunder_random ${HEADERS} ${SOURCES})
 target_include_directories(thunder_random PUBLIC "include")
-target_link_libraries(thunder_random thunder_exception thunder_serializer thunder_storage thunder_tensor)
+target_link_libraries(thunder_random thunder_storage thunder_tensor)
 
 # Create installation
 install(TARGETS thunder_random DESTINATION lib)
