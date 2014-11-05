@@ -147,6 +147,89 @@ T1 shuffle(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y) {
   return t;
 }
 
+template < typename D, typename A, typename T1 >
+T1 permute(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y,
+           typename T1::dim_type d) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T2;
+  if (y.dimension() != 1) {
+    throw invalid_argument("Permutation index dimension exceeds 1.");
+  }
+  if (d >= x.dimension()) {
+    throw out_of_range("Dimension exceeds limit.");
+  }
+
+  typename T1::size_storage sz(x.dimension());
+  for (typename T1::dim_type i = 0; i < d; ++i) {
+    sz[i] = x.size(i);
+  }
+  sz[d] = y.size(0);
+  for (typename T1::dim_type i = d + 1; i < x.dimension(); ++i) {
+    sz[i] = x.size(i);
+  }
+
+  T1 t(sz);
+  if (x.partialContiguity(0, d) &&
+      x.partialContiguity(d + 1, x.dimension() - 1)) {
+    typename T1::pointer x_pointer = x.data();
+    typename T1::size_type x_left_length = 1;
+    for (typename T1::dim_type i = 0; i < d; ++i) {
+      x_left_length *= x.size(i);
+    }
+    typename T1::difference_type x_left_step = d > 0 ? x.stride(d - 1) : 0;
+    typename T1::size_type x_right_length = 1;
+    for (typename T1::dim_type i = d + 1; i < x.dimension(); ++i) {
+      x_right_length *= x.size(i);
+    }
+    typename T1::difference_type x_right_step = x.stride(x.dimension() - 1);
+    typename T1::size_type x_length = x.size(d);
+    typename T1::difference_type x_step = x.stride(d);
+    typename T1::pointer t_pointer = t.data();
+    typename T1::difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
+    typename T1::difference_type t_right_step = t.stride(t.dimension() - 1);
+    typename T1::difference_type t_length = t.size(d);
+    typename T1::difference_type t_step = t.stride(d);
+    typename T2::pointer y_pointer = y.data();
+    typename T2::difference_type y_step = y.stride(y.dimension() - 1);
+    for (typename T1::size_type i = 0; i < t_length; ++i) {
+      typename T1::size_type x_index = static_cast< typename T1::size_type >(
+          ::std::real(y_pointer[i * y_step]));
+      if (x_index >= x_length) {
+        throw out_of_range("Index exceeds limit.");
+      }
+      for (typename T1::size_type j = 0; j < x_left_length; ++j) {
+        for (typename T1::size_type k = 0; k < x_right_length; ++k) {
+          t_pointer[j * t_left_step + i * t_step + k * t_right_step] =
+              x_pointer[j * x_left_step + x_index * x_step + k * x_right_step];
+        }
+      }
+    }
+  } else {
+    typename T1::size_storage iter_size = sz;
+    iter_size[d] = 1;
+    typename T1::size_storage x_ind(sz.size());
+    typename T1::size_storage t_ind(sz.size());
+    for (typename T2::size_type i = 0; i < y.length(); ++i) {
+      typename T1::size_type x_index =
+          static_cast< typename T1::size_type >(::std::real(y(i)));
+      if (x_index >= x.size(d)) {
+        throw out_of_range("Index exceeds limit.");
+      }
+      for (IndexIterator< typename T1::size_storage > begin =
+               IndexIterator< typename T1::size_storage >::begin(iter_size),
+               end = IndexIterator< typename T1::size_storage >::end(iter_size);
+           begin != end; ++begin) {
+        x_ind = *begin;
+        t_ind = *begin;
+        x_ind[d] = x_index;
+        t_ind[d] = i;
+        t(t_ind) = x(x_ind);
+      }
+    }
+  }
+
+  return t;
+}
+
 }  // namespace math
 }  // namespace tensor
 }  // namespace thunder

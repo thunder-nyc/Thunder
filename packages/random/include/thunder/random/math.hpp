@@ -103,6 +103,9 @@ template < typename R >
 const typename R::tensor_type& studentT(
     R *r, const typename R::tensor_type &t, typename R::float_type n);
 
+template < typename R >
+const typename R::tensor_type& randperm(R *r, const typename R::tensor_type &t);
+
 }  // namespace math
 }  // namespace random
 }  // namespace thunder

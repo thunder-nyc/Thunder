@@ -36,6 +36,7 @@ class Random {
   typedef F float_type;
   typedef typename T::value_type value_type;
   typedef typename T::size_storage size_storage;
+  typedef typename T::size_type size_type;
 
   template < typename... U >
   explicit Random(U... u);
@@ -93,6 +94,10 @@ class Random {
 
   const T& studentT(const T &t, F n = 1.0);
   T& studentT(T &t, F n = 1.0);
+
+  const T& randperm(const T &t);
+  T& randperm(T &t);
+  T randperm(size_type size);
 
  private:
   G generator_;

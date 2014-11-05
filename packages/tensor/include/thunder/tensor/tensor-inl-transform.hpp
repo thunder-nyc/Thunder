@@ -80,6 +80,12 @@ Tensor< S > Tensor< S >::shuffle(const T &y) const {
 }
 
 template < typename S >
+template < typename T >
+Tensor< S > Tensor< S >::permute(const T &y, dim_type d) const {
+  return math::permute(*this, y, d);
+}
+
+template < typename S >
 template < typename TR >
 TR Tensor< S >::getReal() const {
   return math::getReal< Tensor, TR >(*this);

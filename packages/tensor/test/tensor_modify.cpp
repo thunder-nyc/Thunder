@@ -230,6 +230,71 @@ TEST(TensorTest, shuffleTest) {
   shuffleTest< FloatComplexTensor >();
 }
 
+template < typename T >
+void permuteTest() {
+  T t1({10, 20, 7}, {301, 15, 2});
+  int t1_val = 0;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++);
+  }
+
+  FloatTensor t2(10);
+  for (int i = 0; i < 10; ++i) {
+    t2(i) = static_cast< float >(9 - i);
+  }
+  T t3 = t1.permute(t2);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k), t3(9 - i, j, k));
+      }
+    }
+  }
+
+  FloatTensor t4(20);
+  for (int i = 0; i < 20; ++i) {
+    t4(i) = static_cast< float >(19 - i);
+  }
+  T t5 = t1.permute(t4, 1);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        EXPECT_EQ(t1(i, j, k), t5(i, 19 - j, k));
+      }
+    }
+  }
+
+  T t6({10, 20, 7, 9}, {2681, 134, 19, 2});
+  int t6_val = 0;
+  for (typename T::reference_iterator begin = t6.reference_begin(),
+           end = t6.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t6_val++);
+  }
+
+  FloatTensor t7(20);
+  for (int i = 0; i < 20; ++i) {
+    t7(i) = static_cast< float >(19 - i);
+  }
+  T t8 = t6.permute(t7, 1);
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 0; j < 20; ++j) {
+      for (int k = 0; k < 7; ++k) {
+        for (int l = 0; l < 9; ++l) {
+          EXPECT_EQ(t6(i, j, k, l), t8(i, 19 - j, k, l));
+        }
+      }
+    }
+  }
+}
+
+TEST(TensorTest, permuteTest) {
+  permuteTest< DoubleTensor >();
+  permuteTest< FloatTensor >();
+  permuteTest< DoubleComplexTensor >();
+  permuteTest< FloatComplexTensor >();
+}
+
 template< typename T >
 void viewTest() {
   T t1(10, 20, 7);

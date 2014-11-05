@@ -211,6 +211,22 @@ T& Random< T, G, I, F >::studentT(T &t, F n) {
   return const_cast< T& >(studentT(const_cast< const T& >(t), n));
 }
 
+template< typename T, typename G, typename I, typename F >
+const T& Random< T, G, I, F >::randperm(const T &t) {
+  return math::randperm< Random >(this, t);
+}
+
+template< typename T, typename G, typename I, typename F >
+T& Random< T, G, I, F >::randperm(T &t) {
+  return const_cast< T& >(randperm(const_cast< const T& >(t)));
+}
+
+template< typename T, typename G, typename I, typename F >
+T Random< T, G, I, F >::randperm(size_type size) {
+  T t(size);
+  return randperm(t);
+}
+
 }  // namespace random
 }  // namespace thunder
 

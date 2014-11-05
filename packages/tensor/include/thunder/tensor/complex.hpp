@@ -34,6 +34,9 @@ template < typename D, typename A, typename T1 >
 T1 extract(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y);
 template < typename D, typename A, typename T1 >
 T1 shuffle(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y);
+template < typename D, typename A, typename T1 >
+T1 permute(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y,
+           typename T1::dim_type d);
 
 // Unary operations
 template < typename D, typename A >

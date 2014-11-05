@@ -39,7 +39,6 @@ Tensor< S > operator+(
 template < typename S >
 Tensor< S > operator-(
     typename Tensor< S >::const_reference value, const Tensor< S > &x);
-
 template < typename S >
 Tensor< S > operator==(
     typename Tensor< S >::const_reference value, const Tensor< S > &x);
@@ -241,6 +240,8 @@ class Tensor {
   Tensor extract(const T &y) const;
   template < typename T >
   Tensor shuffle(const T &y) const;
+  template < typename T >
+  Tensor permute(const T &y, dim_type d = 0) const;
   template < typename TR >
   TR getReal() const;
   template < typename TR >

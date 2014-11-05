@@ -24,6 +24,8 @@
 
 #include <random>
 
+#include "thunder/exception.hpp"
+
 namespace thunder {
 namespace random {
 namespace math {
@@ -477,6 +479,29 @@ const typename R::tensor_type& studentT(
       *t_begin = static_cast< typename T::value_type >(
           distribution(r->generator()));
     }
+  }
+  return t;
+}
+
+template < typename R >
+const typename R::tensor_type& randperm(
+    R *r, const typename R::tensor_type &t) {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+  if (t.dimension() != 1) {
+    throw invalid_argument("Input tensor dimension exceeds 1.");
+  }
+  typename T::pointer t_pointer = t.data();
+  typename T::size_type t_length = t.length();
+  typename T::difference_type t_step = t.stride(t.dimension() - 1);
+  for (typename T::size_type i = 0; i < t_length; ++i) {
+    t_pointer[i * t_step] = static_cast< typename T::value_type >(i);
+  }
+  for (typename T::size_type i = 0; i < t_length; ++i) {
+    ::std::swap(t_pointer[i * t_step],
+                t_pointer[(r->generator()() % (t_length - i) + i) * t_step]);
   }
   return t;
 }

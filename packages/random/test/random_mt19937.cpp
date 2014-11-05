@@ -20,8 +20,10 @@
 #include "thunder/random.hpp"
 
 #include <random>
+#include <unordered_set>
 
 #include "gtest/gtest.h"
+#include "thunder/exception.hpp"
 
 namespace thunder {
 namespace {
@@ -85,6 +87,48 @@ TEST_RANDOM_FUNC(fisherF, ::std::fisher_f_distribution< F >);
 TEST_RANDOM_FUNC(studentT, ::std::student_t_distribution< F >);
 
 #undef TEST_RANDOM_FUNC
+
+template < typename R >
+void randpermTest() {
+  typedef typename R::tensor_type T;
+  typedef typename R::generator_type G;
+  typedef typename R::integer_type I;
+  typedef typename R::float_type F;
+
+  R rand(91857);
+  G gen(91857);
+  ::std::unordered_set< typename T::value_type > set;
+
+  T t1(33);
+  rand.randperm(t1);
+  set.clear();
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    set.insert(*begin);
+  }
+  for (typename T::size_type i = 0; i < 33; ++i) {
+    EXPECT_NE(set.find(static_cast< typename T::value_type >(i)), set.end());
+  }
+
+  T t2 = rand.randperm(65);
+  set.clear();
+  for (typename T::reference_iterator begin = t2.reference_begin(),
+           end = t2.reference_end(); begin != end; ++begin) {
+    set.insert(*begin);
+  }
+  for (typename T::size_type i = 0; i < 65; ++i) {
+    EXPECT_NE(set.find(static_cast< typename T::value_type >(i)), set.end());
+  }
+
+  T t3(2, 7, 8);
+  EXPECT_THROW(rand.randperm(t3), invalid_argument);
+}
+
+TEST(RandomTest, randpermTest) {
+  randpermTest< DoubleRandom >();
+  randpermTest< FloatRandom >();
+  randpermTest< SizeRandom >();
+}
 
 }  // namespace
 }  // namespace thunder
