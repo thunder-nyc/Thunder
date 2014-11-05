@@ -40,7 +40,7 @@ namespace {
     G gen(91857);                                                       \
                                                                         \
     DIST dist1;                                                         \
-    T t1(7, 33, 21);                                                    \
+    T t1(7, 11, 21);                                                    \
     rand.FUNC(t1);                                                      \
     for (typename T::reference_iterator begin = t1.reference_begin(),   \
              end = t1.reference_end(); begin != end; ++begin) {         \

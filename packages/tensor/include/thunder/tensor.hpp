@@ -183,6 +183,8 @@ THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
       const Tensor< S2 > &y) const;                                     \
   extern template Tensor< S1 > Tensor< S1 >::shuffle(                   \
       const Tensor< S2 > &y) const;                                     \
+  extern template Tensor< S1 > Tensor< S1 >::permute(                   \
+      const Tensor< S2 > &y, typename Tensor< S1 >::dim_type d) const;  \
   extern template Tensor< S2 > Tensor< S1 >::getReal() const;           \
   extern template Tensor< S2 > Tensor< S1 >::getImag() const;           \
   extern template Tensor< S2 > Tensor< S1 >::getArg() const;            \
