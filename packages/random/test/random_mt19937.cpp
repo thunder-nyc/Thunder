@@ -60,7 +60,7 @@ namespace {
     }                                                                   \
   }                                                                     \
                                                                         \
-  TEST(RandomTest, FUNC ## VerifyTest) {                                \
+  TEST(RandomTest, FUNC ## Test) {                                      \
     FUNC ## Test< DoubleRandom >();                                     \
     FUNC ## Test< FloatRandom >();                                      \
     FUNC ## Test< SizeRandom >();                                       \
