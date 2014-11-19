@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 project(Thunder)
 
+# Enable Fortran for blas/lapack interfaces
+enable_language (Fortran)
+
 # The version number
 set(THUNDER_VERSION_MAJOR 0)
 set(THUNDER_VERSION_MINOR 2)
@@ -25,6 +28,9 @@ if (UNIX)
     message(FATAL_ERROR, "The compiler does not support C++ 11")
   endif()
 endif()
+
+# Find BLAS
+find_package(BLAS REQUIRED)
 
 # Find pthread
 set(CMAKE_THREAD_PREFER_PTHREAD true)

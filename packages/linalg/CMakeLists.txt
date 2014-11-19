@@ -6,7 +6,7 @@ file(GLOB_RECURSE TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/*.cpp")
 # Create the library
 add_library(thunder_linalg ${HEADERS} ${SOURCES})
 target_include_directories(thunder_linalg PUBLIC "include")
-target_link_libraries(thunder_linalg thunder_exception thunder_storage thunder_tensor)
+target_link_libraries(thunder_linalg thunder_exception thunder_storage thunder_tensor ${BLAS_LIBRARIES})
 
 # Create installation
 install(TARGETS thunder_linalg DESTINATION lib)

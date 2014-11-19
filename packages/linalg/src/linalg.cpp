@@ -18,13 +18,21 @@
  */
 
 #include "thunder/linalg.hpp"
+#include "thunder/linalg/blas.hpp"
 #include "thunder/linalg/linalg.hpp"
 #include "thunder/linalg/math.hpp"
 
 namespace thunder {
 namespace linalg {
 
-static const int kDummyVariable = 0;
+void swap() {
+  int n = 5;
+  double x[5];
+  int incy = 1;
+  double y[5];
+  int incx = 1;
+  dswap_(&n, x, &incx, y, &incy);
+}
 
 }  // namespace linalg
 }  // namespace thunder

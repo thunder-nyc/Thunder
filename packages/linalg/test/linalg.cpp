@@ -18,8 +18,18 @@
  */
 
 #include "gtest/gtest.h"
+#include "thunder/linalg.hpp"
+#include "thunder/linalg/blas.hpp"
+#include "thunder/linalg/linalg.hpp"
+#include "thunder/linalg/math.hpp"
 
 TEST(LinalgTest, dummyTest) {
+  int n = 100000;
+  double x[100000];
+  int incy = 1;
+  double y[100000];
+  int incx = 1;
+  dswap_(&n, x, &incx, y, &incy);
   EXPECT_EQ(0, 0);
 }
 

@@ -100,7 +100,7 @@ DoubleTensor vector(10);
 DoubleTensor result = DoubleTensor::zeros(7);
 
 // Create a default blas device
-DoubleBlas blas_device;
+DoubleLinalg linalg_device;
 
 // Create a default random device
 DoubleRandom rand_device;
@@ -111,7 +111,7 @@ for (const DoubleTensor &t : tensor) {
     for (const DoubleTensor &s : t) {
         // Do matrix-vector multiplication with vector sampled
         // from normal distribution with mean = 0 and std = 1
-    	result += blas_device.gemv(s, rand_device.normal(vector, 0, 1));
+    	result += linalg_device.gemv(s, rand_device.normal(vector, 0, 1));
     }
 }
 ```
@@ -158,8 +158,8 @@ DoubleTensor norm_tensor = complex_tensor.getCnrm();
 Thunder provides its own serialization functionalities that are very extensible. It can
 * Serialize all fundamental types
 * Avoid duplicated data saving for pointers
-* Track polymorphic types and do correct serialization
-* Easily extensible and non-intrusive for classes
+* Track polymorphic types and do dynamic serialization
+* Be easily extended to user-defined classes in a non-intrusive fashion
 ```cpp
 using namespace thunder;
 
