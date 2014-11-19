@@ -216,7 +216,8 @@ Our BLAS routines support batch mode. The batch mode offers possiblity of speedi
 using namespace thunder;
 
 // Create a BLAS computing device
-DoubleBlas blas_device;
+// Linealg is short for linear algebra
+DoubleLinalg linalg_device;
 
 // Create a tensor of size 3x9x7x10
 DoubleTensor tensor1(3, 9, 7, 10);
@@ -226,5 +227,5 @@ DoubleTensor tensor2(3, 9, 10);
 
 // Computing matrix-vector multiplication in batch mode
 // Now, 'result' is a tensor of size 3x9x7.
-DoubleTensor result = blas_device.gemv(tensor1, tensor2);
+DoubleTensor result = linalg_device.gemv(tensor1, tensor2);
 ```
