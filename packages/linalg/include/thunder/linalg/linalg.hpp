@@ -21,6 +21,7 @@
 #define THUNDER_LINALG_LINALG_HPP_
 
 #include "thunder/tensor.hpp"
+#include "thunder/linalg/math.hpp"
 
 namespace thunder {
 namespace linalg {
@@ -60,20 +61,16 @@ class Linalg {
   // Const linear algebra constructors
   const T& diag(const T &x, const T &r);
   const T& eye(const T &x, const T &r);
-  const T& linspace(const value_type &a, const value_type &b, const T &r,
-                    size_type n = 100);
-  const T& logspace(const value_type &a, const value_type &b, const T &r,
-                    size_type n = 100);
+  const T& linspace(const value_type &a, const value_type &b, const T &r);
+  const T& logspace(const value_type &a, const value_type &b, const T &r);
   const T& tril(const T &x, const T &r);
   const T& triu(const T &x, const T &r);
 
   // Non-const linear algebra constructors
   T& diag(const T &x, T *r);
   T& eye(const T &x, T *r);
-  T& linspace(const value_type &a, const value_type &b, T *r,
-              size_type n = 100);
-  T& logspace(const value_type &a, const value_type &b, T *r,
-              size_type n = 100);
+  T& linspace(const value_type &a, const value_type &b, T *r);
+  T& logspace(const value_type &a, const value_type &b, T *r);
   T& tril(const T &x, T *r);
   T& triu(const T &x, T *r);
 
@@ -160,18 +157,18 @@ class Linalg {
                 BlasDiag diag = BLAS_NON_UNIT);
 
   // Const result level-3 BLAS routines
-  const T& gemm(const T &a, const T&b, const T &c,
+  const T& gemm(const T &a, const T &b, const T &c,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0);
-  const T& hemm(const T &a, const T&b, const T &c,
-                const value_type &alpha = 1.0, const value_type &beta = 0.0
+  const T& hemm(const T &a, const T &b, const T &c,
+                const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 BlasUplo uplo = BLAS_UPPER);
   const T& herk(const T &a, const T &c, const value_type &alpha = 1.0,
                 const value_type &beta = 0.0, BlasUplo uplo = BLAS_UPPER);
-  const T& herk2(const T &a, const T&b, const T &c,
+  const T& herk2(const T &a, const T &b, const T &c,
                  const value_type &alpha = 1.0, const value_type &beta = 0.0,
                  BlasUplo uplo = BLAS_UPPER);
-  const T& symm(const T &a, const T&b, const T &c,
-                const value_type &alpha = 1.0, const value_type &beta = 0.0
+  const T& symm(const T &a, const T &b, const T &c,
+                const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 BlasUplo uplo = BLAS_UPPER);
   const T& syrk(const T &a, const T &c, const value_type &alpha = 1.0,
                 const value_type &beta = 0.0,BlasUplo uplo = BLAS_UPPER);
@@ -179,7 +176,7 @@ class Linalg {
                  const value_type &alpha = 1.0, const value_type &beta = 0.0,
                  BlasUplo uplo = BLAS_UPPER);
   const T& trmm(const T &a, const T&b, const T &c,
-                const value_type &alpha = 1.0, const value_type &beta = 0.0
+                const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 BlasUplo uplo = BLAS_UPPER, BlasDiag diag = BLAS_NON_UNIT);
   const T& trsm(const T &a, const T &b, const value_type &alpha = 1.0,
                 BlasSide side = BLAS_LEFT, BlasUplo uplo = BLAS_UPPER,

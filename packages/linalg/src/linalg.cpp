@@ -17,6 +17,10 @@
  * @}
  */
 
+#include "thunder/linalg.hpp"
+#include "thunder/linalg/linalg.hpp"
+#include "thunder/linalg/math.hpp"
+
 namespace thunder {
 namespace linalg {
 
