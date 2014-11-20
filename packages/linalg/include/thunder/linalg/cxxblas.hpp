@@ -28,7 +28,7 @@ namespace thunder {
 namespace linalg {
 namespace cxxblas {
 
-// BLAS types
+// CXXBLAS enumeration types
 
 enum class Order{
   kRowMajor = 101,
@@ -53,7 +53,7 @@ enum class Side{
 };
 
 
-// BLAS level-1 functions
+// CXXBLAS level-1 functions
 
 float asum(const int n, const float *x, const int incx = 1);
 double asum(const int n, const double *x, const int incx = 1);
@@ -99,6 +99,17 @@ double dotc(const int n, const double *x, const double *y, const int incx = 1,
      const int n, const ::std::complex< float > *x,
      const ::std::complex< float > *y, const int incx = 1, const int incy = 1);
 ::std::complex< double > dotc(
+     const int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, const int incx = 1, const int incy = 1);
+
+float dotu(const int n, const float *x, const float *y, const int incx = 1,
+           const int incy = 1);
+double dotu(const int n, const double *x, const double *y, const int incx = 1,
+            const int incy = 1);
+::std::complex< float > dotu(
+     const int n, const ::std::complex< float > *x,
+     const ::std::complex< float > *y, const int incx = 1, const int incy = 1);
+::std::complex< double > dotu(
      const int n, const ::std::complex< double > *x,
      const ::std::complex< double > *y, const int incx = 1, const int incy = 1);
 
@@ -164,11 +175,666 @@ int iamin(const int n, const double *x, const int incx = 1);
 int iamin(const int n, const ::std::complex< float > *x, const int incx = 1);
 int iamin(const int n, const ::std::complex< double > *x, const int incx = 1);
 
-float cabs1(const ::std::complex< float > *x);
-double cabs1(const ::std::complex< double > *x);
+float cabs1(const float x);
+double cabs1(const double x);
+float cabs1(const ::std::complex< float > x);
+double cabs1(const ::std::complex< double > x);
 
 
-// BLAS level-2 functions
+// CXXBLAS level-2 functions -- these functions are row major
+
+void gbmv(const int m, const int n, const float *a, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int kl = 0,
+          const int ku = 0, const int lda = 0, const int incx = 1,
+          const int incy = 1, const Trans trans = Trans::kNoTrans);
+void gbmv(const int m, const int n,  const double *a, const double *x,
+          double *y, const double alpha = 1.0, const double beta = 0.0,
+          const int kl = 0, const int ku = 0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+void gbmv(const int m, const int n,  const ::std::complex< float > *a, 
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int kl = 0,
+          const int ku = 0, const int lda = 0, const int incx = 1,
+          const int incy = 1, const Trans trans = Trans::kNoTrans);
+void gbmv(const int m, const int n, const ::std::complex< double > *a, 
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int kl = 0,
+          const int ku = 0, const int lda = 0, const int incx = 1,
+          const int incy = 1, const Trans trans = Trans::kNoTrans);
+
+void gemv(const int m, const int n, const float *a, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 1.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+void gemv(const int m, const int n, const double *a, const double *x, double *y,
+          const double alpha = 1.0, const double beta = 1.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+void gemv(const int m, const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 1.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+void gemv(const int m, const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 1.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+void gemv(const int m, const int n, float *a, const ::std::complex< float > *x,
+          ::std::complex< float > *y, const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 1.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+void gemv(const int m, const int n, double *a,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 1.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Trans trans = Trans::kNoTrans);
+
+void ger(const int m, const int n,const float *x, const float *y, float *a,
+         const float alpha = 1.0, const int incx = 1, const int incy = 1,
+         const int lda = 0);
+void ger(const int m, const int n,const double *x, const double *y, double *a,
+         const double alpha = 1.0, const int incx = 1, const int incy = 1,
+         const int lda = 0);
+void ger(const int m, const int n,const ::std::complex< float > *x,
+         const ::std::complex< float > *y, ::std::complex< float > *a,
+         const ::std::complex< float > alpha = 1.0, const int incx = 1,
+         const int incy = 1, const int lda = 0);
+void ger(const int m, const int n,const ::std::complex< double > *x,
+         const ::std::complex< double > *y, ::std::complex< double > *a,
+         const ::std::complex< double > alpha = 1.0, const int incx = 1,
+         const int incy = 1, const int lda = 0);
+
+void gerc(const int m, const int n,const float *x, const float *y, float *a,
+          const float alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0);
+void gerc(const int m, const int n,const double *x, const double *y, double *a,
+          const double alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0);
+void gerc(const int m, const int n,const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0);
+void gerc(const int m, const int n,const ::std::complex< double > *x,
+          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0);
+
+void geru(const int m, const int n,const float *x, const float *y, float *a,
+          const float alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0);
+void geru(const int m, const int n,const double *x, const double *y, double *a,
+          const double alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0);
+void geru(const int m, const int n,const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0);
+void geru(const int m, const int n,const ::std::complex< double > *x,
+          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0);
+
+void hbmv(const int n, const float *a, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void hbmv(const int n, const double *a, const double *x, double *y,
+          const double alpha = 1.0, const float beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void hbmv(const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void hbmv(const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+
+void hemv(const int n, const float *a, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void hemv(const int n, const double *a, const double *x, double *y,
+          const double alpha = 1.0, const float beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void hemv(const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void hemv(const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+
+void her(const int n, const float *x, float *a, const float alpha = 1.0,
+         const int incx = 1, const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void her(const int n, const double *x, double *a, const double alpha = 1.0,
+         const int incx = 1, const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void her(const int n, const ::std::complex< float > *x,
+         ::std::complex< float > *a, const ::std::complex< float > alpha = 1.0,
+         const int incx = 1, const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void her(const int n, const ::std::complex< double > *x,
+         ::std::complex< double > *a,
+         const ::std::complex< double > alpha = 1.0, const int incx = 1,
+         const int lda = 0, const Uplo uplo = Uplo::kUpper);
+
+void her2(const int n, const float *x, const float *y, float *a,
+          const float alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void her2(const int n, const double *x, const double *y, double *a,
+          const double alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void her2(const int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0,
+          const Uplo uplo = Uplo::kUpper);
+void her2(const int n, const ::std::complex< double > *x,
+          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0,
+          const Uplo uplo = Uplo::kUpper);
+
+void hpmv(const int n, const float *ap, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+void hpmv(const int n, const double *ap, const double *x, double *y,
+          const double alpha = 1.0, const double beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+void hpmv(const int n, const ::std::complex< float > *ap,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+void hpmv(const int n, const ::std::complex< double > *ap,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+
+void hpr(const int n, const float *x, float *a, const float alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+void hpr(const int n, const double *x, double *a, const double alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+void hpr(const int n, const ::std::complex< float > *x,
+         ::std::complex< float > *a, const ::std::complex< float > alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+void hpr(const int n, const ::std::complex< double > *x,
+         ::std::complex< double > *a,
+         const ::std::complex< double > alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+
+void hpr2(const int n, const float *x, const float *y, float *a,
+          const float alpha = 1.0, const int incx = 1, const int incy = 1,
+          const Uplo uplo = Uplo::kUpper);
+void hpr2(const int n, const double *x, const double *y, double *a,
+          const double alpha = 1.0, const int incx = 1, const int incy = 1,
+          const Uplo uplo = Uplo::kUpper);
+void hpr2(const int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const Uplo uplo = Uplo::kUpper);
+void hpr2(const int n, const ::std::complex< double > *x,
+          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const Uplo uplo = Uplo::kUpper);
+
+void sbmv(const int n, const float *a, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void sbmv(const int n, const double *a, const double *x, double *y,
+          const double alpha = 1.0, const float beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void sbmv(const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void sbmv(const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int k = 0,
+          const int lda = 0, const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+
+void spmv(const int n, const float *ap, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+void spmv(const int n, const double *ap, const double *x, double *y,
+          const double alpha = 1.0, const double beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+void spmv(const int n, const ::std::complex< float > *ap,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+void spmv(const int n, const ::std::complex< double > *ap,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int incx = 1,
+          const int incy = 1, const Uplo trans = Uplo::kUpper);
+
+void spr(const int n, const float *x, float *a, const float alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+void spr(const int n, const double *x, double *a, const double alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+void spr(const int n, const ::std::complex< float > *x,
+         ::std::complex< float > *a, const ::std::complex< float > alpha = 1.0,
+         const int incx = 1, const Uplo uplo = Uplo::kUpper);
+void spr(const int n, const ::std::complex< double > *x,
+         ::std::complex< double > *a,
+         const ::std::complex< double > alpha = 1.0, const int incx = 1, 
+         const Uplo uplo = Uplo::kUpper);
+
+void spr2(const int n, const float *x, const float *y, float *a,
+          const float alpha = 1.0, const int incx = 1, const int incy = 1,
+          const Uplo uplo = Uplo::kUpper);
+void spr2(const int n, const double *x, const double *y, double *a,
+          const double alpha = 1.0, const int incx = 1, const int incy = 1,
+          const Uplo uplo = Uplo::kUpper);
+void spr2(const int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const Uplo uplo = Uplo::kUpper);
+void spr2(const int n, const ::std::complex< double > *x,
+          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const Uplo uplo = Uplo::kUpper);
+
+void symv(const int n, const float *a, const float *x, float *y,
+          const float alpha = 1.0, const float beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void symv(const int n, const double *a, const double *x, double *y,
+          const double alpha = 1.0, const float beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void symv(const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+void symv(const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *x, ::std::complex< double > *y,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int lda = 0,
+          const int incx = 1, const int incy = 1,
+          const Uplo trans = Uplo::kUpper);
+
+void syr(const int n, const float *x, float *a, const float alpha = 1.0,
+         const int incx = 1, const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void syr(const int n, const double *x, double *a, const double alpha = 1.0,
+         const int incx = 1, const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void syr(const int n, const ::std::complex< float > *x,
+         ::std::complex< float > *a, const ::std::complex< float > alpha = 1.0,
+         const int incx = 1, const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void syr(const int n, const ::std::complex< double > *x,
+         ::std::complex< double > *a,
+         const ::std::complex< double > alpha = 1.0, const int incx = 1,
+         const int lda = 0, const Uplo uplo = Uplo::kUpper);
+
+void syr2(const int n, const float *x, const float *y, float *a,
+          const float alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void syr2(const int n, const double *x, const double *y, double *a,
+          const double alpha = 1.0, const int incx = 1, const int incy = 1,
+          const int lda = 0, const Uplo uplo = Uplo::kUpper);
+void syr2(const int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0,
+          const Uplo uplo = Uplo::kUpper);
+void syr2(const int n, const ::std::complex< double > *x,
+          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > alpha = 1.0, const int incx = 1,
+          const int incy = 1, const int lda = 0,
+          const Uplo uplo = Uplo::kUpper);
+
+void tbmv(const int n, const float *a, float *x, const int k = 0,
+          const int lda = 0, const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tbmv(const int n, const double *a, double *x, const int k = 0,
+          const int lda = 0, const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tbmv(const int n, const ::std::complex< float > *a,
+          ::std::complex< float > *x, const int k = 0, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tbmv(const int n, const ::std::complex< double > *a,
+          ::std::complex< double > *x, const int k = 0, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+void tbsv(const int n, const float *a, float *x, const int k = 0,
+          const int lda = 0, const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tbsv(const int n, const double *a, double *x, const int k = 0,
+          const int lda = 0, const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tbsv(const int n, const ::std::complex< float > *a,
+          ::std::complex< float > *x, const int k = 0, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tbsv(const int n, const ::std::complex< double > *a,
+          ::std::complex< double > *x, const int k = 0, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+void tpmv(const int n, const float *ap, float *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tpmv(const int n, const double *ap, double *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tpmv(const int n, const ::std::complex< float > *ap,
+          ::std::complex< float > *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tpmv(const int n, const ::std::complex< double > *ap,
+          ::std::complex< double > *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+void tpsv(const int n, const float *ap, float *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tpsv(const int n, const double *ap, double *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tpsv(const int n, const ::std::complex< float > *ap,
+          ::std::complex< float > *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void tpsv(const int n, const ::std::complex< double > *ap,
+          ::std::complex< double > *x, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+void trmv(const int n, const float *a, float *x, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trmv(const int n, const double *a, double *x, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trmv(const int n, const ::std::complex< float > *a,
+          ::std::complex< float > *x, const int lda = 0, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trmv(const int n, const ::std::complex< double > *a,
+          ::std::complex< double > *x, const int lda = 0, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+void trsv(const int n, const float *a, float *x, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trsv(const int n, const double *a, double *x, const int lda = 0,
+          const int incx = 1, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trsv(const int n, const ::std::complex< float > *a,
+          ::std::complex< float > *x, const int lda = 0, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trsv(const int n, const ::std::complex< double > *a,
+          ::std::complex< double > *x, const int lda = 0, const int incx = 1,
+          const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+
+// CXXBLAS level-3 functions]
+
+void gemm(const int m, const int n, const int k, const float *a, const float *b,
+          float *c, const float alpha = 1.0, const float beta = 0.0,
+          const int lda = 1, const int ldb = 1, const int ldc = 1,
+          const Trans transa = Trans::kNoTrans,
+          const Trans transb = Trans::kNoTrans);
+void gemm(const int m, const int n, const int k, const double *a, const double *b,
+          double *c, const double alpha = 1.0, const double beta = 0.0,
+          const int lda = 1, const int ldb = 1, const int ldc = 1,
+          const Trans transa = Trans::kNoTrans,
+          const Trans transb = Trans::kNoTrans);
+void gemm(const int m, const int n, const int k,
+          const ::std::complex< float > *a, const ::std::complex< float > *b,
+          ::std::complex< float > *c, const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1,
+          const Trans transa = Trans::kNoTrans,
+          const Trans transb = Trans::kNoTrans);
+void gemm(const int m, const int n, const int k,
+          const ::std::complex< double > *a, const ::std::complex< double > *b,
+          ::std::complex< double > *c,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1,
+          const Trans transa = Trans::kNoTrans,
+          const Trans transb = Trans::kNoTrans);
+void gemm(const int m, const int n, const int k,
+          const float *a, const ::std::complex< float > *b,
+          ::std::complex< float > *c, const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1,
+          const Trans transa = Trans::kNoTrans,
+          const Trans transb = Trans::kNoTrans);
+void gemm(const int m, const int n, const int k,
+          const double *a, const ::std::complex< double > *b,
+          ::std::complex< double > *c,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1,
+          const Trans transa = Trans::kNoTrans,
+          const Trans transb = Trans::kNoTrans);
+
+void hemm(const int m, const int n, const float *a, const float *b, float *c,
+          const float alpha = 1.0, const float beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+void hemm(const int m, const int n, const double *a, const double *b, double *c,
+          const double alpha = 1.0, const double beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+void hemm(const int m, const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *b, ::std::complex< float > *c,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+void hemm(const int m, const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *b, ::std::complex< double > *c,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+
+void herk(const int n, const int k, const float *a, const float *c, 
+          const float alpha = 1.0, const float beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+void herk(const int n, const int k, const double *a, const double *c, 
+          const double alpha = 1.0, const double beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+void herk(const int n, const int k, const ::std::complex< float > *a,
+          const ::std::complex< float > *c,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+void herk(const int n, const int k, const ::std::complex< double > *a,
+          const ::std::complex< double > *c,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+
+void her2k(const int n, const int k, const float *a, const float *b,
+           const float *c,  const float alpha = 1.0, const float beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
+void her2k(const int n, const int k, const double *a, const float *b,
+           const double *c,  const double alpha = 1.0, const double beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
+void her2k(const int n, const int k, const ::std::complex< float > *a,
+           const ::std::complex< float > *b,
+           const ::std::complex< float > *c,
+           const ::std::complex< float > alpha = 1.0,
+           const ::std::complex< float > beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
+void her2k(const int n, const int k, const ::std::complex< double > *a,
+           const ::std::complex< double > *b,
+           const ::std::complex< double > *c,
+           const ::std::complex< double > alpha = 1.0,
+           const ::std::complex< double > beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper,
+           const Trans trans = Trans::kNoTrans);
+
+void symm(const int m, const int n, const float *a, const float *b, float *c,
+          const float alpha = 1.0, const float beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+void symm(const int m, const int n, const double *a, const double *b, double *c,
+          const double alpha = 1.0, const double beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+void symm(const int m, const int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *b, ::std::complex< float > *c,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+void symm(const int m, const int n, const ::std::complex< double > *a,
+          const ::std::complex< double > *b, ::std::complex< double > *c,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, const int lda = 1,
+          const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
+          const Uplo Uplo = Uplo::kUpper);
+
+void syrk(const int n, const int k, const float *a, const float *c, 
+          const float alpha = 1.0, const float beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+void syrk(const int n, const int k, const double *a, const double *c, 
+          const double alpha = 1.0, const double beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+void syrk(const int n, const int k, const ::std::complex< float > *a,
+          const ::std::complex< float > *c,
+          const ::std::complex< float > alpha = 1.0,
+          const ::std::complex< float > beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+void syrk(const int n, const int k, const ::std::complex< double > *a,
+          const ::std::complex< double > *c,
+          const ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > beta = 0.0, 
+          const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
+          const Trans trans = Trans::kNoTrans);
+
+void syr2k(const int n, const int k, const float *a, const float *b,
+           const float *c,  const float alpha = 1.0, const float beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
+void syr2k(const int n, const int k, const double *a, const float *b,
+           const double *c,  const double alpha = 1.0, const double beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
+void syr2k(const int n, const int k, const ::std::complex< float > *a,
+           const ::std::complex< float > *b,
+           const ::std::complex< float > *c,
+           const ::std::complex< float > alpha = 1.0,
+           const ::std::complex< float > beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
+void syr2k(const int n, const int k, const ::std::complex< double > *a,
+           const ::std::complex< double > *b,
+           const ::std::complex< double > *c,
+           const ::std::complex< double > alpha = 1.0,
+           const ::std::complex< double > beta = 0.0, 
+           const int lda = 0, const int ldb = 0, const int ldc = 0,
+           const Uplo uplo = Uplo::kUpper,
+           const Trans trans = Trans::kNoTrans);
+
+void trmm(const int m, const int n, const float *a, float *b,
+          const float alpha = 1.0, const int lda = 0, const int ldb = 0,
+          const Side side = Side::kLeft, const Uplo uplo = Uplo::kUpper,
+          const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trmm(const int m, const int n, const double *a, double *b,
+          const double alpha = 1.0, const int lda = 0, const int ldb = 0,
+          const Side side = Side::kLeft, const Uplo uplo = Uplo::kUpper,
+          const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trmm(const int m, const int n, const ::std::complex< float > *a,
+          ::std::complex< float > *b,
+          const ::std::complex< float > alpha = 1.0, const int lda = 0,
+          const int ldb = 0, const Side side = Side::kLeft,
+          const Uplo uplo = Uplo::kUpper, const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trmm(const int m, const int n, const ::std::complex< double > *a,
+          ::std::complex< double > *b,
+          const ::std::complex< double > alpha = 1.0, const int lda = 0,
+          const int ldb = 0, const Side side = Side::kLeft,
+          const Uplo uplo = Uplo::kUpper, const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+
+void trsm(const int m, const int n, const float *a, float *b,
+          const float alpha = 1.0, const int lda = 0, const int ldb = 0,
+          const Side side = Side::kLeft, const Uplo uplo = Uplo::kUpper,
+          const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trsm(const int m, const int n, const double *a, double *b,
+          const double alpha = 1.0, const int lda = 0, const int ldb = 0,
+          const Side side = Side::kLeft, const Uplo uplo = Uplo::kUpper,
+          const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trsm(const int m, const int n, const ::std::complex< float > *a,
+          ::std::complex< float > *b,
+          const ::std::complex< float > alpha = 1.0, const int lda = 0,
+          const int ldb = 0, const Side side = Side::kLeft,
+          const Uplo uplo = Uplo::kUpper, const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
+void trsm(const int m, const int n, const ::std::complex< double > *a,
+          ::std::complex< double > *b,
+          const ::std::complex< double > alpha = 1.0, const int lda = 0,
+          const int ldb = 0, const Side side = Side::kLeft,
+          const Uplo uplo = Uplo::kUpper, const Trans transa = Trans::kNoTrans,
+          const Diag diag = Diag::kNonUnit);
 
 }  // namespace cxxblas
 }  // namespace linalg

@@ -91,8 +91,8 @@ class Linalg {
   const T& cabs1(const T &x, const T &r);
 
   // Const result BLAS level-2 routines
-  const T& gbmv(const T &a, const T &x, const T &y, size_type kl = 1,
-                size_type ku = 1, const value_type &alpha = 1.0,
+  const T& gbmv(const T &a, const T &x, const T &y, size_type kl = 0,
+                size_type ku = 0, const value_type &alpha = 1.0,
                 const value_type &beta = 0.0);
   const T& gemv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0);
@@ -101,7 +101,7 @@ class Linalg {
   const T& gerc(const T &x, const T &y, const T &a,
                 const value_type &alpha = 1.0);
   const T& hbmv(const T &a, const T &x, const T &y,
-                const value_type &alpha = 1.0, size_type k = 1,
+                const value_type &alpha = 1.0, size_type k = 0,
                 const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
   const T& hemv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
@@ -118,7 +118,7 @@ class Linalg {
   const T& hpr2(const T &x, const T &y, const T &ap,
                 const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& sbmv(const T &a, const T &x, const T &y,
-                size_type k = 1, const value_type &alpha = 1.0,
+                size_type k = 0, const value_type &alpha = 1.0,
                 const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
   const T& spmv(const T &ap, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
@@ -134,9 +134,9 @@ class Linalg {
                Uplo uplo = Uplo::kUpper);
   const T& syr2(const T &x, const T &y, const T &a,
                 const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
-  const T& tbmv(const T &a, const T &x, size_type k = 1,
+  const T& tbmv(const T &a, const T &x, size_type k = 0,
                 Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
-  const T& tbsv(const T &a, const T &x, size_type k = 1,
+  const T& tbsv(const T &a, const T &x, size_type k = 0,
                 Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
   const T& tpmv(const T &ap, const T &x, Uplo uplo = Uplo::kUpper,
                 Diag diag = Diag::kNonUnit);

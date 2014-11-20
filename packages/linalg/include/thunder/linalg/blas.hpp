@@ -151,7 +151,7 @@ void cgbmv_(const char *trans, const int *m, const int *n, const int *kl,
             const int *ku, const ::std::complex< float > *alpha,
             const ::std::complex< float > *a, const int *lda,
             const ::std::complex< float > *x, const int *incx,
-            const ::std::complex< float > *beta, ::std::complex< double > *y,
+            const ::std::complex< float > *beta, ::std::complex< float > *y,
             const int *incy);
 void zgbmv_(const char *trans, const int *m, const int *n, const int *kl,
             const int *ku, const ::std::complex< double > *alpha,
@@ -170,7 +170,7 @@ void cgemv_(const char *trans, const int *m, const int *n,
             const ::std::complex< float > *alpha,
             const ::std::complex< float > *a, const int *lda,
             const ::std::complex< float > *x, const int *incx,
-            const ::std::complex< float > *beta, ::std::complex< double > *y,
+            const ::std::complex< float > *beta, ::std::complex< float > *y,
             const int *incy);
 void zgemv_(const char *trans, const int *m, const int *n,
             const ::std::complex< double > *alpha,
@@ -319,11 +319,11 @@ void dspr2_(const char *uplo, const int *n, const double *alpha,
             double *ap);
 
 void ssymv_(const char *uplo, const int *n, const float *alpha, const int *lda,
-            const float *x, const int *incx, const float *beta, const float *y,
+            const float *x, const int *incx, const float *beta, float *y,
             const int *incy);
 void dsymv_(const char *uplo, const int *n, const double *alpha, const int *lda,
             const double *x, const int *incx, const double *beta,
-            const float *y, const int *incy);
+            float *y, const int *incy);
 
 void ssyr_(const char *uplo, const int *n, const float *alpha,
            const float *x, const int *incx, float *a, const int *lda);
@@ -338,74 +338,74 @@ void dsyr2_(const char *uplo, const int *n, const double *alpha,
             double *a, const int *lda);
 
 void stbmv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const int *k, const float *a, const int *lda, const float *x,
+            const int *k, const float *a, const int *lda, float *x,
             const int *incx);
 void dtbmv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const int *k, const double *a, const int *lda, const double *x,
+            const int *k, const double *a, const int *lda, double *x,
             const int *incx);
 void ctbmv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const int *k, const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *x, const int *incx);
+            ::std::complex< float > *x, const int *incx);
 void ztbmv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const int *k, const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *x, const int *incx);
+            ::std::complex< double > *x, const int *incx);
 
 void stbsv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const int *k, const float *a, const int *lda, const float *x,
+            const int *k, const float *a, const int *lda, float *x,
             const int *incx);
 void dtbsv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const int *k, const double *a, const int *lda, const double *x,
+            const int *k, const double *a, const int *lda, double *x,
             const int *incx);
 void ctbsv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const int *k, const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *x, const int *incx);
+            ::std::complex< float > *x, const int *incx);
 void ztbsv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const int *k, const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *x, const int *incx);
+            ::std::complex< double > *x, const int *incx);
 
 void stpmv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const float *ap, const float *x, const int *incx);
+            const float *ap, float *x, const int *incx);
 void dtpmv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const double *ap, const double *x, const int *incx);
+            const double *ap, double *x, const int *incx);
 void ctpmv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const ::std::complex< float > *ap, const ::std::complex< float > *x,
+            const ::std::complex< float > *ap, ::std::complex< float > *x,
             const int *incx);
 void ztpmv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const ::std::complex< double > *ap,
-            const ::std::complex< double > *x, const int *incx);
+            ::std::complex< double > *x, const int *incx);
 
 void stpsv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const float *ap, const float *x, const int *incx);
+            const float *ap, float *x, const int *incx);
 void dtpsv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const double *ap, const double *x, const int *incx);
+            const double *ap, double *x, const int *incx);
 void ctpsv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const ::std::complex< float > *ap, const ::std::complex< float > *x,
+            const ::std::complex< float > *ap, ::std::complex< float > *x,
             const int *incx);
 void ztpsv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const ::std::complex< double > *ap,
-            const ::std::complex< double > *x, const int *incx);
+            const ::std::complex< double > *ap, ::std::complex< double > *x,
+            const int *incx);
 
-void stymv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const float *a, const int *lda, const float *x, const int *incx);
-void dtymv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const double *a, const int *lda, const double *x, const int *incx);
-void ctymv_(const char *uplo, const char *trans, const char *diag, const int *n,
+void strmv_(const char *uplo, const char *trans, const char *diag, const int *n,
+            const float *a, const int *lda, float *x, const int *incx);
+void dtrmv_(const char *uplo, const char *trans, const char *diag, const int *n,
+            const double *a, const int *lda, double *x, const int *incx);
+void ctrmv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *x, const int *incx);
-void ztymv_(const char *uplo, const char *trans, const char *diag, const int *n,
+            ::std::complex< float > *x, const int *incx);
+void ztrmv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *x, const int *incx);
+            ::std::complex< double > *x, const int *incx);
 
-void stysv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const float *a, const int *lda, const float *x, const int *incx);
-void dtysv_(const char *uplo, const char *trans, const char *diag, const int *n,
-            const double *a, const int *lda, const double *x, const int *incx);
-void ctysv_(const char *uplo, const char *trans, const char *diag, const int *n,
+void strsv_(const char *uplo, const char *trans, const char *diag, const int *n,
+            const float *a, const int *lda, float *x, const int *incx);
+void dtrsv_(const char *uplo, const char *trans, const char *diag, const int *n,
+            const double *a, const int *lda, double *x, const int *incx);
+void ctrsv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *x, const int *incx);
-void ztysv_(const char *uplo, const char *trans, const char *diag, const int *n,
+            ::std::complex< float > *x, const int *incx);
+void ztrsv_(const char *uplo, const char *trans, const char *diag, const int *n,
             const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *x, const int *incx);
+            ::std::complex< double > *x, const int *incx);
 
 
 // BLAS level-3 routines -- note that these functions are column-major!
@@ -456,26 +456,26 @@ void zhemm_(const char *side, const char *uplo, const int *m, const int *n,
 
 void cherk_(const char *uplo, const char *trans, const int *n, const int *k,
             const ::std::complex< float > *alpha,
-            const ::std::complex< float > a, const int *lda,
-            const ::std::complex< float > beta,
-            const ::std::complex< float > c, const int *ldc);
+            const ::std::complex< float > *a, const int *lda,
+            const ::std::complex< float > *beta,
+            const ::std::complex< float > *c, const int *ldc);
 void zherk_(const char *uplo, const char *trans, const int *n, const int *k,
             const ::std::complex< double > *alpha,
-            const ::std::complex< double > a, const int *lda,
-            const ::std::complex< double > beta,
-            const ::std::complex< double > c, const int *ldc);
+            const ::std::complex< double > *a, const int *lda,
+            const ::std::complex< double > *beta,
+            const ::std::complex< double > *c, const int *ldc);
 void cher2k_(const char *uplo, const char *trans, const int *n, const int *k,
              const ::std::complex< float > *alpha,
-             const ::std::complex< float > a, const int *lda,
-             const ::std::complex< float > b, const int *ldb,
-             const ::std::complex< float > beta,
-             const ::std::complex< float > c, const int *ldc);
+             const ::std::complex< float > *a, const int *lda,
+             const ::std::complex< float > *b, const int *ldb,
+             const ::std::complex< float > *beta,
+             const ::std::complex< float > *c, const int *ldc);
 void zher2k_(const char *uplo, const char *trans, const int *n, const int *k,
              const ::std::complex< double > *alpha,
-             const ::std::complex< double > a, const int *lda,
-             const ::std::complex< double > b, const int *ldb,
-             const ::std::complex< double > beta,
-             const ::std::complex< double > c, const int *ldc);
+             const ::std::complex< double > *a, const int *lda,
+             const ::std::complex< double > *b, const int *ldb,
+             const ::std::complex< double > *beta,
+             const ::std::complex< double > *c, const int *ldc);
 
 void ssymm_(const char *side, const char *uplo, const int *m, const int *n,
             const float *alpha, const float *a, const int *lda, const float *b,
@@ -536,37 +536,37 @@ void zsyr2k_(const char *uplo, const char *trans, const int *n, const int *k,
 
 void strmm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n, const float *alpha,
-            const float *a, const int *lda, const float *b, const int *ldb);
+            const float *a, const int *lda, float *b, const int *ldb);
 void dtrmm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n, const double *alpha,
-            const double *a, const int *lda, const double *b, const int *ldb);
+            const double *a, const int *lda, double *b, const int *ldb);
 void ctrmm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n,
             const ::std::complex< float > *alpha,
             const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *b, const int *ldb);
+            ::std::complex< float > *b, const int *ldb);
 void ztrmm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n,
             const ::std::complex< double > *alpha,
             const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *b, const int *ldb);
+            ::std::complex< double > *b, const int *ldb);
 
 void strsm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n, const float *alpha,
-            const float *a, const int *lda, const float *b, const int *ldb);
+            const float *a, const int *lda, float *b, const int *ldb);
 void dtrsm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n, const double *alpha,
-            const double *a, const int *lda, const double *b, const int *ldb);
+            const double *a, const int *lda, double *b, const int *ldb);
 void ctrsm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n,
             const ::std::complex< float > *alpha,
             const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *b, const int *ldb);
+            ::std::complex< float > *b, const int *ldb);
 void ztrsm_(const char *side, const char *uplo, const char *transa,
             const char *diag, const int *m, const int *n,
             const ::std::complex< double > *alpha,
             const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *b, const int *ldb);
+            ::std::complex< double > *b, const int *ldb);
 
 }  // extern "C"
 
