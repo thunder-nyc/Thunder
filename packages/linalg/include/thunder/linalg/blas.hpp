@@ -88,29 +88,30 @@ void zrot_(const int *n, ::std::complex< double > *x, const int *incx,
 void srotg_(float *a, float *b, float *c, float *s);
 void drotg_(double *a, double *b, double *c, double *s);
 void crotg_(::std::complex< float > *a, ::std::complex< float > *b,
-            ::std::complex< float > *c, ::std::complex< float > *s);
+            float *c, ::std::complex< float > *s);
 void zrotg_(::std::complex< double > *a, ::std::complex< double > *b,
-            ::std::complex< double > *c, ::std::complex< double > *s);
+            float *c, ::std::complex< double > *s);
 
-void srotm_(const int *n, const float *x, const int *incx, const float *y,
-            const int *incy, const float *param);
-void drotm_(const int *n, const double *x, const int *incx, const double *y,
+void srotm_(const int *n, float *x, const int *incx, float *y, const int *incy,
+            const float *param);
+void drotm_(const int *n, double *x, const int *incx, double *y,
             const int *incy, const double *param);
 
-void srotmg_(float *d1, float *d2, float *x1, const float *x2, float *param);
+void srotmg_(float *d1, float *d2, float *x1, const float *x2,
+             const float *param);
 void drotmg_(double *d1, double *d2, float *x1, const double *x2,
-             double *param);
+             const double *param);
 
 
-void sscal_(const int *n, const float *alpha, float *x, const int *incx);
-void dscal_(const int *n, const double *alpha, double *x, const int *incx);
-void cscal_(const int *n, const ::std::complex< float > *alpha,
+void sscal_(const int *n, const float *a, float *x, const int *incx);
+void dscal_(const int *n, const double *a, double *x, const int *incx);
+void cscal_(const int *n, const ::std::complex< float > *a,
             ::std::complex< float > *x, const int *incx);
-void zscal_(const int *n, const ::std::complex< double > *alpha,
+void zscal_(const int *n, const ::std::complex< double > *a,
             ::std::complex< double > *x, const int *incx);
-void csscal_(const int *n, const float *alpha, ::std::complex< float > *x,
+void csscal_(const int *n, const float *a, ::std::complex< float > *x,
              const int *incx);
-void zdscal_(const int *n, const double *alpha, ::std::complex< double > *x,
+void zdscal_(const int *n, const double *a, ::std::complex< double > *x,
              const int *incx);
 
 void sswap_(const int *n, float *x, const int *incx, float *y,

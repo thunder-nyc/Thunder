@@ -21,6 +21,7 @@
 #define THUNDER_LINALG_LINALG_HPP_
 
 #include "thunder/tensor.hpp"
+#include "thunder/linalg/cxxblas.hpp"
 #include "thunder/linalg/math.hpp"
 
 namespace thunder {
@@ -34,6 +35,10 @@ class Linalg {
 
   typedef typename T::value_type value_type;
   typedef typename T::size_type size_type;
+
+  typedef cxxblas::Uplo Uplo;
+  typedef cxxblas::Diag Diag;
+  typedef cxxblas::Side Side;
   
   Linalg();
   template < typename... G >
@@ -43,20 +48,6 @@ class Linalg {
   // Accessors
   H handle();
   void handle(H);
-
-  // Needed constant types
-  enum BlasUplo {
-    BLAS_UPPER,
-    BLAS_LOWER
-  };
-  enum BlasDiag {
-    BLAS_NON_UNIT,
-    BLAS_UNIT
-  };
-  enum BlasSide {
-    BLAS_RIGHT,
-    BLAS_LEFT
-  };
 
   // Const linear algebra constructors
   const T& diag(const T &x, const T &r);
@@ -111,76 +102,76 @@ class Linalg {
                 const value_type &alpha = 1.0);
   const T& hbmv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, size_type k = 1,
-                const value_type &beta = 0.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
   const T& hemv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER);
+                Uplo uplo = Uplo::kUpper);
   const T& her(const T &x, const T &a, const value_type &alpha = 1.0,
-               BlasUplo uplo = BLAS_UPPER);
+               Uplo uplo = Uplo::kUpper);
   const T& her2(const T &x, const T &y, const T &a,
-                const value_type &alpha = 1.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& hpmv(const T &ap, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER);
+                Uplo uplo = Uplo::kUpper);
   const T& hpr(const T &x, const T &ap, const value_type &alpha = 1.0,
-               BlasUplo uplo = BLAS_UPPER);
+               Uplo uplo = Uplo::kUpper);
   const T& hpr2(const T &x, const T &y, const T &ap,
-                const value_type &alpha = 1.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& sbmv(const T &a, const T &x, const T &y,
                 size_type k = 1, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
   const T& spmv(const T &ap, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER);
+                Uplo uplo = Uplo::kUpper);
   const T& spr(const T &x, const T &ap, const value_type &alpha = 1.0,
-               BlasUplo uplo = BLAS_UPPER);
+               Uplo uplo = Uplo::kUpper);
   const T& spr2(const T &x, const T &y, const T &ap,
-                const value_type &alpha = 1.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& symv(const T &ap, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER);
+                Uplo uplo = Uplo::kUpper);
   const T& syr(const T &x, const T &a, const value_type &alpha = 1.0,
-               BlasUplo uplo = BLAS_UPPER);
+               Uplo uplo = Uplo::kUpper);
   const T& syr2(const T &x, const T &y, const T &a,
-                const value_type &alpha = 1.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& tbmv(const T &a, const T &x, size_type k = 1,
-                BlasUplo uplo = BLAS_UPPER, BlasDiag diag = BLAS_NON_UNIT);
+                Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
   const T& tbsv(const T &a, const T &x, size_type k = 1,
-                BlasUplo uplo = BLAS_UPPER, BlasDiag diag = BLAS_NON_UNIT);
-  const T& tpmv(const T &ap, const T &x, BlasUplo uplo = BLAS_UPPER,
-                BlasDiag diag = BLAS_NON_UNIT);
-  const T& tpsv(const T &ap, const T &x, BlasUplo uplo = BLAS_UPPER,
-                BlasDiag diag = BLAS_NON_UNIT);
-  const T& trmv(const T &a, const T &x, BlasUplo uplo = BLAS_UPPER,
-                BlasDiag diag = BLAS_NON_UNIT);
-  const T& trsv(const T &a, const T &x, BlasUplo uplo = BLAS_UPPER,
-                BlasDiag diag = BLAS_NON_UNIT);
+                Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
+  const T& tpmv(const T &ap, const T &x, Uplo uplo = Uplo::kUpper,
+                Diag diag = Diag::kNonUnit);
+  const T& tpsv(const T &ap, const T &x, Uplo uplo = Uplo::kUpper,
+                Diag diag = Diag::kNonUnit);
+  const T& trmv(const T &a, const T &x, Uplo uplo = Uplo::kUpper,
+                Diag diag = Diag::kNonUnit);
+  const T& trsv(const T &a, const T &x, Uplo uplo = Uplo::kUpper,
+                Diag diag = Diag::kNonUnit);
 
   // Const result level-3 BLAS routines
   const T& gemm(const T &a, const T &b, const T &c,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0);
   const T& hemm(const T &a, const T &b, const T &c,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER);
+                Uplo uplo = Uplo::kUpper);
   const T& herk(const T &a, const T &c, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0, BlasUplo uplo = BLAS_UPPER);
+                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
   const T& herk2(const T &a, const T &b, const T &c,
                  const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                 BlasUplo uplo = BLAS_UPPER);
+                 Uplo uplo = Uplo::kUpper);
   const T& symm(const T &a, const T &b, const T &c,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER);
+                Uplo uplo = Uplo::kUpper);
   const T& syrk(const T &a, const T &c, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0,BlasUplo uplo = BLAS_UPPER);
+                const value_type &beta = 0.0,Uplo uplo = Uplo::kUpper);
   const T& syrk2(const T &a, const T&b, const T &c,
                  const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                 BlasUplo uplo = BLAS_UPPER);
+                 Uplo uplo = Uplo::kUpper);
   const T& trmm(const T &a, const T&b, const T &c,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                BlasUplo uplo = BLAS_UPPER, BlasDiag diag = BLAS_NON_UNIT);
+                Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
   const T& trsm(const T &a, const T &b, const value_type &alpha = 1.0,
-                BlasSide side = BLAS_LEFT, BlasUplo uplo = BLAS_UPPER,
-                BlasDiag diag = BLAS_NON_UNIT);
+                Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
+                Diag diag = Diag::kNonUnit);
 
  private:
   H handle_;
