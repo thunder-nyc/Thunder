@@ -121,7 +121,7 @@ double dotc(const int n, const double *x, const double *y, const int incx,
      const int n, const ::std::complex< float > *x,
      const ::std::complex< float > *y, const int incx, const int incy) {
   ::std::complex< float > r;
-  cdotc_(&r, &n, x, &incx, y, &incy);
+  cdotcsubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
@@ -129,7 +129,7 @@ double dotc(const int n, const double *x, const double *y, const int incx,
      const int n, const ::std::complex< double > *x,
      const ::std::complex< double > *y, const int incx, const int incy) {
   ::std::complex< double > r;
-  zdotc_(&r, &n, x, &incx, y, &incy);
+  zdotcsubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
@@ -147,7 +147,7 @@ double dotu(const int n, const double *x, const double *y, const int incx,
      const int n, const ::std::complex< float > *x,
      const ::std::complex< float > *y, const int incx, const int incy) {
   ::std::complex< float > r;
-  cdotu_(&r, &n, x, &incx, y, &incy);
+  cdotusubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
@@ -155,7 +155,7 @@ double dotu(const int n, const double *x, const double *y, const int incx,
      const int n, const ::std::complex< double > *x,
      const ::std::complex< double > *y, const int incx, const int incy) {
   ::std::complex< double > r;
-  zdotu_(&r, &n, x, &incx, y, &incy);
+  zdotusubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 

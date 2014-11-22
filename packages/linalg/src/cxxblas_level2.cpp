@@ -17,35 +17,18 @@
  * @}
  */
 
-#include <complex>
-#include <cstdlib>
-
-#include "gtest/gtest.h"
 #include "thunder/linalg/cxxblas.hpp"
+
+#include <complex>
+
+#include "thunder/linalg/blas.hpp"
 
 namespace thunder {
 namespace linalg {
+namespace cxxblas {
 
-TEST(LinalgTest, dummyTest) {
-  int n = 1000;
-  ::std::complex< double > x[1000];
-  int incx = 1;
-  ::std::complex< double > y[1000];
-  int incy = 1;
-  ::std::complex< double > r;
 
-  for (int i = 0; i < n; ++i) {
-    x[i] = ::std::complex< double >(0.5, 0);
-    y[i] = ::std::complex< double >(2, 0);
-  }
 
-  ::std::printf("(%g, %g)\n", r.real(), r.imag());
-  r = cxxblas::dotc(n, x, y);
-  ::std::printf("(%g, %g)\n", r.real(), r.imag());
-  ::std::printf("%g\n", cxxblas::nrm2(n, x));
-  ::std::printf("%d\n", cxxblas::iamax(n, x));
-  ::std::printf("%g\n", cxxblas::asum(n, x));
-}
-
+}  // namespace cxxblas
 }  // namespace linalg
 }  // namespace thunder

@@ -60,18 +60,18 @@ float sdsdot_(const int *n, const float *sb, const float *sx, const int *incx,
               const float *sy, const int *incy);
 double dsdot_(const int *n, const float *sx, const int *incx, const float *sy,
               const int *incy);
-void cdotc_(::std::complex< float > *r, const int *n,
-            const ::std::complex< float > *x, const int *incx,
-            const ::std::complex< float > *y, const int *incy);
-void zdotc_(::std::complex< double > *r, const int *n,
-            const ::std::complex< double > *x, const int *incx,
-            const ::std::complex< double > *y, const int *incy);
-void cdotu_(::std::complex< float > *r, const int *n,
-            const ::std::complex< float > *x, const int *incx,
-            const ::std::complex< float > *y, const int *incy);
-void zdotu_(::std::complex< double > *r, const int *n,
-            const ::std::complex< double > *x, const int *incx,
-            const ::std::complex< double > *y, const int *incy);
+void cdotcsubtd_(::std::complex< float > *r, const int *n,
+                 const ::std::complex< float > *x, const int *incx,
+                 const ::std::complex< float > *y, const int *incy);
+void zdotcsubtd_(::std::complex< double > *r, const int *n,
+                 const ::std::complex< double > *x, const int *incx,
+                 const ::std::complex< double > *y, const int *incy);
+void cdotusubtd_(::std::complex< float > *r, const int *n,
+                 const ::std::complex< float > *x, const int *incx,
+                 const ::std::complex< float > *y, const int *incy);
+void zdotusubtd_(::std::complex< double > *r, const int *n,
+                 const ::std::complex< double > *x, const int *incx,
+                 const ::std::complex< double > *y, const int *incy);
 
 float snrm2_(const int *n, const float *x, const int *incx);
 double dnrm2_(const int *n, const double *x, const int *incx);

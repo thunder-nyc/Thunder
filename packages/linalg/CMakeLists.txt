@@ -1,10 +1,11 @@
 # Get all the include and source files
 file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "include/thunder/*.hpp")
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
+file(GLOB_RECURSE FORTRAN_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.f")
 file(GLOB_RECURSE TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/*.cpp")
 
 # Create the library
-add_library(thunder_linalg ${HEADERS} ${SOURCES})
+add_library(thunder_linalg ${HEADERS} ${SOURCES} ${FORTRAN_SOURCES})
 target_include_directories(thunder_linalg PUBLIC "include")
 target_link_libraries(thunder_linalg thunder_exception thunder_storage thunder_tensor ${BLAS_LIBRARIES})
 
