@@ -39,10 +39,10 @@ class Linalg {
   typedef cxxblas::Uplo Uplo;
   typedef cxxblas::Diag Diag;
   typedef cxxblas::Side Side;
-  
+
   Linalg();
   template < typename... G >
-  Linalg(G... g);
+  explicit Linalg(G... g);
   ~Linalg();
 
   // Accessors
@@ -162,7 +162,7 @@ class Linalg {
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 Uplo uplo = Uplo::kUpper);
   const T& syrk(const T &a, const T &c, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0,Uplo uplo = Uplo::kUpper);
+                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
   const T& syrk2(const T &a, const T&b, const T &c,
                  const value_type &alpha = 1.0, const value_type &beta = 0.0,
                  Uplo uplo = Uplo::kUpper);

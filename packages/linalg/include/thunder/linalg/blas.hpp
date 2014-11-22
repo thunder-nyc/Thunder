@@ -26,10 +26,11 @@ extern "C" {
 
 // BLAS level-1 functions
 
-float sasum_(const int *n, float *x, const int *incx);
-float scasum_(const int *n, ::std::complex< float > *x, const int *incx);
-double dasum_(const int *n, double *x, const int *incx);
-double dcasum_(const int *n, ::std::complex< double > *x, const int *incx);
+float sasum_(const int *n, const float *x, const int *incx);
+float scasum_(const int *n, const ::std::complex< float > *x, const int *incx);
+double dasum_(const int *n, const double *x, const int *incx);
+double dzasum_(const int *n, const ::std::complex< double > *x,
+               const int *incx);
 
 void saxpy_(const int *n, const float *alpha, const float *x, const int *incx,
             float *y, const int *incy);
@@ -59,16 +60,18 @@ float sdsdot_(const int *n, const float *sb, const float *sx, const int *incx,
               const float *sy, const int *incy);
 double dsdot_(const int *n, const float *sx, const int *incx, const float *sy,
               const int *incy);
-void cdotc_(::std::complex< float > *r, const ::std::complex< float > *x,
-            const int *incx, const ::std::complex< float > *y, const int *incy);
-void zdotc_(::std::complex< double > *r, const ::std::complex< double > *x,
-            const int *incx, const ::std::complex< double > *y,
-            const int *incy);
-void cdotu_(::std::complex< float > *r, const ::std::complex< float > *x,
-            const int *incx, const ::std::complex< float > *y, const int *incy);
-void zdotu_(::std::complex< double > *r, const ::std::complex< double > *x,
-            const int *incx, const ::std::complex< double > *y,
-            const int *incy);
+void cdotc_(::std::complex< float > *r, const int *n,
+            const ::std::complex< float > *x, const int *incx,
+            const ::std::complex< float > *y, const int *incy);
+void zdotc_(::std::complex< double > *r, const int *n,
+            const ::std::complex< double > *x, const int *incx,
+            const ::std::complex< double > *y, const int *incy);
+void cdotu_(::std::complex< float > *r, const int *n,
+            const ::std::complex< float > *x, const int *incx,
+            const ::std::complex< float > *y, const int *incy);
+void zdotu_(::std::complex< double > *r, const int *n,
+            const ::std::complex< double > *x, const int *incx,
+            const ::std::complex< double > *y, const int *incy);
 
 float snrm2_(const int *n, const float *x, const int *incx);
 double dnrm2_(const int *n, const double *x, const int *incx);
@@ -76,21 +79,23 @@ float scnrm2_(const int *n, const ::std::complex< float > *x, const int *incx);
 double dznrm2_(const int *n, const ::std::complex< double > *x,
                const int *incx);
 
-void srot_(const int *n, float *x, const int *incx, float *y, const float *c,
-          const float *s);
-void drot_(const int *n, double *x, const int *incx, double *y, const double *c,
-          const double *s);
-void crot_(const int *n, ::std::complex< float > *x, const int *incx,
-          ::std::complex< float > *y, const float *c, const float *s);
-void zrot_(const int *n, ::std::complex< double > *x, const int *incx,
-           ::std::complex< double > *y, const double *c, const double *s);
+void srot_(const int *n, float *x, const int *incx, float *y, const int *incy,
+           const float *c, const float *s);
+void drot_(const int *n, double *x, const int *incx, double *y, const int *incy,
+           const double *c, const double *s);
+void csrot_(const int *n, ::std::complex< float > *x, const int *incx,
+            ::std::complex< float > *y, const int *incy, const float *c,
+            const float *s);
+void zdrot_(const int *n, ::std::complex< double > *x, const int *incx,
+            ::std::complex< double > *y, const int *incy, const double *c,
+            const double *s);
 
 void srotg_(float *a, float *b, float *c, float *s);
 void drotg_(double *a, double *b, double *c, double *s);
 void crotg_(::std::complex< float > *a, ::std::complex< float > *b,
             float *c, ::std::complex< float > *s);
 void zrotg_(::std::complex< double > *a, ::std::complex< double > *b,
-            float *c, ::std::complex< double > *s);
+            double *c, ::std::complex< double > *s);
 
 void srotm_(const int *n, float *x, const int *incx, float *y, const int *incy,
             const float *param);
@@ -127,14 +132,6 @@ int isamax_(const int *n, const float *x, const int *incx);
 int idamax_(const int *n, const double *x, const int *incx);
 int icamax_(const int *n, const ::std::complex< float > *x, const int *incx);
 int izamax_(const int *n, const ::std::complex< double > *x, const int *incx);
-
-int isamin_(const int *n, const float *x, const int *incx);
-int idamin_(const int *n, const double *x, const int *incx);
-int icamin_(const int *n, const ::std::complex< float > *x, const int *incx);
-int izamin_(const int *n, const ::std::complex< double > *x, const int *incx);
-
-float scabs1_(const ::std::complex< float > *x);
-double dcabs1_(const ::std::complex< double > *x);
 
 
 // BLAS level-2 routines -- note that these are column major!

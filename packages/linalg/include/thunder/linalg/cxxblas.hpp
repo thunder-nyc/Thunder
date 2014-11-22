@@ -60,20 +60,20 @@ double asum(const int n, const double *x, const int incx = 1);
 float asum(const int n, const ::std::complex< float > *x, const int incx = 1);
 double asum(const int n, const ::std::complex< double > *x, const int incx = 1);
 
-void axpy(const int n, float a, const float *x, float *y, const int incx = 1,
-          const int incy = 1);
-void axpy(const int n, double a, const double *x, double *y, const int incx = 1,
-          const int incy = 1);
-void axpy(const int n, ::std::complex< float > a,
-          const ::std::complex< float > *x,
-          ::std::complex< float > *y, const int incx = 1, const int incy = 1);
-void axpy(const int n, ::std::complex< double > a,
-          const ::std::complex< double > *x,
-          ::std::complex< double > *y, const int incx = 1, const int incy = 1);
+void axpy(const int n, const float *x, float *y, const float a = 1.0,
+          const int incx = 1, const int incy = 1);
+void axpy(const int n, const double *x, double *y, const double a = 1.0,
+          const int incx = 1, const int incy = 1);
+void axpy(const int n, const ::std::complex< float > *x,
+          ::std::complex< float > *y, const ::std::complex< float > a = 1.0,
+          const int incx = 1, const int incy = 1);
+void axpy(const int n, const ::std::complex< double > *x,
+          ::std::complex< double > *y, const ::std::complex< double > a = 1.0,
+          const int incx = 1, const int incy = 1);
 
-void copy(const int n, const float *x, const float *y, const int incx = 1,
+void copy(const int n, const float *x, float *y, const int incx = 1,
           const int incy = 1);
-void copy(const int n, const double *x, const double *y, const int incx = 1,
+void copy(const int n, const double *x, double *y, const int incx = 1,
           const int incy = 1);
 void copy(const int n, const ::std::complex< float > *x,
           ::std::complex< float > *y, const int incx = 1, const int incy = 1);
@@ -118,14 +118,16 @@ double nrm2(const int n, const double *x, const int incx = 1);
 float nrm2(const int n, const ::std::complex< float > *x, const int incx = 1);
 double nrm2(const int n, const ::std::complex< double > *x, const int incx = 1);
 
-void rot(const int n, float a, float *x, float *y, float c, float s,
-         const int incx = 1, const int incy = 1);
-void rot(const int n, double a, double *x, double *y, double c, double s,
-         const int incx = 1, const int incy = 1);
-void rot(const int n, ::std::complex< float > a, ::std::complex< float > *x,
-         ::std::complex< float > *y, const int incx = 1, const int incy = 1);
+void rot(const int n, float *x, float *y, const float c = 1.0,
+         const float s = 1.0, const int incx = 1, const int incy = 1);
+void rot(const int n, double *x, double *y, const double c = 1.0,
+         const double s = 1.0, const int incx = 1, const int incy = 1);
+void rot(const int n, ::std::complex< float > *x, ::std::complex< float > *y,
+         const float c = 1.0, const float s = 1.0, const int incx = 1,
+         const int incy = 1);
 void rot(const int n, ::std::complex< double > a, ::std::complex< double > *x,
-         ::std::complex< double > *y, const int incx = 1, const int incy = 1);
+         ::std::complex< double > *y, const double c = 1.0,
+         const double s = 1.0, const int incx = 1, const int incy = 1);
 
 void rotg(float *a, float *b, float *c, float *s);
 void rotg(double *a, double *b, double *c, double *s);
@@ -144,41 +146,31 @@ void rotmg(float *d1, float *d2, float *x1, const float *x2,
 void rotmg(double *d1, double *d2, float *x1, const double *x2,
            const double *param);
 
-void scal(const int n, const float a, float *x, const int incx = 1);
-void scal(const int n, const double a, double *x, const int incx = 1);
-void scal(const int n, const ::std::complex< float > a,
-          ::std::complex< float > *x, const int incx = 1);
-void scal(const int n, const ::std::complex< double > a,
-          ::std::complex< double > *x, const int incx = 1);
-void scal(const int n, const float alpha, ::std::complex< float > *x,
+void scal(const int n, float *x, const float a, const int incx = 1);
+void scal(const int n, double *x, const double a, const int incx = 1);
+void scal(const int n, ::std::complex< float > *x,
+          const ::std::complex< float > a, const int incx = 1);
+void scal(const int n, ::std::complex< double > *x,
+          const ::std::complex< double > a, const int incx = 1);
+void scal(const int n, ::std::complex< float > *x, const float a,
           const int incx = 1);
-void scal(const int n, const double alpha, ::std::complex< double > *x,
+void scal(const int n, ::std::complex< double > *x, const double a,
           const int incx = 1);
 
 void swap(const int n, float *x, float *y, const int incx = 1,
-            const int incy = 1);
+          const int incy = 1);
 void swap(const int n, double *x, double *y, const int incx = 1,
-            const int incy = 1);
+          const int incy = 1);
 void swap(const int n, ::std::complex< float > *x, ::std::complex< float > *y,
-            const int incx = 1, const int incy = 1);
+          const int incx = 1, const int incy = 1);
 void swap(const int n, ::std::complex< double > *x,
-            ::std::complex< double > *y, const int incx = 1,
-            const int incy = 1);
+          ::std::complex< double > *y, const int incx = 1,
+          const int incy = 1);
 
 int iamax(const int n, const float *x, const int incx = 1);
 int iamax(const int n, const double *x, const int incx = 1);
 int iamax(const int n, const ::std::complex< float > *x, const int incx = 1);
 int iamax(const int n, const ::std::complex< double > *x, const int incx = 1);
-
-int iamin(const int n, const float *x, const int incx = 1);
-int iamin(const int n, const double *x, const int incx = 1);
-int iamin(const int n, const ::std::complex< float > *x, const int incx = 1);
-int iamin(const int n, const ::std::complex< double > *x, const int incx = 1);
-
-float cabs1(const float x);
-double cabs1(const double x);
-float cabs1(const ::std::complex< float > x);
-double cabs1(const ::std::complex< double > x);
 
 
 // CXXBLAS level-2 functions -- these functions are row major
@@ -192,13 +184,13 @@ void gbmv(const int m, const int n,  const double *a, const double *x,
           const int kl = 0, const int ku = 0, const int lda = 0,
           const int incx = 1, const int incy = 1,
           const Trans trans = Trans::kNoTrans);
-void gbmv(const int m, const int n,  const ::std::complex< float > *a, 
+void gbmv(const int m, const int n,  const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
           const ::std::complex< float > alpha = 1.0,
           const ::std::complex< float > beta = 0.0, const int kl = 0,
           const int ku = 0, const int lda = 0, const int incx = 1,
           const int incy = 1, const Trans trans = Trans::kNoTrans);
-void gbmv(const int m, const int n, const ::std::complex< double > *a, 
+void gbmv(const int m, const int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
           const ::std::complex< double > alpha = 1.0,
           const ::std::complex< double > beta = 0.0, const int kl = 0,
@@ -237,47 +229,47 @@ void gemv(const int m, const int n, double *a,
           const int incx = 1, const int incy = 1,
           const Trans trans = Trans::kNoTrans);
 
-void ger(const int m, const int n,const float *x, const float *y, float *a,
+void ger(const int m, const int n, const float *x, const float *y, float *a,
          const float alpha = 1.0, const int incx = 1, const int incy = 1,
          const int lda = 0);
-void ger(const int m, const int n,const double *x, const double *y, double *a,
+void ger(const int m, const int n, const double *x, const double *y, double *a,
          const double alpha = 1.0, const int incx = 1, const int incy = 1,
          const int lda = 0);
-void ger(const int m, const int n,const ::std::complex< float > *x,
+void ger(const int m, const int n, const ::std::complex< float > *x,
          const ::std::complex< float > *y, ::std::complex< float > *a,
          const ::std::complex< float > alpha = 1.0, const int incx = 1,
          const int incy = 1, const int lda = 0);
-void ger(const int m, const int n,const ::std::complex< double > *x,
+void ger(const int m, const int n, const ::std::complex< double > *x,
          const ::std::complex< double > *y, ::std::complex< double > *a,
          const ::std::complex< double > alpha = 1.0, const int incx = 1,
          const int incy = 1, const int lda = 0);
 
-void gerc(const int m, const int n,const float *x, const float *y, float *a,
+void gerc(const int m, const int n, const float *x, const float *y, float *a,
           const float alpha = 1.0, const int incx = 1, const int incy = 1,
           const int lda = 0);
-void gerc(const int m, const int n,const double *x, const double *y, double *a,
+void gerc(const int m, const int n, const double *x, const double *y, double *a,
           const double alpha = 1.0, const int incx = 1, const int incy = 1,
           const int lda = 0);
-void gerc(const int m, const int n,const ::std::complex< float > *x,
+void gerc(const int m, const int n, const ::std::complex< float > *x,
           const ::std::complex< float > *y, ::std::complex< float > *a,
           const ::std::complex< float > alpha = 1.0, const int incx = 1,
           const int incy = 1, const int lda = 0);
-void gerc(const int m, const int n,const ::std::complex< double > *x,
+void gerc(const int m, const int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
           const ::std::complex< double > alpha = 1.0, const int incx = 1,
           const int incy = 1, const int lda = 0);
 
-void geru(const int m, const int n,const float *x, const float *y, float *a,
+void geru(const int m, const int n, const float *x, const float *y, float *a,
           const float alpha = 1.0, const int incx = 1, const int incy = 1,
           const int lda = 0);
-void geru(const int m, const int n,const double *x, const double *y, double *a,
+void geru(const int m, const int n, const double *x, const double *y, double *a,
           const double alpha = 1.0, const int incx = 1, const int incy = 1,
           const int lda = 0);
-void geru(const int m, const int n,const ::std::complex< float > *x,
+void geru(const int m, const int n, const ::std::complex< float > *x,
           const ::std::complex< float > *y, ::std::complex< float > *a,
           const ::std::complex< float > alpha = 1.0, const int incx = 1,
           const int incy = 1, const int lda = 0);
-void geru(const int m, const int n,const ::std::complex< double > *x,
+void geru(const int m, const int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
           const ::std::complex< double > alpha = 1.0, const int incx = 1,
           const int incy = 1, const int lda = 0);
@@ -444,7 +436,7 @@ void spr(const int n, const ::std::complex< float > *x,
          const int incx = 1, const Uplo uplo = Uplo::kUpper);
 void spr(const int n, const ::std::complex< double > *x,
          ::std::complex< double > *a,
-         const ::std::complex< double > alpha = 1.0, const int incx = 1, 
+         const ::std::complex< double > alpha = 1.0, const int incx = 1,
          const Uplo uplo = Uplo::kUpper);
 
 void spr2(const int n, const float *x, const float *y, float *a,
@@ -622,10 +614,10 @@ void gemm(const int m, const int n, const int k, const float *a, const float *b,
           const int lda = 1, const int ldb = 1, const int ldc = 1,
           const Trans transa = Trans::kNoTrans,
           const Trans transb = Trans::kNoTrans);
-void gemm(const int m, const int n, const int k, const double *a, const double *b,
-          double *c, const double alpha = 1.0, const double beta = 0.0,
-          const int lda = 1, const int ldb = 1, const int ldc = 1,
-          const Trans transa = Trans::kNoTrans,
+void gemm(const int m, const int n, const int k, const double *a,
+          const double *b, double *c, const double alpha = 1.0,
+          const double beta = 0.0, const int lda = 1, const int ldb = 1,
+          const int ldc = 1, const Trans transa = Trans::kNoTrans,
           const Trans transb = Trans::kNoTrans);
 void gemm(const int m, const int n, const int k,
           const ::std::complex< float > *a, const ::std::complex< float > *b,
@@ -679,47 +671,47 @@ void hemm(const int m, const int n, const ::std::complex< double > *a,
           const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
           const Uplo Uplo = Uplo::kUpper);
 
-void herk(const int n, const int k, const float *a, const float *c, 
-          const float alpha = 1.0, const float beta = 0.0, 
+void herk(const int n, const int k, const float *a, const float *c,
+          const float alpha = 1.0, const float beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
-void herk(const int n, const int k, const double *a, const double *c, 
-          const double alpha = 1.0, const double beta = 0.0, 
+void herk(const int n, const int k, const double *a, const double *c,
+          const double alpha = 1.0, const double beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
 void herk(const int n, const int k, const ::std::complex< float > *a,
           const ::std::complex< float > *c,
           const ::std::complex< float > alpha = 1.0,
-          const ::std::complex< float > beta = 0.0, 
+          const ::std::complex< float > beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
 void herk(const int n, const int k, const ::std::complex< double > *a,
           const ::std::complex< double > *c,
           const ::std::complex< double > alpha = 1.0,
-          const ::std::complex< double > beta = 0.0, 
+          const ::std::complex< double > beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
 
 void her2k(const int n, const int k, const float *a, const float *b,
-           const float *c,  const float alpha = 1.0, const float beta = 0.0, 
+           const float *c,  const float alpha = 1.0, const float beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
 void her2k(const int n, const int k, const double *a, const float *b,
-           const double *c,  const double alpha = 1.0, const double beta = 0.0, 
+           const double *c,  const double alpha = 1.0, const double beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
 void her2k(const int n, const int k, const ::std::complex< float > *a,
            const ::std::complex< float > *b,
            const ::std::complex< float > *c,
            const ::std::complex< float > alpha = 1.0,
-           const ::std::complex< float > beta = 0.0, 
+           const ::std::complex< float > beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
 void her2k(const int n, const int k, const ::std::complex< double > *a,
            const ::std::complex< double > *b,
            const ::std::complex< double > *c,
            const ::std::complex< double > alpha = 1.0,
-           const ::std::complex< double > beta = 0.0, 
+           const ::std::complex< double > beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper,
            const Trans trans = Trans::kNoTrans);
@@ -745,47 +737,47 @@ void symm(const int m, const int n, const ::std::complex< double > *a,
           const int ldb = 1, const int ldc = 1, const Side side = Side::kLeft,
           const Uplo Uplo = Uplo::kUpper);
 
-void syrk(const int n, const int k, const float *a, const float *c, 
-          const float alpha = 1.0, const float beta = 0.0, 
+void syrk(const int n, const int k, const float *a, const float *c,
+          const float alpha = 1.0, const float beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
-void syrk(const int n, const int k, const double *a, const double *c, 
-          const double alpha = 1.0, const double beta = 0.0, 
+void syrk(const int n, const int k, const double *a, const double *c,
+          const double alpha = 1.0, const double beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
 void syrk(const int n, const int k, const ::std::complex< float > *a,
           const ::std::complex< float > *c,
           const ::std::complex< float > alpha = 1.0,
-          const ::std::complex< float > beta = 0.0, 
+          const ::std::complex< float > beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
 void syrk(const int n, const int k, const ::std::complex< double > *a,
           const ::std::complex< double > *c,
           const ::std::complex< double > alpha = 1.0,
-          const ::std::complex< double > beta = 0.0, 
+          const ::std::complex< double > beta = 0.0,
           const int lda = 0, const int ldc = 0, const Uplo uplo = Uplo::kUpper,
           const Trans trans = Trans::kNoTrans);
 
 void syr2k(const int n, const int k, const float *a, const float *b,
-           const float *c,  const float alpha = 1.0, const float beta = 0.0, 
+           const float *c,  const float alpha = 1.0, const float beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
 void syr2k(const int n, const int k, const double *a, const float *b,
-           const double *c,  const double alpha = 1.0, const double beta = 0.0, 
+           const double *c,  const double alpha = 1.0, const double beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
 void syr2k(const int n, const int k, const ::std::complex< float > *a,
            const ::std::complex< float > *b,
            const ::std::complex< float > *c,
            const ::std::complex< float > alpha = 1.0,
-           const ::std::complex< float > beta = 0.0, 
+           const ::std::complex< float > beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper, const Trans trans = Trans::kNoTrans);
 void syr2k(const int n, const int k, const ::std::complex< double > *a,
            const ::std::complex< double > *b,
            const ::std::complex< double > *c,
            const ::std::complex< double > alpha = 1.0,
-           const ::std::complex< double > beta = 0.0, 
+           const ::std::complex< double > beta = 0.0,
            const int lda = 0, const int ldb = 0, const int ldc = 0,
            const Uplo uplo = Uplo::kUpper,
            const Trans trans = Trans::kNoTrans);
