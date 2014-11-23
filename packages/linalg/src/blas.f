@@ -21,7 +21,7 @@ c
       complex cdotc,r
       integer n,incx,incy
       complex x(*),y(*)
-      dotc=cdotc(n,x,incx,y,incy)
+      r=cdotc(n,x,incx,y,incy)
       return
       end
 c
@@ -30,7 +30,7 @@ c
       double complex zdotc,r
       integer n,incx,incy
       double complex x(*),y(*)
-      dotc=zdotc(n,x,incx,y,incy)
+      r=zdotc(n,x,incx,y,incy)
       return
       end
 c
@@ -39,7 +39,7 @@ c
       complex cdotu,r
       integer n,incx,incy
       complex x(*),y(*)
-      dotu=cdotu(n,x,incx,y,incy)
+      r=cdotu(n,x,incx,y,incy)
       return
       end
 c
@@ -48,6 +48,6 @@ c
       double complex zdotu,r
       integer n,incx,incy
       double complex x(*),y(*)
-      dotu=zdotu(n,x,incx,y,incy)
+      r=zdotu(n,x,incx,y,incy)
       return
       end
