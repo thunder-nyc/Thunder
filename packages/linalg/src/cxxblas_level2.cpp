@@ -48,10 +48,26 @@ static inline char getTransChar(const Order order, const Trans trans) {
   return '\0';
 }
 
+static inline char getUploChar(const Uplo uplo) {
+  if (uplo == Uplo::kUpper) {
+    return 'U';
+  } else if (uplo == Uplo::kLower) {
+    return 'L';
+  }
+  return '\0';
+}
+
+// Convert banded matrix from row major to column major
+template < typename D >
+static inline D* rowToColMatrix(int m, int n, D *a, int k,int lda) {
+  // TODO(xiang): implement this
+}
+
 void gbmv(const int m, const int n, const float *a, const float *x, float *y,
           const float alpha, const float beta, const int kl, const int ku,
           const int lda, const int incx, const int incy, const Order order,
           const Trans trans) {
+  // TODO(xiang): Added default argument for lda.
   char trans_char = getTransChar(order, trans);
   if (order == Order::kColMajor) {
     sgbmv_(&trans_char, &m, &n, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
@@ -286,13 +302,13 @@ void geru(const int m, const int n, const ::std::complex< double > *x,
 void hbmv(const int n, const float *a, const float *x, float *y,
           const float alpha, const float beta, const int k, const int lda,
           const int incx, const int incy, const Order order, const Uplo uplo) {
-  // TODO(xiang): call sbmv
+  sbmv(n, a, x, y, alpha, beta, k, lda, incx, incy, order, uplo);
 }
 
 void hbmv(const int n, const double *a, const double *x, double *y,
           const double alpha, const float beta, const int k, const int lda,
           const int incx, const int incy, const Order order, const Uplo uplo) {
-  // TODO(xiang): call sbmv
+  sbmv(n, a, x, y, alpha, beta, k, lda, incx, incy, order, uplo);
 }
 
 void hbmv(const int n, const ::std::complex< float > *a,
@@ -300,7 +316,12 @@ void hbmv(const int n, const ::std::complex< float > *a,
           const ::std::complex< float > alpha,
           const ::std::complex< float > beta, const int k, const int lda,
           const int incx, const int incy, const Order order, const Uplo uplo) {
-  // TODO(xiang): complicated implementation
+  char uplo_char = getUploChar(uplo);
+  if (order == Order::kRowMajor) {
+    chbmv_(&uplo_char, &n, &k, &alpha, a, &lda, x, &incx, &beta, y, &incy);
+  } else {
+    
+  }
 }
 
 void hbmv(const int n, const ::std::complex< double > *a,
