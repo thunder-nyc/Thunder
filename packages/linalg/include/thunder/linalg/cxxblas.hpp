@@ -453,35 +453,35 @@ void syr2(int n, const ::std::complex< double > *x,
           Uplo uplo = Uplo::kUpper);
 
 void tbmv(int n, const float *a, float *x, int k = 0, int lda = 0, int incx = 1,
-          Uplo uplo = Uplo::kUpper, Order order = Order::kRowMajor,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans, Diag diag = Diag::kNonUnit);
 void tbmv(int n, const double *a, double *x, int k = 0, int lda = 0,
-          int incx = 1, Uplo uplo = Uplo::kUpper,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans,
+          int incx = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 void tbmv(int n, const ::std::complex< float > *a, ::std::complex< float > *x,
-          int k = 0, int lda = 0, int incx = 1, Uplo uplo = Uplo::kUpper,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans,
+          int k = 0, int lda = 0, int incx = 1,  Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 void tbmv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
-          int k = 0, int lda = 0, int incx = 1, Uplo uplo = Uplo::kUpper,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans,
+          int k = 0, int lda = 0, int incx = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 
 void tbsv(int n, const float *a, float *x, int k = 0, int lda = 0, int incx = 1,
-          Uplo uplo = Uplo::kUpper, Order order = Order::kRowMajor,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans, Diag diag = Diag::kNonUnit);
 void tbsv(int n, const double *a, double *x, int k = 0, int lda = 0,
-          int incx = 1, Uplo uplo = Uplo::kUpper,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans,
+          int incx = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 void tbsv(int n, const ::std::complex< float > *a, ::std::complex< float > *x,
-          int k = 0, int lda = 0, int incx = 1, Uplo uplo = Uplo::kUpper,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans,
+          int k = 0, int lda = 0, int incx = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 void tbsv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
-          int k = 0, int lda = 0, int incx = 1, Uplo uplo = Uplo::kUpper,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans,
+          int k = 0, int lda = 0, int incx = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 
 void tpmv(int n, const float *ap, float *x, int incx = 1,

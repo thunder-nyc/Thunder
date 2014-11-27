@@ -67,6 +67,15 @@ static inline char uploChar(Order order, Uplo uplo) {
   return '\0';
 }
 
+static inline char diagChar(Diag diag) {
+  if (diag == Diag::kNonUnit) {
+    return 'N';
+  } else if (diag == Diag::kUnit){
+    return 'U';
+  }
+  return '\0';
+}
+
 template <typename D>
 static inline void conj(int n, const D *x, int incx, D *y, int incy) {
   for (int i = 0; i < n; ++i) {
@@ -973,12 +982,18 @@ void spr2(int n, const ::std::complex< double > *x,
 
 void symv(int n, const float *a, const float *x, float *y, float alpha,
           float beta, int lda, int incx, int incy, Order order, Uplo uplo) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
   char uplo_char = uploChar(order, uplo);
   ssymv_(&uplo_char, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
 }
 
 void symv(int n, const double *a, const double *x, double *y, double alpha,
           double beta, int lda, int incx, int incy, Order order, Uplo uplo) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
   char uplo_char = uploChar(order, uplo);
   dsymv_(&uplo_char, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
 }
@@ -999,12 +1014,18 @@ void symv(int n, const ::std::complex< double > *a,
 
 void syr(int n, const float *x, float *a, float alpha, int incx, int lda,
          Order order, Uplo uplo) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
   char uplo_char = uploChar(order, uplo);
   ssyr_(&uplo_char, &n, &alpha, x, &incx, a, &lda);
 }
 
 void syr(int n, const double *x, double *a, double alpha, int incx, int lda,
          Order order, Uplo uplo) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
   char uplo_char = uploChar(order, uplo);
   dsyr_(&uplo_char, &n, &alpha, x, &incx, a, &lda);
 }
@@ -1023,12 +1044,18 @@ void syr(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
 
 void syr2(int n, const float *x, const float *y, float *a, float alpha,
           int incx, int incy, int lda, Order order, Uplo uplo) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
   char uplo_char = uploChar(order, uplo);
   ssyr2_(&uplo_char, &n, &alpha, x, &incx, y, &incy, a, &lda);
 }
 
 void syr2(int n, const double *x, const double *y, double *a, double alpha,
           int incx, int incy, int lda, Order order, Uplo uplo) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
   char uplo_char = uploChar(order, uplo);
   dsyr2_(&uplo_char, &n, &alpha, x, &incx, y, &incy, a, &lda);
 }
@@ -1045,6 +1072,324 @@ void syr2(int n, const ::std::complex< double > *x,
           ::std::complex< double > alpha, int incx, int incy, int lda,
           Order order, Uplo uplo) {
   her2(n, x, y, a, alpha, incx, incy, lda, order, uplo);
+}
+
+void tbmv(int n, const float *a, float *x, int k, int lda, int incx,
+          Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  stbmv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+}
+
+void tbmv(int n, const double *a, double *x, int k, int lda, int incx,
+          Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  dtbmv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+}
+
+void tbmv(int n, const ::std::complex< float > *a, ::std::complex< float > *x,
+          int k, int lda, int incx,  Order order, Uplo uplo, Trans trans,
+          Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ctbmv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ctbmv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tbmv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
+          int k, int lda, int incx, Order order, Uplo uplo, Trans trans,
+          Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ztbmv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ztbmv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tbsv(int n, const float *a, float *x, int k, int lda, int incx,
+          Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  stbsv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+}
+
+void tbsv(int n, const double *a, double *x, int k, int lda, int incx,
+          Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  dtbsv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+}
+
+void tbsv(int n, const ::std::complex< float > *a, ::std::complex< float > *x,
+          int k, int lda, int incx,  Order order, Uplo uplo, Trans trans,
+          Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ctbsv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ctbsv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tbsv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
+          int k, int lda, int incx, Order order, Uplo uplo, Trans trans,
+          Diag diag) {
+  if (lda == 0) {
+    lda = k + 1;
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ztbsv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ztbsv_(&uplo_char, &trans_char, &diag_char, &n, &k, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tpmv(int n, const float *ap, float *x, int incx, Order order, Uplo uplo,
+          Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  stpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);  
+}
+
+void tpmv(int n, const double *ap, double *x, int incx, Order order, Uplo uplo,
+          Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  dtpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+}
+
+void tpmv(int n, const ::std::complex< float > *ap, ::std::complex< float > *x,
+          int incx, Order order, Uplo uplo, Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ctpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ctpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tpmv(int n, const ::std::complex< double > *ap,
+          ::std::complex< double > *x, int incx, Order order, Uplo uplo,
+          Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ztpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ztpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tpsv(int n, const float *ap, float *x, int incx, Order order, Uplo uplo,
+          Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  stpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);  
+}
+
+void tpsv(int n, const double *ap, double *x, int incx, Order order, Uplo uplo,
+          Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  dtpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);  
+}
+
+void tpsv(int n, const ::std::complex< float > *ap, ::std::complex< float > *x,
+          int incx, Order order, Uplo uplo, Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ctpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ctpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void tpsv(int n, const ::std::complex< double > *ap,
+          ::std::complex< double > *x, int incx, Order order, Uplo uplo,
+          Trans trans, Diag diag) {
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ztpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ztpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void trmv(int n, const float *a, float *x, int lda, int incx, Order order,
+          Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  strmv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+}
+
+void trmv(int n, const double *a, double *x, int lda, int incx, Order order,
+          Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  dtrmv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+}
+
+void trmv(int n, const ::std::complex< float > *a, ::std::complex< float > *x,
+          int lda, int incx, Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ctrmv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ctrmv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void trmv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
+          int lda, int incx, Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ztrmv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ztrmv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void trsv(int n, const float *a, float *x, int lda, int incx, Order order,
+          Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  strsv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+}
+
+void trsv(int n, const double *a, double *x, int lda, int incx, Order order,
+          Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  dtrsv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+}
+
+void trsv(int n, const ::std::complex< float > *a, ::std::complex< float > *x,
+          int lda, int incx, Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ctrsv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ctrsv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
+}
+
+void trsv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
+          int lda, int incx, Order order, Uplo uplo, Trans trans, Diag diag) {
+  if (lda == 0) {
+    lda = ::std::max(1, n);
+  }
+  char trans_char = transChar(order, trans);
+  char uplo_char = uploChar(order, uplo);
+  char diag_char = diagChar(diag);
+  if (order == Order::kColMajor || trans != Trans::kConjTrans) {
+    ztrsv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+  } else {
+    conj(n, x, incx, x, incx);
+    ztrsv_(&uplo_char, &trans_char, &diag_char, &n, a, &lda, x, &incx);
+    conj(n, x, incx, x, incx);
+  }
 }
 
 }  // namespace cxxblas
