@@ -315,29 +315,29 @@ void hpmv(int n, const ::std::complex< double > *ap,
           ::std::complex< double > beta = 0.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
-void hpr(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
+void hpr(int n, const float *x, float *ap, float alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void hpr(int n, const double *x, double *a, double alpha = 1.0, int incx = 1,
+void hpr(int n, const double *x, double *ap, double alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void hpr(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
+void hpr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
          ::std::complex< float > alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void hpr(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
+void hpr(int n, const ::std::complex< double > *x, ::std::complex< double > *ap,
          ::std::complex< double > alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
-void hpr2(int n, const float *x, const float *y, float *a, float alpha = 1.0,
+void hpr2(int n, const float *x, const float *y, float *ap, float alpha = 1.0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
-void hpr2(int n, const double *x, const double *y, double *a,
+void hpr2(int n, const double *x, const double *y, double *ap,
           double alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void hpr2(int n, const ::std::complex< float > *x,
-          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > *y, ::std::complex< float > *ap,
           ::std::complex< float > alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void hpr2(int n, const ::std::complex< double > *x,
-          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > *y, ::std::complex< double > *ap,
           ::std::complex< double > alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
@@ -345,7 +345,7 @@ void sbmv(int n, const float *a, const float *x, float *y, float alpha = 1.0,
           float beta = 0.0, int k = 0, int lda = 0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void sbmv(int n, const double *a, const double *x, double *y,
-          double alpha = 1.0, float beta = 0.0, int k = 0, int lda = 0,
+          double alpha = 1.0, double beta = 0.0, int k = 0, int lda = 0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
 void sbmv(int n, const ::std::complex< float > *a,
@@ -378,29 +378,29 @@ void spmv(int n, const ::std::complex< double > *ap,
           ::std::complex< double > beta = 0.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
-void spr(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
+void spr(int n, const float *x, float *ap, float alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void spr(int n, const double *x, double *a, double alpha = 1.0, int incx = 1,
+void spr(int n, const double *x, double *ap, double alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void spr(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
+void spr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
          ::std::complex< float > alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void spr(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
+void spr(int n, const ::std::complex< double > *x, ::std::complex< double > *ap,
          ::std::complex< double > alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
-void spr2(int n, const float *x, const float *y, float *a, float alpha = 1.0,
+void spr2(int n, const float *x, const float *y, float *ap, float alpha = 1.0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
-void spr2(int n, const double *x, const double *y, double *a,
+void spr2(int n, const double *x, const double *y, double *ap,
           double alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void spr2(int n, const ::std::complex< float > *x,
-          const ::std::complex< float > *y, ::std::complex< float > *a,
+          const ::std::complex< float > *y, ::std::complex< float > *ap,
           ::std::complex< float > alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void spr2(int n, const ::std::complex< double > *x,
-          const ::std::complex< double > *y, ::std::complex< double > *a,
+          const ::std::complex< double > *y, ::std::complex< double > *ap,
           ::std::complex< double > alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
@@ -408,7 +408,7 @@ void symv(int n, const float *a, const float *x, float *y, float alpha = 1.0,
           float beta = 0.0, int lda = 0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void symv(int n, const double *a, const double *x, double *y,
-          double alpha = 1.0, float beta = 0.0, int lda = 0, int incx = 1,
+          double alpha = 1.0, double beta = 0.0, int lda = 0, int incx = 1,
           int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
 void symv(int n, const ::std::complex< float > *a,

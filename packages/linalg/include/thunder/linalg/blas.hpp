@@ -304,12 +304,12 @@ void dspr2_(const char *uplo, const int *n, const double *alpha,
             const double *x, const int *incx, const double *y, const int *incy,
             double *ap);
 
-void ssymv_(const char *uplo, const int *n, const float *alpha, const int *lda,
-            const float *x, const int *incx, const float *beta, float *y,
-            const int *incy);
-void dsymv_(const char *uplo, const int *n, const double *alpha, const int *lda,
-            const double *x, const int *incx, const double *beta,
+void ssymv_(const char *uplo, const int *n, const float *alpha, const float *a,
+            const int *lda, const float *x, const int *incx, const float *beta,
             float *y, const int *incy);
+void dsymv_(const char *uplo, const int *n, const double *alpha,
+            const double *a, const int *lda, const double *x, const int *incx,
+            const double *beta, double *y, const int *incy);
 
 void ssyr_(const char *uplo, const int *n, const float *alpha,
            const float *x, const int *incx, float *a, const int *lda);
