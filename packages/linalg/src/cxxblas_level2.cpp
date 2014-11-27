@@ -20,6 +20,7 @@
 #include "thunder/linalg/cxxblas.hpp"
 
 #include <complex>
+#include <cstdlib>
 
 #include "thunder/linalg/blas.hpp"
 
@@ -27,7 +28,7 @@ namespace thunder {
 namespace linalg {
 namespace cxxblas {
 
-static inline char getTransChar(const Order order, const Trans trans) {
+static inline char transChar(Order order, Trans trans) {
   if (order == Order::kColMajor) {
     if (trans == Trans::kNoTrans) {
       return 'N';
@@ -48,7 +49,7 @@ static inline char getTransChar(const Order order, const Trans trans) {
   return '\0';
 }
 
-static inline char getUploChar(const Uplo uplo) {
+static inline char uploChar(const Uplo uplo) {
   if (uplo == Uplo::kUpper) {
     return 'U';
   } else if (uplo == Uplo::kLower) {
@@ -57,20 +58,22 @@ static inline char getUploChar(const Uplo uplo) {
   return '\0';
 }
 
-// Convert banded matrix from row major to column major
-template < typename D >
-static inline D* rowToColMatrix(int m, int n, D *a, int k,int lda) {
-  // TODO(xiang): implement this
+template <typename D>
+static inline void conj(int n, const D *x, int incx, D *y, int incy) {
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = ::std::conj(x[i * incx]);
+  }
 }
 
-void gbmv(const int m, const int n, const float *a, const float *x, float *y,
-          const float alpha, const float beta, const int kl, const int ku,
-          const int lda, const int incx, const int incy, const Order order,
-          const Trans trans) {
-  // TODO(xiang): Added default argument for lda.
-  char trans_char = getTransChar(order, trans);
+void gbmv(int m, int n, const float *a, const float *x, float *y, float alpha,
+          const float beta, int kl, int ku, int lda, int incx, int incy,
+          Order order, Trans trans) {
+  if (lda == 0) {
+    lda = kl + ku + 1;
+  }
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
-    sgbmv_(&trans_char, &m, &n, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
+    sgbmv_(&trans_char, &m, &n, &kl, &ku, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
   } else {
     sgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
@@ -78,13 +81,15 @@ void gbmv(const int m, const int n, const float *a, const float *x, float *y,
   }
 }
 
-void gbmv(const int m, const int n, const double *a, const double *x, double *y,
-          const double alpha, const double beta, const int kl, const int ku,
-          const int lda, const int incx, const int incy, const Order order,
-          const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+void gbmv(int m, int n, const double *a, const double *x, double *y,
+          double alpha, const double beta, int kl, int ku, int lda, int incx,
+          int incy, Order order, Trans trans) {
+  if (lda == 0) {
+    lda = kl + ku + 1;
+  }
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
-    dgbmv_(&trans_char, &m, &n, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
+    dgbmv_(&trans_char, &m, &n, &kl, &ku, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
   } else {
     dgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
@@ -92,42 +97,77 @@ void gbmv(const int m, const int n, const double *a, const double *x, double *y,
   }
 }
 
-void gbmv(const int m, const int n, const ::std::complex< float > *a,
+void gbmv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          const ::std::complex< float > alpha,
-          const ::std::complex< float > beta, const int kl, const int ku,
-          const int lda, const int incx, const int incy, const Order order,
-          const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+          ::std::complex< float > alpha, const ::std::complex< float > beta, int kl,
+          int ku, int lda, int incx, int incy, Order order, Trans trans) {
+  if (lda == 0) {
+    lda = kl + ku + 1;
+  }
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
-    cgbmv_(&trans_char, &m, &n, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
+    cgbmv_(&trans_char, &m, &n, &kl, &ku, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
-  } else {
+  } else if (trans != Trans::kConjTrans) {
     cgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
+  } else {
+    ::std::complex< float > *xc;
+    int incxc = 1;
+    if (m > 0) {
+      xc = static_cast< ::std::complex< float >* >(
+          ::std::malloc(m * sizeof(::std::complex< float >)));
+      conj(m, x, incx, xc, incxc);
+    }
+    if (n > 0) {
+      conj(n, y, incy, y, incy);
+    }
+    cgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, xc, &incxc, &beta, y,
+           &incy);
+    if (n > 0) {
+      conj(n, y, incy, y, incy);
+    }
   }
 }
 
-void gbmv(const int m, const int n, const ::std::complex< double > *a,
+void gbmv(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          const ::std::complex< double > alpha,
-          const ::std::complex< double > beta, const int kl, const int ku,
-          const int lda, const int incx, const int incy, const Order order,
-          const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+          ::std::complex< double > alpha, const ::std::complex< double > beta,
+          int kl, int ku, int lda, int incx, int incy, Order order,
+          Trans trans) {
+  if (lda == 0) {
+    lda = kl + ku + 1;
+  }
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
-    zgbmv_(&trans_char, &m, &n, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
+    zgbmv_(&trans_char, &m, &n, &kl, &ku, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
-  } else {
+  } else if (trans != Trans::kConjTrans) {
     zgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
+  } else {
+    ::std::complex< double > *xc;
+    int incxc = 1;
+    if (m > 0) {
+      xc = static_cast< ::std::complex< double >* >(
+          ::std::malloc(m * sizeof(::std::complex< double >)));
+      conj(m, x, incx, xc, incxc);
+    }
+    if (n > 0) {
+      conj(n, y, incy, y, incy);
+    }
+    zgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, xc, &incxc, &beta, y,
+           &incy);
+    if (n > 0) {
+      conj(n, y, incy, y, incy);
+    }
   }
 }
 
-void gemv(const int m, const int n, const float *a, const float *x, float *y,
-          const float alpha, const float beta, const int lda, const int incx,
-          const int incy, const Order order, const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+void gemv(int m, int n, const float *a, const float *x, float *y, float alpha,
+          const float beta, int lda, int incx, int incy, Order order,
+          Trans trans) {
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
     sgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
@@ -135,10 +175,10 @@ void gemv(const int m, const int n, const float *a, const float *x, float *y,
   }
 }
 
-void gemv(const int m, const int n, const double *a, const double *x, double *y,
-          const double alpha, const double beta, const int lda, const int incx,
-          const int incy, const Order order, const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+void gemv(int m, int n, const double *a, const double *x, double *y,
+          double alpha, const double beta, int lda, int incx, int incy,
+          Order order, Trans trans) {
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
     dgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
@@ -146,12 +186,11 @@ void gemv(const int m, const int n, const double *a, const double *x, double *y,
   }
 }
 
-void gemv(const int m, const int n, const ::std::complex< float > *a,
+void gemv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          const ::std::complex< float > alpha,
-          const ::std::complex< float > beta, const int lda, const int incx,
-          const int incy, const Order order, const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+          ::std::complex< float > alpha, const ::std::complex< float > beta,
+          int lda, int incx, int incy, Order order, Trans trans) {
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
     cgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
@@ -159,12 +198,11 @@ void gemv(const int m, const int n, const ::std::complex< float > *a,
   }
 }
 
-void gemv(const int m, const int n, const ::std::complex< double > *a,
+void gemv(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          const ::std::complex< double > alpha,
-          const ::std::complex< double > beta, const int lda, const int incx,
-          const int incy, const Order order, const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+          ::std::complex< double > alpha, const ::std::complex< double > beta,
+          int lda, int incx, int incy, Order order, Trans trans) {
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
     zgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
@@ -172,11 +210,11 @@ void gemv(const int m, const int n, const ::std::complex< double > *a,
   }
 }
 
-void gemv(const int m, const int n, float *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, const ::std::complex< float > alpha,
-          const ::std::complex< float > beta, const int lda, const int incx,
-          const int incy, const Order order, const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+void gemv(int m, int n, float *a, const ::std::complex< float > *x,
+          ::std::complex< float > *y, ::std::complex< float > alpha,
+          const ::std::complex< float > beta, int lda, int incx, int incy,
+          Order order, Trans trans) {
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
     scgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
@@ -184,12 +222,11 @@ void gemv(const int m, const int n, float *a, const ::std::complex< float > *x,
   }
 }
 
-void gemv(const int m, const int n, double *a,
-          const ::std::complex< double > *x, ::std::complex< double > *y,
-          const ::std::complex< double > alpha,
-          const ::std::complex< double > beta, const int lda, const int incx,
-          const int incy, const Order order, const Trans trans) {
-  char trans_char = getTransChar(order, trans);
+void gemv(int m, int n, double *a, const ::std::complex< double > *x,
+          ::std::complex< double > *y, ::std::complex< double > alpha,
+          const ::std::complex< double > beta, int lda, int incx, int incy,
+          Order order, Trans trans) {
+  char trans_char = transChar(order, trans);
   if (order == Order::kColMajor) {
     dzgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
@@ -197,9 +234,8 @@ void gemv(const int m, const int n, double *a,
   }
 }
 
-void ger(const int m, const int n, const float *x, const float *y, float *a,
-         const float alpha, const int incx, const int incy, const int lda,
-         const Order order) {
+void ger(int m, int n, const float *x, const float *y, float *a, float alpha,
+         int incx, int incy, int lda, Order order) {
   if (order == Order::kColMajor) {
     sger_(&m, &n, &alpha, x, &incx, y, &incy, a, &lda);
   } else {
@@ -207,9 +243,8 @@ void ger(const int m, const int n, const float *x, const float *y, float *a,
   }
 }
 
-void ger(const int m, const int n, const double *x, const double *y, double *a,
-         const double alpha, const int incx, const int incy, const int lda,
-         const Order order) {
+void ger(int m, int n, const double *x, const double *y, double *a,
+         double alpha, int incx, int incy, int lda, Order order) {
   if (order == Order::kColMajor) {
     dger_(&m, &n, &alpha, x, &incx, y, &incy, a, &lda);
   } else {
@@ -217,36 +252,34 @@ void ger(const int m, const int n, const double *x, const double *y, double *a,
   }
 }
 
-void ger(const int m, const int n, const ::std::complex< float > *x,
+void ger(int m, int n, const ::std::complex< float > *x,
          const ::std::complex< float > *y, ::std::complex< float > *a,
-         const ::std::complex< float > alpha, const int incx, const int incy,
-         const int lda, const Order order) {
+         ::std::complex< float > alpha, int incx, int incy, int lda,
+         Order order) {
   cgeru(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
-void ger(const int m, const int n, const ::std::complex< double > *x,
+void ger(int m, int n, const ::std::complex< double > *x,
          const ::std::complex< double > *y, ::std::complex< double > *a,
-         const ::std::complex< double > alpha, const int incx, const int incy,
-         const int lda, const Order order) {
+         ::std::complex< double > alpha, int incx, int incy, int lda,
+         Order order) {
   zgeru(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
-void gerc(const int m, const int n, const float *x, const float *y, float *a,
-          const float alpha, const int incx, const int incy, const int lda,
-          const Order order) {
+void gerc(int m, int n, const float *x, const float *y, float *a, float alpha,
+          int incx, int incy, int lda, Order order) {
   ger(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
-void gerc(const int m, const int n, const double *x, const double *y, double *a,
-          const double alpha, const int incx, const int incy, const int lda,
-          const Order order) {
+void gerc(int m, int n, const double *x, const double *y, double *a,
+          double alpha, int incx, int incy, int lda, Order order) {
   ger(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
-void gerc(const int m, const int n, const ::std::complex< float > *x,
+void gerc(int m, int n, const ::std::complex< float > *x,
           const ::std::complex< float > *y, ::std::complex< float > *a,
-          const ::std::complex< float > alpha, const int incx, const int incy,
-          const int lda, const Order order) {
+          ::std::complex< float > alpha, int incx, int incy, int lda,
+          Order order) {
   if (order == Order::kColMajor) {
     cgerc_(&m, &n, &alpha, x, &incx, y, &incy, a, &lda);
   } else {
@@ -254,10 +287,10 @@ void gerc(const int m, const int n, const ::std::complex< float > *x,
   }
 }
 
-void gerc(const int m, const int n, const ::std::complex< double > *x,
+void gerc(int m, int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
-          const ::std::complex< double > alpha, const int incx, const int incy,
-          const int lda, const Order order) {
+          ::std::complex< double > alpha, int incx, int incy, int lda,
+          Order order) {
   if (order == Order::kColMajor) {
     zgerc_(&m, &n, &alpha, x, &incx, y, &incy, a, &lda);
   } else {
@@ -265,22 +298,20 @@ void gerc(const int m, const int n, const ::std::complex< double > *x,
   }
 }
 
-void geru(const int m, const int n, const float *x, const float *y, float *a,
-          const float alpha, const int incx, const int incy, const int lda,
-          const Order order) {
+void geru(int m, int n, const float *x, const float *y, float *a, float alpha,
+          int incx, int incy, int lda, Order order) {
   ger(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
-void geru(const int m, const int n, const double *x, const double *y, double *a,
-          const double alpha, const int incx, const int incy, const int lda,
-          const Order order) {
+void geru(int m, int n, const double *x, const double *y, double *a,
+          double alpha, int incx, int incy, int lda, Order order) {
   ger(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
-void geru(const int m, const int n, const ::std::complex< float > *x,
+void geru(int m, int n, const ::std::complex< float > *x,
           const ::std::complex< float > *y, ::std::complex< float > *a,
-          const ::std::complex< float > alpha, const int incx, const int incy,
-          const int lda, const Order order) {
+          ::std::complex< float > alpha, int incx, int incy, int lda,
+          Order order) {
   if (order == Order::kColMajor) {
     cgeru_(&m, &n, &alpha, x, &incx, y, &incy, a, &lda);
   } else {
@@ -288,10 +319,10 @@ void geru(const int m, const int n, const ::std::complex< float > *x,
   }
 }
 
-void geru(const int m, const int n, const ::std::complex< double > *x,
+void geru(int m, int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
-          const ::std::complex< double > alpha, const int incx, const int incy,
-          const int lda, const Order order) {
+          ::std::complex< double > alpha, int incx, int incy, int lda,
+          Order order) {
   if (order == Order::kColMajor) {
     zgeru_(&m, &n, &alpha, x, &incx, y, &incy, a, &lda);
   } else {
@@ -299,36 +330,33 @@ void geru(const int m, const int n, const ::std::complex< double > *x,
   }
 }
 
-void hbmv(const int n, const float *a, const float *x, float *y,
-          const float alpha, const float beta, const int k, const int lda,
-          const int incx, const int incy, const Order order, const Uplo uplo) {
+void hbmv(int n, const float *a, const float *x, float *y, float alpha,
+          const float beta, int k, int lda, int incx, int incy, Order order,
+          const Uplo uplo) {
   sbmv(n, a, x, y, alpha, beta, k, lda, incx, incy, order, uplo);
 }
 
-void hbmv(const int n, const double *a, const double *x, double *y,
-          const double alpha, const float beta, const int k, const int lda,
-          const int incx, const int incy, const Order order, const Uplo uplo) {
+void hbmv(int n, const double *a, const double *x, double *y, double alpha,
+          const float beta, int k, int lda, int incx, int incy, Order order,
+          const Uplo uplo) {
   sbmv(n, a, x, y, alpha, beta, k, lda, incx, incy, order, uplo);
 }
 
-void hbmv(const int n, const ::std::complex< float > *a,
-          const ::std::complex< float > *x, ::std::complex< float > *y,
-          const ::std::complex< float > alpha,
-          const ::std::complex< float > beta, const int k, const int lda,
-          const int incx, const int incy, const Order order, const Uplo uplo) {
-  char uplo_char = getUploChar(uplo);
+void hbmv(int n, const ::std::complex< float > *a, const ::std::complex< float > *x,
+          ::std::complex< float > *y, ::std::complex< float > alpha,
+          const ::std::complex< float > beta, int k, int lda, int incx, int incy,
+          Order order, const Uplo uplo) {
+  char uplo_char = uploChar(uplo);
   if (order == Order::kRowMajor) {
     chbmv_(&uplo_char, &n, &k, &alpha, a, &lda, x, &incx, &beta, y, &incy);
   } else {
-    
   }
 }
 
-void hbmv(const int n, const ::std::complex< double > *a,
+void hbmv(int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          const ::std::complex< double > alpha,
-          const ::std::complex< double > beta, const int k, const int lda,
-          const int incx, const int incy, const Order order, const Uplo uplo) {
+          ::std::complex< double > alpha, const ::std::complex< double > beta,
+          int k, int lda, int incx, int incy, Order order, const Uplo uplo) {
   // TODO(xiang): complicated implementation
 }
 

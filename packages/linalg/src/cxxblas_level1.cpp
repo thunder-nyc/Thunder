@@ -27,182 +27,155 @@ namespace thunder {
 namespace linalg {
 namespace cxxblas {
 
-float asum(const int n, const float *x, const int incx) {
-  return sasum_(&n, x, &incx);
-}
+float asum(int n, const float *x, int incx) { return sasum_(&n, x, &incx); }
 
-double asum(const int n, const double *x, const int incx) {
-  return dasum_(&n, x, &incx);
-}
+double asum(int n, const double *x, int incx) { return dasum_(&n, x, &incx); }
 
-float asum(const int n, const ::std::complex< float > *x, const int incx) {
+float asum(int n, const ::std::complex< float > *x, int incx) {
   return scasum_(&n, x, &incx);
 }
 
-double asum(const int n, const ::std::complex< double > *x, const int incx) {
+double asum(int n, const ::std::complex< double > *x, int incx) {
   return dzasum_(&n, x, &incx);
 }
 
-void axpy(const int n, const float *x, float *y, const float a, const int incx,
-          const int incy) {
+void axpy(int n, const float *x, float *y, float a, int incx, int incy) {
   saxpy_(&n, &a, x, &incx, y, &incy);
 }
 
-void axpy(const int n, const double *x, double *y, const double a,
-          const int incx, const int incy) {
+void axpy(int n, const double *x, double *y, double a, int incx, int incy) {
   daxpy_(&n, &a, x, &incx, y, &incy);
 }
 
-void axpy(const int n, const ::std::complex< float > *x,
-          ::std::complex< float > *y, const ::std::complex< float > a,
-          const int incx, const int incy) {
+void axpy(int n, const ::std::complex< float > *x, ::std::complex< float > *y,
+          ::std::complex< float > a, int incx, int incy) {
   caxpy_(&n, &a, x, &incx, y, &incy);
 }
 
-void axpy(const int n, const ::std::complex< double > *x,
-          ::std::complex< double > *y, const ::std::complex< double > a,
-          const int incx, const int incy) {
+void axpy(int n, const ::std::complex< double > *x, ::std::complex< double > *y,
+          ::std::complex< double > a, int incx, int incy) {
   zaxpy_(&n, &a, x, &incx, y, &incy);
 }
 
-void copy(const int n, const float *x, float *y, const int incx,
-          const int incy) {
+void copy(int n, const float *x, float *y, int incx, int incy) {
   scopy_(&n, x, &incx, y, &incy);
 }
 
-void copy(const int n, const double *x, double *y, const int incx,
-          const int incy) {
+void copy(int n, const double *x, double *y, int incx, int incy) {
   dcopy_(&n, x, &incx, y, &incy);
 }
 
-void copy(const int n, const ::std::complex< float > *x,
-          ::std::complex< float > *y, const int incx, const int incy) {
+void copy(int n, const ::std::complex< float > *x, ::std::complex< float > *y,
+          int incx, int incy) {
   ccopy_(&n, x, &incx, y, &incy);
 }
 
-void copy(const int n, const ::std::complex< double > *x,
-          ::std::complex< double > *y, const int incx, const int incy) {
+void copy(int n, const ::std::complex< double > *x, ::std::complex< double > *y,
+          int incx, int incy) {
   zcopy_(&n, x, &incx, y, &incy);
 }
 
-float dot(const int n, const float *x, const float *y, const int incx,
-          const int incy) {
+float dot(int n, const float *x, const float *y, int incx, int incy) {
   return sdot_(&n, x, &incx, y, &incy);
 }
 
-double dot(const int n, const double *x, const double *y, const int incx,
-           const int incy) {
+double dot(int n, const double *x, const double *y, int incx, int incy) {
   return ddot_(&n, x, &incx, y, &incy);
 }
 
-::std::complex< float > dot(
-     const int n, const ::std::complex< float > *x,
-     const ::std::complex< float > *y, const int incx, const int incy) {
+::std::complex< float > dot(int n, const ::std::complex< float > *x,
+                          const ::std::complex< float > *y, int incx, int incy) {
   return dotu(n, x, y, incx, incy);
 }
 
-::std::complex< double > dot(
-     const int n, const ::std::complex< double > *x,
-     const ::std::complex< double > *y, const int incx, const int incy) {
+::std::complex< double > dot(int n, const ::std::complex< double > *x,
+                           const ::std::complex< double > *y, int incx,
+                           int incy) {
   return dotu(n, x, y, incx, incy);
 }
 
-float dotc(const int n, const float *x, const float *y, const int incx,
-           const int incy) {
+float dotc(int n, const float *x, const float *y, int incx, int incy) {
   return dot(n, x, y, incx, incy);
 }
 
-double dotc(const int n, const double *x, const double *y, const int incx,
-            const int incy) {
+double dotc(int n, const double *x, const double *y, int incx, int incy) {
   return dot(n, x, y, incx, incy);
 }
 
-::std::complex< float > dotc(
-     const int n, const ::std::complex< float > *x,
-     const ::std::complex< float > *y, const int incx, const int incy) {
+::std::complex< float > dotc(int n, const ::std::complex< float > *x,
+                           const ::std::complex< float > *y, int incx, int incy) {
   ::std::complex< float > r;
   cdotcsubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
-::std::complex< double > dotc(
-     const int n, const ::std::complex< double > *x,
-     const ::std::complex< double > *y, const int incx, const int incy) {
+::std::complex< double > dotc(int n, const ::std::complex< double > *x,
+                            const ::std::complex< double > *y, int incx,
+                            int incy) {
   ::std::complex< double > r;
   zdotcsubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
-float dotu(const int n, const float *x, const float *y, const int incx,
-           const int incy) {
+float dotu(int n, const float *x, const float *y, int incx, int incy) {
   return dot(n, x, y, incx, incy);
 }
 
-double dotu(const int n, const double *x, const double *y, const int incx,
-            const int incy) {
+double dotu(int n, const double *x, const double *y, int incx, int incy) {
   return dot(n, x, y, incx, incy);
 }
 
-::std::complex< float > dotu(
-     const int n, const ::std::complex< float > *x,
-     const ::std::complex< float > *y, const int incx, const int incy) {
+::std::complex< float > dotu(int n, const ::std::complex< float > *x,
+                           const ::std::complex< float > *y, int incx, int incy) {
   ::std::complex< float > r;
   cdotusubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
-::std::complex< double > dotu(
-     const int n, const ::std::complex< double > *x,
-     const ::std::complex< double > *y, const int incx, const int incy) {
+::std::complex< double > dotu(int n, const ::std::complex< double > *x,
+                            const ::std::complex< double > *y, int incx,
+                            int incy) {
   ::std::complex< double > r;
   zdotusubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
-float nrm2(const int n, const float *x, const int incx) {
-  return snrm2_(&n, x, &incx);
-}
+float nrm2(int n, const float *x, int incx) { return snrm2_(&n, x, &incx); }
 
-double nrm2(const int n, const double *x, const int incx) {
-  return dnrm2_(&n, x, &incx);
-}
+double nrm2(int n, const double *x, int incx) { return dnrm2_(&n, x, &incx); }
 
-float nrm2(const int n, const ::std::complex< float > *x, const int incx) {
+float nrm2(int n, const ::std::complex< float > *x, int incx) {
   return scnrm2_(&n, x, &incx);
 }
 
-double nrm2(const int n, const ::std::complex< double > *x, const int incx) {
+double nrm2(int n, const ::std::complex< double > *x, int incx) {
   return dznrm2_(&n, x, &incx);
 }
 
-void rot(const int n, float *x, float *y, const float c, const float s,
-         const int incx, const int incy) {
+void rot(int n, float *x, float *y, const float c, const float s, int incx,
+         int incy) {
   srot_(&n, x, &incx, y, &incy, &c, &s);
 }
 
-void rot(const int n, double *x, double *y, const double c, const double s,
-         const int incx, const int incy) {
+void rot(int n, double *x, double *y, const double c, const double s, int incx,
+         int incy) {
   drot_(&n, x, &incx, y, &incy, &c, &s);
 }
 
-void rot(const int n, ::std::complex< float > *x, ::std::complex< float > *y,
-         const float c, const float s, const int incx, const int incy) {
+void rot(int n, ::std::complex< float > *x, ::std::complex< float > *y,
+         const float c, const float s, int incx, int incy) {
   csrot_(&n, x, &incx, y, &incy, &c, &s);
 }
 
-void rot(const int n, ::std::complex< double > a, ::std::complex< double > *x,
-         ::std::complex< double > *y, const double c, const double s,
-         const int incx, const int incy) {
+void rot(int n, ::std::complex< double > a, ::std::complex< double > *x,
+         ::std::complex< double > *y, const double c, const double s, int incx,
+         int incy) {
   zdrot_(&n, x, &incx, y, &incy, &c, &s);
 }
 
-void rotg(float *a, float *b, float *c, float *s) {
-  srotg_(a, b, c, s);
-}
+void rotg(float *a, float *b, float *c, float *s) { srotg_(a, b, c, s); }
 
-void rotg(double *a, double *b, double *c, double *s) {
-  drotg_(a, b, c, s);
-}
+void rotg(double *a, double *b, double *c, double *s) { drotg_(a, b, c, s); }
 
 void rotg(::std::complex< float > *a, ::std::complex< float > *b, float *c,
           ::std::complex< float > *s) {
@@ -214,75 +187,63 @@ void rotg(::std::complex< double > *a, ::std::complex< double > *b, double *c,
   zrotg_(a, b, c, s);
 }
 
-void rotm(const int n, float *x, float *y, const float *param, const int incx,
-          const int incy) {
+void rotm(int n, float *x, float *y, const float *param, int incx, int incy) {
   srotm_(&n, x, &incx, y, &incy, param);
 }
 
-void rotm(const int n, double *x, double *y, const double *param,
-          const int incx, const int incy) {
+void rotm(int n, double *x, double *y, const double *param, int incx,
+          int incy) {
   drotm_(&n, x, &incx, y, &incy, param);
 }
 
-void scal(const int n, float *x, const float a, const int incx) {
-  sscal_(&n, &a, x, &incx);
-}
+void scal(int n, float *x, float a, int incx) { sscal_(&n, &a, x, &incx); }
 
-void scal(const int n, double *x, const double a, const int incx) {
-  dscal_(&n, &a, x, &incx);
-}
+void scal(int n, double *x, double a, int incx) { dscal_(&n, &a, x, &incx); }
 
-void scal(const int n, ::std::complex< float > *x,
-          const ::std::complex< float > a, const int incx) {
+void scal(int n, ::std::complex< float > *x, ::std::complex< float > a, int incx) {
   cscal_(&n, &a, x, &incx);
 }
 
-void scal(const int n, ::std::complex< double > *x,
-          const ::std::complex< double > a, const int incx) {
+void scal(int n, ::std::complex< double > *x, ::std::complex< double > a,
+          int incx) {
   zscal_(&n, &a, x, &incx);
 }
 
-void scal(const int n, ::std::complex< float > *x, const float a,
-          const int incx) {
+void scal(int n, ::std::complex< float > *x, float a, int incx) {
   csscal_(&n, &a, x, &incx);
 }
 
-void scal(const int n, ::std::complex< double > *x, const double a,
-          const int incx) {
+void scal(int n, ::std::complex< double > *x, double a, int incx) {
   zdscal_(&n, &a, x, &incx);
 }
 
-void swap(const int n, float *x, float *y, const int incx, const int incy) {
+void swap(int n, float *x, float *y, int incx, int incy) {
   sswap_(&n, x, &incx, y, &incy);
 }
 
-void swap(const int n, double *x, double *y, const int incx, const int incy) {
+void swap(int n, double *x, double *y, int incx, int incy) {
   dswap_(&n, x, &incx, y, &incy);
 }
 
-void swap(const int n, ::std::complex< float > *x, ::std::complex< float > *y,
-          const int incx, const int incy) {
+void swap(int n, ::std::complex< float > *x, ::std::complex< float > *y, int incx,
+          int incy) {
   cswap_(&n, x, &incx, y, &incy);
 }
 
-void swap(const int n, ::std::complex< double > *x, ::std::complex< double > *y,
-          const int incx, const int incy) {
+void swap(int n, ::std::complex< double > *x, ::std::complex< double > *y, int incx,
+          int incy) {
   zswap_(&n, x, &incx, y, &incy);
 }
 
-int iamax(const int n, const float *x, const int incx) {
-  return isamax_(&n, x, &incx);
-}
+int iamax(int n, const float *x, int incx) { return isamax_(&n, x, &incx); }
 
-int iamax(const int n, const double *x, const int incx) {
-  return idamax_(&n, x, &incx);
-}
+int iamax(int n, const double *x, int incx) { return idamax_(&n, x, &incx); }
 
-int iamax(const int n, const ::std::complex< float > *x, const int incx) {
+int iamax(int n, const ::std::complex< float > *x, int incx) {
   return icamax_(&n, x, &incx);
 }
 
-int iamax(const int n, const ::std::complex< double > *x, const int incx) {
+int iamax(int n, const ::std::complex< double > *x, int incx) {
   return izamax_(&n, x, &incx);
 }
 
