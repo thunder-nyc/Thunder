@@ -184,16 +184,6 @@ void gemv(int m, int n, const ::std::complex< double > *a,
           ::std::complex< double > beta = 1.0, int lda = 0, int incx = 1,
           int incy = 1, Order order = Order::kRowMajor,
           Trans trans = Trans::kNoTrans);
-void gemv(int m, int n, float *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, ::std::complex< float > alpha = 1.0,
-          ::std::complex< float > beta = 1.0, int lda = 0, int incx = 1,
-          int incy = 1, Order order = Order::kRowMajor,
-          Trans trans = Trans::kNoTrans);
-void gemv(int m, int n, double *a, const ::std::complex< double > *x,
-          ::std::complex< double > *y, ::std::complex< double > alpha = 1.0,
-          ::std::complex< double > beta = 1.0, int lda = 0, int incx = 1,
-          int incy = 1, Order order = Order::kRowMajor,
-          Trans trans = Trans::kNoTrans);
 
 void ger(int m, int n, const float *x, const float *y, float *a,
          float alpha = 1.0, int incx = 1, int incy = 1, int lda = 0,
