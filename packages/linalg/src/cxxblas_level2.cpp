@@ -99,8 +99,9 @@ void gbmv(int m, int n, const double *a, const double *x, double *y,
 
 void gbmv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha, const ::std::complex< float > beta, int kl,
-          int ku, int lda, int incx, int incy, Order order, Trans trans) {
+          ::std::complex< float > alpha, const ::std::complex< float > beta,
+          int kl, int ku, int lda, int incx, int incy, Order order,
+          Trans trans) {
   if (lda == 0) {
     lda = kl + ku + 1;
   }
@@ -112,7 +113,7 @@ void gbmv(int m, int n, const ::std::complex< float > *a,
     cgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
   } else {
-    ::std::complex< float > *xc;
+    ::std::complex< float > *xc = nullptr;
     int incxc = 1;
     if (m > 0) {
       xc = static_cast< ::std::complex< float >* >(
@@ -146,7 +147,7 @@ void gbmv(int m, int n, const ::std::complex< double > *a,
     zgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, x, &incx, &beta, y,
            &incy);
   } else {
-    ::std::complex< double > *xc;
+    ::std::complex< double > *xc = nullptr;
     int incxc = 1;
     if (m > 0) {
       xc = static_cast< ::std::complex< double >* >(
@@ -210,30 +211,6 @@ void gemv(int m, int n, const ::std::complex< double > *a,
   }
 }
 
-void gemv(int m, int n, float *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, ::std::complex< float > alpha,
-          const ::std::complex< float > beta, int lda, int incx, int incy,
-          Order order, Trans trans) {
-  char trans_char = transChar(order, trans);
-  if (order == Order::kColMajor) {
-    scgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
-  } else {
-    scgemv_(&trans_char, &n, &m, &alpha, a, &lda, x, &incx, &beta, y, &incy);
-  }
-}
-
-void gemv(int m, int n, double *a, const ::std::complex< double > *x,
-          ::std::complex< double > *y, ::std::complex< double > alpha,
-          const ::std::complex< double > beta, int lda, int incx, int incy,
-          Order order, Trans trans) {
-  char trans_char = transChar(order, trans);
-  if (order == Order::kColMajor) {
-    dzgemv_(&trans_char, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy);
-  } else {
-    dzgemv_(&trans_char, &n, &m, &alpha, a, &lda, x, &incx, &beta, y, &incy);
-  }
-}
-
 void ger(int m, int n, const float *x, const float *y, float *a, float alpha,
          int incx, int incy, int lda, Order order) {
   if (order == Order::kColMajor) {
@@ -256,14 +233,14 @@ void ger(int m, int n, const ::std::complex< float > *x,
          const ::std::complex< float > *y, ::std::complex< float > *a,
          ::std::complex< float > alpha, int incx, int incy, int lda,
          Order order) {
-  cgeru(m, n, x, y, a, alpha, incx, incy, lda, order);
+  geru(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
 void ger(int m, int n, const ::std::complex< double > *x,
          const ::std::complex< double > *y, ::std::complex< double > *a,
          ::std::complex< double > alpha, int incx, int incy, int lda,
          Order order) {
-  zgeru(m, n, x, y, a, alpha, incx, incy, lda, order);
+  geru(m, n, x, y, a, alpha, incx, incy, lda, order);
 }
 
 void gerc(int m, int n, const float *x, const float *y, float *a, float alpha,
@@ -342,10 +319,11 @@ void hbmv(int n, const double *a, const double *x, double *y, double alpha,
   sbmv(n, a, x, y, alpha, beta, k, lda, incx, incy, order, uplo);
 }
 
-void hbmv(int n, const ::std::complex< float > *a, const ::std::complex< float > *x,
+void hbmv(int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x,
           ::std::complex< float > *y, ::std::complex< float > alpha,
-          const ::std::complex< float > beta, int k, int lda, int incx, int incy,
-          Order order, const Uplo uplo) {
+          const ::std::complex< float > beta, int k, int lda, int incx,
+          int incy, Order order, const Uplo uplo) {
   char uplo_char = uploChar(uplo);
   if (order == Order::kRowMajor) {
     chbmv_(&uplo_char, &n, &k, &alpha, a, &lda, x, &incx, &beta, y, &incy);

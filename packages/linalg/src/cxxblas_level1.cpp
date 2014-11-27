@@ -83,14 +83,15 @@ double dot(int n, const double *x, const double *y, int incx, int incy) {
   return ddot_(&n, x, &incx, y, &incy);
 }
 
-::std::complex< float > dot(int n, const ::std::complex< float > *x,
-                          const ::std::complex< float > *y, int incx, int incy) {
+::std::complex< float > dot(
+     int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
+     int incx, int incy) {
   return dotu(n, x, y, incx, incy);
 }
 
-::std::complex< double > dot(int n, const ::std::complex< double > *x,
-                           const ::std::complex< double > *y, int incx,
-                           int incy) {
+::std::complex< double > dot(
+     int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, int incx, int incy) {
   return dotu(n, x, y, incx, incy);
 }
 
@@ -102,16 +103,17 @@ double dotc(int n, const double *x, const double *y, int incx, int incy) {
   return dot(n, x, y, incx, incy);
 }
 
-::std::complex< float > dotc(int n, const ::std::complex< float > *x,
-                           const ::std::complex< float > *y, int incx, int incy) {
+::std::complex< float > dotc(
+     int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
+     int incx, int incy) {
   ::std::complex< float > r;
   cdotcsubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
-::std::complex< double > dotc(int n, const ::std::complex< double > *x,
-                            const ::std::complex< double > *y, int incx,
-                            int incy) {
+::std::complex< double > dotc(
+     int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, int incx, int incy) {
   ::std::complex< double > r;
   zdotcsubtd_(&r, &n, x, &incx, y, &incy);
   return r;
@@ -125,16 +127,17 @@ double dotu(int n, const double *x, const double *y, int incx, int incy) {
   return dot(n, x, y, incx, incy);
 }
 
-::std::complex< float > dotu(int n, const ::std::complex< float > *x,
-                           const ::std::complex< float > *y, int incx, int incy) {
+::std::complex< float > dotu(
+     int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
+     int incx, int incy) {
   ::std::complex< float > r;
   cdotusubtd_(&r, &n, x, &incx, y, &incy);
   return r;
 }
 
-::std::complex< double > dotu(int n, const ::std::complex< double > *x,
-                            const ::std::complex< double > *y, int incx,
-                            int incy) {
+::std::complex< double > dotu(
+     int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, int incx, int incy) {
   ::std::complex< double > r;
   zdotusubtd_(&r, &n, x, &incx, y, &incy);
   return r;
@@ -200,7 +203,8 @@ void scal(int n, float *x, float a, int incx) { sscal_(&n, &a, x, &incx); }
 
 void scal(int n, double *x, double a, int incx) { dscal_(&n, &a, x, &incx); }
 
-void scal(int n, ::std::complex< float > *x, ::std::complex< float > a, int incx) {
+void scal(int n, ::std::complex< float > *x, ::std::complex< float > a,
+          int incx) {
   cscal_(&n, &a, x, &incx);
 }
 
@@ -225,13 +229,13 @@ void swap(int n, double *x, double *y, int incx, int incy) {
   dswap_(&n, x, &incx, y, &incy);
 }
 
-void swap(int n, ::std::complex< float > *x, ::std::complex< float > *y, int incx,
-          int incy) {
+void swap(int n, ::std::complex< float > *x, ::std::complex< float > *y,
+          int incx, int incy) {
   cswap_(&n, x, &incx, y, &incy);
 }
 
-void swap(int n, ::std::complex< double > *x, ::std::complex< double > *y, int incx,
-          int incy) {
+void swap(int n, ::std::complex< double > *x, ::std::complex< double > *y,
+          int incx, int incy) {
   zswap_(&n, x, &incx, y, &incy);
 }
 
