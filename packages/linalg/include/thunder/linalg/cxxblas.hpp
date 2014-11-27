@@ -65,8 +65,8 @@ double dot(int n, const double *x, const double *y, int incx = 1, int incy = 1);
      int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
      int incx = 1, int incy = 1);
 ::std::complex< double > dot(
-     int n, const ::std::complex< double > *x, const ::std::complex< double > *y,
-     int incx = 1, int incy = 1);
+     int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, int incx = 1, int incy = 1);
 
 float dotc(int n, const float *x, const float *y, int incx = 1, int incy = 1);
 double dotc(int n, const double *x, const double *y, int incx = 1,
@@ -75,8 +75,8 @@ double dotc(int n, const double *x, const double *y, int incx = 1,
      int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
      int incx = 1, int incy = 1);
 ::std::complex< double > dotc(
-     int n, const ::std::complex< double > *x, const ::std::complex< double > *y,
-     int incx = 1, int incy = 1);
+     int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, int incx = 1, int incy = 1);
 
 float dotu(int n, const float *x, const float *y, int incx = 1, int incy = 1);
 double dotu(int n, const double *x, const double *y, int incx = 1,
@@ -85,8 +85,8 @@ double dotu(int n, const double *x, const double *y, int incx = 1,
      int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
      int incx = 1, int incy = 1);
 ::std::complex< double > dotu(
-     int n, const ::std::complex< double > *x, const ::std::complex< double > *y,
-     int incx = 1, int incy = 1);
+     int n, const ::std::complex< double > *x,
+     const ::std::complex< double > *y, int incx = 1, int incy = 1);
 
 float nrm2(int n, const float *x, int incx = 1);
 double nrm2(int n, const double *x, int incx = 1);
@@ -100,8 +100,8 @@ void rot(int n, double *x, double *y, const double c = 1.0,
 void rot(int n, ::std::complex< float > *x, ::std::complex< float > *y,
          const float c = 1.0, const float s = 1.0, int incx = 1, int incy = 1);
 void rot(int n, ::std::complex< double > a, ::std::complex< double > *x,
-         ::std::complex< double > *y, const double c = 1.0, const double s = 1.0,
-         int incx = 1, int incy = 1);
+         ::std::complex< double > *y, const double c = 1.0,
+         const double s = 1.0, int incx = 1, int incy = 1);
 
 void rotg(float *a, float *b, float *c, float *s);
 void rotg(double *a, double *b, double *c, double *s);
@@ -153,13 +153,15 @@ void gbmv(int m, int n, const double *a, const double *x, double *y,
           Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans);
 void gbmv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-          int kl = 0, int ku = 0, int lda = 0, int incx = 1, int incy = 1,
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 0.0, int kl = 0, int ku = 0,
+          int lda = 0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans);
 void gbmv(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int kl = 0, int ku = 0, int lda = 0, int incx = 1, int incy = 1,
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int kl = 0, int ku = 0,
+          int lda = 0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans);
 
 void gemv(int m, int n, const float *a, const float *x, float *y,
@@ -172,14 +174,16 @@ void gemv(int m, int n, const double *a, const double *x, double *y,
           Trans trans = Trans::kNoTrans);
 void gemv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 1.0,
-          int lda = 0, int incx = 1, int incy = 1,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans);
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 1.0, int lda = 0, int incx = 1,
+          int incy = 1, Order order = Order::kRowMajor,
+          Trans trans = Trans::kNoTrans);
 void gemv(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 1.0,
-          int lda = 0, int incx = 1, int incy = 1,
-          Order order = Order::kRowMajor, Trans trans = Trans::kNoTrans);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 1.0, int lda = 0, int incx = 1,
+          int incy = 1, Order order = Order::kRowMajor,
+          Trans trans = Trans::kNoTrans);
 void gemv(int m, int n, float *a, const ::std::complex< float > *x,
           ::std::complex< float > *y, ::std::complex< float > alpha = 1.0,
           ::std::complex< float > beta = 1.0, int lda = 0, int incx = 1,
@@ -243,16 +247,18 @@ void hbmv(int n, const double *a, const double *x, double *y,
           double alpha = 1.0, float beta = 0.0, int k = 0, int lda = 0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
-void hbmv(int n, const ::std::complex< float > *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, ::std::complex< float > alpha = 1.0,
+void hbmv(int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          ::std::complex< float > alpha = 1.0,
           ::std::complex< float > beta = 0.0, int k = 0, int lda = 0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
 void hbmv(int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int k = 0, int lda = 0, int incx = 1, int incy = 1,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int k = 0, int lda = 0,
+          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper);
 
 void hemv(int n, const float *a, const float *x, float *y, float alpha = 1.0,
           float beta = 0.0, int lda = 0, int incx = 1, int incy = 1,
@@ -261,16 +267,18 @@ void hemv(int n, const double *a, const double *x, double *y,
           double alpha = 1.0, float beta = 0.0, int lda = 0, int incx = 1,
           int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
-void hemv(int n, const ::std::complex< float > *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, ::std::complex< float > alpha = 1.0,
+void hemv(int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          ::std::complex< float > alpha = 1.0,
           ::std::complex< float > beta = 0.0, int lda = 0, int incx = 1,
           int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
 void hemv(int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int lda = 0, int incx = 1, int incy = 1,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int lda = 0, int incx = 1,
+          int incy = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper);
 
 void her(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
          int lda = 0, Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
@@ -289,10 +297,11 @@ void her2(int n, const float *x, const float *y, float *a, float alpha = 1.0,
 void her2(int n, const double *x, const double *y, double *a,
           double alpha = 1.0, int incx = 1, int incy = 1, int lda = 0,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void her2(int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
-          ::std::complex< float > *a, ::std::complex< float > alpha = 1.0,
-          int incx = 1, int incy = 1, int lda = 0,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+void her2(int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          ::std::complex< float > alpha = 1.0, int incx = 1, int incy = 1,
+          int lda = 0, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper);
 void her2(int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
           ::std::complex< double > alpha = 1.0, int incx = 1, int incy = 1,
@@ -307,14 +316,14 @@ void hpmv(int n, const double *ap, const double *x, double *y,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void hpmv(int n, const ::std::complex< float > *ap,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper);
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 0.0, int incx = 1, int incy = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void hpmv(int n, const ::std::complex< double > *ap,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int incx = 1, int incy = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
 void hpr(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
@@ -333,10 +342,10 @@ void hpr2(int n, const float *x, const float *y, float *a, float alpha = 1.0,
 void hpr2(int n, const double *x, const double *y, double *a,
           double alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void hpr2(int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
-          ::std::complex< float > *a, ::std::complex< float > alpha = 1.0,
-          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper);
+void hpr2(int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          ::std::complex< float > alpha = 1.0, int incx = 1, int incy = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void hpr2(int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
           ::std::complex< double > alpha = 1.0, int incx = 1, int incy = 1,
@@ -349,16 +358,18 @@ void sbmv(int n, const double *a, const double *x, double *y,
           double alpha = 1.0, float beta = 0.0, int k = 0, int lda = 0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
-void sbmv(int n, const ::std::complex< float > *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, ::std::complex< float > alpha = 1.0,
+void sbmv(int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          ::std::complex< float > alpha = 1.0,
           ::std::complex< float > beta = 0.0, int k = 0, int lda = 0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
 void sbmv(int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int k = 0, int lda = 0, int incx = 1, int incy = 1,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int k = 0, int lda = 0,
+          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper);
 
 void spmv(int n, const float *ap, const float *x, float *y, float alpha = 1.0,
           float beta = 0.0, int incx = 1, int incy = 1,
@@ -368,14 +379,14 @@ void spmv(int n, const double *ap, const double *x, double *y,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void spmv(int n, const ::std::complex< float > *ap,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper);
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 0.0, int incx = 1, int incy = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void spmv(int n, const ::std::complex< double > *ap,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int incx = 1, int incy = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
 void spr(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
@@ -394,10 +405,10 @@ void spr2(int n, const float *x, const float *y, float *a, float alpha = 1.0,
 void spr2(int n, const double *x, const double *y, double *a,
           double alpha = 1.0, int incx = 1, int incy = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void spr2(int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
-          ::std::complex< float > *a, ::std::complex< float > alpha = 1.0,
-          int incx = 1, int incy = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper);
+void spr2(int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          ::std::complex< float > alpha = 1.0, int incx = 1, int incy = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void spr2(int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
           ::std::complex< double > alpha = 1.0, int incx = 1, int incy = 1,
@@ -410,16 +421,18 @@ void symv(int n, const double *a, const double *x, double *y,
           double alpha = 1.0, float beta = 0.0, int lda = 0, int incx = 1,
           int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
-void symv(int n, const ::std::complex< float > *a, const ::std::complex< float > *x,
-          ::std::complex< float > *y, ::std::complex< float > alpha = 1.0,
+void symv(int n, const ::std::complex< float > *a,
+          const ::std::complex< float > *x, ::std::complex< float > *y,
+          ::std::complex< float > alpha = 1.0,
           ::std::complex< float > beta = 0.0, int lda = 0, int incx = 1,
           int incy = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper);
 void symv(int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int lda = 0, int incx = 1, int incy = 1,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int lda = 0, int incx = 1,
+          int incy = 1, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper);
 
 void syr(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
          int lda = 0, Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
@@ -438,10 +451,11 @@ void syr2(int n, const float *x, const float *y, float *a, float alpha = 1.0,
 void syr2(int n, const double *x, const double *y, double *a,
           double alpha = 1.0, int incx = 1, int incy = 1, int lda = 0,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
-void syr2(int n, const ::std::complex< float > *x, const ::std::complex< float > *y,
-          ::std::complex< float > *a, ::std::complex< float > alpha = 1.0,
-          int incx = 1, int incy = 1, int lda = 0,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+void syr2(int n, const ::std::complex< float > *x,
+          const ::std::complex< float > *y, ::std::complex< float > *a,
+          ::std::complex< float > alpha = 1.0, int incx = 1, int incy = 1,
+          int lda = 0, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper);
 void syr2(int n, const ::std::complex< double > *x,
           const ::std::complex< double > *y, ::std::complex< double > *a,
           ::std::complex< double > alpha = 1.0, int incx = 1, int incy = 1,
@@ -490,10 +504,10 @@ void tpmv(int n, const ::std::complex< float > *ap, ::std::complex< float > *x,
           int incx = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
-void tpmv(int n, const ::std::complex< double > *ap, ::std::complex< double > *x,
-          int incx = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
-          Diag diag = Diag::kNonUnit);
+void tpmv(int n, const ::std::complex< double > *ap,
+          ::std::complex< double > *x, int incx = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
+          Trans trans = Trans::kNoTrans, Diag diag = Diag::kNonUnit);
 
 void tpsv(int n, const float *ap, float *x, int incx = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
@@ -505,10 +519,10 @@ void tpsv(int n, const ::std::complex< float > *ap, ::std::complex< float > *x,
           int incx = 1, Order order = Order::kRowMajor,
           Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
-void tpsv(int n, const ::std::complex< double > *ap, ::std::complex< double > *x,
-          int incx = 1, Order order = Order::kRowMajor,
-          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
-          Diag diag = Diag::kNonUnit);
+void tpsv(int n, const ::std::complex< double > *ap,
+          ::std::complex< double > *x, int incx = 1,
+          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
+          Trans trans = Trans::kNoTrans, Diag diag = Diag::kNonUnit);
 
 void trmv(int n, const float *a, float *x, int lda = 0, int incx = 1,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
@@ -552,21 +566,24 @@ void gemm(int m, int n, int k, const double *a, const double *b, double *c,
           Trans transa = Trans::kNoTrans, Trans transb = Trans::kNoTrans);
 void gemm(int m, int n, int k, const ::std::complex< float > *a,
           const ::std::complex< float > *b, ::std::complex< float > *c,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-          int lda = 1, int ldb = 1, int ldc = 1, Order order = Order::kRowMajor,
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 0.0, int lda = 1, int ldb = 1,
+          int ldc = 1, Order order = Order::kRowMajor,
           Trans transa = Trans::kNoTrans, Trans transb = Trans::kNoTrans);
 void gemm(int m, int n, int k, const ::std::complex< double > *a,
           const ::std::complex< double > *b, ::std::complex< double > *c,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int lda = 1, int ldb = 1, int ldc = 1, Order order = Order::kRowMajor,
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int lda = 1, int ldb = 1,
+          int ldc = 1, Order order = Order::kRowMajor,
           Trans transa = Trans::kNoTrans, Trans transb = Trans::kNoTrans);
 void gemm(int m, int n, int k, const float *a, const ::std::complex< float > *b,
           ::std::complex< float > *c, ::std::complex< float > alpha = 1.0,
           ::std::complex< float > beta = 0.0, int lda = 1, int ldb = 1,
           int ldc = 1, Order order = Order::kRowMajor,
           Trans transa = Trans::kNoTrans, Trans transb = Trans::kNoTrans);
-void gemm(int m, int n, int k, const double *a, const ::std::complex< double > *b,
-          ::std::complex< double > *c, ::std::complex< double > alpha = 1.0,
+void gemm(int m, int n, int k, const double *a,
+          const ::std::complex< double > *b, ::std::complex< double > *c,
+          ::std::complex< double > alpha = 1.0,
           ::std::complex< double > beta = 0.0, int lda = 1, int ldb = 1,
           int ldc = 1, Order order = Order::kRowMajor,
           Trans transa = Trans::kNoTrans, Trans transb = Trans::kNoTrans);
@@ -581,14 +598,16 @@ void hemm(int m, int n, const double *a, const double *b, double *c,
           Uplo Uplo = Uplo::kUpper);
 void hemm(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *b, ::std::complex< float > *c,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-          int lda = 1, int ldb = 1, int ldc = 1, Order order = Order::kRowMajor,
-          Side side = Side::kLeft, Uplo Uplo = Uplo::kUpper);
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 0.0, int lda = 1, int ldb = 1,
+          int ldc = 1, Order order = Order::kRowMajor, Side side = Side::kLeft,
+          Uplo Uplo = Uplo::kUpper);
 void hemm(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *b, ::std::complex< double > *c,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int lda = 1, int ldb = 1, int ldc = 1, Order order = Order::kRowMajor,
-          Side side = Side::kLeft, Uplo Uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int lda = 1, int ldb = 1,
+          int ldc = 1, Order order = Order::kRowMajor, Side side = Side::kLeft,
+          Uplo Uplo = Uplo::kUpper);
 
 void herk(int n, int k, const float *a, const float *c, float alpha = 1.0,
           float beta = 0.0, int lda = 0, int ldc = 0,
@@ -604,7 +623,8 @@ void herk(int n, int k, const ::std::complex< float > *a,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans);
 void herk(int n, int k, const ::std::complex< double > *a,
-          const ::std::complex< double > *c, ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > *c,
+          ::std::complex< double > alpha = 1.0,
           ::std::complex< double > beta = 0.0, int lda = 0, int ldc = 0,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans);
@@ -619,10 +639,10 @@ void her2k(int n, int k, const double *a, const float *b, const double *c,
            Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void her2k(int n, int k, const ::std::complex< float > *a,
            const ::std::complex< float > *b, const ::std::complex< float > *c,
-           ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-           int lda = 0, int ldb = 0, int ldc = 0,
-           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
-           Trans trans = Trans::kNoTrans);
+           ::std::complex< float > alpha = 1.0,
+           ::std::complex< float > beta = 0.0, int lda = 0, int ldb = 0,
+           int ldc = 0, Order order = Order::kRowMajor,
+           Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void her2k(int n, int k, const ::std::complex< double > *a,
            const ::std::complex< double > *b, const ::std::complex< double > *c,
            ::std::complex< double > alpha = 1.0,
@@ -640,14 +660,16 @@ void symm(int m, int n, const double *a, const double *b, double *c,
           Uplo Uplo = Uplo::kUpper);
 void symm(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *b, ::std::complex< float > *c,
-          ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-          int lda = 1, int ldb = 1, int ldc = 1, Order order = Order::kRowMajor,
-          Side side = Side::kLeft, Uplo Uplo = Uplo::kUpper);
+          ::std::complex< float > alpha = 1.0,
+          ::std::complex< float > beta = 0.0, int lda = 1, int ldb = 1,
+          int ldc = 1, Order order = Order::kRowMajor, Side side = Side::kLeft,
+          Uplo Uplo = Uplo::kUpper);
 void symm(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *b, ::std::complex< double > *c,
-          ::std::complex< double > alpha = 1.0, ::std::complex< double > beta = 0.0,
-          int lda = 1, int ldb = 1, int ldc = 1, Order order = Order::kRowMajor,
-          Side side = Side::kLeft, Uplo Uplo = Uplo::kUpper);
+          ::std::complex< double > alpha = 1.0,
+          ::std::complex< double > beta = 0.0, int lda = 1, int ldb = 1,
+          int ldc = 1, Order order = Order::kRowMajor, Side side = Side::kLeft,
+          Uplo Uplo = Uplo::kUpper);
 
 void syrk(int n, int k, const float *a, const float *c, float alpha = 1.0,
           float beta = 0.0, int lda = 0, int ldc = 0,
@@ -663,7 +685,8 @@ void syrk(int n, int k, const ::std::complex< float > *a,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans);
 void syrk(int n, int k, const ::std::complex< double > *a,
-          const ::std::complex< double > *c, ::std::complex< double > alpha = 1.0,
+          const ::std::complex< double > *c,
+          ::std::complex< double > alpha = 1.0,
           ::std::complex< double > beta = 0.0, int lda = 0, int ldc = 0,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans);
@@ -678,10 +701,10 @@ void syr2k(int n, int k, const double *a, const float *b, const double *c,
            Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void syr2k(int n, int k, const ::std::complex< float > *a,
            const ::std::complex< float > *b, const ::std::complex< float > *c,
-           ::std::complex< float > alpha = 1.0, ::std::complex< float > beta = 0.0,
-           int lda = 0, int ldb = 0, int ldc = 0,
-           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
-           Trans trans = Trans::kNoTrans);
+           ::std::complex< float > alpha = 1.0,
+           ::std::complex< float > beta = 0.0, int lda = 0, int ldb = 0,
+           int ldc = 0, Order order = Order::kRowMajor,
+           Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void syr2k(int n, int k, const ::std::complex< double > *a,
            const ::std::complex< double > *b, const ::std::complex< double > *c,
            ::std::complex< double > alpha = 1.0,
