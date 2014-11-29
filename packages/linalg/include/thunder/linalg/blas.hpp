@@ -444,24 +444,24 @@ void cherk_(const char *uplo, const char *trans, const int *n, const int *k,
             const ::std::complex< float > *alpha,
             const ::std::complex< float > *a, const int *lda,
             const ::std::complex< float > *beta,
-            const ::std::complex< float > *c, const int *ldc);
+            ::std::complex< float > *c, const int *ldc);
 void zherk_(const char *uplo, const char *trans, const int *n, const int *k,
             const ::std::complex< double > *alpha,
             const ::std::complex< double > *a, const int *lda,
             const ::std::complex< double > *beta,
-            const ::std::complex< double > *c, const int *ldc);
+            ::std::complex< double > *c, const int *ldc);
 void cher2k_(const char *uplo, const char *trans, const int *n, const int *k,
              const ::std::complex< float > *alpha,
              const ::std::complex< float > *a, const int *lda,
              const ::std::complex< float > *b, const int *ldb,
              const ::std::complex< float > *beta,
-             const ::std::complex< float > *c, const int *ldc);
+             ::std::complex< float > *c, const int *ldc);
 void zher2k_(const char *uplo, const char *trans, const int *n, const int *k,
              const ::std::complex< double > *alpha,
              const ::std::complex< double > *a, const int *lda,
              const ::std::complex< double > *b, const int *ldb,
              const ::std::complex< double > *beta,
-             const ::std::complex< double > *c, const int *ldc);
+             ::std::complex< double > *c, const int *ldc);
 
 void ssymm_(const char *side, const char *uplo, const int *m, const int *n,
             const float *alpha, const float *a, const int *lda, const float *b,

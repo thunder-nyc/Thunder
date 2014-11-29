@@ -70,7 +70,7 @@ static inline char uploChar(Order order, Uplo uplo) {
 static inline char diagChar(Diag diag) {
   if (diag == Diag::kNonUnit) {
     return 'N';
-  } else if (diag == Diag::kUnit){
+  } else if (diag == Diag::kUnit) {
     return 'U';
   }
   return '\0';
@@ -932,7 +932,7 @@ void spmv(int n, const ::std::complex< double > *ap,
   hpmv(n, ap, x, y, alpha, beta, incx, incy, order, uplo);
 }
 
-void spr(int n, const float *x, float *ap, float alpha, int incx,Order order,
+void spr(int n, const float *x, float *ap, float alpha, int incx, Order order,
          Uplo uplo) {
   char uplo_char = uploChar(order, uplo);
   sspr_(&uplo_char, &n, &alpha, x, &incx, ap);
@@ -1195,7 +1195,7 @@ void tpmv(int n, const float *ap, float *x, int incx, Order order, Uplo uplo,
   char trans_char = transChar(order, trans);
   char uplo_char = uploChar(order, uplo);
   char diag_char = diagChar(diag);
-  stpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);  
+  stpmv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
 }
 
 void tpmv(int n, const double *ap, double *x, int incx, Order order, Uplo uplo,
@@ -1240,7 +1240,7 @@ void tpsv(int n, const float *ap, float *x, int incx, Order order, Uplo uplo,
   char trans_char = transChar(order, trans);
   char uplo_char = uploChar(order, uplo);
   char diag_char = diagChar(diag);
-  stpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);  
+  stpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
 }
 
 void tpsv(int n, const double *ap, double *x, int incx, Order order, Uplo uplo,
@@ -1248,7 +1248,7 @@ void tpsv(int n, const double *ap, double *x, int incx, Order order, Uplo uplo,
   char trans_char = transChar(order, trans);
   char uplo_char = uploChar(order, uplo);
   char diag_char = diagChar(diag);
-  dtpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);  
+  dtpsv_(&uplo_char, &trans_char, &diag_char, &n, ap, x, &incx);
 }
 
 void tpsv(int n, const ::std::complex< float > *ap, ::std::complex< float > *x,
