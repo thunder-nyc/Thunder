@@ -29,9 +29,7 @@ namespace linalg {
 TEST(LinalgTest, dummyTest) {
   int n = 1000;
   ::std::complex< double > x[1000];
-  int incx = 1;
   ::std::complex< double > y[1000];
-  int incy = 1;
   ::std::complex< double > r;
 
   for (int i = 0; i < n; ++i) {

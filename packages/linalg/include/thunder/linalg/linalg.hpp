@@ -51,6 +51,7 @@ class Linalg {
 
   // Const linear algebra constructors
   const T& diag(const T &x, const T &r);
+  const T& diagonal(const T &x, const T &r);
   const T& eye(const T &x, const T &r);
   const T& linspace(const value_type &a, const value_type &b, const T &r);
   const T& logspace(const value_type &a, const value_type &b, const T &r);
@@ -59,6 +60,7 @@ class Linalg {
 
   // Non-const linear algebra constructors
   T& diag(const T &x, T *r);
+  T& diagonal(const T &x, T *r);
   T& eye(const T &x, T *r);
   T& linspace(const value_type &a, const value_type &b, T *r);
   T& logspace(const value_type &a, const value_type &b, T *r);
