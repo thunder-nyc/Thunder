@@ -6,7 +6,7 @@ enable_language (Fortran)
 
 # The version number
 set(THUNDER_VERSION_MAJOR 0)
-set(THUNDER_VERSION_MINOR 2)
+set(THUNDER_VERSION_MINOR 3)
 set(THUNDER_VERSION_PATCH 0)
 
 # By default, build shared library

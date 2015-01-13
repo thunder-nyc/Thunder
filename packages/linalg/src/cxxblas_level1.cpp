@@ -170,9 +170,8 @@ void rot(int n, ::std::complex< float > *x, ::std::complex< float > *y,
   csrot_(&n, x, &incx, y, &incy, &c, &s);
 }
 
-void rot(int n, ::std::complex< double > a, ::std::complex< double > *x,
-         ::std::complex< double > *y, const double c, const double s, int incx,
-         int incy) {
+void rot(int n, ::std::complex< double > *x, ::std::complex< double > *y,
+         const double c, const double s, int incx, int incy) {
   zdrot_(&n, x, &incx, y, &incy, &c, &s);
 }
 

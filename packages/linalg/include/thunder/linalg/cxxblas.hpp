@@ -99,9 +99,9 @@ void rot(int n, double *x, double *y, const double c = 1.0,
          const double s = 1.0, int incx = 1, int incy = 1);
 void rot(int n, ::std::complex< float > *x, ::std::complex< float > *y,
          const float c = 1.0, const float s = 1.0, int incx = 1, int incy = 1);
-void rot(int n, ::std::complex< double > a, ::std::complex< double > *x,
-         ::std::complex< double > *y, const double c = 1.0,
-         const double s = 1.0, int incx = 1, int incy = 1);
+void rot(int n, ::std::complex< double > *x, ::std::complex< double > *y,
+         const double c = 1.0, const double s = 1.0, int incx = 1,
+         int incy = 1);
 
 void rotg(float *a, float *b, float *c, float *s);
 void rotg(double *a, double *b, double *c, double *s);
