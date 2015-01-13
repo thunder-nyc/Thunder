@@ -198,6 +198,16 @@ void rotm(int n, double *x, double *y, const double *param, int incx,
   drotm_(&n, x, &incx, y, &incy, param);
 }
 
+void rotmg(float *d1, float *d2, float *x1, const float x2,
+           const float *param) {
+  srotmg_(d1, d2, x1, &x2, param);
+}
+
+void rotmg(double *d1, double *d2, double *x1, const double x2,
+           const double *param) {
+  drotmg_(d1, d2, x1, &x2, param);
+}
+
 void scal(int n, float *x, float a, int incx) { sscal_(&n, &a, x, &incx); }
 
 void scal(int n, double *x, double a, int incx) { dscal_(&n, &a, x, &incx); }

@@ -115,9 +115,9 @@ void rotm(int n, float *x, float *y, const float *param, int incx = 1,
 void rotm(int n, double *x, double *y, const double *param, int incx = 1,
           int incy = 1);
 
-void rotmg(float *d1, float *d2, float *x1, const float *x2,
+void rotmg(float *d1, float *d2, float *x1, const float x2,
            const float *param);
-void rotmg(double *d1, double *d2, float *x1, const double *x2,
+void rotmg(double *d1, double *d2, double *x1, const double x2,
            const double *param);
 
 void scal(int n, float *x, float a, int incx = 1);

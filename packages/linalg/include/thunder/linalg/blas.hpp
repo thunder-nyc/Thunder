@@ -104,7 +104,7 @@ void drotm_(const int *n, double *x, const int *incx, double *y,
 
 void srotmg_(float *d1, float *d2, float *x1, const float *x2,
              const float *param);
-void drotmg_(double *d1, double *d2, float *x1, const double *x2,
+void drotmg_(double *d1, double *d2, double *x1, const double *x2,
              const double *param);
 
 
