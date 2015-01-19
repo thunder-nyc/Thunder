@@ -1065,7 +1065,6 @@ TEST(CxxBlasTest, swapTest) {
   }
 }
 
-// TODO: Figure out why it returns wrong indices
 TEST(CxxBlasTest, iamaxTest) {
   const int n = 1000;
   ::std::mt19937 gen;
@@ -1080,8 +1079,14 @@ TEST(CxxBlasTest, iamaxTest) {
       sp[i] = static_cast< float >(dist(gen));
     }
   }
-  cxxblas::iamax(n, sx);
-  cxxblas::iamax(n / 2, sp, 2);
+  int sxi = cxxblas::iamax(n, sx);
+  for (int i = 0; i < n; ++i) {
+    EXPECT_GE(::std::fabs(sx[sxi]), ::std::fabs(sx[i]));
+  }
+  int spi = cxxblas::iamax(n / 2, sp, 2);
+  for (int i = 0; i < n / 2; ++i) {
+    EXPECT_GE(::std::fabs(sp[spi * 2]), ::std::fabs(sp[i * 2]));
+  }
 
   double dx[n], dp[n];
   for (int i = 0; i < n; ++i) {
@@ -1096,7 +1101,10 @@ TEST(CxxBlasTest, iamaxTest) {
   for (int i = 0; i < n; ++i) {
     EXPECT_GE(::std::fabs(dx[dxi]), ::std::fabs(dx[i]));
   }
-  cxxblas::iamax(n / 2, dp, 2);
+  int dpi = cxxblas::iamax(n / 2, dp, 2);
+  for (int i = 0; i < n / 2; ++i) {
+    EXPECT_GE(::std::fabs(dp[dpi * 2]), ::std::fabs(dp[i * 2]));
+  }
 
   ::std::complex< float > cx[n], cp[n];
   for (int i = 0; i < n; ++i) {
@@ -1107,9 +1115,20 @@ TEST(CxxBlasTest, iamaxTest) {
       cp[i] = ::std::complex< float >(dist(gen), dist(gen));
     }
   }
-  cxxblas::iamax(n, cx);
-  cxxblas::iamax(n / 2, cp, 2);
-
+  int cxi = cxxblas::iamax(n, cx);
+  for (int i = 0; i < n; ++i) {
+    EXPECT_GE(
+        ::std::fabs(::std::real(cx[cxi])) + ::std::fabs(::std::imag(cx[cxi])),
+        ::std::fabs(::std::real(cx[i])) + ::std::fabs(::std::imag(cx[i])));
+  }
+  int cpi = cxxblas::iamax(n / 2, cp, 2);
+  for (int i = 0; i < n / 2; ++i) {
+    EXPECT_GE(
+        ::std::fabs(::std::real(cp[cpi * 2])) +
+        ::std::fabs(::std::imag(cp[cpi * 2])),
+        ::std::fabs(::std::real(cp[i * 2])) +
+        ::std::fabs(::std::imag(cp[i * 2])));
+  }
 
   ::std::complex< double > zx[n], zp[n];
   for (int i = 0; i < n; ++i) {
@@ -1120,8 +1139,20 @@ TEST(CxxBlasTest, iamaxTest) {
       zp[i] = ::std::complex< double >(dist(gen), dist(gen));
     }
   }
-  cxxblas::iamax(n, zx);
-  cxxblas::iamax(n / 2, zp, 2);
+  int zxi = cxxblas::iamax(n, zx);
+  for (int i = 0; i < n; ++i) {
+    EXPECT_GE(
+        ::std::fabs(::std::real(zx[zxi])) + ::std::fabs(::std::imag(zx[zxi])),
+        ::std::fabs(::std::real(zx[i])) + ::std::fabs(::std::imag(zx[i])));
+  }
+  int zpi = cxxblas::iamax(n / 2, zp, 2);
+  for (int i = 0; i < n / 2; ++i) {
+    EXPECT_GE(
+        ::std::fabs(::std::real(zp[zpi * 2])) +
+        ::std::fabs(::std::imag(zp[zpi * 2])),
+        ::std::fabs(::std::real(zp[i * 2])) +
+        ::std::fabs(::std::imag(zp[i * 2])));
+  }
 }
 
 }  // namespace

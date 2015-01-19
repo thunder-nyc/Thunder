@@ -248,16 +248,24 @@ void swap(int n, ::std::complex< double > *x, ::std::complex< double > *y,
   zswap_(&n, x, &incx, y, &incy);
 }
 
-int iamax(int n, const float *x, int incx) { return isamax_(&n, x, &incx); }
+int iamax(int n, const float *x, int incx) {
+  int r = isamax_(&n, x, &incx);
+  return (r ? r - 1 : 0);
+}
 
-int iamax(int n, const double *x, int incx) { return idamax_(&n, x, &incx); }
+int iamax(int n, const double *x, int incx) {
+  int r = idamax_(&n, x, &incx);
+  return (r ? r - 1 : 0);
+}
 
 int iamax(int n, const ::std::complex< float > *x, int incx) {
-  return icamax_(&n, x, &incx);
+  int r = icamax_(&n, x, &incx);
+  return (r ? r - 1 : 0);
 }
 
 int iamax(int n, const ::std::complex< double > *x, int incx) {
-  return izamax_(&n, x, &incx);
+  int r = izamax_(&n, x, &incx);
+  return (r ? r - 1 : 0);
 }
 
 }  // namespace cxxblas
