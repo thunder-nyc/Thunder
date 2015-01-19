@@ -1092,7 +1092,10 @@ TEST(CxxBlasTest, iamaxTest) {
       dp[i] = static_cast< double >(dist(gen));
     }
   }
-  cxxblas::iamax(n, dx);
+  int dxi = cxxblas::iamax(n, dx);
+  for (int i = 0; i < n; ++i) {
+    EXPECT_GE(::std::fabs(dx[dxi]), ::std::fabs(dx[i]));
+  }
   cxxblas::iamax(n / 2, dp, 2);
 
   ::std::complex< float > cx[n], cp[n];
