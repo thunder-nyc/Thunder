@@ -28,8 +28,45 @@ namespace thunder {
 namespace linalg {
 namespace {
 
+void expectEq(const float &a, const float &b) {
+  EXPECT_FLOAT_EQ(a, b);
+}
+void expectEq(const double &a, const double &b) {
+  EXPECT_FLOAT_EQ(a, b);
+}
+void expectEq(
+    const ::std::complex< float > &a, const ::std::complex< float > &b) {
+  EXPECT_FLOAT_EQ(::std::real(a), ::std::real(b));
+  EXPECT_FLOAT_EQ(::std::imag(a), ::std::imag(b));
+}
+void expectEq(
+    const ::std::complex< double > &a, const ::std::complex< double > &b) {
+  EXPECT_FLOAT_EQ(::std::real(a), ::std::real(b));
+  EXPECT_FLOAT_EQ(::std::imag(a), ::std::imag(b));
+}
+
 TEST(CxxBlasTest, gbmvTest) {
-  EXPECT_EQ(0, 0);
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  
+  const int m = 23;
+  const int n = 40;
+  const int kl = 3;
+  const int ku = 2;
+  const int lda = 5;
+
+  float sa[lda * n], sx[::std::max(m, n)], sy[::std::max(m, n)];
+  float salpha = static_cast< float >(dist(gen));
+  float sbeta = static_cast< float >(dist(gen));
+  for (int i = 0; i < lda * n; ++i) {
+    sa[i] = static_cast< float >(dist(gen));
+  }
+  for (int i = 0; i < ::std::max(m, n); ++i) {
+    sx[i] = static_cast< float >(dist(gen));
+    sy[i] = static_cast< float >(dist(gen));
+  }
+  cxxblas::gbmv(m, n, sa, sx, sy);
 }
 
 }  // namespace
