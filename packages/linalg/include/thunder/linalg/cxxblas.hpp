@@ -275,10 +275,10 @@ void her(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
 void her(int n, const double *x, double *a, double alpha = 1.0, int incx = 1,
          int lda = 0, Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void her(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
-         ::std::complex< float > alpha = 1.0, int incx = 1, int lda = 0,
+         float alpha = 1.0, int incx = 1, int lda = 0,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void her(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
-         ::std::complex< double > alpha = 1.0, int incx = 1, int lda = 0,
+         double alpha = 1.0, int incx = 1, int lda = 0,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
 void her2(int n, const float *x, const float *y, float *a, float alpha = 1.0,

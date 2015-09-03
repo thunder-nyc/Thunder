@@ -365,6 +365,205 @@ TEST(CxxBlasTest, hbmvTest) {
   hbmvTest< ::std::complex< float > >();
 }
 
+template < typename D >
+void hemvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 19;
+  const int lda = 28;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[n * lda], x[n * incx], y[n * incy], y_orig[n * incy];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    a[i * lda + i] = ::std::real(a[i * lda]);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = rand(&gen, &dist);
+    y_orig[i * incy] = y[i * incy];
+  }
+  cxxblas::hemv(n, a, x, y, alpha, beta, lda, incx, incy);
+
+  D result = 0.0;
+  int x_index = 0;
+  for (int i = 0; i < n; ++i) {
+    result = a[i * lda + i] * x[i * incx];
+    for (int j = i + 1; j < n; ++j) {
+      // Upper triangle values: using a[i * lda + j]
+      result += a[i * lda + j] * x[j * incx];
+    }
+    for (int j = 0; j < i; ++j) {
+      // Lower triangle values: using a[j * lda + i] conjugate
+      result += ::std::conj(a[j * lda + i]) * x[j * incx];
+    }
+    result = alpha * result + beta * y_orig[i * incy];
+    expectEq(y[i * incy], result);
+  }
+}
+
+TEST(CxxBlasTest, hemvTest) {
+  hemvTest< double >();
+  hemvTest< float >();
+  hemvTest< ::std::complex< double > >();
+  hemvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void herTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 19;
+  const int lda = 28;
+  const int incx = 2;
+
+  D a[n * lda], a_orig[n * lda], x[n * incx];
+  D alpha = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+    a_orig[i] = a[i];
+  }
+  for (int i = 0; i < n; ++i) {
+    a[i * lda + i] = ::std::real(a[i * lda + i]);
+    a_orig[i * lda + i] = a[i * lda + i];
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  cxxblas::her(n, x, a, ::std::real(alpha), incx, lda);
+
+  D result = 0.0;
+  int x_index = 0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = i; j < n; ++j) {
+      result = ::std::real(alpha) * x[i * incx] * ::std::conj(x[j * incx]) +
+          a_orig[i * lda + j];
+      expectEq(result, a[i * lda + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, herTest) {
+  herTest< double >();
+  herTest< float >();
+  herTest< ::std::complex< double > >();
+  herTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void her2Test() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 19;
+  const int lda = 28;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[n * lda], a_orig[n * lda], x[n * incx], y[n * incy];
+  D alpha = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+    a_orig[i] = a[i];
+  }
+  for (int i = 0; i < n; ++i) {
+    a[i * lda + i] = ::std::real(a[i * lda + i]);
+    a_orig[i * lda + i] = a[i * lda + i];
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    y[i * incy] = rand(&gen, &dist);
+  }
+  cxxblas::her2(n, x, y, a, alpha, incx, incy, lda);
+
+  D result = 0.0;
+  int x_index = 0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = i; j < n; ++j) {
+      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
+          ::std::conj(alpha) * y[i * incy] * ::std::conj(x[j * incx]) +
+          a_orig[i * lda + j];
+      expectEq(result, a[i * lda + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, her2Test) {
+  her2Test< double >();
+  her2Test< float >();
+  her2Test< ::std::complex< double > >();
+  her2Test< ::std::complex< float > >();
+}
+
+// TODO: figure out what is wrong with hpmv calls.
+template < typename D >
+void hpmvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[n * (n + 1) / 2], x[n * incx], y[n * incy], y_orig[n * incy];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < n * (n + 1) / 2; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    a[i * n - i * (i - 1) / 2] = ::std::real(a[i * n - i * (i - 1) / 2]);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = rand(&gen, &dist);
+    y_orig[i * incy] = y[i * incy];
+  }
+  cxxblas::hpmv(n, a, x, y, alpha, beta, incx, incy);
+
+  D result = 0.0;
+  int x_index = 0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = 0; j < i; ++j) {
+      // Lower triangle: a(i, j) = ::std::conj(a(j,i))
+      result += ::std::conj(a[j * n - j * (j - 1) / 2 + i]) * x[j * incx];
+    }
+    for (int j = i; j < n; ++j) {
+      // Upper triangle: using a(i, j)
+      result += a[i * n - i * (i - 1) / 2 + j] * x[j * incx];
+    }
+    result = alpha * result + beta * y_orig[i * incy];
+    expectEq(result, y[i * incy]);
+  }
+}
+
+TEST(CxxBlasTest, hpmvTest) {
+  hpmvTest< double >();
+  hpmvTest< float >();
+  hpmvTest< ::std::complex< double > >();
+  hpmvTest< ::std::complex< float > >();
+}
+
 }  // namespace
 }  // namespace linalg
 }  // namespace thunder

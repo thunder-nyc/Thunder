@@ -227,11 +227,10 @@ void zhemv_(const char *uplo, const int *n,
             const ::std::complex< double > *beta, ::std::complex< double > *y,
             const int *incy);
 
-void cher_(const char *uplo, const int *n, const ::std::complex< float > *alpha,
+void cher_(const char *uplo, const int *n, float *alpha,
            const ::std::complex< float > *x, const int *incx,
            ::std::complex< float > *a, const int *lda);
-void zher_(const char *uplo, const int *n,
-           const ::std::complex< double > *alpha,
+void zher_(const char *uplo, const int *n, double *alpha,
            const ::std::complex< double > *x, const int *incx,
            ::std::complex< double > *a, const int *lda);
 

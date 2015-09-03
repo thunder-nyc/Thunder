@@ -595,8 +595,7 @@ void her(int n, const double *x, double *a, double alpha, int incx, int lda,
 }
 
 void her(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
-         ::std::complex< float > alpha, int incx, int lda, Order order,
-         Uplo uplo) {
+         float alpha, int incx, int lda, Order order, Uplo uplo) {
   if (lda == 0) {
     lda = ::std::max(1, n);
   }
@@ -619,8 +618,7 @@ void her(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
 }
 
 void her(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
-         ::std::complex< double > alpha, int incx, int lda, Order order,
-         Uplo uplo) {
+         double alpha, int incx, int lda, Order order, Uplo uplo) {
   if (lda == 0) {
     lda = ::std::max(1, n);
   }
@@ -675,7 +673,7 @@ void her2(int n, const ::std::complex< float > *x,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, yc, incyc);
-    cher2_(&uplo_char, &n, &alpha, xc, &incxc, yc, &incyc, a, &lda);
+    cher2_(&uplo_char, &n, &alpha, yc, &incyc, xc, &incxc, a, &lda);
     if (n > 0) {
       ::std::free(xc);
       ::std::free(yc);
@@ -706,7 +704,7 @@ void her2(int n, const ::std::complex< double > *x,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, yc, incyc);
-    zher2_(&uplo_char, &n, &alpha, xc, &incxc, yc, &incyc, a, &lda);
+    zher2_(&uplo_char, &n, &alpha, yc, &incyc, xc, &incxc, a, &lda);
     if (n > 0) {
       ::std::free(xc);
       ::std::free(yc);
@@ -1051,14 +1049,12 @@ void syr(int n, const double *x, double *a, double alpha, int incx, int lda,
 }
 
 void syr(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
-         ::std::complex< float > alpha, int incx, int lda, Order order,
-         Uplo uplo) {
+         float alpha, int incx, int lda, Order order, Uplo uplo) {
   her(n, x, a, alpha, incx, lda, order, uplo);
 }
 
 void syr(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
-         ::std::complex< double > alpha, int incx, int lda, Order order,
-         Uplo uplo) {
+         double alpha, int incx, int lda, Order order, Uplo uplo) {
   her(n, x, a, alpha, incx, lda, order, uplo);
 }
 
