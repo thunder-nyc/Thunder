@@ -84,7 +84,7 @@ static inline void conj(int n, const D *x, int incx, D *y, int incy) {
 }
 
 void gbmv(int m, int n, const float *a, const float *x, float *y, float alpha,
-          const float beta, int kl, int ku, int lda, int incx, int incy,
+          float beta, int kl, int ku, int lda, int incx, int incy,
           Order order, Trans trans) {
   if (lda == 0) {
     lda = kl + ku + 1;
@@ -100,7 +100,7 @@ void gbmv(int m, int n, const float *a, const float *x, float *y, float alpha,
 }
 
 void gbmv(int m, int n, const double *a, const double *x, double *y,
-          double alpha, const double beta, int kl, int ku, int lda, int incx,
+          double alpha, double beta, int kl, int ku, int lda, int incx,
           int incy, Order order, Trans trans) {
   if (lda == 0) {
     lda = kl + ku + 1;
@@ -117,7 +117,7 @@ void gbmv(int m, int n, const double *a, const double *x, double *y,
 
 void gbmv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha, const ::std::complex< float > beta,
+          ::std::complex< float > alpha, ::std::complex< float > beta,
           int kl, int ku, int lda, int incx, int incy, Order order,
           Trans trans) {
   if (lda == 0) {
@@ -139,6 +139,8 @@ void gbmv(int m, int n, const ::std::complex< float > *a,
     }
     conj(m, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     cgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, xc, &incxc, &beta, y,
            &incy);
     conj(n, y, incy, y, incy);
@@ -150,7 +152,7 @@ void gbmv(int m, int n, const ::std::complex< float > *a,
 
 void gbmv(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha, const ::std::complex< double > beta,
+          ::std::complex< double > alpha, ::std::complex< double > beta,
           int kl, int ku, int lda, int incx, int incy, Order order,
           Trans trans) {
   if (lda == 0) {
@@ -172,6 +174,8 @@ void gbmv(int m, int n, const ::std::complex< double > *a,
     }
     conj(m, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     zgbmv_(&trans_char, &n, &m, &ku, &kl, &alpha, a, &lda, xc, &incxc, &beta, y,
            &incy);
     conj(n, y, incy, y, incy);
@@ -182,7 +186,7 @@ void gbmv(int m, int n, const ::std::complex< double > *a,
 }
 
 void gemv(int m, int n, const float *a, const float *x, float *y, float alpha,
-          const float beta, int lda, int incx, int incy, Order order,
+          float beta, int lda, int incx, int incy, Order order,
           Trans trans) {
   if (lda == 0) {
     lda = ::std::max(1, m);
@@ -196,7 +200,7 @@ void gemv(int m, int n, const float *a, const float *x, float *y, float alpha,
 }
 
 void gemv(int m, int n, const double *a, const double *x, double *y,
-          double alpha, const double beta, int lda, int incx, int incy,
+          double alpha, double beta, int lda, int incx, int incy,
           Order order, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor) {
@@ -215,7 +219,7 @@ void gemv(int m, int n, const double *a, const double *x, double *y,
 
 void gemv(int m, int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x, ::std::complex< float > *y,
-          ::std::complex< float > alpha, const ::std::complex< float > beta,
+          ::std::complex< float > alpha, ::std::complex< float > beta,
           int lda, int incx, int incy, Order order, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor) {
@@ -238,6 +242,8 @@ void gemv(int m, int n, const ::std::complex< float > *a,
     }
     conj(m, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     cgemv_(&trans_char, &n, &m, &alpha, a, &lda, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (m > 0) {
@@ -248,7 +254,7 @@ void gemv(int m, int n, const ::std::complex< float > *a,
 
 void gemv(int m, int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha, const ::std::complex< double > beta,
+          ::std::complex< double > alpha, ::std::complex< double > beta,
           int lda, int incx, int incy, Order order, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor) {
@@ -271,6 +277,8 @@ void gemv(int m, int n, const ::std::complex< double > *a,
     }
     conj(m, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     zgemv_(&trans_char, &n, &m, &alpha, a, &lda, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (m > 0) {
@@ -452,7 +460,7 @@ void hbmv(int n, const double *a, const double *x, double *y, double alpha,
 void hbmv(int n, const ::std::complex< float > *a,
           const ::std::complex< float > *x,
           ::std::complex< float > *y, ::std::complex< float > alpha,
-          const ::std::complex< float > beta, int k, int lda, int incx,
+          ::std::complex< float > beta, int k, int lda, int incx,
           int incy, Order order, const Uplo uplo) {
   if (lda == 0) {
     lda = k + 1;
@@ -469,6 +477,8 @@ void hbmv(int n, const ::std::complex< float > *a,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     chbmv_(&uplo_char, &n, &k, &alpha, a, &lda, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (n > 0) {
@@ -479,7 +489,7 @@ void hbmv(int n, const ::std::complex< float > *a,
 
 void hbmv(int n, const ::std::complex< double > *a,
           const ::std::complex< double > *x, ::std::complex< double > *y,
-          ::std::complex< double > alpha, const ::std::complex< double > beta,
+          ::std::complex< double > alpha, ::std::complex< double > beta,
           int k, int lda, int incx, int incy, Order order, const Uplo uplo) {
   if (lda == 0) {
     lda = k + 1;
@@ -496,6 +506,8 @@ void hbmv(int n, const ::std::complex< double > *a,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     zhbmv_(&uplo_char, &n, &k, &alpha, a, &lda, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (n > 0) {
@@ -533,6 +545,8 @@ void hemv(int n, const ::std::complex< float > *a,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     chemv_(&uplo_char, &n, &alpha, a, &lda, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (n > 0) {
@@ -560,6 +574,8 @@ void hemv(int n, const ::std::complex< double > *a,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     zhemv_(&uplo_char, &n, &alpha, a, &lda, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (n > 0) {
@@ -724,6 +740,8 @@ void hpmv(int n, const ::std::complex< float > *ap,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     chpmv_(&uplo_char, &n, &alpha, ap, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (n > 0) {
@@ -748,6 +766,8 @@ void hpmv(int n, const ::std::complex< double > *ap,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, y, incy);
+    alpha = ::std::conj(alpha);
+    beta = ::std::conj(beta);
     zhpmv_(&uplo_char, &n, &alpha, ap, xc, &incxc, &beta, y, &incy);
     conj(n, y, incy, y, incy);
     if (n > 0) {

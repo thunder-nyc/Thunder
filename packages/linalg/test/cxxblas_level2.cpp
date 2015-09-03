@@ -84,7 +84,7 @@ void gbmvTest() {
   const int incx = 2;
   const int incy = 3;
 
-  D a[lda * m], x[n * incx], y[m * incy], y_orig[m * incy];
+  D a[m * lda], x[n * incx], y[m * incy], y_orig[m * incy];
   D alpha = rand(&gen, &dist);
   D beta = rand(&gen, &dist);
   for (int i = 0; i < lda * m; ++i) {
@@ -106,7 +106,7 @@ void gbmvTest() {
     for (int j = 0; j < kl + ku + 1; ++j) {
       x_index = j - kl + i;
       if (x_index >= 0 && x_index < n) {
-        result += a[lda * i + j] * x[x_index * incx];
+        result += a[i * lda + j] * x[x_index * incx];
       }
     }
     result = alpha * result + beta * y_orig[i * incy];
@@ -130,13 +130,11 @@ void gemvTest() {
 
   const int m = 23;
   const int n = 40;
-  const int kl = 3;
-  const int ku = 2;
   const int lda = 54;
   const int incx = 2;
   const int incy = 3;
 
-  D a[lda * m], x[n * incx], y[m * incy], y_orig[m * incy];
+  D a[m * lda], x[n * incx], y[m * incy], y_orig[m * incy];
   D alpha = rand(&gen, &dist);
   D beta = rand(&gen, &dist);
   for (int i = 0; i < lda * m; ++i) {
@@ -155,7 +153,7 @@ void gemvTest() {
   for (int i = 0; i < m; ++i) {
     result = 0.0;
     for (int j = 0; j < n; ++j) {
-      result += a[lda * i + j] * x[j * incx];
+      result += a[i * lda + j] * x[j * incx];
     }
     result = alpha * result + beta * y_orig[i * incy];
     expectEq(y[i * incy], result);
@@ -167,6 +165,204 @@ TEST(CxxBlasTest, gemvTest) {
   gemvTest< float >();
   gemvTest< ::std::complex< double > >();
   gemvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void gerTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int m = 23;
+  const int n = 40;
+  const int lda = 54;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[m * lda], a_orig[lda * m], x[m * incx], y[n * incy];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      a[i * lda + j] = rand(&gen, &dist);
+      a_orig[i * lda + j] = a[i * lda + j];
+    }
+  }
+  for (int i = 0; i < m; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = rand(&gen, &dist);
+  }
+  cxxblas::ger(m, n, x, y, a, alpha, incx, incy, lda);
+
+  D result = 0.0;
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result = alpha * x[i * incx] * y[j * incy] + a_orig[i * lda + j];
+      expectEq(a[i * lda + j], result);
+    }
+  }
+}
+
+TEST(CxxBlasTest, gerTest) {
+  gerTest< double >();
+  gerTest< float >();
+  gerTest< ::std::complex< double > >();
+  gerTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void gercTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int m = 23;
+  const int n = 40;
+  const int lda = 54;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[m * lda], a_orig[lda * m], x[m * incx], y[n * incy];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      a[i * lda + j] = rand(&gen, &dist);
+      a_orig[i * lda + j] = a[i * lda + j];
+    }
+  }
+  for (int i = 0; i < m; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = rand(&gen, &dist);
+  }
+  cxxblas::gerc(m, n, x, y, a, alpha, incx, incy, lda);
+
+  D result = 0.0;
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
+          a_orig[i * lda + j];
+      expectEq(a[i * lda + j], result);
+    }
+  }
+}
+
+TEST(CxxBlasTest, gercTest) {
+  gercTest< double >();
+  gercTest< float >();
+  gercTest< ::std::complex< double > >();
+  gercTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void geruTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int m = 23;
+  const int n = 40;
+  const int lda = 54;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[m *  lda], a_orig[lda * m], x[m * incx], y[n * incy];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      a[i * lda + j] = rand(&gen, &dist);
+      a_orig[i * lda + j] = a[i * lda + j];
+    }
+  }
+  for (int i = 0; i < m; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = rand(&gen, &dist);
+  }
+  cxxblas::geru(m, n, x, y, a, alpha, incx, incy, lda);
+
+  D result = 0.0;
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result = alpha * x[i * incx] * y[j * incy] + a_orig[i * lda + j];
+      expectEq(a[i * lda + j], result);
+    }
+  }
+}
+
+TEST(CxxBlasTest, geruTest) {
+  geruTest< double >();
+  geruTest< float >();
+  geruTest< ::std::complex< double > >();
+  geruTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void hbmvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 3;
+  const int lda = 8;
+  const int incx = 2;
+  const int incy = 3;
+
+  D a[n * lda], x[n * incx], y[n * incy], y_orig[n * incy];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    a[i * lda] = ::std::real(a[i * lda]);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    y[i * incy] = rand(&gen, &dist);
+    y_orig[i * incy] = y[i * incy];
+  }
+  cxxblas::hbmv(n, a, x, y, alpha, beta, k, lda, incx, incy);
+
+  D result = 0.0;
+  int x_index = 0;
+  for (int i = 0; i < n; ++i) {
+    result = a[i * lda] * x[i * incx];
+    for (int j = 1; j < k + 1; ++j) {
+      // Upper triangle values: using a[i * lda + j]
+      x_index = i + j;
+      if (x_index >= 0 && x_index < n) {
+        result += a[i * lda + j] * x[x_index * incx];
+      }
+      // Lower triangle values: using conjugate of a[x_index * lda + j]
+      x_index = i - j;
+      if (x_index >= 0 && x_index < n) {
+        result += ::std::conj(a[x_index * lda + j]) * x[x_index * incx];
+      }
+    }
+    result = alpha * result + beta * y_orig[i * incy];
+    expectEq(y[i * incy], result);
+  }
+}
+
+TEST(CxxBlasTest, hbmvTest) {
+  hbmvTest< double >();
+  hbmvTest< float >();
+  hbmvTest< ::std::complex< double > >();
+  hbmvTest< ::std::complex< float > >();
 }
 
 }  // namespace
