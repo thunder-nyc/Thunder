@@ -320,11 +320,11 @@ void hpr(int n, const float *x, float *ap, float alpha = 1.0, int incx = 1,
 void hpr(int n, const double *x, double *ap, double alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void hpr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
-         ::std::complex< float > alpha = 1.0, int incx = 1,
-         Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+         float alpha = 1.0, int incx = 1, Order order = Order::kRowMajor,
+         Uplo uplo = Uplo::kUpper);
 void hpr(int n, const ::std::complex< double > *x, ::std::complex< double > *ap,
-         ::std::complex< double > alpha = 1.0, int incx = 1,
-         Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+         double alpha = 1.0, int incx = 1, Order order = Order::kRowMajor,
+         Uplo uplo = Uplo::kUpper);
 
 void hpr2(int n, const float *x, const float *y, float *ap, float alpha = 1.0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
@@ -383,11 +383,11 @@ void spr(int n, const float *x, float *ap, float alpha = 1.0, int incx = 1,
 void spr(int n, const double *x, double *ap, double alpha = 1.0, int incx = 1,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void spr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
-         ::std::complex< float > alpha = 1.0, int incx = 1,
-         Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+         float alpha = 1.0, int incx = 1, Order order = Order::kRowMajor,
+         Uplo uplo = Uplo::kUpper);
 void spr(int n, const ::std::complex< double > *x, ::std::complex< double > *ap,
-         ::std::complex< double > alpha = 1.0, int incx = 1,
-         Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
+         double alpha = 1.0, int incx = 1, Order order = Order::kRowMajor,
+         Uplo uplo = Uplo::kUpper);
 
 void spr2(int n, const float *x, const float *y, float *ap, float alpha = 1.0,
           int incx = 1, int incy = 1, Order order = Order::kRowMajor,
@@ -429,10 +429,10 @@ void syr(int n, const float *x, float *a, float alpha = 1.0, int incx = 1,
 void syr(int n, const double *x, double *a, double alpha = 1.0, int incx = 1,
          int lda = 0, Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void syr(int n, const ::std::complex< float > *x, ::std::complex< float > *a,
-         ::std::complex< float > alpha = 1.0, int incx = 1, int lda = 0,
+         float alpha = 1.0, int incx = 1, int lda = 0,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 void syr(int n, const ::std::complex< double > *x, ::std::complex< double > *a,
-         ::std::complex< double > alpha = 1.0, int incx = 1, int lda = 0,
+         double alpha = 1.0, int incx = 1, int lda = 0,
          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper);
 
 void syr2(int n, const float *x, const float *y, float *a, float alpha = 1.0,

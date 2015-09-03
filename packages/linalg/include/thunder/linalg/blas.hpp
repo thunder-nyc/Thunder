@@ -258,11 +258,10 @@ void zhpmv_(const char *uplo, const int *n,
             const ::std::complex< double > *beta, ::std::complex< double > *y,
             const int *incy);
 
-void chpr_(const char *uplo, const int *n, const ::std::complex< float > *alpha,
+void chpr_(const char *uplo, const int *n, const float *alpha,
            const ::std::complex< float > *x, const int *incx,
            ::std::complex< float > *ap);
-void zhpr_(const char *uplo, const int *n,
-           const ::std::complex< double > *alpha,
+void zhpr_(const char *uplo, const int *n, double *alpha,
            const ::std::complex< double > *x, const int *incx,
            ::std::complex< double > *ap);
 

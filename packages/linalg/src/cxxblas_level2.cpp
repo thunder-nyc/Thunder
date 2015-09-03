@@ -785,7 +785,7 @@ void hpr(int n, const double *x, double *ap, double alpha, int incx,
 }
 
 void hpr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
-         ::std::complex< float > alpha, int incx, Order order, Uplo uplo) {
+         float alpha, int incx, Order order, Uplo uplo) {
   char uplo_char = uploChar(order, uplo);
   if (order == Order::kColMajor) {
     chpr_(&uplo_char, &n, &alpha, x, &incx, ap);
@@ -805,7 +805,7 @@ void hpr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
 }
 
 void hpr(int n, const ::std::complex< double > *x, ::std::complex< double > *ap,
-         ::std::complex< double > alpha, int incx, Order order, Uplo uplo) {
+         double alpha, int incx, Order order, Uplo uplo) {
   char uplo_char = uploChar(order, uplo);
   if (order == Order::kColMajor) {
     zhpr_(&uplo_char, &n, &alpha, x, &incx, ap);
@@ -854,7 +854,7 @@ void hpr2(int n, const ::std::complex< float > *x,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, yc, incyc);
-    chpr2_(&uplo_char, &n, &alpha, xc, &incxc, yc, &incyc, ap);
+    chpr2_(&uplo_char, &n, &alpha, yc, &incyc, xc, &incxc, ap);
     if (n > 0) {
       ::std::free(xc);
       ::std::free(yc);
@@ -882,7 +882,7 @@ void hpr2(int n, const ::std::complex< double > *x,
     }
     conj(n, x, incx, xc, incxc);
     conj(n, y, incy, yc, incyc);
-    zhpr2_(&uplo_char, &n, &alpha, xc, &incxc, yc, &incyc, ap);
+    zhpr2_(&uplo_char, &n, &alpha, yc, &incyc, xc, &incxc, ap);
     if (n > 0) {
       ::std::free(xc);
       ::std::free(yc);
@@ -963,12 +963,12 @@ void spr(int n, const double *x, double *ap, double alpha, int incx,
 }
 
 void spr(int n, const ::std::complex< float > *x, ::std::complex< float > *ap,
-         ::std::complex< float > alpha, int incx, Order order, Uplo uplo) {
+         float alpha, int incx, Order order, Uplo uplo) {
   hpr(n, x, ap, alpha, incx, order, uplo);
 }
 
 void spr(int n, const ::std::complex< double > *x, ::std::complex< double > *ap,
-         ::std::complex< double > alpha, int incx, Order order, Uplo uplo) {
+         double alpha, int incx, Order order, Uplo uplo) {
   hpr(n, x, ap, alpha, incx, order, uplo);
 }
 
