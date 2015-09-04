@@ -597,15 +597,13 @@ void herk(int n, int k, const double *a, double *c, double alpha = 1.0,
           Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
           Trans trans = Trans::kNoTrans);
 void herk(int n, int k, const ::std::complex< float > *a,
-          ::std::complex< float > *c, ::std::complex< float > alpha = 1.0,
-          ::std::complex< float > beta = 0.0, int lda = 0, int ldc = 0,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
-          Trans trans = Trans::kNoTrans);
+          ::std::complex< float > *c, float alpha = 1.0, float beta = 0.0,
+          int lda = 0, int ldc = 0, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void herk(int n, int k, const ::std::complex< double > *a,
-          ::std::complex< double > *c, ::std::complex< double > alpha = 1.0,
-          ::std::complex< double > beta = 0.0, int lda = 0, int ldc = 0,
-          Order order = Order::kRowMajor, Uplo uplo = Uplo::kUpper,
-          Trans trans = Trans::kNoTrans);
+          ::std::complex< double > *c, double alpha = 1.0, double beta = 0.0,
+          int lda = 0, int ldc = 0, Order order = Order::kRowMajor,
+          Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 
 void her2k(int n, int k, const float *a, const float *b, float *c,
            float alpha = 1.0, float beta = 0.0, int lda = 0, int ldb = 0,

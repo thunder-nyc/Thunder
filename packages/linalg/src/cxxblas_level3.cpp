@@ -416,9 +416,8 @@ void herk(int n, int k, const double *a, double *c, double alpha, double beta,
 }
 
 void herk(int n, int k, const ::std::complex< float > *a,
-          ::std::complex< float > *c, ::std::complex< float > alpha,
-          ::std::complex< float > beta, int lda, int ldc, Order order,
-          Uplo uplo, Trans trans) {
+          ::std::complex< float > *c, float alpha, float beta, int lda, int ldc,
+          Order order, Uplo uplo, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor && trans == Trans::kNoTrans) {
       lda = ::std::max(1, n);
@@ -437,9 +436,8 @@ void herk(int n, int k, const ::std::complex< float > *a,
 }
 
 void herk(int n, int k, const ::std::complex< double > *a,
-          ::std::complex< double > *c, ::std::complex< double > alpha,
-          ::std::complex< double > beta, int lda, int ldc, Order order,
-          Uplo uplo, Trans trans) {
+          ::std::complex< double > *c, double alpha, double beta, int lda,
+          int ldc, Order order, Uplo uplo, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor && trans == Trans::kNoTrans) {
       lda = ::std::max(1, n);

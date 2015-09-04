@@ -23,7 +23,6 @@
  */
 
 #include <complex>
-#include <cstdlib>
 #include <random>
 
 #include "gtest/gtest.h"

@@ -439,15 +439,13 @@ void zhemm_(const char *side, const char *uplo, const int *m, const int *n,
             ::std::complex< double > *c, const int *ldc);
 
 void cherk_(const char *uplo, const char *trans, const int *n, const int *k,
-            const ::std::complex< float > *alpha,
-            const ::std::complex< float > *a, const int *lda,
-            const ::std::complex< float > *beta,
-            ::std::complex< float > *c, const int *ldc);
+            const float *alpha, const ::std::complex< float > *a,
+            const int *lda, float *beta, ::std::complex< float > *c,
+            const int *ldc);
 void zherk_(const char *uplo, const char *trans, const int *n, const int *k,
-            const ::std::complex< double > *alpha,
-            const ::std::complex< double > *a, const int *lda,
-            const ::std::complex< double > *beta,
-            ::std::complex< double > *c, const int *ldc);
+            const double *alpha, const ::std::complex< double > *a,
+            const int *lda, double *beta, ::std::complex< double > *c,
+            const int *ldc);
 void cher2k_(const char *uplo, const char *trans, const int *n, const int *k,
              const ::std::complex< float > *alpha,
              const ::std::complex< float > *a, const int *lda,
