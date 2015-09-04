@@ -18,8 +18,8 @@
  */
 
 /* Disclaimer: these tests are not complete. In particular, we do not test the
- * variants of order, transpose and uppper-lower choices. We always use
- * row-major, no transpose and upper matrix settings.
+ * variants of order, transpose, uppper-lower and diagonal choices. We always
+ * use row-major, no transpose, upper matrix and non-unit diagonal settings.
  */
 
 #include <complex>
@@ -996,6 +996,240 @@ TEST(CxxBlasTest, spr2Test) {
   spr2Test< float >();
   spr2Test< ::std::complex< double > >();
   spr2Test< ::std::complex< float > >();
+}
+
+template < typename D >
+void tbmvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 5;
+  const int lda = 8;
+  const int incx = 2;
+
+  D a[n * lda], x[n * incx], x_orig[n * incx];
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    x_orig[i * incx] = x[i * incx];
+  }
+  cxxblas::tbmv(n, a, x, k, lda, incx);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = i; j <= i + k && j < n; ++j) {
+      result += a[i * lda + j - i] * x_orig[j * incx];
+    }
+    expectEq(result, x[i * incx]);
+  }
+}
+
+TEST(CxxBlasTest, tbmvTest) {
+  tbmvTest< double >();
+  tbmvTest< float >();
+  tbmvTest< ::std::complex< double > >();
+  tbmvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void tbsvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 5;
+  const int lda = 8;
+  const int incx = 2;
+
+  D a[n * lda], x[n * incx], x_orig[n * incx];
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist) + static_cast< D >(i);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    x_orig[i * incx] = x[i * incx];
+  }
+  cxxblas::tbsv(n, a, x, k, lda, incx);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = i; j <= i + k && j < n; ++j) {
+      result += a[i * lda + j - i] * x[j * incx];
+    }
+    expectEq(result, x_orig[i * incx]);
+  }
+}
+
+TEST(CxxBlasTest, tbsvTest) {
+  tbsvTest< double >();
+  tbsvTest< float >();
+  tbsvTest< ::std::complex< double > >();
+  tbsvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void tpmvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 5;
+  const int lda = 8;
+  const int incx = 2;
+
+  D a[n * (n + 1) / 2], x[n * incx], x_orig[n * incx];
+  for (int i = 0; i < n * (n + 1) / 2; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    x_orig[i * incx] = x[i * incx];
+  }
+  cxxblas::tpmv(n, a, x, incx);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = i; j < n; ++j) {
+      result += a[i * n - i * (i - 1) / 2 + j - i] * x_orig[j * incx];
+    }
+    expectEq(result, x[i * incx]);
+  }
+}
+
+TEST(CxxBlasTest, tpmvTest) {
+  tpmvTest< double >();
+  tpmvTest< float >();
+  tpmvTest< ::std::complex< double > >();
+  tpmvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void tpsvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 5;
+  const int lda = 8;
+  const int incx = 2;
+
+  D a[n * (n + 1) / 2], x[n * incx], x_orig[n * incx];
+  for (int i = 0; i < n * (n + 1) / 2; ++i) {
+    a[i] = rand(&gen, &dist) + static_cast< D >(i);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    x_orig[i * incx] = x[i * incx];
+  }
+  cxxblas::tpsv(n, a, x, incx);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = i; j < n; ++j) {
+      result += a[i * n - i * (i - 1) / 2 + j - i] * x[j * incx];
+    }
+    expectEq(result, x_orig[i * incx]);
+  }
+}
+
+TEST(CxxBlasTest, tpsvTest) {
+  tpsvTest< double >();
+  tpsvTest< float >();
+  tpsvTest< ::std::complex< double > >();
+  tpsvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void trmvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 5;
+  const int lda = 47;
+  const int incx = 2;
+
+  D a[n * lda], x[n * incx], x_orig[n * incx];
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    x_orig[i * incx] = x[i * incx];
+  }
+  cxxblas::trmv(n, a, x, lda, incx);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = i; j < n; ++j) {
+      result += a[i * lda + j] * x_orig[j * incx];
+    }
+    expectEq(result, x[i * incx]);
+  }
+}
+
+TEST(CxxBlasTest, trmvTest) {
+  trmvTest< double >();
+  trmvTest< float >();
+  trmvTest< ::std::complex< double > >();
+  trmvTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void trsvTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 40;
+  const int k = 5;
+  const int lda = 47;
+  const int incx = 2;
+
+  D a[n * lda], x[n * incx], x_orig[n * incx];
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist) + static_cast< D >(i);
+  }
+  for (int i = 0; i < n; ++i) {
+    x[i * incx] = rand(&gen, &dist);
+    x_orig[i * incx] = x[i * incx];
+  }
+  cxxblas::trsv(n, a, x, lda, incx);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    result = 0.0;
+    for (int j = i; j < n; ++j) {
+      result += a[i * lda + j] * x[j * incx];
+    }
+    expectEq(result, x_orig[i * incx]);
+  }
+}
+
+TEST(CxxBlasTest, trsvTest) {
+  trsvTest< double >();
+  trsvTest< float >();
+  trsvTest< ::std::complex< double > >();
+  trsvTest< ::std::complex< float > >();
 }
 
 }  // namespace
