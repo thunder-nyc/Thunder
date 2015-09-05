@@ -469,8 +469,8 @@ void her2k(int n, int k, const double *a, const double *b, double *c,
 
 void her2k(int n, int k, const ::std::complex< float > *a,
            const ::std::complex< float > *b, ::std::complex< float > *c,
-           ::std::complex< float > alpha, ::std::complex< float > beta, int lda,
-           int ldb, int ldc, Order order, Uplo uplo, Trans trans) {
+           ::std::complex< float > alpha, float beta, int lda, int ldb, int ldc,
+           Order order, Uplo uplo, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor && trans == Trans::kNoTrans) {
       lda = ::std::max(1, n);
@@ -500,8 +500,8 @@ void her2k(int n, int k, const ::std::complex< float > *a,
 
 void her2k(int n, int k, const ::std::complex< double > *a,
            const ::std::complex< double > *b, ::std::complex< double > *c,
-           ::std::complex< double > alpha, ::std::complex< double > beta,
-           int lda, int ldb, int ldc, Order order, Uplo uplo, Trans trans) {
+           ::std::complex< double > alpha, double beta, int lda, int ldb,
+           int ldc, Order order, Uplo uplo, Trans trans) {
   if (lda == 0) {
     if (order == Order::kColMajor && trans == Trans::kNoTrans) {
       lda = ::std::max(1, n);

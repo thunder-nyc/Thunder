@@ -609,21 +609,19 @@ void her2k(int n, int k, const float *a, const float *b, float *c,
            float alpha = 1.0, float beta = 0.0, int lda = 0, int ldb = 0,
            int ldc = 0, Order order = Order::kRowMajor,
            Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
-void her2k(int n, int k, const double *a, const float *b, double *c,
+void her2k(int n, int k, const double *a, const double *b, double *c,
            double alpha = 1.0, double beta = 0.0, int lda = 0, int ldb = 0,
            int ldc = 0, Order order = Order::kRowMajor,
            Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void her2k(int n, int k, const ::std::complex< float > *a,
            const ::std::complex< float > *b, ::std::complex< float > *c,
-           ::std::complex< float > alpha = 1.0,
-           ::std::complex< float > beta = 0.0, int lda = 0, int ldb = 0,
-           int ldc = 0, Order order = Order::kRowMajor,
+           ::std::complex< float > alpha = 1.0, float beta = 0.0, int lda = 0,
+           int ldb = 0, int ldc = 0, Order order = Order::kRowMajor,
            Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 void her2k(int n, int k, const ::std::complex< double > *a,
            const ::std::complex< double > *b, ::std::complex< double > *c,
-           ::std::complex< double > alpha = 1.0,
-           ::std::complex< double > beta = 0.0, int lda = 0, int ldb = 0,
-           int ldc = 0, Order order = Order::kRowMajor,
+           ::std::complex< double > alpha = 1.0, double beta = 0.0, int lda = 0,
+           int ldb = 0, int ldc = 0, Order order = Order::kRowMajor,
            Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans);
 
 void symm(int m, int n, const float *a, const float *b, float *c,

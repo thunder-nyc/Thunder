@@ -221,6 +221,58 @@ TEST(CxxBlasTest, herkTest) {
   herkTest< ::std::complex< float > >();
 }
 
+template < typename D >
+void her2kTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 23;
+  const int k = 15;
+  const int lda = 18;
+  const int ldb = 25;
+  const int ldc = 33;
+  D a[n * lda], b[n * ldb], c[n * ldc], c_orig[n * ldc];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n * ldb; ++i) {
+    b[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n * ldc; ++i) {
+    c[i] = rand(&gen, &dist);
+    c_orig[i] = c[i];
+  }
+  for (int i = 0; i < n; ++i) {
+    c[i * ldc + i] = ::std::real(c[i * ldc + i]);
+    c_orig[i * ldc + i] = c[i * ldc + i];
+  }
+  cxxblas::her2k(n, k, a, b, c, alpha, ::std::real(beta), lda, ldb, ldc);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = i; j < n; ++j) {
+      result = 0.0;
+      for (int p = 0; p < k; ++p) {
+        result += alpha * a[i * lda + p] * ::std::conj(b[j * ldb + p]) +
+            ::std::conj(alpha) * b[i * ldb + p] * ::std::conj(a[j * lda + p]);
+      }
+      result = result + ::std::real(beta) * c_orig[i * ldc + j];
+      expectEq(result, c[i * ldc + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, her2kTest) {
+  her2kTest< double >();
+  her2kTest< float >();
+  her2kTest< ::std::complex< double > >();
+  her2kTest< ::std::complex< float > >();
+}
+
 }  // namespace
 }  // namespace linalg
 }  // namespace thunder
