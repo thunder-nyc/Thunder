@@ -32,21 +32,23 @@ namespace thunder {
 namespace linalg {
 namespace {
 
-void expectEq(const float &a, const float &b) {
+template < typename D >
+void expectEq(const D &a, const D &b) {
   EXPECT_FLOAT_EQ(a, b);
 }
-void expectEq(const double &a, const double &b) {
-  EXPECT_FLOAT_EQ(a, b);
-}
-void expectEq(
-    const ::std::complex< float > &a, const ::std::complex< float > &b) {
+template < typename D >
+void expectEq(const ::std::complex< D > &a, const ::std::complex< D > &b) {
   EXPECT_FLOAT_EQ(::std::real(a), ::std::real(b));
   EXPECT_FLOAT_EQ(::std::imag(a), ::std::imag(b));
 }
-void expectEq(
-    const ::std::complex< double > &a, const ::std::complex< double > &b) {
-  EXPECT_FLOAT_EQ(::std::real(a), ::std::real(b));
-  EXPECT_FLOAT_EQ(::std::imag(a), ::std::imag(b));
+
+template < typename D >
+D conjg(const D &v) {
+  return v;
+}
+template < typename D >
+::std::complex< D > conjg(const ::std::complex< D > &v) {
+  return ::std::conj(v);
 }
 
 template < typename D >
@@ -57,7 +59,6 @@ class RandomGenerator {
     return static_cast< D >((*dist)(*gen));
   }
 };
-
 template < typename D >
 class RandomGenerator< ::std::complex< D > > {
  public:
@@ -245,7 +246,7 @@ void gercTest() {
   D result = 0.0;
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < n; ++j) {
-      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
+      result = alpha * x[i * incx] * conjg(y[j * incy]) +
           a_orig[i * lda + j];
       expectEq(result, a[i * lda + j]);
     }
@@ -349,7 +350,7 @@ void hbmvTest() {
       // Lower triangle values: using conjugate of a[x_index * lda + j]
       x_index = i - j;
       if (x_index >= 0 && x_index < n) {
-        result += ::std::conj(a[x_index * lda + j]) * x[x_index * incx];
+        result += conjg(a[x_index * lda + j]) * x[x_index * incx];
       }
     }
     result = alpha * result + beta * y_orig[i * incy];
@@ -404,7 +405,7 @@ void hemvTest() {
     }
     for (int j = 0; j < i; ++j) {
       // Lower triangle values: using a[j * lda + i] conjugate
-      result += ::std::conj(a[j * lda + i]) * x[j * incx];
+      result += conjg(a[j * lda + i]) * x[j * incx];
     }
     result = alpha * result + beta * y_orig[i * incy];
     expectEq(result, y[i * incy]);
@@ -448,7 +449,7 @@ void herTest() {
   int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      result = ::std::real(alpha) * x[i * incx] * ::std::conj(x[j * incx]) +
+      result = ::std::real(alpha) * x[i * incx] * conjg(x[j * incx]) +
           a_orig[i * lda + j];
       expectEq(result, a[i * lda + j]);
     }
@@ -494,8 +495,8 @@ void her2Test() {
   int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
-          ::std::conj(alpha) * y[i * incy] * ::std::conj(x[j * incx]) +
+      result = alpha * x[i * incx] * conjg(y[j * incy]) +
+          conjg(alpha) * y[i * incy] * conjg(x[j * incx]) +
           a_orig[i * lda + j];
       expectEq(result, a[i * lda + j]);
     }
@@ -542,8 +543,8 @@ void hpmvTest() {
   for (int i = 0; i < n; ++i) {
     result = 0.0;
     for (int j = 0; j < i; ++j) {
-      // Lower triangle: a(i, j) = ::std::conj(a(j,i))
-      result += ::std::conj(a[j * n - j * (j - 1) / 2 + i - j]) * x[j * incx];
+      // Lower triangle: a(i, j) = conjg(a(j,i))
+      result += conjg(a[j * n - j * (j - 1) / 2 + i - j]) * x[j * incx];
     }
     for (int j = i; j < n; ++j) {
       // Upper triangle: using a(i, j)
@@ -589,7 +590,7 @@ void hprTest() {
   D result = 0.0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      result = ::std::real(alpha) * x[i * incx] * ::std::conj(x[j * incx]) +
+      result = ::std::real(alpha) * x[i * incx] * conjg(x[j * incx]) +
           a_orig[i * n - i * (i - 1) / 2 + j - i];
       expectEq(result, a[i * n - i * (i - 1) / 2 + j - i]);
     }
@@ -636,8 +637,8 @@ void hpr2Test() {
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
       // Upper triangle: using a(i, j)
-      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
-          ::std::conj(alpha) * y[i * incy] * ::std::conj(x[j * incx]) +
+      result = alpha * x[i * incx] * conjg(y[j * incy]) +
+          conjg(alpha) * y[i * incy] * conjg(x[j * incx]) +
           a_orig[i * n - i * (i - 1) / 2 + j - i];
       expectEq(result, a[i * n - i * (i - 1) / 2 + j - i]);
     }
@@ -695,7 +696,7 @@ void sbmvTest() {
       // Lower triangle values: using conjugate of a[x_index * lda + j]
       x_index = i - j;
       if (x_index >= 0 && x_index < n) {
-        result += ::std::conj(a[x_index * lda + j]) * x[x_index * incx];
+        result += conjg(a[x_index * lda + j]) * x[x_index * incx];
       }
     }
     result = alpha * result + beta * y_orig[i * incy];
@@ -750,7 +751,7 @@ void symvTest() {
     }
     for (int j = 0; j < i; ++j) {
       // Lower triangle values: using a[j * lda + i] conjugate
-      result += ::std::conj(a[j * lda + i]) * x[j * incx];
+      result += conjg(a[j * lda + i]) * x[j * incx];
     }
     result = alpha * result + beta * y_orig[i * incy];
     expectEq(result, y[i * incy]);
@@ -794,7 +795,7 @@ void syrTest() {
   int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      result = ::std::real(alpha) * x[i * incx] * ::std::conj(x[j * incx]) +
+      result = ::std::real(alpha) * x[i * incx] * conjg(x[j * incx]) +
           a_orig[i * lda + j];
       expectEq(result, a[i * lda + j]);
     }
@@ -840,8 +841,8 @@ void syr2Test() {
   int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
-          ::std::conj(alpha) * y[i * incy] * ::std::conj(x[j * incx]) +
+      result = alpha * x[i * incx] * conjg(y[j * incy]) +
+          conjg(alpha) * y[i * incy] * conjg(x[j * incx]) +
           a_orig[i * lda + j];
       expectEq(result, a[i * lda + j]);
     }
@@ -888,8 +889,8 @@ void spmvTest() {
   for (int i = 0; i < n; ++i) {
     result = 0.0;
     for (int j = 0; j < i; ++j) {
-      // Lower triangle: a(i, j) = ::std::conj(a(j,i))
-      result += ::std::conj(a[j * n - j * (j - 1) / 2 + i - j]) * x[j * incx];
+      // Lower triangle: a(i, j) = conjg(a(j,i))
+      result += conjg(a[j * n - j * (j - 1) / 2 + i - j]) * x[j * incx];
     }
     for (int j = i; j < n; ++j) {
       // Upper triangle: using a(i, j)
@@ -935,7 +936,7 @@ void sprTest() {
   D result = 0.0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      result = ::std::real(alpha) * x[i * incx] * ::std::conj(x[j * incx]) +
+      result = ::std::real(alpha) * x[i * incx] * conjg(x[j * incx]) +
           a_orig[i * n - i * (i - 1) / 2 + j - i];
       expectEq(result, a[i * n - i * (i - 1) / 2 + j - i]);
     }
@@ -982,8 +983,8 @@ void spr2Test() {
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
       // Upper triangle: using a(i, j)
-      result = alpha * x[i * incx] * ::std::conj(y[j * incy]) +
-          ::std::conj(alpha) * y[i * incy] * ::std::conj(x[j * incx]) +
+      result = alpha * x[i * incx] * conjg(y[j * incy]) +
+          conjg(alpha) * y[i * incy] * conjg(x[j * incx]) +
           a_orig[i * n - i * (i - 1) / 2 + j - i];
       expectEq(result, a[i * n - i * (i - 1) / 2 + j - i]);
     }

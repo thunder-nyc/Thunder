@@ -34,21 +34,23 @@ namespace thunder {
 namespace linalg {
 namespace {
 
-void expectEq(const float &a, const float &b) {
+template < typename D >
+void expectEq(const D &a, const D &b) {
   EXPECT_FLOAT_EQ(a, b);
 }
-void expectEq(const double &a, const double &b) {
-  EXPECT_FLOAT_EQ(a, b);
-}
-void expectEq(
-    const ::std::complex< float > &a, const ::std::complex< float > &b) {
+template < typename D >
+void expectEq(const ::std::complex< D > &a, const ::std::complex< D > &b) {
   EXPECT_FLOAT_EQ(::std::real(a), ::std::real(b));
   EXPECT_FLOAT_EQ(::std::imag(a), ::std::imag(b));
 }
-void expectEq(
-    const ::std::complex< double > &a, const ::std::complex< double > &b) {
-  EXPECT_FLOAT_EQ(::std::real(a), ::std::real(b));
-  EXPECT_FLOAT_EQ(::std::imag(a), ::std::imag(b));
+
+template < typename D >
+D conjg(const D &v) {
+  return v;
+}
+template < typename D >
+::std::complex< D > conjg(const ::std::complex< D > &v) {
+  return ::std::conj(v);
 }
 
 template < typename D >
@@ -154,7 +156,7 @@ void hemmTest() {
       result = 0.0;
       for (int p = 0; p < i; ++p) {
         // Lower: using a(i, p) = conj(a(p, i))
-        result += ::std::conj(a[p * lda + i]) * b[p * ldb + j];
+        result += conjg(a[p * lda + i]) * b[p * ldb + j];
       }
       for (int p = i; p < m; ++p) {
         // Upper: using a(i, p)
@@ -205,7 +207,7 @@ void herkTest() {
     for (int j = i; j < n; ++j) {
       result = 0.0;
       for (int p = 0; p < k; ++p) {
-        result += a[i * lda + p] * ::std::conj(a[j * lda + p]);
+        result += a[i * lda + p] * conjg(a[j * lda + p]);
       }
       result = ::std::real(alpha) * result +
           ::std::real(beta) * c_orig[i * ldc + j];
@@ -257,8 +259,8 @@ void her2kTest() {
     for (int j = i; j < n; ++j) {
       result = 0.0;
       for (int p = 0; p < k; ++p) {
-        result += alpha * a[i * lda + p] * ::std::conj(b[j * ldb + p]) +
-            ::std::conj(alpha) * b[i * ldb + p] * ::std::conj(a[j * lda + p]);
+        result += alpha * a[i * lda + p] * conjg(b[j * ldb + p]) +
+            conjg(alpha) * b[i * ldb + p] * conjg(a[j * lda + p]);
       }
       result = result + ::std::real(beta) * c_orig[i * ldc + j];
       expectEq(result, c[i * ldc + j]);
