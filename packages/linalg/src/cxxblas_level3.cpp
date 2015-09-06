@@ -494,6 +494,9 @@ void her2k(int n, int k, const ::std::complex< float > *a,
   }
   char uplo_char = uploChar(order, uplo);
   char trans_char = heTransChar(order, trans);
+  if (order == Order::kRowMajor) {
+    alpha = ::std::conj(alpha);
+  }
   cher2k_(&uplo_char, &trans_char, &n, &k, &alpha, a, &lda, b, &ldb, &beta, c,
           &ldc);
 }
@@ -525,6 +528,9 @@ void her2k(int n, int k, const ::std::complex< double > *a,
   }
   char uplo_char = uploChar(order, uplo);
   char trans_char = heTransChar(order, trans);
+  if (order == Order::kRowMajor) {
+    alpha = ::std::conj(alpha);
+  }
   zher2k_(&uplo_char, &trans_char, &n, &k, &alpha, a, &lda, b, &ldb, &beta, c,
           &ldc);
 }
