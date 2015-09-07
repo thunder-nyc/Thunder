@@ -275,6 +275,149 @@ TEST(CxxBlasTest, her2kTest) {
   her2kTest< ::std::complex< float > >();
 }
 
+template < typename D >
+void symmTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int m = 23;
+  const int n = 40;
+  const int lda = 36;
+  const int ldb = 47;
+  const int ldc = 50;
+  D a[m * lda], b[m * ldb], c[m * ldc], c_orig[m * ldc];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < m * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < m * ldb; ++i) {
+    b[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < m * ldc; ++i) {
+    c[i] = rand(&gen, &dist);
+    c_orig[i] = c[i];
+  }
+  cxxblas::symm(m, n, a, b, c, alpha, beta, lda, ldb, ldc);
+
+  D result = 0.0;
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result = 0.0;
+      for (int p = 0; p < i; ++p) {
+        // Lower: using a(i, p) = a(p, i)
+        result += a[p * lda + i] * b[p * ldb + j];
+      }
+      for (int p = i; p < m; ++p) {
+        // Upper: using a(i, p)
+        result += a[i * lda + p] * b[p * ldb + j];
+      }
+      result = alpha * result + beta * c_orig[i * ldc + j];
+      expectEq(result, c[i * ldc + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, symmTest) {
+  symmTest< double >();
+  symmTest< float >();
+  symmTest< ::std::complex< double > >();
+  symmTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void syrkTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 23;
+  const int k = 15;
+  const int lda = 18;
+  const int ldc = 33;
+  D a[n * lda], c[n * ldc], c_orig[n * ldc];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n * ldc; ++i) {
+    c[i] = rand(&gen, &dist);
+    c_orig[i] = c[i];
+  }
+  cxxblas::syrk(n, k, a, c, alpha, beta, lda, ldc);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = i; j < n; ++j) {
+      result = 0.0;
+      for (int p = 0; p < k; ++p) {
+        result += a[i * lda + p] * a[j * lda + p];
+      }
+      result = alpha * result + beta * c_orig[i * ldc + j];
+      expectEq(result, c[i * ldc + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, syrkTest) {
+  syrkTest< double >();
+  syrkTest< float >();
+  syrkTest< ::std::complex< double > >();
+  syrkTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void syr2kTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int n = 23;
+  const int k = 15;
+  const int lda = 18;
+  const int ldb = 25;
+  const int ldc = 33;
+  D a[n * lda], b[n * ldb], c[n * ldc], c_orig[n * ldc];
+  D alpha = rand(&gen, &dist);
+  D beta = rand(&gen, &dist);
+  for (int i = 0; i < n * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n * ldb; ++i) {
+    b[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < n * ldc; ++i) {
+    c[i] = rand(&gen, &dist);
+    c_orig[i] = c[i];
+  }
+  cxxblas::syr2k(n, k, a, b, c, alpha, beta, lda, ldb, ldc);
+
+  D result = 0.0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = i; j < n; ++j) {
+      result = 0.0;
+      for (int p = 0; p < k; ++p) {
+        result += a[i * lda + p] * b[j * ldb + p] +
+            b[i * ldb + p] * a[j * lda + p];
+      }
+      result = alpha * result + beta * c_orig[i * ldc + j];
+      expectEq(result, c[i * ldc + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, syr2kTest) {
+  syr2kTest< double >();
+  syr2kTest< float >();
+  syr2kTest< ::std::complex< double > >();
+  syr2kTest< ::std::complex< float > >();
+}
+
 }  // namespace
 }  // namespace linalg
 }  // namespace thunder
