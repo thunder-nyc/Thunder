@@ -24,7 +24,6 @@
  */
 
 #include <complex>
-#include <cstdlib>
 #include <random>
 
 #include "gtest/gtest.h"
@@ -416,6 +415,89 @@ TEST(CxxBlasTest, syr2kTest) {
   syr2kTest< float >();
   syr2kTest< ::std::complex< double > >();
   syr2kTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void trmmTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int m = 23;
+  const int n = 40;
+  const int lda = 36;
+  const int ldb = 47;
+  D a[m * lda], b[m * ldb], b_orig[m * ldb];
+  D alpha = rand(&gen, &dist);
+  for (int i = 0; i < m * lda; ++i) {
+    a[i] = rand(&gen, &dist);
+  }
+  for (int i = 0; i < m * ldb; ++i) {
+    b[i] = rand(&gen, &dist);
+    b_orig[i] = b[i];
+  }
+  cxxblas::trmm(m, n, a, b, alpha, lda, ldb);
+
+  D result = 0.0;
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result = 0.0;
+      for (int p = i; p < m; ++p) {
+        result += a[i * lda + p] * b_orig[p * ldb + j];
+      }
+      result = alpha * result;
+      expectEq(result, b[i * ldb + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, trmmTest) {
+  trmmTest< double >();
+  trmmTest< float >();
+  trmmTest< ::std::complex< double > >();
+  trmmTest< ::std::complex< float > >();
+}
+
+template < typename D >
+void trsmTest() {
+  ::std::random_device rd;
+  ::std::mt19937 gen(rd());
+  ::std::uniform_real_distribution< double > dist(-1.0, 1.0);
+  RandomGenerator< D > rand;
+
+  const int m = 23;
+  const int n = 40;
+  const int lda = 36;
+  const int ldb = 47;
+  D a[m * lda], b[m * ldb], b_orig[m * ldb];
+  D alpha = rand(&gen, &dist);
+  for (int i = 0; i < m * lda; ++i) {
+    a[i] = rand(&gen, &dist) + static_cast< D >(i);
+  }
+  for (int i = 0; i < m * ldb; ++i) {
+    b[i] = rand(&gen, &dist);
+    b_orig[i] = b[i];
+  }
+  cxxblas::trsm(m, n, a, b, alpha, lda, ldb);
+
+  D result = 0.0;
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result = 0.0;
+      for (int p = i; p < m; ++p) {
+        result += a[i * lda + p] * b[p * ldb + j];
+      }
+      expectEq(result, alpha * b_orig[i * ldb + j]);
+    }
+  }
+}
+
+TEST(CxxBlasTest, trsmTest) {
+  trsmTest< double >();
+  trsmTest< float >();
+  trsmTest< ::std::complex< double > >();
+  trsmTest< ::std::complex< float > >();
 }
 
 }  // namespace
