@@ -1,5 +1,5 @@
 /*
- * \copyright Copyright 2014 Xiang Zhang All Rights Reserved.
+ * \copyright Copyright 2015 Xiang Zhang All Rights Reserved.
  * \license @{
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -98,7 +98,7 @@ template < typename L >
 const typename L::tensor_type& cabs1(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
 
-// L::BLAS level-2 routines
+// BLAS level-2 routines
 template < typename L >
 const typename L::tensor_type& gbmv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
@@ -213,7 +213,7 @@ const typename L::tensor_type& trsv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
     typename L::BlasUplo uplo, typename L::BlasDiag diag);
 
-// Const result level-3 BLAS routines
+// BLAS level-3 routines
 template < typename L >
 const typename L::tensor_type& gemm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,

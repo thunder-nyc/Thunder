@@ -1,0 +1,158 @@
+/*
+ * \copyright Copyright 2015 Xiang Zhang All Rights Reserved.
+ * \license @{
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @}
+ */
+
+#ifndef THUNDER_LINALG_MATH_INL_CONSTRUCTOR_HPP_
+#define THUNDER_LINALG_MATH_INL_CONSTRUCTOR_HPP_
+
+#include "thunder/linalg/math.hpp"
+#include "thunder/linalg/math-inl.hpp"
+
+#include <algorithm>
+
+#include "thunder/exception.hpp"
+#include "thunder/tensor.hpp"
+
+namespace thunder {
+namespace linalg {
+namespace math {
+
+template < typename L >
+const typename L::tensor_type& diag(
+    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  typedef typename L::tensor_type T;
+  typedef tensor::IndexIterator< typename L::size_storage > I;
+  if (x.dimension() == 1) {
+    // Dimension of x is 1. Construct a diagonal matrix
+    if (r.dimension() != 2 || r.size(0) != x.size(1) ||
+        r.size(0) != r.size(1)) {
+      throw out_of_range("Diag size mismatches.");
+    }
+    r.zero();
+    typename T::pointer x_pointer = x.data();
+    typename T::size_type x_size = x.size(0);
+    typename T::difference_type x_step = x.stride(0);
+    typename T::pointer r_pointer = r.data();
+    typename T::difference_type r_step = r.stride(0) + r.stride(1);
+    for (typename T::size_type i = 0; i < x_size; ++i) {
+      r_pointer[i * r_step] = x_size[i * x_step];
+    }
+  } else if (x.dimension() == 2) {
+    // Dimension of x is 2. Extract diagonal terms.
+    if (r.dimension() != 1 || r.size(0) != ::std::min(x.size(0), x.size(1))) {
+      throw out_of_range("Diag size mismatches.");
+    }
+    typename T::pointer x_pointer = x.data();
+    typename T::size_type x_size = ::std::min(x.size(0), x.size(1));
+    typename T::difference_type x_step = x.stride(0) + x.stride(1);
+    typename T::pointer r_pointer = r.data();
+    typename T::difference_type r_step = r.stride(0);
+    for (typename T::size_type i = 0; i < x_size; ++i) {
+      r_pointer[i * r_step] = x_size[i * x_step];
+    }
+  } else {
+    // Dimension of x is 3 or above. Extract diagonal terms in batch mode.
+    if (r.dimension() != x.dimension() - 1 || r.size(r.dimension() - 1) !=
+        ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1))) {
+      throw out_of_range("Diag size mismatches.");
+    }
+    for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
+      if (r.size(i) != x.size(i)) {
+        throw out_of_range("Diag size mismatches.");
+      }
+    }
+    if (x.partialContiguity(0, x.dimension() - 2) &&
+        r.partialContiguity(0, r.dimension() - 1)) {
+      // Contiguous case
+      typename T::size_type batch_size = 1;
+      for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
+        batch_size = batch_size * r.size(i);
+      }
+      typename T::pointer x_pointer = x.data();
+      typename T::size_type x_size =
+          ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1));
+      typename T::difference_type x_step = x.stride(x.dimension() - 2) +
+          x.stride(x.dimension() - 1);
+      typename T::difference_type x_batch = x.stride(x.dimension() - 3);
+      typename T::pointer r_pointer = r.data();
+      typename T::difference_type r_step = r.stride(r.dimension() - 1);
+      typename T::difference_type r_batch = r.stride(r.dimension() - 2);
+      for (typename T::size_type i = 0; i < batch_size; ++i) {
+        for (typename T::size_type j = 0; j < x_size; ++j) {
+          r_pointer[i * r_batch + j * r_step] =
+              x_pointer[i * x_batch + j * x_step];
+        }
+      }
+    } else {
+      // Non-contiguous case
+      typename T::size_storage batch_storage(r.size() - 1);
+      for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
+        batch_storage[i] = r.size(i);
+      }
+      typename T::pointer x_pointer = x.data();
+      typename T::size_type x_size =
+          ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1));
+      typename T::difference_type x_step = x.stride(x.dimension() - 2) +
+          x.stride(x.dimension() - 1);
+      typename T::pointer r_pointer = r.data();
+      typename T::difference_type r_step = r.stride(r.dimension() - 1);
+      for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
+           begin != end; ++begin) {
+        x_pointer = x[begin].data();
+        r_pointer = r[begin].data();
+        for (typename T::size_type i = 0; i < x_size; ++i) {
+          r_pointer[i * r_step] = x_pointer[i * x_step];
+        }
+      }
+    }
+  }
+  return r;
+}
+
+template < typename L >
+const typename L::tensor_type& eye(
+    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+}
+
+template < typename L >
+const typename L::tensor_type& linspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b,
+    const typename L::tensor_type &r) {
+}
+
+template < typename L >
+const typename L::tensor_type& logspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b,
+    const typename L::tensor_type &r) {
+}
+
+template < typename L >
+const typename L::tensor_type& tril(
+    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+}
+
+template < typename L >
+const typename L::tensor_type& triu(
+    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+}
+
+}  // namespace math
+}  // namespace linalg
+}  // namespace thunder
+
+#endif  // THUNDER_LINALG_MATH_INL_CONSTRUCTOR_HPP_
