@@ -76,6 +76,12 @@ const typename L::tensor_type& diag(
         throw out_of_range("Diag size mismatches.");
       }
     }
+    typename T::pointer x_pointer = nullptr;
+    typename T::size_type x_size =
+        ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1));
+    typename T::difference_type x_step = x.stride(x.dimension() - 2) +
+        x.stride(x.dimension() - 1);
+    typename T::pointer r_pointer = nullptr;
     if (x.partialContiguity(0, x.dimension() - 3) &&
         r.partialContiguity(0, r.dimension() - 2)) {
       // Contiguous case
@@ -83,15 +89,10 @@ const typename L::tensor_type& diag(
       for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
         batch_size = batch_size * r.size(i);
       }
-      typename T::pointer x_pointer = x.data();
-      typename T::size_type x_size =
-          ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1));
-      typename T::difference_type x_step = x.stride(x.dimension() - 2) +
-          x.stride(x.dimension() - 1);
       typename T::difference_type x_batch = x.stride(x.dimension() - 3);
-      typename T::pointer r_pointer = r.data();
-      typename T::difference_type r_step = r.stride(r.dimension() - 1);
       typename T::difference_type r_batch = r.stride(r.dimension() - 2);
+      x_pointer = x.data();
+      r_pointer = r.data();
       for (typename T::size_type i = 0; i < batch_size; ++i) {
         for (typename T::size_type j = 0; j < x_size; ++j) {
           r_pointer[i * r_batch + j * r_step] =
@@ -104,12 +105,6 @@ const typename L::tensor_type& diag(
       for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
         batch_storage[i] = r.size(i);
       }
-      typename T::pointer x_pointer = nullptr;
-      typename T::size_type x_size =
-          ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1));
-      typename T::difference_type x_step = x.stride(x.dimension() - 2) +
-          x.stride(x.dimension() - 1);
-      typename T::pointer r_pointer = nullptr;
       typename T::difference_type r_step = r.stride(r.dimension() - 1);
       for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
            begin != end; ++begin) {
@@ -151,7 +146,7 @@ const typename L::tensor_type& eye(
   typename T::size_type columns = r.size(r.dimension() - 1);
   typename T::difference_type row_step = r.stride(r.dimension() - 2);
   typename T::difference_type column_step = r.stride(r.dimension() - 1);
-  typename T::pointer_type r_pointer = nullptr;
+  typename T::pointer r_pointer = nullptr;
 
   if (r.dimension() == 2) {
     r_pointer = r.data();
@@ -178,7 +173,7 @@ const typename L::tensor_type& eye(
     }
   } else {
     // Non-contiguous batch mode
-    typename T::size_storage batch_storage(r.size() - 1);
+    typename T::size_storage batch_storage(r.size() - 2);
     for (typename T::dim_type i = 0; i < r.dimension() - 2; ++i) {
       batch_storage[i] = r.size(i);
     }
@@ -199,6 +194,19 @@ template < typename L >
 const typename L::tensor_type& linspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
     const typename L::tensor_type &r) {
+  typedef typename L::tensor_type T;
+  typedef typename T::value_type D;
+  if (r.dimension() != 1) {
+    throw out_of_range("Linspace result dimension must be 1.");
+  }
+  typename T::size_type r_size = r.size(0);
+  typename T::difference_type r_step = r.stride(0);
+  typename T::pointer r_pointer = r.data();
+  D divisor = (b - a) / static_cast< D >(r_size - 1);
+  r_pointer[0] = a;
+  for (typename T::size_type i = 1; i < r_size; ++i) {
+    r_pointer[i * r_step] = a + static_cast< D >(i) * divisor;
+  }
   return r;
 }
 
@@ -206,18 +214,180 @@ template < typename L >
 const typename L::tensor_type& logspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
     const typename L::tensor_type &r) {
+  typedef typename L::tensor_type T;
+  typedef typename T::value_type D;
+  if (r.dimension() != 1) {
+    throw out_of_range("Linspace result dimension must be 1.");
+  }
+  typename T::size_type r_size = r.size(0);
+  typename T::difference_type r_step = r.stride(0);
+  typename T::pointer r_pointer = r.data();
+  D divisor = (b - a) / static_cast< D >(r_size - 1);
+  r_pointer[0] = static_cast< D >(::std::pow(10, a));
+  for (typename T::size_type i = 1; i < r_size; ++i) {
+    r_pointer[i * r_step] = static_cast< D >(
+        ::std::pow(10, a + static_cast< D >(i) * divisor));
+  }
   return r;
 }
 
 template < typename L >
 const typename L::tensor_type& tril(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  typedef typename L::tensor_type T;
+  typedef tensor::IndexIterator< typename L::size_storage > I;
+
+  if (x.dimension() < 2) {
+    throw invalid_argument("Tril input dimension cannot be smaller than 2.");
+  }
+  if (x.dimension() != r.dimension()) {
+    throw out_of_range("Tril result dimension mismatches.");
+  }
+  if (x.size(x.dimension() - 1) != x.size(x.dimension() - 2)) {
+    throw invalid_argument("Tril input must be square matrix.");
+  }
+  for (typename T::dim_type i = 0; i < x.dimension(); ++i) {
+    if (x.size(i) != r.size(i)) {
+      throw out_of_range("Tril result size mismatches.");
+    }
+  }
+
+  typename T::pointer x_pointer = nullptr;
+  typename T::pointer r_pointer = nullptr;
+  typename T::size_type rows = x.size(x.dimension() - 2);
+  typename T::size_type columns = x.size(x.dimension() - 1);
+  typename T::difference_type x_row_step = x.stride(x.dimension() - 2);
+  typename T::difference_type x_column_step = x.stride(x.dimension() - 1);
+  typename T::difference_type r_row_step = r.stride(r.dimension() - 2);
+  typename T::difference_type r_column_step = r.stride(r.dimension() - 1);
+
+  if (x.dimension() == 2) {
+    x_pointer = x.data();
+    r_pointer = r.data();
+    for (typename T::size_type i = 0; i < rows; ++i) {
+      for (typename T::size_type j = 0; j < columns; ++j) {
+        r_pointer[i * r_row_step + j * r_column_step] =
+            (i < j ? 0 : x_pointer[i * x_row_step + j * x_column_step]);
+      }
+    }
+  } else if (x.partialContiguity(0, x.dimension() - 3) &&
+             r.partialContiguity(0, r.dimension() - 3)) {
+    // Contiguous batch
+    typename T::size_type batch = 1;
+    for (typename T::dim_type i = 0; i < x.dimension() - 2; ++i) {
+      batch = batch * x.size(i);
+    }
+    typename T::difference_type x_batch_step = x.stride(x.dimension() - 3);
+    typename T::difference_type r_batch_step = r.stride(r.dimension() - 3);
+    x_pointer = x.data();
+    r_pointer = r.data();
+    for (typename T::size_type k = 0; k < batch; ++k) {
+      for (typename T::size_type i = 0; i < rows; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++j) {
+          r_pointer[k * r_batch_step + i * r_row_step + j * r_column_step] =
+              (i < j ? 0 : x_pointer[
+                  k * x_batch_step + i * x_row_step + j * x_column_step]);
+        }
+      }
+    }
+  } else {
+    // Non-contiguous batch
+    typename T::size_storage batch_storage(x.dimension() - 2);
+    for (typename T::dim_type i = 0; i < x.dimension() - 2; ++i) {
+      batch_storage[i] = x.size(i);
+    }
+    for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
+         begin != end; ++begin) {
+      x_pointer = x[begin].data();
+      r_pointer = r[begin].data();
+      for (typename T::size_type i = 0; i < rows; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++j) {
+          r_pointer[i * r_row_step + j * r_column_step] =
+              (i < j ? 0 : x_pointer[i * x_row_step + j * x_column_step]);
+        }
+      }
+    }
+  }
   return r;
 }
 
 template < typename L >
 const typename L::tensor_type& triu(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  typedef typename L::tensor_type T;
+  typedef tensor::IndexIterator< typename L::size_storage > I;
+
+  if (x.dimension() < 2) {
+    throw invalid_argument("Tril input dimension cannot be smaller than 2.");
+  }
+  if (x.dimension() != r.dimension()) {
+    throw out_of_range("Tril result dimension mismatches.");
+  }
+  if (x.size(x.dimension() - 1) != x.size(x.dimension() - 2)) {
+    throw invalid_argument("Tril input must be square matrix.");
+  }
+  for (typename T::dim_type i = 0; i < x.dimension(); ++i) {
+    if (x.size(i) != r.size(i)) {
+      throw out_of_range("Tril result size mismatches.");
+    }
+  }
+
+  typename T::pointer x_pointer = nullptr;
+  typename T::pointer r_pointer = nullptr;
+  typename T::size_type rows = x.size(x.dimension() - 2);
+  typename T::size_type columns = x.size(x.dimension() - 1);
+  typename T::difference_type x_row_step = x.stride(x.dimension() - 2);
+  typename T::difference_type x_column_step = x.stride(x.dimension() - 1);
+  typename T::difference_type r_row_step = r.stride(r.dimension() - 2);
+  typename T::difference_type r_column_step = r.stride(r.dimension() - 1);
+
+  if (x.dimension() == 2) {
+    x_pointer = x.data();
+    r_pointer = r.data();
+    for (typename T::size_type i = 0; i < rows; ++i) {
+      for (typename T::size_type j = 0; j < columns; ++j) {
+        r_pointer[i * r_row_step + j * r_column_step] =
+            (i > j ? 0 : x_pointer[i * x_row_step + j * x_column_step]);
+      }
+    }
+  } else if (x.partialContiguity(0, x.dimension() - 3) &&
+             r.partialContiguity(0, r.dimension() - 3)) {
+    // Contiguous batch
+    typename T::size_type batch = 1;
+    for (typename T::dim_type i = 0; i < x.dimension() - 2; ++i) {
+      batch = batch * x.size(i);
+    }
+    typename T::difference_type x_batch_step = x.stride(x.dimension() - 3);
+    typename T::difference_type r_batch_step = r.stride(r.dimension() - 3);
+    x_pointer = x.data();
+    r_pointer = r.data();
+    for (typename T::size_type k = 0; k < batch; ++k) {
+      for (typename T::size_type i = 0; i < rows; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++j) {
+          r_pointer[k * r_batch_step + i * r_row_step + j * r_column_step] =
+              (i > j ? 0 : x_pointer[
+                  k * x_batch_step + i * x_row_step + j * x_column_step]);
+        }
+      }
+    }
+  } else {
+    // Non-contiguous batch
+    typename T::size_storage batch_storage(x.dimension() - 2);
+    for (typename T::dim_type i = 0; i < x.dimension() - 2; ++i) {
+      batch_storage[i] = x.size(i);
+    }
+    for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
+         begin != end; ++begin) {
+      x_pointer = x[begin].data();
+      r_pointer = r[begin].data();
+      for (typename T::size_type i = 0; i < rows; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++j) {
+          r_pointer[i * r_row_step + j * r_column_step] =
+              (i > j ? 0 : x_pointer[i * x_row_step + j * x_column_step]);
+        }
+      }
+    }
+  }
   return r;
 }
 
