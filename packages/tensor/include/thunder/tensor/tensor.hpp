@@ -188,11 +188,17 @@ class Tensor {
   static reference_iterator reference_begin(const Tensor &x);
   static reference_iterator reference_end(const Tensor &x);
 
-  // Non-templated modifiers
+  // Templated modifiers
   template < typename T >
   Tensor& resizeAs(const T &y);
   template < typename T >
+  Tensor& sort(dim_type d = 0, bool r = false, T *y = nullptr);
+
+  template < typename T >
   static Tensor& resizeAs(Tensor *x, const T &y);
+  template < typename T >
+  static Tensor& sort(
+      Tensor *x, dim_type d = 0, bool r = false, T *y = nullptr);
 
   // Normal modifiers
   Tensor& set(const Tensor &y);
