@@ -76,8 +76,8 @@ const typename L::tensor_type& diag(
         throw out_of_range("Diag size mismatches.");
       }
     }
-    if (x.partialContiguity(0, x.dimension() - 2) &&
-        r.partialContiguity(0, r.dimension() - 1)) {
+    if (x.partialContiguity(0, x.dimension() - 3) &&
+        r.partialContiguity(0, r.dimension() - 2)) {
       // Contiguous case
       typename T::size_type batch_size = 1;
       for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
@@ -104,12 +104,12 @@ const typename L::tensor_type& diag(
       for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
         batch_storage[i] = r.size(i);
       }
-      typename T::pointer x_pointer = x.data();
+      typename T::pointer x_pointer = nullptr;
       typename T::size_type x_size =
           ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1));
       typename T::difference_type x_step = x.stride(x.dimension() - 2) +
           x.stride(x.dimension() - 1);
-      typename T::pointer r_pointer = r.data();
+      typename T::pointer r_pointer = nullptr;
       typename T::difference_type r_step = r.stride(r.dimension() - 1);
       for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
            begin != end; ++begin) {
@@ -126,29 +126,99 @@ const typename L::tensor_type& diag(
 
 template < typename L >
 const typename L::tensor_type& eye(
-    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+    L *l, const typename L::size_storage &s, const typename L::tensor_type &r) {
+  typedef typename L::tensor_type T;
+  typedef tensor::IndexIterator< typename L::size_storage > I;
+  if (s.size() == 1) {
+    if (r.dimension() != 2) {
+      throw out_of_range("Eye result dimension mismatches.");
+    }
+    if (r.size(0) != s[0] || r.size(1) != s[0]) {
+      throw out_of_range("Eye result size mismatches.");
+    }
+  } else {
+    if (s.size() != r.dimension()) {
+      throw out_of_range("Eye result dimension mismatches.");
+    }
+    for (typename L::dim_type i = 0; i < s.size(); ++i) {
+      if (r.size(i) != s[i]) {
+        throw out_of_range("Eye result size mismatches.");
+      }
+    }
+  }
+
+  typename T::size_type rows = r.size(r.dimension() - 2);
+  typename T::size_type columns = r.size(r.dimension() - 1);
+  typename T::difference_type row_step = r.stride(r.dimension() - 2);
+  typename T::difference_type column_step = r.stride(r.dimension() - 1);
+  typename T::pointer_type r_pointer = nullptr;
+
+  if (r.dimension() == 2) {
+    r_pointer = r.data();
+    for (typename T::size_type i = 0; i < rows; ++i) {
+      for (typename T::size_type j = 0; j < columns; ++i) {
+        r_pointer[i * row_step + j * column_step] = (i == j ? 1 : 0);
+      }
+    }
+  } else if (r.partialContiguity(0, r.dimension() - 3)) {
+    // Contiguous batch mode
+    typename T::size_type batch = 1;
+    for (typename T::dim_type i = 0; i < r.dimension() - 2; ++i) {
+      batch = batch * r.size(i);
+    }
+    typename T::difference_type batch_step = r.stride(r.dimension() - 3);
+    r_pointer = r.data();
+    for (typename T::size_type k = 0; k < batch; ++k) {
+      for (typename T::size_type i = 0; i < rows; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++i) {
+          r_pointer[k * batch_step + i * row_step + j * column_step] =
+              (i == j ? 1 : 0);
+        }
+      }
+    }
+  } else {
+    // Non-contiguous batch mode
+    typename T::size_storage batch_storage(r.size() - 1);
+    for (typename T::dim_type i = 0; i < r.dimension() - 2; ++i) {
+      batch_storage[i] = r.size(i);
+    }
+    for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
+         begin != end; ++begin) {
+      r_pointer = r[begin].data();
+      for (typename T::size_type i = 0; i < rows; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++i) {
+          r_pointer[i * row_step + j * column_step] = (i == j ? 1 : 0);
+        }
+      }
+    }
+  }
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& linspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
     const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& logspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
     const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& tril(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& triu(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  return r;
 }
 
 }  // namespace math

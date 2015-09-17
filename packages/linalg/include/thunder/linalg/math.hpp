@@ -32,7 +32,7 @@ const typename L::tensor_type& diag(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
 template < typename L >
 const typename L::tensor_type& eye(
-    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
+    L *l, const typename L::size_storage &s, const typename L::tensor_type &r);
 template < typename L >
 const typename L::tensor_type& linspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
