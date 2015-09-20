@@ -31,6 +31,9 @@
 // Ternary mathematical operations
 #include "thunder/tensor/complex-inl-ternary.hpp"
 
+// Sort
+#include "thunder/tensor/complex-inl-sort.hpp"
+
 // Reduction operations
 #include "thunder/tensor/complex-inl-reduction.hpp"
 

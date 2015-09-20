@@ -182,7 +182,6 @@ void gerTest() {
 
   D a[m * lda], a_orig[lda * m], x[m * incx], y[n * incy];
   D alpha = rand(&gen, &dist);
-  D beta = rand(&gen, &dist);
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < n; ++j) {
       a[i * lda + j] = rand(&gen, &dist);
@@ -228,7 +227,6 @@ void gercTest() {
 
   D a[m * lda], a_orig[lda * m], x[m * incx], y[n * incy];
   D alpha = rand(&gen, &dist);
-  D beta = rand(&gen, &dist);
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < n; ++j) {
       a[i * lda + j] = rand(&gen, &dist);
@@ -275,7 +273,6 @@ void geruTest() {
 
   D a[m *  lda], a_orig[lda * m], x[m * incx], y[n * incy];
   D alpha = rand(&gen, &dist);
-  D beta = rand(&gen, &dist);
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < n; ++j) {
       a[i * lda + j] = rand(&gen, &dist);
@@ -396,7 +393,6 @@ void hemvTest() {
   cxxblas::hemv(n, a, x, y, alpha, beta, lda, incx, incy);
 
   D result = 0.0;
-  int x_index = 0;
   for (int i = 0; i < n; ++i) {
     result = a[i * lda + i] * x[i * incx];
     for (int j = i + 1; j < n; ++j) {
@@ -446,7 +442,6 @@ void herTest() {
   cxxblas::her(n, x, a, ::std::real(alpha), incx, lda);
 
   D result = 0.0;
-  int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
       result = ::std::real(alpha) * x[i * incx] * conjg(x[j * incx]) +
@@ -492,7 +487,6 @@ void her2Test() {
   cxxblas::her2(n, x, y, a, alpha, incx, incy, lda);
 
   D result = 0.0;
-  int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
       result = alpha * x[i * incx] * conjg(y[j * incy]) +
@@ -742,7 +736,6 @@ void symvTest() {
   cxxblas::symv(n, a, x, y, alpha, beta, lda, incx, incy);
 
   D result = 0.0;
-  int x_index = 0;
   for (int i = 0; i < n; ++i) {
     result = a[i * lda + i] * x[i * incx];
     for (int j = i + 1; j < n; ++j) {
@@ -792,7 +785,6 @@ void syrTest() {
   cxxblas::syr(n, x, a, ::std::real(alpha), incx, lda);
 
   D result = 0.0;
-  int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
       result = ::std::real(alpha) * x[i * incx] * conjg(x[j * incx]) +
@@ -838,7 +830,6 @@ void syr2Test() {
   cxxblas::syr2(n, x, y, a, alpha, incx, incy, lda);
 
   D result = 0.0;
-  int x_index = 0;
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
       result = alpha * x[i * incx] * conjg(y[j * incy]) +
@@ -1084,8 +1075,6 @@ void tpmvTest() {
   RandomGenerator< D > rand;
 
   const int n = 40;
-  const int k = 5;
-  const int lda = 8;
   const int incx = 2;
 
   D a[n * (n + 1) / 2], x[n * incx], x_orig[n * incx];
@@ -1123,8 +1112,6 @@ void tpsvTest() {
   RandomGenerator< D > rand;
 
   const int n = 40;
-  const int k = 5;
-  const int lda = 8;
   const int incx = 2;
 
   D a[n * (n + 1) / 2], x[n * incx], x_orig[n * incx];
@@ -1162,7 +1149,6 @@ void trmvTest() {
   RandomGenerator< D > rand;
 
   const int n = 40;
-  const int k = 5;
   const int lda = 47;
   const int incx = 2;
 
@@ -1201,7 +1187,6 @@ void trsvTest() {
   RandomGenerator< D > rand;
 
   const int n = 40;
-  const int k = 5;
   const int lda = 47;
   const int incx = 2;
 

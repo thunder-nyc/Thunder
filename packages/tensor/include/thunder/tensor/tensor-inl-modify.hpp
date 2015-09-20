@@ -47,18 +47,6 @@ Tensor< S >& Tensor< S >::resizeAs(Tensor *x, const T &y) {
 }
 
 template < typename S >
-template < typename T >
-Tensor< S >& Tensor< S >::sort(dim_type d, bool r, T *y) {
-  return *this;
-}
-
-template < typename S >
-template < typename T >
-Tensor< S >& Tensor< S >::sort(Tensor *x, dim_type d, bool r, T *y) {
-  return x->sort(d, r, y);
-}
-
-template < typename S >
 Tensor< S >& Tensor< S >::set(const Tensor &y) {
   return this->set(y.storage_, y.offset_);
 }

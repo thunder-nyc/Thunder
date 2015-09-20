@@ -352,6 +352,19 @@ const Tensor< Storage< ::std::complex< D >, A > >& fma(
     const Tensor< Storage< ::std::complex< D >, A > > &y,
     const Tensor< Storage< ::std::complex< D >, A > > &z);
 
+// Sort functions
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& sort(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d,
+    bool r);
+template < typename D, typename A >
+const Tensor< Storage< ::std::complex< D >, A > >& sort(
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    typename Tensor< Storage< ::std::complex< D >, A > >::dim_type d,
+    Tensor< typename Tensor< Storage< ::std::complex< D >, A > >
+    ::size_storage> *pos, bool r);
+
 // Reduction functions to a single value
 template < typename D, typename A >
 typename Tensor< Storage< ::std::complex< D >, A > >::value_type max(

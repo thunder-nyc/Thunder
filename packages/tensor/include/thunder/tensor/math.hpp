@@ -27,6 +27,7 @@ namespace thunder {
 namespace tensor {
 namespace math {
 
+// Transformation
 template < typename T1, typename T2 >
 T1 extract(const T1 &x, const T2 &y);
 template < typename T1, typename T2 >
@@ -269,6 +270,13 @@ template < typename T >
 const T& fma(const T &x, typename T::const_reference y, const T &z);
 template < typename T >
 const T& fma(const T &x, const T &y, const T &z);
+
+// Sort function
+template < typename T >
+const T& sort(const T &x, typename T::dim_type d, bool r);
+template < typename T >
+const T& sort(const T &x, typename T::dim_type d,
+              Tensor< typename T::size_storage > *pos, bool r);
 
 // Reduction functions to a single value
 template < typename T >

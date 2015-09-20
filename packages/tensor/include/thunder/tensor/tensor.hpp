@@ -191,14 +191,9 @@ class Tensor {
   // Templated modifiers
   template < typename T >
   Tensor& resizeAs(const T &y);
-  template < typename T >
-  Tensor& sort(dim_type d = 0, bool r = false, T *y = nullptr);
 
   template < typename T >
   static Tensor& resizeAs(Tensor *x, const T &y);
-  template < typename T >
-  static Tensor& sort(
-      Tensor *x, dim_type d = 0, bool r = false, T *y = nullptr);
 
   // Normal modifiers
   Tensor& set(const Tensor &y);
@@ -336,7 +331,6 @@ class Tensor {
   // Static type conversions are delegated
   template < typename T >
   static T type(const Tensor& x);
-
 
   // lambda applications
   const Tensor& apply(
@@ -735,6 +729,20 @@ class Tensor {
   static Tensor fma(const Tensor &x, const Tensor &y, const_reference z);
   static Tensor fma(const Tensor &x, const_reference y, const Tensor &z);
   static Tensor fma(const Tensor &x, const Tensor &y, const Tensor &z);
+
+  // Sort function
+  const Tensor& sort(dim_type d, bool r = false) const;
+  const Tensor& sort(
+      dim_type d, Tensor< size_storage > *pos, bool r = false) const;
+
+  // None-const sort function is delegated using const_cast
+  Tensor& sort(dim_type d, bool r = false);
+  Tensor& sort(dim_type d, Tensor< size_storage > *pos, bool r = false);
+
+  // Static sort function is delegated
+  static Tensor sort(const Tensor &x, dim_type d, bool r = false);
+  static Tensor sort(
+      const Tensor &x, dim_type d, Tensor< size_storage > *pos, bool r = false);
 
   // Reduction operations
   value_type max(Tensor< size_storage > *pos) const;

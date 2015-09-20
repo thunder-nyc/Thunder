@@ -34,6 +34,9 @@
 // Ternary mathematical operations
 #include "thunder/tensor/math-inl-ternary.hpp"
 
+// Sort operation
+#include "thunder/tensor/math-inl-sort.hpp"
+
 // Reduction operations
 #include "thunder/tensor/math-inl-reduction.hpp"
 
