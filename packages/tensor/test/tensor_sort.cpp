@@ -22,7 +22,6 @@
 #include <random>
 
 #include "gtest/gtest.h"
-#include "thunder/storage.hpp"
 
 namespace thunder {
 namespace {
