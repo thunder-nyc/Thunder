@@ -39,7 +39,7 @@ void quickSort(D *data, S size, F stride) {
     ::std::swap(data[0], data[size / 2 * stride]);
     // Partition untill end
     for (S i = 1; i < size; ++i) {
-      if (data[i] < data[0]) {
+      if (data[i * stride] < data[0]) {
         ::std::swap(data[++pivot * stride], data[i * stride]);
       }
     }
@@ -60,7 +60,7 @@ void reverseQuickSort(D *data, S size, F stride) {
     ::std::swap(data[0], data[size / 2 * stride]);
     // Partition untill end
     for (S i = 1; i < size; ++i) {
-      if (data[i] > data[0]) {
+      if (data[i * stride] > data[0]) {
         ::std::swap(data[++pivot * stride], data[i * stride]);
       }
     }
@@ -82,7 +82,7 @@ void quickSort(D *data, S size, F stride, I *index, G step) {
     ::std::swap(index[0], index[size / 2 * step]);
     // Partition untill end
     for (S i = 1; i < size; ++i) {
-      if (data[i] < data[0]) {
+      if (data[i * stride] < data[0]) {
         ::std::swap(data[++pivot * stride], data[i * stride]);
         ::std::swap(index[pivot * step], index[i * step]);
       }
@@ -107,7 +107,7 @@ void reverseQuickSort(D *data, S size, F stride, I *index, G step) {
     ::std::swap(index[0], index[size / 2 * step]);
     // Partition untill end
     for (S i = 1; i < size; ++i) {
-      if (data[i] < data[0]) {
+      if (data[i * stride] > data[0]) {
         ::std::swap(data[++pivot * stride], data[i * stride]);
         ::std::swap(index[pivot * step], index[i * step]);
       }
@@ -132,7 +132,7 @@ const T& sort(const T &x, typename T::dim_type d, bool r) {
   typename T::difference_type x_step = x.stride(d);
   typename T::size_type x_length = x.size(d);
 
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : d)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
       typename T::pointer x_pointer = x.data();
@@ -200,7 +200,7 @@ const T& sort(const T &x, typename T::dim_type d,
   }
   typename T::difference_type p_step = pos->stride(d);
 
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_pointer = x.data();
@@ -251,7 +251,7 @@ const T& sort(const T &x, typename T::dim_type d,
     } else {
       for (typename T::reference_iterator x_begin =
                x_narrow.reference_begin(), x_end = x_narrow.reference_end();
-           x_begin != x_end; ++x_begin) {
+           x_begin != x_end; ++x_begin, ++p_begin) {
         reverseQuickSort(
             &(*x_begin), x_length, x_step, &(*p_begin), p_step);
       }
