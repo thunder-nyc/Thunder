@@ -98,6 +98,9 @@ class Storage {
   // Check the size of the storage
   size_type size() const;
 
+  // Get the allocator
+  A allocator() const;
+
  private:
   A alloc_;
   size_type size_;

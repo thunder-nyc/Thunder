@@ -169,6 +169,11 @@ typename Storage< D, A >::size_type Storage< D, A >::size() const {
   return size_;
 }
 
+template < typename D, typename A >
+A Storage< D, A >::allocator() const {
+  return alloc_;
+}
+
 }  // namespace storage
 }  // namespace thunder
 

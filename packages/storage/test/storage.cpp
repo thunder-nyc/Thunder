@@ -192,6 +192,15 @@ void resizeTest() {
 TEST_ALL_TYPES(resizeTest);
 
 template < typename T >
+void allocatorTest() {
+  // Create an allocator
+  ::std::allocator< T > alloc;
+
+  thunder::Storage< T > storage(10);
+  EXPECT_TRUE(alloc == storage.allocator());
+}
+
+template < typename T >
 void serializeTest() {
   // Create a storage of some size
   thunder::Storage< T > s1(17);
