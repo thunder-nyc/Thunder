@@ -241,8 +241,9 @@ T max(const T &x, typename T::dim_type d,
   sz[d] = 1;
   T t(sz);
   pos->resizeAs(t);
-  if (x.partialContiguity(0, d) && x.partialContiguity(d + 1, x.dimension() - 1)
-      && pos->partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
+      && x.partialContiguity(d + 1, x.dimension() - 1)
+      && pos->partialContiguity(0, d > 0 ? (d - 1) : 0)
       && pos->partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
@@ -326,8 +327,9 @@ T min(const T &x, typename T::dim_type d,
   sz[d] = 1;
   T t(sz);
   pos->resizeAs(t);
-  if (x.partialContiguity(0, d) && x.partialContiguity(d + 1, x.dimension() - 1)
-      && pos->partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
+      && x.partialContiguity(d + 1, x.dimension() - 1)
+      && pos->partialContiguity(0, d > 0 ? (d - 1) : 0)
       && pos->partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
@@ -411,7 +413,7 @@ T max(const T &x, typename T::dim_type d) {
   typename T::size_storage sz = x.size();
   sz[d] = 1;
   T t(sz);
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
@@ -479,7 +481,7 @@ T min(const T &x, typename T::dim_type d) {
   typename T::size_storage sz = x.size();
   sz[d] = 1;
   T t(sz);
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
@@ -547,7 +549,7 @@ T sum(const T &x, typename T::dim_type d) {
   typename T::size_storage sz = x.size();
   sz[d] = 1;
   T t(sz);
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
@@ -609,7 +611,7 @@ T prod(const T &x, typename T::dim_type d) {
   typename T::size_storage sz = x.size();
   sz[d] = 1;
   T t(sz);
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
@@ -679,7 +681,7 @@ T var(const T &x, typename T::dim_type d) {
     throw out_of_range("Dimension exceeds limit.");
   }
   T t = x.mean(d);
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();

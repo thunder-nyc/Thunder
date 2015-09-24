@@ -132,7 +132,7 @@ Tensor< Storage< ::std::complex< D >, A > > var(
     throw out_of_range("Dimension exceeds limit.");
   }
   T t = x.mean(d);
-  if (x.partialContiguity(0, d)
+  if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
     typename T::pointer x_data = x.data();
