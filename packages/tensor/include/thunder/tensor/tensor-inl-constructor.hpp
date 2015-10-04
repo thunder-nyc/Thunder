@@ -36,7 +36,7 @@ Tensor< S >::Tensor()
     : size_(1, 1), stride_(1, 1), storage_(new S(1)), offset_(0) {}
 
 template < typename S >
-Tensor< S >::Tensor(size_storage sz)
+Tensor< S >::Tensor(size_storage sz, allocator_type alloc)
     : stride_(sz.size()), offset_(0) {
   ::std::swap(size_, sz);
   if (size_.size() == 0) {
@@ -49,7 +49,7 @@ Tensor< S >::Tensor(size_storage sz)
     }
     storage_size *= size_x;
   }
-  storage_ = ::std::make_shared< S >(storage_size);
+  storage_ = ::std::make_shared< S >(storage_size, alloc);
   stride_[stride_.size() - 1] = 1;
   for (dim_type i = stride_.size() - 1; i > 0; --i) {
     stride_[i - 1] = size_[i] * stride_[i];
@@ -57,19 +57,23 @@ Tensor< S >::Tensor(size_storage sz)
 }
 
 template < typename S >
-Tensor< S >::Tensor(size_type sz0) : Tensor(size_storage({sz0})) {}
+Tensor< S >::Tensor(size_type sz0, allocator_type alloc)
+    : Tensor(size_storage({sz0}), alloc) {}
 
 template < typename S >
-Tensor< S >::Tensor(size_type sz0, size_type sz1)
-    : Tensor(size_storage({sz0, sz1})) {}
+Tensor< S >::Tensor(
+    size_type sz0, size_type sz1, allocator_type alloc)
+    : Tensor(size_storage({sz0, sz1}), alloc) {}
 
 template < typename S >
-Tensor< S >::Tensor(size_type sz0, size_type sz1, size_type sz2)
-    : Tensor(size_storage({sz0, sz1, sz2})) {}
+Tensor< S >::Tensor(
+    size_type sz0, size_type sz1, size_type sz2, allocator_type alloc)
+    : Tensor(size_storage({sz0, sz1, sz2}), alloc) {}
 
 template < typename S >
-Tensor< S >::Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3)
-    : Tensor(size_storage({sz0, sz1, sz2, sz3})) {}
+Tensor< S >::Tensor(
+    size_type sz0, size_type sz1, size_type sz2, size_type sz3,
+    allocator_type alloc) : Tensor(size_storage({sz0, sz1, sz2, sz3}), alloc) {}
 
 template < typename S >
 Tensor< S >::Tensor(storage_pointer s, size_type os)
@@ -111,7 +115,7 @@ Tensor< S >::Tensor(size_storage sz, storage_pointer s, size_type os)
 }
 
 template< typename S >
-Tensor< S >::Tensor(size_storage sz, stride_storage st) {
+Tensor< S >::Tensor(size_storage sz, stride_storage st, allocator_type alloc) {
   ::std::swap(size_, sz);
   ::std::swap(stride_, st);
   if (size_.size() == 0) {
@@ -136,7 +140,7 @@ Tensor< S >::Tensor(size_storage sz, stride_storage st) {
       max_offset = max_offset + (size_[i]-1)*stride_[i];
     }
   }
-  storage_ = ::std::make_shared< S >(max_offset - min_offset + 1);
+  storage_ = ::std::make_shared< S >(max_offset - min_offset + 1, alloc);
   offset_ = -min_offset;
 }
 

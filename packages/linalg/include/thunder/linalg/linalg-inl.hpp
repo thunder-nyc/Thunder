@@ -17,21 +17,24 @@
  * @}
  */
 
-#ifndef THUNDER_LINALG_MATH_INL_HPP_
-#define THUNDER_LINALG_MATH_INL_HPP_
+#ifndef THUNDER_LINALG_LINALG_INL_HPP_
+#define THUNDER_LINALG_LINALG_INL_HPP_
 
-#include "thunder/linalg/math.hpp"
+#include "thunder/linalg/linalg.hpp"
+
+// Access functions, including class constructors and destructors
+#include "thunder/linalg/linalg-inl-access.hpp"
 
 // Linear algebra constructors
-#include "thunder/linalg/math-inl-constructor.hpp"
+#include "thunder/linalg/linalg-inl-constructor.hpp"
 
 // BLAS level 1 functions
-#include "thunder/linalg/math-inl-blaslevel1.hpp"
+#include "thunder/linalg/linalg-inl-blaslevel1.hpp"
 
 // BLAS level 2 functions
-#include "thunder/linalg/math-inl-blaslevel2.hpp"
+#include "thunder/linalg/linalg-inl-blaslevel2.hpp"
 
 // BLAS level 3 functions
-#include "thunder/linalg/math-inl-blaslevel3.hpp"
+#include "thunder/linalg/linalg-inl-blaslevel3.hpp"
 
-#endif  // THUNDER_LINALG_MATH_INL_HPP_
+#endif  // THUNDER_LINALG_LINALG_INL_HPP_

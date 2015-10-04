@@ -1,5 +1,5 @@
 /*
- * \copyright Copyright 2015 Xiang Zhang All Rights Reserved.
+ * \copyright Copyright 2014-2015 Xiang Zhang All Rights Reserved.
  * \license @{
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,6 +47,40 @@ const typename L::tensor_type& tril(
 template < typename L >
 const typename L::tensor_type& triu(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
+template < typename L >
+typename L::tensor_type* diag(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* eye(
+    L *l, const typename L::size_storage &s, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* linspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b,
+    typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* logspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b,
+    typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* tril(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* triu(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type diag(L *l, const typename L::tensor_type &x);
+template < typename L >
+typename L::tensor_type eye(L *l, const typename L::size_storage &s);
+template < typename L >
+typename L::tensor_type linspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b);
+template < typename L >
+typename L::tensor_type logspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b);
+template < typename L >
+typename L::tensor_type tril(L *l, const typename L::tensor_type &x);
+template < typename L >
+typename L::tensor_type triu(L *l, const typename L::tensor_type &x);
 
 // BLAS level-1 routines
 template < typename L >

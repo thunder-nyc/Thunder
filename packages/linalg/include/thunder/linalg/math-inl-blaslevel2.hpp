@@ -1,5 +1,5 @@
 /*
- * \copyright Copyright 2015 Xiang Zhang All Rights Reserved.
+ * \copyright Copyright 2014-2015 Xiang Zhang All Rights Reserved.
  * \license @{
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
