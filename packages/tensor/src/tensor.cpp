@@ -85,7 +85,8 @@ THUNDER_TENSOR_EXPAND_UNARY(THUNDER_TENSOR_INSTANTIATE_UNARY);
 #undef THUNDER_TENSOR_EXPAND_UNARY
 
 #define THUNDER_TENSOR_INSTANTIATE_BINARY_INCOMPATIBLE(S1, S2)          \
-  template Tensor< S1 >::Tensor(const Tensor< S2 > &y);                 \
+  template Tensor< S1 >::Tensor(                                        \
+      const Tensor< S2 > &y, typename Tensor< S1 >::allocator_type alloc); \
   template Tensor< S1 > Tensor< S1 >::viewAs(                           \
       const Tensor< S2 > &y, typename Tensor< S1 >::size_type os) const;\
   template Tensor< S1 > Tensor< S1 >::viewAs(                           \
@@ -190,19 +191,25 @@ THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
   template Tensor< S2 > Tensor< S1 >::getImag(const Tensor< S1 > &x);   \
   template Tensor< S2 > Tensor< S1 >::getArg(const Tensor< S1 > &x);    \
   template Tensor< S2 > Tensor< S1 >::getCnrm(const Tensor< S1 > &x);   \
-  template Tensor< S2 > Tensor< S1 >::type() const;                     \
-  template Tensor< S2 > Tensor< S1 >::type(const Tensor< S1 > &x);      \
+  template Tensor< S2 > Tensor< S1 >::type(                             \
+      typename Tensor< S2 >::allocator_type alloc) const;               \
+  template Tensor< S2 > Tensor< S1 >::type(                             \
+      const Tensor< S1 > &x,                                            \
+      typename Tensor< S2 >::allocator_type alloc);                     \
   template const Tensor< S1 >& Tensor< S1 >::copy(                      \
       const Tensor< S2 > &x) const;                                     \
   template Tensor< S1 >& Tensor< S1 >::copy(const Tensor< S2 > &x);     \
   template Tensor< S1 > Tensor< S1 >::polars(                           \
       typename Tensor< S2 >::const_reference r,                         \
-      const Tensor< S2 > &theta);                                       \
+      const Tensor< S2 > &theta,                                        \
+      typename Tensor< S1 >::allocator_type alloc);                     \
   template Tensor< S1 > Tensor< S1 >::polars(                           \
       const Tensor< S2 >& r,                                            \
-      typename Tensor< S2 >::const_reference theta);                    \
+      typename Tensor< S2 >::const_reference theta,                     \
+      typename Tensor< S1 >::allocator_type alloc);                     \
   template Tensor< S1 > Tensor< S1 >::polars(                           \
-      const Tensor< S2 > &r, const Tensor< S2 > &theta);
+      const Tensor< S2 > &r, const Tensor< S2 > &theta,                 \
+      typename Tensor< S1 >::allocator_type alloc);                     \
 
 #define THUNDER_TENSOR_EXPAND_BINARY_COMPATIBLE(INSTANTIATE)            \
   INSTANTIATE(DoubleStorage, DoubleStorage);                            \

@@ -29,62 +29,66 @@ namespace thunder {
 namespace tensor {
 
 template < typename S >
-Tensor< S > Tensor< S >::ones(size_type n) {
-  return Tensor(n).fill(1);
+Tensor< S > Tensor< S >::ones(size_type n, allocator_type alloc) {
+  return Tensor(n, alloc).fill(1);
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::ones(size_type m, size_type n) {
-  return Tensor(m, n).fill(1);
+Tensor< S > Tensor< S >::ones(size_type m, size_type n, allocator_type alloc) {
+  return Tensor(m, n, alloc).fill(1);
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::ones(size_type n0, size_type n1, size_type n2) {
-  return Tensor(n0, n1, n2).fill(1);
+Tensor< S > Tensor< S >::ones(size_type n0, size_type n1, size_type n2,
+                              allocator_type alloc) {
+  return Tensor(n0, n1, n2, alloc).fill(1);
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::ones(
-    size_type n0, size_type n1, size_type n2, size_type n3) {
-  return Tensor(n0, n1, n2, n3).fill(1);
+    size_type n0, size_type n1, size_type n2, size_type n3,
+    allocator_type alloc) {
+  return Tensor(n0, n1, n2, n3, alloc).fill(1);
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::ones(const size_storage &sz) {
-  return Tensor(sz).fill(1);
+Tensor< S > Tensor< S >::ones(const size_storage &sz, allocator_type alloc) {
+  return Tensor(sz, alloc).fill(1);
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::zeros(size_type n) {
-  return Tensor(n).zero();
+Tensor< S > Tensor< S >::zeros(size_type n, allocator_type alloc) {
+  return Tensor(n, alloc).zero();
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::zeros(size_type m, size_type n) {
-  return Tensor(m, n).zero();
+Tensor< S > Tensor< S >::zeros(size_type m, size_type n, allocator_type alloc) {
+  return Tensor(m, n, alloc).zero();
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::zeros(size_type n0, size_type n1, size_type n2) {
-  return Tensor(n0, n1, n2).zero();
+Tensor< S > Tensor< S >::zeros(size_type n0, size_type n1, size_type n2,
+                               allocator_type alloc) {
+  return Tensor(n0, n1, n2, alloc).zero();
 }
 
 template < typename S >
 Tensor< S > Tensor< S >::zeros(
-    size_type n0, size_type n1, size_type n2, size_type n3) {
-  return Tensor(n0, n1, n2, n3).zero();
+    size_type n0, size_type n1, size_type n2, size_type n3,
+    allocator_type alloc) {
+  return Tensor(n0, n1, n2, n3, alloc).zero();
 }
 
 template < typename S >
-Tensor< S > Tensor< S >::zeros(const size_storage &sz) {
-  return Tensor(sz).zero();
+Tensor< S > Tensor< S >::zeros(const size_storage &sz, allocator_type alloc) {
+  return Tensor(sz, alloc).zero();
 }
 
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(
-    typename TR::const_reference r, const TR& theta) {
-  Tensor x;
+    typename TR::const_reference r, const TR& theta, allocator_type alloc) {
+  Tensor x(alloc);
   x.resizeAs(theta);
   return x.polar(r, theta);
 }
@@ -92,19 +96,20 @@ Tensor< S > Tensor< S >::polars(
 template < typename S >
 template < typename TR >
 Tensor< S > Tensor< S >::polars(
-    const TR& r, typename TR::const_reference theta) {
-  Tensor x;
+    const TR& r, typename TR::const_reference theta, allocator_type alloc) {
+  Tensor x(alloc);
   x.resizeAs(r);
   return x.polar(r, theta);
 }
 
 template < typename S >
 template < typename TR >
-Tensor< S > Tensor< S >::polars(const TR& r, const TR& theta) {
+Tensor< S > Tensor< S >::polars(const TR& r, const TR& theta,
+                                allocator_type alloc) {
   if (r.length() != theta.length()) {
     throw out_of_range("Tensors have different length.");
   }
-  Tensor x;
+  Tensor x(alloc);
   x.resizeAs(r);
   return x.polar(r, theta);
 }

@@ -181,7 +181,8 @@ Tensor< S >& Tensor< S >::resize(size_storage sz, stride_storage st) {
         max_offset = max_offset + (sz[i]-1)*st[i];
       }
     }
-    storage_ = ::std::make_shared< S >(max_offset - min_offset + 1);
+    storage_ = ::std::make_shared< S >(
+        max_offset - min_offset + 1, allocator());
     offset_ = -min_offset;
     ::std::swap(size_, sz);
     ::std::swap(stride_, st);
@@ -192,7 +193,7 @@ Tensor< S >& Tensor< S >::resize(size_storage sz, stride_storage st) {
 template < typename S >
 Tensor< S >& Tensor< S >::contiguous() {
   if (!isContiguous()) {
-    Tensor< S > t(size_);
+    Tensor< S > t(size_, allocator());
     t.copy(*this);
     ::std::swap(size_, t.size_);
     ::std::swap(stride_, t.stride_);
@@ -226,7 +227,7 @@ Tensor< S >& Tensor< S >::squeeze() {
 template < typename S >
 Tensor< S >& Tensor< S >::unique() {
   if (!storage_.unique()) {
-    Tensor< S > t(size_, stride_);
+    Tensor< S > t(size_, stride_, allocator());
     t.copy(*this);
     ::std::swap(size_, t.size_);
     ::std::swap(stride_, t.stride_);

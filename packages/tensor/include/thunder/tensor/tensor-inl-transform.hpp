@@ -283,7 +283,7 @@ Tensor< S > Tensor< S >::unfold(dim_type dim, size_type size,
 
 template < typename S >
 Tensor< S > Tensor< S >::clone() const {
-  return Tensor(size_, stride_).copy(*this);
+  return Tensor(size_, stride_, allocator()).copy(*this);
 }
 
 template < typename S >
@@ -306,7 +306,7 @@ Tensor< S > Tensor< S >::cat(const Tensor &y, dim_type dim) const {
   }
   size_storage sz(size_);
   sz[dim] = size_[dim] + y.size(dim);
-  Tensor t(sz);
+  Tensor t(sz, allocator());
   t.narrow(dim, 0, size_[dim]).copy(*this);
   t.narrow(dim, size_[dim], y.size(dim)).copy(y);
   return t;

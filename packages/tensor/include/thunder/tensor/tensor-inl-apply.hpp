@@ -46,7 +46,7 @@ const Tensor< S >& Tensor< S >::apply(
 }
 
 template< typename S >
-const Tensor< S >& Tensor< S >:: apply(
+const Tensor< S >& Tensor< S >::apply(
     const ::std::function< value_type(const value_type&) > &lambda) const {
   if (partialContiguity(0, size_.size() - 1)) {
     pointer data_pointer = data();

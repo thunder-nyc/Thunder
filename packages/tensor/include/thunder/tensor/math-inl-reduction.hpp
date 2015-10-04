@@ -239,7 +239,7 @@ T max(const T &x, typename T::dim_type d,
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
-  T t(sz);
+  T t(sz, x.allocator());
   pos->resizeAs(t);
   if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)
@@ -325,7 +325,7 @@ T min(const T &x, typename T::dim_type d,
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
-  T t(sz);
+  T t(sz, x.allocator());
   pos->resizeAs(t);
   if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)
@@ -412,7 +412,7 @@ T max(const T &x, typename T::dim_type d) {
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
-  T t(sz);
+  T t(sz, x.allocator());
   if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
@@ -480,7 +480,7 @@ T min(const T &x, typename T::dim_type d) {
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
-  T t(sz);
+  T t(sz, x.allocator());
   if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
@@ -548,7 +548,7 @@ T sum(const T &x, typename T::dim_type d) {
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
-  T t(sz);
+  T t(sz, x.allocator());
   if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers
@@ -610,7 +610,7 @@ T prod(const T &x, typename T::dim_type d) {
   }
   typename T::size_storage sz = x.size();
   sz[d] = 1;
-  T t(sz);
+  T t(sz, x.allocator());
   if (x.partialContiguity(0, d > 0 ? (d - 1) : 0)
       && x.partialContiguity(d + 1, x.dimension() - 1)) {
     // Get data pointers

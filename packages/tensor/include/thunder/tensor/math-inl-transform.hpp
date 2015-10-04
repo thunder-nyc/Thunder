@@ -69,7 +69,7 @@ T1 extract(const T1 &x, const T2 &y) {
   }
 
   // Create the new tensor and do the copy
-  T1 t(sz);
+  T1 t(sz, x.allocator());
   if (x.isContiguous() && y.isContiguous()) {
     typename T2::size_type y_length = y.length();
     typename T2::pointer y_data = y.data();
@@ -113,7 +113,7 @@ T1 shuffle(const T1 &x, const T2 &y) {
     throw out_of_range("Shuffle dimension mismatches.");
   }
   if (y.dimension() == 1) {
-    T1 t;
+    T1 t(x.allocator());
     typename T1::size_storage ind(x.dimension());
     for (typename T2::dim_type i = 0; i < y.size(0); ++i) {
       ind[i] = static_cast< typename T1::size_type >(y(i));
@@ -128,7 +128,7 @@ T1 shuffle(const T1 &x, const T2 &y) {
   for (typename T1::dim_type i = 0; i < sz.size(); ++i) {
     sz[i] = y.size(i);
   }
-  T1 t(sz);
+  T1 t(sz, x.allocator());
   typename T1::size_storage ind(x.dimension());
   for (IndexIterator< typename T1::size_storage > begin =
            IndexIterator< typename T1::size_storage >::begin(sz),
@@ -163,7 +163,7 @@ T1 permute(const T1 &x, const T2 &y, typename T1::dim_type d) {
     sz[i] = x.size(i);
   }
 
-  T1 t(sz);
+  T1 t(sz, x.allocator());
   if (x.partialContiguity(0, d) &&
       x.partialContiguity(d + 1, x.dimension() - 1)) {
     typename T1::pointer x_pointer = x.data();
@@ -229,7 +229,7 @@ T1 permute(const T1 &x, const T2 &y, typename T1::dim_type d) {
 #define THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(tfunc, sfunc)          \
   template < typename T1, typename T2 >                                 \
   T2 tfunc(const T1 &x) {                                               \
-    T2 t;                                                               \
+    T2 t(x.allocator());                                                \
     t.resizeAs(x);                                                      \
     typename T2::pointer t_pointer = t.data();                          \
     typename T2::difference_type t_step = t.stride(t.dimension() - 1);  \

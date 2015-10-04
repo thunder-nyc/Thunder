@@ -79,7 +79,7 @@ class Tensor {
   typedef typename size_storage::size_type dim_type;
 
   // Constructors
-  explicit Tensor();
+  explicit Tensor(allocator_type alloc = allocator_type());
   explicit Tensor(size_storage sz, allocator_type alloc = allocator_type());
   explicit Tensor(size_type sz0, allocator_type alloc = allocator_type());
   Tensor(size_type sz0, size_type sz1, allocator_type alloc = allocator_type());
@@ -98,7 +98,8 @@ class Tensor {
 
   // Templated conversion constructors
   template < typename Other_S >
-  explicit Tensor(const Tensor< Other_S > &y);
+  explicit Tensor(const Tensor< Other_S > &y,
+                  allocator_type alloc = allocator_type());
 
   // Destructor
   ~Tensor();
@@ -121,6 +122,7 @@ class Tensor {
   storage_pointer storage() const;
   size_type offset() const;
   pointer data() const;
+  allocator_type allocator() const;
   reference get() const;
   reference get(size_type pos) const;
   reference get(size_type pos0, size_type pos1) const;
@@ -142,6 +144,7 @@ class Tensor {
   static storage_pointer storage(const Tensor &x);
   static size_type offset(const Tensor &x);
   static pointer data(const Tensor &x);
+  static allocator_type allocator(const Tensor &x);
   static reference get(const Tensor &x);
   static reference get(const Tensor &x, size_type pos);
   static reference get(const Tensor &x, size_type pos0, size_type pos1);
@@ -329,11 +332,13 @@ class Tensor {
 
   // Type conversions
   template < typename T >
-  T type() const;
+  T type(typename T::allocator_type alloc = typename T::allocator_type()) const;
 
   // Static type conversions are delegated
   template < typename T >
-  static T type(const Tensor& x);
+  static T type(
+      const Tensor& x,
+      typename T::allocator_type alloc = typename T::allocator_type());
 
   // lambda applications
   const Tensor& apply(
@@ -792,24 +797,35 @@ class Tensor {
   static Tensor std(const Tensor &x, dim_type d);
 
   // Constructor functions that can only be static
-  static Tensor ones(size_type n);
-  static Tensor ones(size_type m, size_type n);
-  static Tensor ones(size_type n0, size_type n1, size_type n2);
-  static Tensor ones(size_type n0, size_type n1, size_type n2, size_type n3);
-  static Tensor ones(const size_storage &sz);
-  static Tensor zeros(size_type n);
-  static Tensor zeros(size_type m, size_type n);
-  static Tensor zeros(size_type n0, size_type n1, size_type n2);
-  static Tensor zeros(size_type n0, size_type n1, size_type n2, size_type n3);
-  static Tensor zeros(const size_storage &sz);
+  static Tensor ones(size_type n, allocator_type alloc = allocator_type());
+  static Tensor ones(size_type m, size_type n,
+                     allocator_type alloc = allocator_type());
+  static Tensor ones(size_type n0, size_type n1, size_type n2,
+                     allocator_type alloc = allocator_type());
+  static Tensor ones(size_type n0, size_type n1, size_type n2, size_type n3,
+                     allocator_type alloc = allocator_type());
+  static Tensor ones(const size_storage &sz,
+                     allocator_type alloc = allocator_type());
+  static Tensor zeros(size_type n, allocator_type alloc = allocator_type());
+  static Tensor zeros(size_type m, size_type n,
+                      allocator_type alloc = allocator_type());
+  static Tensor zeros(size_type n0, size_type n1, size_type n2,
+                      allocator_type alloc = allocator_type());
+  static Tensor zeros(size_type n0, size_type n1, size_type n2, size_type n3,
+                      allocator_type alloc = allocator_type());
+  static Tensor zeros(const size_storage &sz,
+                      allocator_type alloc = allocator_type());
 
   // Templated constructor functions
   template < typename TR >
-  static Tensor polars(typename TR::const_reference r, const TR& theta);
+  static Tensor polars(typename TR::const_reference r, const TR& theta,
+                       allocator_type alloc = allocator_type());
   template < typename TR >
-  static Tensor polars(const TR& r, typename TR::const_reference theta);
+  static Tensor polars(const TR& r, typename TR::const_reference theta,
+                       allocator_type alloc = allocator_type());
   template < typename TR >
-  static Tensor polars(const TR& r, const TR& theta);
+  static Tensor polars(const TR& r, const TR& theta,
+                       allocator_type alloc = allocator_type());
 
   // Arithmetic operators with value are delegated
   Tensor operator+(const_reference value) const;

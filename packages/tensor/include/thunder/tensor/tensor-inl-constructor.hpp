@@ -32,8 +32,8 @@ namespace thunder {
 namespace tensor {
 
 template < typename S >
-Tensor< S >::Tensor()
-    : size_(1, 1), stride_(1, 1), storage_(new S(1)), offset_(0) {}
+Tensor< S >::Tensor(allocator_type alloc)
+    : size_(1, 1), stride_(1, 1), storage_(new S(1, alloc)), offset_(0) {}
 
 template < typename S >
 Tensor< S >::Tensor(size_storage sz, allocator_type alloc)
@@ -193,8 +193,8 @@ Tensor< S >::Tensor(Tensor &&y)
 
 template < typename S >
 template < typename Other_S >
-Tensor< S >::Tensor(const Tensor< Other_S > &y) {
-  Tensor y_typed = y.template type< Tensor >();
+Tensor< S >::Tensor(const Tensor< Other_S > &y, allocator_type alloc) {
+  Tensor y_typed = y.template type< Tensor >(alloc);
   ::std::swap(size_, y_typed.size_);
   ::std::swap(stride_, y_typed.stride_);
   ::std::swap(storage_, y_typed.storage_);

@@ -28,20 +28,20 @@ namespace tensor {
 
 template < typename S >
 template < typename T >
-T Tensor< S >::type() const {
+T Tensor< S >::type(typename T::allocator_type alloc) const {
   typename T::size_storage sz(size_.size());
   typename T::stride_storage st(stride_.size());
   for (dim_type i = 0; i < size_.size(); ++i) {
     sz[i] = static_cast< typename T::size_type >(size_[i]);
     st[i] = static_cast< typename T::difference_type >(stride_[i]);
   }
-  return T(sz, st).copy(*this);
+  return T(sz, st, alloc).copy(*this);
 }
 
 template < typename S >
 template < typename T >
-T Tensor< S >::type(const Tensor& x) {
-  return x.type< T >();
+T Tensor< S >::type(const Tensor& x, typename T::allocator_type alloc) {
+  return x.type< T >(alloc);
 }
 
 }  // namespace tensor

@@ -104,6 +104,11 @@ typename Tensor< S >::pointer Tensor< S >::data() const {
 }
 
 template < typename S >
+typename Tensor< S >::allocator_type Tensor< S >::allocator() const {
+  return storage_->allocator();
+}
+
+template < typename S >
 typename Tensor< S >::reference Tensor< S >::get() const {
   return (*this)();
 }
@@ -245,6 +250,11 @@ typename Tensor< S >::size_type Tensor< S >::offset(const Tensor &x) {
 template < typename S >
 typename Tensor< S >::pointer Tensor< S >::data(const Tensor &x) {
   return x.data();
+}
+
+template < typename S >
+typename Tensor< S >::allocator_type Tensor< S >::allocator(const Tensor &x) {
+  return x.allocator();
 }
 
 template < typename S >
