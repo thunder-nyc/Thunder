@@ -20,7 +20,9 @@
 #ifndef THUNDER_TENSOR_MATH_HPP_
 #define THUNDER_TENSOR_MATH_HPP_
 
+#include <functional>
 #include <utility>
+
 #include "thunder/tensor/tensor.hpp"
 
 namespace thunder {
@@ -42,6 +44,20 @@ template < typename T1, typename T2 >
 T2 getArg(const T1 &x);
 template < typename T1, typename T2 >
 T2 getCnrm(const T1 &x);
+
+// Apply functions
+template < typename T >
+const T& apply(const T &x, const ::std::function< typename T::value_type(
+    typename T::value_type) > &lambda);
+template < typename T >
+const T& apply(const T &x, const ::std::function< typename T::value_type(
+    const typename T::value_type&) > &lambda);
+template < typename T >
+const T& apply(const T &x, const ::std::function< void(
+    typename T::value_type&) > &lambda);
+template < typename T >
+const T& apply(const T &x, const ::std::function< void(
+    typename T::value_type*) > &lambda);
 
 // Unary operations
 template < typename T >

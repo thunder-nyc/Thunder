@@ -25,6 +25,9 @@
 // Transformations
 #include "thunder/tensor/math-inl-transform.hpp"
 
+// Apply functions
+#include "thunder/tensor/math-inl-apply.hpp"
+
 // Unary mathematical operations
 #include "thunder/tensor/math-inl-unary.hpp"
 

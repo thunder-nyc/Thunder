@@ -20,8 +20,12 @@
 #ifndef THUNDER_TENSOR_TENSOR_INL_APPLY_HPP_
 #define THUNDER_TENSOR_TENSOR_INL_APPLY_HPP_
 
+#include <functional>
+
 #include "thunder/tensor/tensor.hpp"
 #include "thunder/tensor/tensor-inl.hpp"
+
+#include "thunder/tensor/math.hpp"
 
 namespace thunder {
 namespace tensor {
@@ -29,77 +33,25 @@ namespace tensor {
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
     const ::std::function< value_type(value_type) > &lambda) const {
-  if (partialContiguity(0, size_.size() - 1)) {
-    pointer data_pointer = data();
-    size_type data_length = length();
-    difference_type step = stride_[stride_.size() - 1];
-    for (size_type i = 0; i < data_length; ++i) {
-      data_pointer[i * step] = lambda(data_pointer[i * step]);
-    }
-  } else {
-    for (reference_iterator begin = reference_begin(), end = reference_end();
-         begin != end; ++begin) {
-      *begin = lambda(*begin);
-    }
-  }
-  return *this;
+  return math::apply(*this, lambda);
 }
 
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
     const ::std::function< value_type(const value_type&) > &lambda) const {
-  if (partialContiguity(0, size_.size() - 1)) {
-    pointer data_pointer = data();
-    size_type data_length = length();
-    difference_type step = stride_[stride_.size() - 1];
-    for (size_type i = 0; i < data_length; ++i) {
-      data_pointer[i * step] = lambda(data_pointer[i * step]);
-    }
-  } else {
-    for (reference_iterator begin = reference_begin(), end = reference_end();
-         begin != end; ++begin) {
-      *begin = lambda(*begin);
-    }
-  }
-  return *this;
+  return math::apply(*this, lambda);
 }
 
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
     const ::std::function< void(value_type&) > &lambda) const {
-  if (partialContiguity(0, size_.size() - 1)) {
-    pointer data_pointer = data();
-    size_type data_length = length();
-    difference_type step = stride_[stride_.size() - 1];
-    for (size_type i = 0; i < data_length; ++i) {
-      lambda(data_pointer[i * step]);
-    }
-  } else {
-    for (reference_iterator begin = reference_begin(), end = reference_end();
-         begin != end; ++begin) {
-      lambda(*begin);
-    }
-  }
-  return *this;
+  return math::apply(*this, lambda);
 }
 
 template< typename S >
 const Tensor< S >& Tensor< S >::apply(
     const ::std::function< void(value_type*) > &lambda) const {
-  if (partialContiguity(0, size_.size() - 1)) {
-    pointer data_pointer = data();
-    size_type data_length = length();
-    difference_type step = stride_[stride_.size() - 1];
-    for (size_type i = 0; i < data_length; ++i) {
-      lambda(data_pointer + i * step);
-    }
-  } else {
-    for (reference_iterator begin = reference_begin(), end = reference_end();
-         begin != end; ++begin) {
-      lambda(&(*begin));
-    }
-  }
-  return *this;
+  return math::apply(*this, lambda);
 }
 
 
