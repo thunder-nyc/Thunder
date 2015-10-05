@@ -34,6 +34,7 @@ class Random {
   typedef G generator_type;
   typedef I integer_type;
   typedef F float_type;
+  typedef typename T::allocator_type allocator_type;
   typedef typename T::value_type value_type;
   typedef typename T::size_storage size_storage;
   typedef typename T::size_type size_type;
@@ -97,7 +98,7 @@ class Random {
 
   const T& randperm(const T &t);
   T& randperm(T &t);
-  T randperm(size_type size);
+  T randperm(size_type size, allocator_type alloc = allocator_type());
 
  private:
   G generator_;

@@ -80,14 +80,15 @@ class Tensor {
 
   // Constructors
   explicit Tensor(allocator_type alloc = allocator_type());
-  explicit Tensor(size_storage sz, allocator_type alloc = allocator_type());
+  // Constructor below is non-explicit to allow initializer-list construction
+  Tensor(size_storage sz, allocator_type alloc = allocator_type());
   explicit Tensor(size_type sz0, allocator_type alloc = allocator_type());
   Tensor(size_type sz0, size_type sz1, allocator_type alloc = allocator_type());
   Tensor(size_type sz0, size_type sz1, size_type sz2,
          allocator_type alloc = allocator_type());
   Tensor(size_type sz0, size_type sz1, size_type sz2, size_type sz3,
          allocator_type alloc = allocator_type());
-  Tensor(storage_pointer s, size_type os = 0);
+  explicit Tensor(storage_pointer s, size_type os = 0);
   Tensor(size_storage sz, storage_pointer s, size_type os = 0);
   Tensor(size_storage sz, stride_storage st,
          allocator_type alloc = allocator_type());

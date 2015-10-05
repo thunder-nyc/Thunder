@@ -222,8 +222,8 @@ T& Random< T, G, I, F >::randperm(T &t) {
 }
 
 template< typename T, typename G, typename I, typename F >
-T Random< T, G, I, F >::randperm(size_type size) {
-  T t(size);
+T Random< T, G, I, F >::randperm(size_type size, allocator_type alloc) {
+  T t(size, alloc);
   return randperm(t);
 }
 
