@@ -32,77 +32,91 @@ namespace math {
 template < typename L >
 const typename L::tensor_type& asum(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& axpy(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::value_type &a) {
+  return y;
 }
 
 template < typename L >
 const typename L::tensor_type& copy(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& dot(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& sdot(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& dotc(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& nrm2(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& rot(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::value_type &c, const typename L::value_type &s) {
+  return y;
 }
 
 template < typename L >
 const typename L::tensor_type& rotm(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &p) {
+  return p;
 }
 
 template < typename L >
 const typename L::tensor_type& scal(
     L *l, const typename L::tensor_type &x, const typename L::value_type &a) {
+  return x;
 }
 
 template < typename L >
 const typename L::tensor_type& swap(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y) {
+  return y;
 }
 
 template < typename L >
 const typename L::size_tensor& iamax(
     L *l, const typename L::tensor_type &x, const typename L::size_tensor &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::size_tensor& iamin(
     L *l, const typename L::tensor_type &x, const typename L::size_tensor &r) {
+  return r;
 }
 
 template < typename L >
 const typename L::tensor_type& cabs1(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r) {
+  return r;
 }
 
 }  // namespace math

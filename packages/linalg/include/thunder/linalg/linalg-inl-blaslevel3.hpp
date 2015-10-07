@@ -28,6 +28,69 @@
 namespace thunder {
 namespace linalg {
 
+template < typename T, typename H >
+const T& Linalg< T, H >::gemm(
+    const T &a, const T &b, const T &c, const value_type &alpha,
+    const value_type &beta) {
+  return math::gemm(this, a, b, c, alpha, beta);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::hemm(
+    const T &a, const T &b, const T &c, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::hemm(this, a, b, c, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::herk(
+    const T &a, const T &c, const value_type &alpha, const value_type &beta,
+    Uplo uplo) {
+  return math::herk(this, a, c, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::herk2(
+    const T &a, const T &b, const T &c, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::herk2(this, a, b, c, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::symm(
+    const T &a, const T &b, const T &c, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::symm(this, a, b, c, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::syrk(
+    const T &a, const T &c, const value_type &alpha, const value_type &beta,
+    Uplo uplo) {
+  return math::syrk(this, a, c, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::syrk2(
+    const T &a, const T&b, const T &c, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::syrk2(this, a, b, c, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::trmm(
+    const T &a, const T&b, const T &c, const value_type &alpha,
+    const value_type &beta, Uplo uplo, Diag diag) {
+  return math::trmm(this, a, b, c, alpha, beta, uplo, diag);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::trsm(
+    const T &a, const T &b, const value_type &alpha, Side side, Uplo uplo,
+    Diag diag) {
+  return math::trsm(this, a, b, alpha, side, uplo, diag);
+}
+
 }  //  namespace linalg
 }  //  namespace thunder
 

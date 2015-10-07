@@ -98,7 +98,7 @@ const typename Linalg< T, H >::size_tensor& Linalg< T, H >::iamin(
 
 template < typename T, typename H >
 const T& Linalg< T, H >::cabs1(const T &x, const T &r) {
-  return math::cabs1(x, r);
+  return math::cabs1(this, x, r);
 }
 
 }  //  namespace linalg

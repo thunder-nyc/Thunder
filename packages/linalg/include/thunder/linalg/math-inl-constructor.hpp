@@ -50,7 +50,7 @@ const typename L::tensor_type& diag(
     typename T::pointer r_pointer = r.data();
     typename T::difference_type r_step = r.stride(0) + r.stride(1);
     for (typename T::size_type i = 0; i < x_size; ++i) {
-      r_pointer[i * r_step] = x_size[i * x_step];
+      r_pointer[i * r_step] = x_pointer[i * x_step];
     }
   } else if (x.dimension() == 2) {
     // Dimension of x is 2. Extract diagonal terms.
@@ -63,7 +63,7 @@ const typename L::tensor_type& diag(
     typename T::pointer r_pointer = r.data();
     typename T::difference_type r_step = r.stride(0);
     for (typename T::size_type i = 0; i < x_size; ++i) {
-      r_pointer[i * r_step] = x_size[i * x_step];
+      r_pointer[i * r_step] = x_pointer[i * x_step];
     }
   } else {
     // Dimension of x is 3 or above. Extract diagonal terms in batch mode.
@@ -91,6 +91,7 @@ const typename L::tensor_type& diag(
       }
       typename T::difference_type x_batch = x.stride(x.dimension() - 3);
       typename T::difference_type r_batch = r.stride(r.dimension() - 2);
+      typename T::difference_type r_step = r.stride(r.dimension() - 1);
       x_pointer = x.data();
       r_pointer = r.data();
       for (typename T::size_type i = 0; i < batch_size; ++i) {
@@ -101,15 +102,15 @@ const typename L::tensor_type& diag(
       }
     } else {
       // Non-contiguous case
-      typename T::size_storage batch_storage(r.size() - 1);
+      typename T::size_storage batch_storage(r.dimension() - 1);
       for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
         batch_storage[i] = r.size(i);
       }
       typename T::difference_type r_step = r.stride(r.dimension() - 1);
       for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
            begin != end; ++begin) {
-        x_pointer = x[begin].data();
-        r_pointer = r[begin].data();
+        x_pointer = x[*begin].data();
+        r_pointer = r[*begin].data();
         for (typename T::size_type i = 0; i < x_size; ++i) {
           r_pointer[i * r_step] = x_pointer[i * x_step];
         }
@@ -135,7 +136,7 @@ const typename L::tensor_type& eye(
     if (s.size() != r.dimension()) {
       throw out_of_range("Eye result dimension mismatches.");
     }
-    for (typename L::dim_type i = 0; i < s.size(); ++i) {
+    for (typename T::dim_type i = 0; i < s.size(); ++i) {
       if (r.size(i) != s[i]) {
         throw out_of_range("Eye result size mismatches.");
       }
@@ -173,13 +174,13 @@ const typename L::tensor_type& eye(
     }
   } else {
     // Non-contiguous batch mode
-    typename T::size_storage batch_storage(r.size() - 2);
+    typename T::size_storage batch_storage(r.dimension() - 2);
     for (typename T::dim_type i = 0; i < r.dimension() - 2; ++i) {
       batch_storage[i] = r.size(i);
     }
     for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
          begin != end; ++begin) {
-      r_pointer = r[begin].data();
+      r_pointer = r[*begin].data();
       for (typename T::size_type i = 0; i < rows; ++i) {
         for (typename T::size_type j = 0; j < columns; ++i) {
           r_pointer[i * row_step + j * column_step] = (i == j ? 1 : 0);
@@ -298,8 +299,8 @@ const typename L::tensor_type& tril(
     }
     for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
          begin != end; ++begin) {
-      x_pointer = x[begin].data();
-      r_pointer = r[begin].data();
+      x_pointer = x[*begin].data();
+      r_pointer = r[*begin].data();
       for (typename T::size_type i = 0; i < rows; ++i) {
         for (typename T::size_type j = 0; j < columns; ++j) {
           r_pointer[i * r_row_step + j * r_column_step] =
@@ -378,8 +379,8 @@ const typename L::tensor_type& triu(
     }
     for (I begin = I::begin(batch_storage), end = I::end(batch_storage);
          begin != end; ++begin) {
-      x_pointer = x[begin].data();
-      r_pointer = r[begin].data();
+      x_pointer = x[*begin].data();
+      r_pointer = r[*begin].data();
       for (typename T::size_type i = 0; i < rows; ++i) {
         for (typename T::size_type j = 0; j < columns; ++j) {
           r_pointer[i * r_row_step + j * r_column_step] =
@@ -413,7 +414,8 @@ typename L::tensor_type* diag(
 template < typename L >
 typename L::tensor_type* eye(
     L *l, const typename L::size_storage &s, typename L::tensor_type *r) {
-  typename T::size_type sz(s.size() + 1);
+  typedef typename L::tensor_type T;
+  typename T::size_storage sz(s.size() + 1);
   for (typename T::dim_type i = 0; i < sz.size() - 1; ++i) {
     sz[i] = s[i];
   }

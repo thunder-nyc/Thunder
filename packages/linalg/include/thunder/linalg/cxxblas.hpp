@@ -29,7 +29,6 @@ namespace linalg {
 namespace cxxblas {
 
 // CXXBLAS enumeration types
-
 enum class Order { kRowMajor = 101, kColMajor = 102 };
 enum class Trans { kNoTrans = 111, kTrans = 112, kConjTrans = 113 };
 enum class Uplo { kUpper = 121, kLower = 122 };
@@ -37,7 +36,6 @@ enum class Diag { kNonUnit = 131, kUnit = 132 };
 enum class Side { kLeft = 141, kRight = 142 };
 
 // CXXBLAS level-1 functions
-
 float asum(int n, const float *x, int incx = 1);
 double asum(int n, const double *x, int incx = 1);
 float asum(int n, const ::std::complex< float > *x, int incx = 1);
@@ -141,8 +139,7 @@ int iamax(int n, const double *x, int incx = 1);
 int iamax(int n, const ::std::complex< float > *x, int incx = 1);
 int iamax(int n, const ::std::complex< double > *x, int incx = 1);
 
-// CXXBLAS level-2 functions -- these functions are row major
-
+// CXXBLAS level-2 functions
 void gbmv(int m, int n, const float *a, const float *x, float *y,
           float alpha = 1.0, float beta = 0.0, int kl = 0, int ku = 0,
           int lda = 0, int incx = 1, int incy = 1,
@@ -544,8 +541,7 @@ void trsv(int n, const ::std::complex< double > *a, ::std::complex< double > *x,
           Uplo uplo = Uplo::kUpper, Trans trans = Trans::kNoTrans,
           Diag diag = Diag::kNonUnit);
 
-// CXXBLAS level-3 functions]
-
+// CXXBLAS level-3 functions
 void gemm(int m, int n, int k, const float *a, const float *b, float *c,
           float alpha = 1.0, float beta = 0.0, int lda = 0, int ldb = 0,
           int ldc = 0, Order order = Order::kRowMajor,

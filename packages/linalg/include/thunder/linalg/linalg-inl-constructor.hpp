@@ -67,7 +67,7 @@ T* Linalg< T, H >::diag(const T &x, T *r) {
 
 template < typename T, typename H >
 T* Linalg< T, H >::eye(const typename T::size_storage &s, T *r) {
-  return math::eye(this, r);
+  return math::eye(this, s, r);
 }
 
 template < typename T, typename H >
@@ -94,13 +94,12 @@ T* Linalg< T, H >::triu(const T &x, T *r) {
 
 template < typename T, typename H >
 T Linalg< T, H >::diag(const T &x) {
-  T r(x.alloc());
+  T r(x.allocator());
   return *(this->diag(x, &r));
 }
 
 template < typename T, typename H >
-T Linalg< T, H >::eye(const typename T::size_storage &s,
-                      allocator_type alloc = allocator_type()) {
+T Linalg< T, H >::eye(const typename T::size_storage &s, allocator_type alloc) {
   T r(alloc);
   return *(this->eye(s, &r));
 }
@@ -108,7 +107,7 @@ T Linalg< T, H >::eye(const typename T::size_storage &s,
 template < typename T, typename H >
 T Linalg< T, H >::linspace(
     const value_type &a, const value_type &b, size_type n,
-    allocator_type alloc = allocator_type()) {
+    allocator_type alloc) {
   T r(alloc);
   return *(this->linspace(a, b, n, &r));
 }
@@ -116,21 +115,21 @@ T Linalg< T, H >::linspace(
 template < typename T, typename H >
 T Linalg< T, H >::logspace(
     const value_type &a, const value_type &b, size_type n,
-    allocator_type alloc = allocator_type()) {
+    allocator_type alloc) {
   T r(alloc);
   return *(this->logspace(a, b, n, &r));
 }
 
 template < typename T, typename H >
-T Linalg< T, H >::tril(const T &x, allocator_type alloc = allocator_type()) {
-  T r(alloc);
+T Linalg< T, H >::tril(const T &x) {
+  T r(x.allocator());
   return *(this->tril(x, &r));
 }
 
 template < typename T, typename H >
-T Linalg< T, H >::triu(const T &x, allocator_type alloc = allocator_type()) {
-  T r(alloc);
-  return *(this->triu(x, &r);
+T Linalg< T, H >::triu(const T &x) {
+  T r(x.allocator());
+  return *(this->triu(x, &r));
 }
 
 }  //  namespace linalg

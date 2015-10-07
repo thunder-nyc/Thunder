@@ -23,6 +23,8 @@
 #include "thunder/storage.hpp"
 #include "thunder/tensor.hpp"
 
+#include "thunder/linalg/cxxblas.hpp"
+
 namespace thunder {
 namespace linalg {
 
@@ -62,8 +64,8 @@ class Linalg {
   // Non-const linear algebra constructors
   T* diag(const T &x, T *r);
   T* eye(const size_storage &s, T *r);
-  T* linspace(const value_type &a, const value_type &b, T *r);
-  T* logspace(const value_type &a, const value_type &b, T *r);
+  T* linspace(const value_type &a, const value_type &b, size_type n, T *r);
+  T* logspace(const value_type &a, const value_type &b, size_type n, T *r);
   T* tril(const T &x, T *r);
   T* triu(const T &x, T *r);
 

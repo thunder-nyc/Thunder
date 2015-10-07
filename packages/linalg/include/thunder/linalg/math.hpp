@@ -32,7 +32,7 @@ const typename L::tensor_type& diag(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
 template < typename L >
 const typename L::tensor_type& eye(
-    L *l, typename L::size_storage &s, const typename L::tensor_type &r);
+    L *l, const typename L::size_storage &s, const typename L::tensor_type &r);
 template < typename L >
 const typename L::tensor_type& linspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
@@ -143,95 +143,95 @@ const typename L::tensor_type& hbmv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
     const typename L::tensor_type &y, const typename L::value_type &alpha,
     typename L::size_type k, const typename L::value_type &beta,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& hemv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
     const typename L::tensor_type &y, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& her(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &a,
-    const typename L::value_type &alpha, typename L::BlasUplo uplo);
+    const typename L::value_type &alpha, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& her2(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &a, const typename L::value_type &alpha,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& hpmv(
     L *l, const typename L::tensor_type &ap, const typename L::tensor_type &x,
     const typename L::tensor_type &y, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& hpr(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &ap,
-    const typename L::value_type &alpha, typename L::BlasUplo uplo);
+    const typename L::value_type &alpha, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& hpr2(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &ap, const typename L::value_type &alpha,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& sbmv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
     const typename L::tensor_type &y, typename L::size_type k,
     const typename L::value_type &alpha, const typename L::value_type &beta,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& spmv(
     L *l, const typename L::tensor_type &ap, const typename L::tensor_type &x,
     const typename L::tensor_type &y, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo);
+    const typename L::value_type &beta, typename L::Uplo);
 template < typename L >
 const typename L::tensor_type& spr(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &ap,
-    const typename L::value_type &alpha, typename L::BlasUplo uplo);
+    const typename L::value_type &alpha, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& spr2(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &ap, const typename L::value_type &alpha,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& symv(
     L *l, const typename L::tensor_type &ap, const typename L::tensor_type &x,
     const typename L::tensor_type &y, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& syr(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &a,
-    const typename L::value_type &alpha, typename L::BlasUplo uplo);
+    const typename L::value_type &alpha, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& syr2(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &a, const typename L::value_type &alpha,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& tbmv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
-    typename L::size_type k, typename L::BlasUplo uplo,
-    typename L::BlasDiag diag);
+    typename L::size_type k, typename L::Uplo uplo,
+    typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& tbsv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
-    typename L::size_type k, typename L::BlasUplo uplo,
-    typename L::BlasDiag diag);
+    typename L::size_type k, typename L::Uplo uplo,
+    typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& tpmv(
     L *l, const typename L::tensor_type &ap, const typename L::tensor_type &x,
-    typename L::BlasUplo uplo, typename L::BlasDiag diag);
+    typename L::Uplo uplo, typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& tpsv(
     L *l, const typename L::tensor_type &ap, const typename L::tensor_type &x,
-    typename L::BlasUplo uplo, typename L::BlasDiag diag);
+    typename L::Uplo uplo, typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& trmv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
-    typename L::BlasUplo uplo, typename L::BlasDiag diag);
+    typename L::Uplo uplo, typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& trsv(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &x,
-    typename L::BlasUplo uplo, typename L::BlasDiag diag);
+    typename L::Uplo uplo, typename L::Diag diag);
 
 // BLAS level-3 routines
 template < typename L >
@@ -243,43 +243,43 @@ template < typename L >
 const typename L::tensor_type& hemm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& herk(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &c,
     const typename L::value_type &alpha, const typename L::value_type &beta,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& herk2(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& symm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& syrk(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &c,
     const typename L::value_type &alpha, const typename L::value_type &beta,
-    typename L::BlasUplo uplo);
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& syrk2(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo);
+    const typename L::value_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& trmm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::BlasUplo uplo,
-    typename L::BlasDiag diag);
+    const typename L::value_type &beta, typename L::Uplo uplo,
+    typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& trsm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &b,
-    const typename L::value_type &alpha, typename L::BlasSide side,
-    typename L::BlasUplo uplo, typename L::BlasDiag diag);
+    const typename L::value_type &alpha, typename L::Side side,
+    typename L::Uplo uplo, typename L::Diag diag);
 
 }  // namespace math
 }  // namespace linalg

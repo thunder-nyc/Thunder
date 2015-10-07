@@ -17,13 +17,22 @@
  * @}
  */
 
-#include "thunder/linalg.hpp"
-#include "thunder/linalg/blas.hpp"
+
 #include "thunder/linalg/linalg.hpp"
+
 #include "thunder/linalg/math.hpp"
+#include "thunder/tensor.hpp"
+
+#include "thunder/linalg/linalg-inl.hpp"
+#include "thunder/linalg/math-inl.hpp"
 
 namespace thunder {
 namespace linalg {
+
+template class Linalg< DoubleTensor >;
+template class Linalg< FloatTensor >;
+template class Linalg< DoubleComplexTensor >;
+template class Linalg< FloatComplexTensor >;
 
 void swap() {
   int n = 5;

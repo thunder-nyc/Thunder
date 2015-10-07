@@ -99,35 +99,83 @@ const T& Linalg< T, H >::hpr2(
   return math::hpr2(this, x, y, ap, alpha, uplo);
 }
 
-  const T& sbmv(const T &a, const T &x, const T &y,
-                size_type k = 0, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
-  const T& spmv(const T &ap, const T &x, const T &y,
-                const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                Uplo uplo = Uplo::kUpper);
-  const T& spr(const T &x, const T &ap, const value_type &alpha = 1.0,
-               Uplo uplo = Uplo::kUpper);
-  const T& spr2(const T &x, const T &y, const T &ap,
-                const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
-  const T& symv(const T &ap, const T &x, const T &y,
-                const value_type &alpha = 1.0, const value_type &beta = 0.0,
-                Uplo uplo = Uplo::kUpper);
-  const T& syr(const T &x, const T &a, const value_type &alpha = 1.0,
-               Uplo uplo = Uplo::kUpper);
-  const T& syr2(const T &x, const T &y, const T &a,
-                const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
-  const T& tbmv(const T &a, const T &x, size_type k = 0,
-                Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
-  const T& tbsv(const T &a, const T &x, size_type k = 0,
-                Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
-  const T& tpmv(const T &ap, const T &x, Uplo uplo = Uplo::kUpper,
-                Diag diag = Diag::kNonUnit);
-  const T& tpsv(const T &ap, const T &x, Uplo uplo = Uplo::kUpper,
-                Diag diag = Diag::kNonUnit);
-  const T& trmv(const T &a, const T &x, Uplo uplo = Uplo::kUpper,
-                Diag diag = Diag::kNonUnit);
-  const T& trsv(const T &a, const T &x, Uplo uplo = Uplo::kUpper,
-                Diag diag = Diag::kNonUnit);
+template < typename T, typename H >
+const T& Linalg< T, H >::sbmv(
+    const T &a, const T &x, const T &y, size_type k, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::sbmv(this, a, x, y, k, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::spmv(
+    const T &ap, const T &x, const T &y, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::spmv(this, ap, x, y, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::spr(
+    const T &x, const T &ap, const value_type &alpha, Uplo uplo) {
+  return math::spr(this, x, ap, alpha, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::spr2(
+    const T &x, const T &y, const T &ap, const value_type &alpha, Uplo uplo) {
+  return math::spr2(this, x, y, ap, alpha, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::symv(
+    const T &ap, const T &x, const T &y, const value_type &alpha,
+    const value_type &beta, Uplo uplo) {
+  return math::symv(this, ap, x, y, alpha, beta, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::syr(
+    const T &x, const T &a, const value_type &alpha, Uplo uplo) {
+  return math::syr(this, x, a, alpha, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::syr2(
+    const T &x, const T &y, const T &a, const value_type &alpha, Uplo uplo) {
+  return math::syr2(this, x, y, a, alpha, uplo);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::tbmv(
+    const T &a, const T &x, size_type k, Uplo uplo, Diag diag) {
+  return math::tbmv(this, a, x, k, uplo, diag);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::tbsv(
+    const T &a, const T &x, size_type k, Uplo uplo, Diag diag) {
+  return math::tbsv(this, a, x, k, uplo, diag);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::tpmv(const T &ap, const T &x, Uplo uplo, Diag diag) {
+  return math::tpmv(this, ap, x, uplo, diag);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::tpsv(const T &ap, const T &x, Uplo uplo, Diag diag) {
+  return math::tpsv(this, ap, x, uplo, diag);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::trmv(const T &a, const T &x, Uplo uplo, Diag diag) {
+  return math::trmv(this, a, x, uplo, diag);
+}
+
+template < typename T, typename H >
+const T& Linalg< T, H >::trsv(const T &a, const T &x, Uplo uplo, Diag diag) {
+  return math::trsv(this, a, x, uplo, diag);
+}
+
 
 }  //  namespace linalg
 }  //  namespace thunder
