@@ -77,7 +77,7 @@ const typename L::tensor_type& rot(
 template < typename L >
 const typename L::tensor_type& rotm(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
-    const typename L::tensor_type &P) {
+    const typename L::tensor_type &p) {
 }
 
 template < typename L >
@@ -91,13 +91,13 @@ const typename L::tensor_type& swap(
 }
 
 template < typename L >
-const SizeTensor& iamax(
-    L *l, const typename L::tensor_type &x, const SizeTensor &r) {
+const typename L::size_tensor& iamax(
+    L *l, const typename L::tensor_type &x, const typename L::size_tensor &r) {
 }
 
 template < typename L >
-const SizeTensor& iamin(
-    L *l, const typename L::tensor_type &x, const SizeTensor &r) {
+const typename L::size_tensor& iamin(
+    L *l, const typename L::tensor_type &x, const typename L::size_tensor &r) {
 }
 
 template < typename L >

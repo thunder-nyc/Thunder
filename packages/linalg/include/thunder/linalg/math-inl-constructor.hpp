@@ -391,6 +391,72 @@ const typename L::tensor_type& triu(
   return r;
 }
 
+template < typename L >
+typename L::tensor_type* diag(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
+  typedef typename L::tensor_type T;
+  if (x.dimension() == 1) {
+    r->resize(x.size(0), x.size(0));
+  } else {
+    typename T::size_storage s(x.dimension() - 1);
+    for (typename T::dim_type i = 0; i < x.dimension() - 2; ++i) {
+      s[i] = x.size(i);
+    }
+    s[x.dimension() - 2] = ::std::min(
+        x.size(x.dimension() - 2), x.size(x.dimension() - 1));
+    r->resize(s);
+  }
+  diag(l, x, *r);
+  return r;
+}
+
+template < typename L >
+typename L::tensor_type* eye(
+    L *l, const typename L::size_storage &s, typename L::tensor_type *r) {
+  typename T::size_type sz(s.size() + 1);
+  for (typename T::dim_type i = 0; i < sz.size() - 1; ++i) {
+    sz[i] = s[i];
+  }
+  sz[sz.size() - 1] = sz[sz.size() - 2];
+  r->resize(s);
+  eye(l, s, *r);
+  return r;
+}
+
+template < typename L >
+typename L::tensor_type* linspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b,
+    typename L::size_type n, typename L::tensor_type *r) {
+  r->resize(n);
+  linspace(l, a, b, *r);
+  return r;
+}
+
+template < typename L >
+typename L::tensor_type* logspace(
+    L *l, const typename L::value_type &a, const typename L::value_type &b,
+    typename L::size_type n, typename L::tensor_type *r) {
+  r->resize(n);
+  logspace(l, a, b, *r);
+  return r;
+}
+
+template < typename L >
+typename L::tensor_type* tril(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
+  r->resizeAs(x);
+  tril(l, x, *r);
+  return r;
+}
+
+template < typename L >
+typename L::tensor_type* triu(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
+  r->resizeAs(x);
+  triu(l, x, *r);
+  return r;
+}
+
 }  // namespace math
 }  // namespace linalg
 }  // namespace thunder

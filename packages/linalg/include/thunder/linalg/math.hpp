@@ -32,7 +32,7 @@ const typename L::tensor_type& diag(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
 template < typename L >
 const typename L::tensor_type& eye(
-    L *l, const typename L::size_storage &s, const typename L::tensor_type &r);
+    L *l, typename L::size_storage &s, const typename L::tensor_type &r);
 template < typename L >
 const typename L::tensor_type& linspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
@@ -56,31 +56,17 @@ typename L::tensor_type* eye(
 template < typename L >
 typename L::tensor_type* linspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
-    typename L::tensor_type *r);
+    typename L::size_type n, typename L::tensor_type *r);
 template < typename L >
 typename L::tensor_type* logspace(
     L *l, const typename L::value_type &a, const typename L::value_type &b,
-    typename L::tensor_type *r);
+    typename L::size_type n, typename L::tensor_type *r);
 template < typename L >
 typename L::tensor_type* tril(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
 template < typename L >
 typename L::tensor_type* triu(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
-template < typename L >
-typename L::tensor_type diag(L *l, const typename L::tensor_type &x);
-template < typename L >
-typename L::tensor_type eye(L *l, const typename L::size_storage &s);
-template < typename L >
-typename L::tensor_type linspace(
-    L *l, const typename L::value_type &a, const typename L::value_type &b);
-template < typename L >
-typename L::tensor_type logspace(
-    L *l, const typename L::value_type &a, const typename L::value_type &b);
-template < typename L >
-typename L::tensor_type tril(L *l, const typename L::tensor_type &x);
-template < typename L >
-typename L::tensor_type triu(L *l, const typename L::tensor_type &x);
 
 // BLAS level-1 routines
 template < typename L >
@@ -115,7 +101,7 @@ const typename L::tensor_type& rot(
 template < typename L >
 const typename L::tensor_type& rotm(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
-    const typename L::tensor_type &P);
+    const typename L::tensor_type &p);
 template < typename L >
 const typename L::tensor_type& scal(
     L *l, const typename L::tensor_type &x, const typename L::value_type &a);
@@ -123,11 +109,11 @@ template < typename L >
 const typename L::tensor_type& swap(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y);
 template < typename L >
-const SizeTensor& iamax(
-    L *l, const typename L::tensor_type &x, const SizeTensor &r);
+const typename L::size_tensor& iamax(
+    L *l, const typename L::tensor_type &x, const typename L::size_tensor &r);
 template < typename L >
-const SizeTensor& iamin(
-    L *l, const typename L::tensor_type &x, const SizeTensor &r);
+const typename L::size_tensor& iamin(
+    L *l, const typename L::tensor_type &x, const typename L::size_tensor &r);
 template < typename L >
 const typename L::tensor_type& cabs1(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);

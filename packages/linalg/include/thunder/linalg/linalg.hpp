@@ -20,9 +20,8 @@
 #ifndef THUNDER_LINALG_LINALG_HPP_
 #define THUNDER_LINALG_LINALG_HPP_
 
+#include "thunder/storage.hpp"
 #include "thunder/tensor.hpp"
-#include "thunder/linalg/cxxblas.hpp"
-#include "thunder/linalg/math.hpp"
 
 namespace thunder {
 namespace linalg {
@@ -33,9 +32,11 @@ class Linalg {
   typedef T tensor_type;
   typedef H handle_type;
 
+  typedef typename T::allocator_type allocator_type;
   typedef typename T::value_type value_type;
   typedef typename T::size_type size_type;
   typedef typename T::size_storage size_storage;
+  typedef Tensor< Storage < size_type, allocator_type > > size_tensor;
 
   typedef cxxblas::Uplo Uplo;
   typedef cxxblas::Diag Diag;
@@ -52,7 +53,7 @@ class Linalg {
 
   // Const linear algebra constructors
   const T& diag(const T &x, const T &r);
-  const T& eye(const T &r);
+  const T& eye(const size_storage &s, const T &r);
   const T& linspace(const value_type &a, const value_type &b, const T &r);
   const T& logspace(const value_type &a, const value_type &b, const T &r);
   const T& tril(const T &x, const T &r);
@@ -68,9 +69,11 @@ class Linalg {
 
   // Constructive linear algebra constructors
   T diag(const T &x);
-  T eye(const size_storage &s);
-  T linspace(const value_type &a, const value_type &b, size_type n = 100);
-  T logspace(const value_type &a, const value_type &b, size_type n = 100);
+  T eye(const size_storage &s, allocator_type alloc = allocator_type());
+  T linspace(const value_type &a, const value_type &b, size_type n = 100,
+             allocator_type alloc = allocator_type());
+  T logspace(const value_type &a, const value_type &b, size_type n = 100,
+             allocator_type alloc = allocator_type());
   T tril(const T &x);
   T triu(const T &x);
 
@@ -84,11 +87,11 @@ class Linalg {
   const T& nrm2(const T &x, const T &r);
   const T& rot(const T &x, const T &y, const value_type &c = 1.0,
                const value_type &s = 1.0);
-  const T& rotm(const T &x, const T &y, const T &P);
+  const T& rotm(const T &x, const T &y, const T &p);
   const T& scal(const T &x, const value_type &a = 1.0);
   const T& swap(const T &x, const T &y);
-  const SizeTensor& iamax(const T &x, const SizeTensor &r);
-  const SizeTensor& iamin(const T &x, const SizeTensor &r);
+  const size_tensor& iamax(const T &x, const size_tensor &r);
+  const size_tensor& iamin(const T &x, const size_tensor &r);
   const T& cabs1(const T &x, const T &r);
 
   // Const result BLAS level-2 routines
