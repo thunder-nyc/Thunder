@@ -20,15 +20,15 @@
 #ifndef THUNDER_LINALG_LINALG_HPP_
 #define THUNDER_LINALG_LINALG_HPP_
 
+#include "thunder/linalg/cxxblas.hpp"
+#include "thunder/linalg/type.hpp"
 #include "thunder/storage.hpp"
 #include "thunder/tensor.hpp"
-
-#include "thunder/linalg/cxxblas.hpp"
 
 namespace thunder {
 namespace linalg {
 
-template < typename T = DoubleTensor, typename H = int >
+template < typename T, typename H = typename type< T >::handle_type >
 class Linalg {
  public:
   typedef T tensor_type;
