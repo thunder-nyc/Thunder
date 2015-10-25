@@ -61,6 +61,36 @@ const T& Linalg< T, H >::triu(const T &x, const T &r) {
 }
 
 template < typename T, typename H >
+T& Linalg< T, H >::diag(const T &x, T &r) {
+  return const_cast< T& >(this->diag(x, const_cast< const T& >(r)));
+}
+
+template < typename T, typename H >
+T& Linalg< T, H >::eye(const size_storage &s, T &r) {
+  return const_cast< T& >(this->eye(s, const_cast< const T& >(r)));
+}
+
+template < typename T, typename H >
+T& Linalg< T, H >::linspace(const value_type &a, const value_type &b, T &r) {
+  return const_cast< T& >(this->linspace(a, b, const_cast< const T& >(r)));
+}
+
+template < typename T, typename H >
+T& Linalg< T, H >::logspace(const value_type &a, const value_type &b, T &r) {
+  return const_cast< T& >(this->logspace(a, b, const_cast< const T& >(r)));
+}
+
+template < typename T, typename H >
+T& Linalg< T, H >::tril(const T &x, T &r) {
+  return const_cast< T& >(this->tril(x, const_cast< const T& >(r)));
+}
+
+template < typename T, typename H >
+T& Linalg< T, H >::triu(const T &x, T &r) {
+  return const_cast< T& >(this->triu(x, const_cast< const T& >(r)));
+}
+
+template < typename T, typename H >
 T* Linalg< T, H >::diag(const T &x, T *r) {
   return math::diag(this, x, r);
 }

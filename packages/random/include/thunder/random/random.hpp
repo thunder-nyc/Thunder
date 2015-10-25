@@ -1,5 +1,5 @@
 /*
- * \copyright Copyright 2014 Xiang Zhang All Rights Reserved.
+ * \copyright Copyright 2014-2015 Xiang Zhang All Rights Reserved.
  * \license @{
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,11 +23,15 @@
 #include <limits>
 #include <random>
 
+#include "thunder/random/type.hpp"
+
 namespace thunder {
 namespace random {
 
-template < typename T, typename G = ::std::mt19937,
-           typename I = int, typename F = double >
+template < typename T,
+           typename G = typename type< T >::generator_type,
+           typename I = typename type< T >::integer_type,
+           typename F = typename type< T >::float_type >
 class Random {
  public:
   typedef T tensor_type;

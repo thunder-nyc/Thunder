@@ -31,23 +31,20 @@
 namespace thunder {
 namespace random {
 
-#define THUNDER_RANDOM_INSTANTIATE_MT19937(T, I, F)                     \
-  template class Random< T, ::std::mt19937, I, F >;                     \
-  template Random< T, ::std::mt19937, I, F >::Random();                 \
-  template Random< T, ::std::mt19937, I, F >::                          \
-  Random(typename ::std::mt19937::result_type val);                     \
-  template Random< T, ::std::mt19937, I, F >::Random(int val);          \
-  template Random< T, ::std::mt19937, I, F >::Random(::std::time_t val); \
-  template Random< T, ::std::mt19937, I, F >::Random(::std::seed_seq q);
+#define THUNDER_RANDOM_INSTANTIATE(T)                                   \
+  template class Random< T >;                                           \
+  template Random< T >::Random();                                       \
+  template Random< T >::Random(typename ::std::mt19937::result_type val); \
+  template Random< T >::Random(int val);                                \
+  template Random< T >::Random(::std::time_t val);                      \
+  template Random< T >::Random(::std::seed_seq q);
 
-THUNDER_RANDOM_INSTANTIATE_MT19937(
-    DoubleTensor, int, typename DoubleTensor::value_type);
-THUNDER_RANDOM_INSTANTIATE_MT19937(
-    FloatTensor, int, typename FloatTensor::value_type);
-THUNDER_RANDOM_INSTANTIATE_MT19937(
-    SizeTensor, typename SizeTensor::value_type, double);
+// int and double are default types
+THUNDER_RANDOM_INSTANTIATE(DoubleTensor);
+THUNDER_RANDOM_INSTANTIATE(FloatTensor);
+THUNDER_RANDOM_INSTANTIATE(SizeTensor);
 
-#undef THUNDR_RANDOM_INSTANTIATE_MT19937
+#undef THUNDR_RANDOM_INSTANTIATE
 
 }  // namespace random
 }  // namespace thunder

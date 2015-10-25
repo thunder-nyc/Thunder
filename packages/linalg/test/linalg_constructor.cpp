@@ -21,29 +21,30 @@
 #include <cstdlib>
 
 #include "gtest/gtest.h"
-#include "thunder/linalg/cxxblas.hpp"
+#include "thunder/linalg.hpp"
+#include "thunder/linalg/math.hpp"
+#include "thunder/linalg/linalg.hpp"
+#include "thunder/random.hpp"
+
+#include "thunder/linalg/linalg-inl.hpp"
+#include "thunder/linalg/math-inl.hpp"
 
 namespace thunder {
 namespace linalg {
+namespace {
 
-TEST(LinalgTest, dummyTest) {
-  int n = 1000;
-  ::std::complex< double > x[1000];
-  ::std::complex< double > y[1000];
-  ::std::complex< double > r;
+template < typename T >
+void diagTest() {
+  Random< T > random;
 
-  for (int i = 0; i < n; ++i) {
-    x[i] = ::std::complex< double >(0.5, 0);
-    y[i] = ::std::complex< double >(2, 0);
-  }
-
-  ::std::printf("(%g, %g)\n", r.real(), r.imag());
-  r = cxxblas::dotc(n, x, y);
-  ::std::printf("(%g, %g)\n", r.real(), r.imag());
-  ::std::printf("%g\n", cxxblas::nrm2(n, x));
-  ::std::printf("%d\n", cxxblas::iamax(n, x));
-  ::std::printf("%g\n", cxxblas::asum(n, x));
+  T x = random.uniform(T(10));
 }
 
+TEST(LinalgTest, diagTest) {
+  diagTest< DoubleTensor >();
+  diagTest< FloatTensor >();
+}
+
+}  // namespace
 }  // namespace linalg
 }  // namespace thunder

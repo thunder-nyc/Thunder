@@ -26,47 +26,40 @@
 #include <random>
 
 #include "thunder/random/math.hpp"
+#include "thunder/random/type.hpp"
 #include "thunder/tensor.hpp"
 
 namespace thunder {
 
-template < typename T = DoubleTensor, typename G = ::std::mt19937,
-           typename I = int, typename F = double >
+template < typename T,
+           typename G = typename random::type< T >::generator_type,
+           typename I = typename random::type< T >::integer_type,
+           typename F = typename random::type< T >::float_type >
 using Random = random::Random< T, G, I, F >;
 
-typedef Random<
-  DoubleTensor, ::std::mt19937, int, typename DoubleTensor::value_type >
-DoubleRandom;
-typedef Random<
-  FloatTensor, ::std::mt19937, int, typename FloatTensor::value_type >
-FloatRandom;
-typedef Random<
-  SizeTensor, ::std::mt19937, typename SizeTensor::value_type, double >
-SizeRandom;
+typedef Random< DoubleTensor > DoubleRandom;
+typedef Random< FloatTensor > FloatRandom;
+typedef Random< SizeTensor > SizeRandom;
 
 }  // namespace thunder
 
 namespace thunder {
 namespace random {
 
-#define THUNDER_RANDOM_INSTANTIATE_MT19937(T, I, F)                     \
-  extern template class Random< T, ::std::mt19937, I, F >;              \
-  extern template Random< T, ::std::mt19937, I, F >::Random();          \
-  extern template Random< T, ::std::mt19937, I, F >::                   \
-  Random(typename ::std::mt19937::result_type val);                     \
-  extern template Random< T, ::std::mt19937, I, F >::Random(int val);   \
-  extern template Random< T, ::std::mt19937, I, F >::                   \
-  Random(::std::time_t val);                                            \
-  extern template Random< T, ::std::mt19937, I, F >::Random(::std::seed_seq q);
+#define THUNDER_RANDOM_INSTANTIATE(T)                             \
+  extern template class Random< T >;                              \
+  extern template Random< T >::Random();                          \
+  extern template Random< T >::Random(                            \
+      typename ::std::mt19937::result_type val);                  \
+  extern template Random< T >::Random(int val);                   \
+  extern template Random< T >::Random(::std::time_t val);       \
+  extern template Random< T >::Random(::std::seed_seq q);
 
-THUNDER_RANDOM_INSTANTIATE_MT19937(
-    DoubleTensor, int, typename DoubleTensor::value_type);
-THUNDER_RANDOM_INSTANTIATE_MT19937(
-    FloatTensor, int, typename FloatTensor::value_type);
-THUNDER_RANDOM_INSTANTIATE_MT19937(
-    SizeTensor, typename SizeTensor::value_type, double);
+THUNDER_RANDOM_INSTANTIATE(DoubleTensor);
+THUNDER_RANDOM_INSTANTIATE(FloatTensor);
+THUNDER_RANDOM_INSTANTIATE(SizeTensor);
 
-#undef THUNDR_RANDOM_INSTANTIATE_MT19937
+#undef THUNDR_RANDOM_INSTANTIATE
 
 }  // namespace random
 }  // namespace thunder

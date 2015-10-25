@@ -61,7 +61,15 @@ class Linalg {
   const T& tril(const T &x, const T &r);
   const T& triu(const T &x, const T &r);
 
-  // Non-const linear algebra constructors
+  // Non-Const linear algebra constructors
+  T& diag(const T &x, T &r);
+  T& eye(const size_storage &s, T &r);
+  T& linspace(const value_type &a, const value_type &b, T &r);
+  T& logspace(const value_type &a, const value_type &b, T &r);
+  T& tril(const T &x, T &r);
+  T& triu(const T &x, T &r);
+
+  // Pointer linear algebra constructors
   T* diag(const T &x, T *r);
   T* eye(const size_storage &s, T *r);
   T* linspace(const value_type &a, const value_type &b, size_type n, T *r);
