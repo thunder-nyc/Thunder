@@ -39,9 +39,9 @@ const typename L::tensor_type& diag(
   typedef tensor::IndexIterator< typename L::size_storage > I;
   if (x.dimension() == 1) {
     // Dimension of x is 1. Construct a diagonal matrix
-    if (r.dimension() != 2 || r.size(0) != x.size(1) ||
+    if (r.dimension() != 2 || r.size(0) != x.size(0) ||
         r.size(0) != r.size(1)) {
-      throw out_of_range("Diag size mismatches.");
+      throw out_of_range("Tensor size mismatches.");
     }
     r.zero();
     typename T::pointer x_pointer = x.data();
@@ -55,7 +55,7 @@ const typename L::tensor_type& diag(
   } else if (x.dimension() == 2) {
     // Dimension of x is 2. Extract diagonal terms.
     if (r.dimension() != 1 || r.size(0) != ::std::min(x.size(0), x.size(1))) {
-      throw out_of_range("Diag size mismatches.");
+      throw out_of_range("Tensor size mismatches.");
     }
     typename T::pointer x_pointer = x.data();
     typename T::size_type x_size = ::std::min(x.size(0), x.size(1));
@@ -69,11 +69,11 @@ const typename L::tensor_type& diag(
     // Dimension of x is 3 or above. Extract diagonal terms in batch mode.
     if (r.dimension() != x.dimension() - 1 || r.size(r.dimension() - 1) !=
         ::std::min(x.size(x.dimension() - 2), x.size(x.dimension() - 1))) {
-      throw out_of_range("Diag size mismatches.");
+      throw out_of_range("Tensor size mismatches.");
     }
     for (typename T::dim_type i = 0; i < r.dimension() - 1; ++i) {
       if (r.size(i) != x.size(i)) {
-        throw out_of_range("Diag size mismatches.");
+        throw out_of_range("Tensor size mismatches.");
       }
     }
     typename T::pointer x_pointer = nullptr;
@@ -127,18 +127,18 @@ const typename L::tensor_type& eye(
   typedef tensor::IndexIterator< typename L::size_storage > I;
   if (s.size() == 1) {
     if (r.dimension() != 2) {
-      throw out_of_range("Eye result dimension mismatches.");
+      throw out_of_range("Result dimension mismatches.");
     }
     if (r.size(0) != s[0] || r.size(1) != s[0]) {
-      throw out_of_range("Eye result size mismatches.");
+      throw out_of_range("Result size mismatches.");
     }
   } else {
     if (s.size() != r.dimension()) {
-      throw out_of_range("Eye result dimension mismatches.");
+      throw out_of_range("Result dimension mismatches.");
     }
     for (typename T::dim_type i = 0; i < s.size(); ++i) {
       if (r.size(i) != s[i]) {
-        throw out_of_range("Eye result size mismatches.");
+        throw out_of_range("Result size mismatches.");
       }
     }
   }
@@ -152,7 +152,7 @@ const typename L::tensor_type& eye(
   if (r.dimension() == 2) {
     r_pointer = r.data();
     for (typename T::size_type i = 0; i < rows; ++i) {
-      for (typename T::size_type j = 0; j < columns; ++i) {
+      for (typename T::size_type j = 0; j < columns; ++j) {
         r_pointer[i * row_step + j * column_step] = (i == j ? 1 : 0);
       }
     }
@@ -166,7 +166,7 @@ const typename L::tensor_type& eye(
     r_pointer = r.data();
     for (typename T::size_type k = 0; k < batch; ++k) {
       for (typename T::size_type i = 0; i < rows; ++i) {
-        for (typename T::size_type j = 0; j < columns; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++j) {
           r_pointer[k * batch_step + i * row_step + j * column_step] =
               (i == j ? 1 : 0);
         }
@@ -182,7 +182,7 @@ const typename L::tensor_type& eye(
          begin != end; ++begin) {
       r_pointer = r[*begin].data();
       for (typename T::size_type i = 0; i < rows; ++i) {
-        for (typename T::size_type j = 0; j < columns; ++i) {
+        for (typename T::size_type j = 0; j < columns; ++j) {
           r_pointer[i * row_step + j * column_step] = (i == j ? 1 : 0);
         }
       }
@@ -198,7 +198,7 @@ const typename L::tensor_type& linspace(
   typedef typename L::tensor_type T;
   typedef typename T::value_type D;
   if (r.dimension() != 1) {
-    throw out_of_range("Linspace result dimension must be 1.");
+    throw out_of_range("Result dimension must be 1.");
   }
   typename T::size_type r_size = r.size(0);
   typename T::difference_type r_step = r.stride(0);
@@ -218,7 +218,7 @@ const typename L::tensor_type& logspace(
   typedef typename L::tensor_type T;
   typedef typename T::value_type D;
   if (r.dimension() != 1) {
-    throw out_of_range("Linspace result dimension must be 1.");
+    throw out_of_range("Result dimension must be 1.");
   }
   typename T::size_type r_size = r.size(0);
   typename T::difference_type r_step = r.stride(0);
@@ -239,17 +239,14 @@ const typename L::tensor_type& tril(
   typedef tensor::IndexIterator< typename L::size_storage > I;
 
   if (x.dimension() < 2) {
-    throw invalid_argument("Tril input dimension cannot be smaller than 2.");
+    throw invalid_argument("Input dimension cannot be smaller than 2.");
   }
   if (x.dimension() != r.dimension()) {
-    throw out_of_range("Tril result dimension mismatches.");
-  }
-  if (x.size(x.dimension() - 1) != x.size(x.dimension() - 2)) {
-    throw invalid_argument("Tril input must be square matrix.");
+    throw out_of_range("Result dimension mismatches.");
   }
   for (typename T::dim_type i = 0; i < x.dimension(); ++i) {
     if (x.size(i) != r.size(i)) {
-      throw out_of_range("Tril result size mismatches.");
+      throw out_of_range("Result size mismatches.");
     }
   }
 
@@ -319,17 +316,14 @@ const typename L::tensor_type& triu(
   typedef tensor::IndexIterator< typename L::size_storage > I;
 
   if (x.dimension() < 2) {
-    throw invalid_argument("Tril input dimension cannot be smaller than 2.");
+    throw invalid_argument("Input dimension cannot be smaller than 2.");
   }
   if (x.dimension() != r.dimension()) {
-    throw out_of_range("Tril result dimension mismatches.");
-  }
-  if (x.size(x.dimension() - 1) != x.size(x.dimension() - 2)) {
-    throw invalid_argument("Tril input must be square matrix.");
+    throw out_of_range("Result dimension mismatches.");
   }
   for (typename T::dim_type i = 0; i < x.dimension(); ++i) {
     if (x.size(i) != r.size(i)) {
-      throw out_of_range("Tril result size mismatches.");
+      throw out_of_range("Result size mismatches.");
     }
   }
 
@@ -415,12 +409,11 @@ template < typename L >
 typename L::tensor_type* eye(
     L *l, const typename L::size_storage &s, typename L::tensor_type *r) {
   typedef typename L::tensor_type T;
-  typename T::size_storage sz(s.size() + 1);
-  for (typename T::dim_type i = 0; i < sz.size() - 1; ++i) {
-    sz[i] = s[i];
+  if (s.size() == 1) {
+    r->resize(s[0], s[0]);
+  } else {
+    r->resize(s);
   }
-  sz[sz.size() - 1] = sz[sz.size() - 2];
-  r->resize(s);
   eye(l, s, *r);
   return r;
 }
