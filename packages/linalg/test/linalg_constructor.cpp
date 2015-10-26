@@ -17,6 +17,7 @@
  * @}
  */
 
+#include <algorithm>
 #include <cmath>
 #include <complex>
 #include <cstdlib>
@@ -283,7 +284,7 @@ void trilTest() {
   EXPECT_EQ(t1.size(1), r1.size(1));
   for (int i = 0; i < t1.size(0); ++i) {
     for (int j = 0; j < t1.size(1); ++j) {
-      if (i < j ) {
+      if (i < j) {
         EXPECT_COMPLEX_EQ(0, r1(i, j));
       } else {
         EXPECT_COMPLEX_EQ(t1(i, j), r1(i, j));
@@ -357,7 +358,7 @@ void triuTest() {
   EXPECT_EQ(t1.size(1), r1.size(1));
   for (int i = 0; i < t1.size(0); ++i) {
     for (int j = 0; j < t1.size(1); ++j) {
-      if (i > j ) {
+      if (i > j) {
         EXPECT_COMPLEX_EQ(0, r1(i, j));
       } else {
         EXPECT_COMPLEX_EQ(t1(i, j), r1(i, j));

@@ -32,7 +32,7 @@ class type {
   typedef int handle_type;
 };
 
-}  // nemespace thunder
-}  // nemespace linalg
+}  // namespace linalg
+}  // namespace thunder
 
 #endif  // THUNDER_LINALG_TYPE_HPP_
