@@ -31,9 +31,6 @@
 #include "thunder/tensor.hpp"
 #include "thunder/storage.hpp"
 
-#include "thunder/linalg/linalg-inl.hpp"
-#include "thunder/linalg/math-inl.hpp"
-
 namespace thunder {
 namespace linalg {
 namespace {

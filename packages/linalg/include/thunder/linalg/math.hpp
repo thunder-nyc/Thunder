@@ -84,10 +84,6 @@ const typename L::tensor_type& dot(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &r);
 template < typename L >
-const typename L::tensor_type& sdot(
-    L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
-    const typename L::tensor_type &r);
-template < typename L >
 const typename L::tensor_type& dotc(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     const typename L::tensor_type &r);

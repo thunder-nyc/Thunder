@@ -22,10 +22,30 @@
 
 #include "thunder/linalg/linalg.hpp"
 
+#include "thunder/linalg/type.hpp"
+#include "thunder/tensor.hpp"
+
 namespace thunder {
 
+template < typename T, typename H = typename linalg::type< T >::handle_type >
+using Linalg = linalg::Linalg< T, H >;
 
+typedef Linalg< DoubleTensor > DoubleLinalg;
+typedef Linalg< FloatTensor > FloatLinalg;
+typedef Linalg< DoubleComplexTensor > DoubleComplexLinalg;
+typedef Linalg< FloatComplexTensor > FloatComplexLinalg;
 
+}
+
+namespace thunder {
+namespace linalg {
+
+extern template class Linalg< DoubleTensor >;
+extern template class Linalg< FloatTensor >;
+extern template class Linalg< DoubleComplexTensor >;
+extern template class Linalg< FloatComplexTensor >;
+
+}  // namespace linalg
 }  // namespace thunder
 
 #endif  // THUNDER_LINALG_HPP_

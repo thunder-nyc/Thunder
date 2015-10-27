@@ -25,7 +25,6 @@
 #include <ctime>
 #include <random>
 
-#include "thunder/random/math.hpp"
 #include "thunder/random/type.hpp"
 #include "thunder/tensor.hpp"
 

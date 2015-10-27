@@ -49,11 +49,6 @@ const T& Linalg< T, H >::dot(const T &x, const T &y, const T &r) {
 }
 
 template < typename T, typename H >
-const T& Linalg< T, H >::sdot(const T &x, const T &y, const T &r) {
-  return math::sdot(this, x, y, r);
-}
-
-template < typename T, typename H >
 const T& Linalg< T, H >::dotc(const T &x, const T &y, const T &r) {
   return math::dotc(this, x, y, r);
 }

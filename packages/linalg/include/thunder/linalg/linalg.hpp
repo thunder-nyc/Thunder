@@ -92,7 +92,6 @@ class Linalg {
   const T& axpy(const T &x, const T &y, const value_type &a = 1.0);
   const T& copy(const T &x, const T &r);
   const T& dot(const T &x, const T &y, const T &r);
-  const T& sdot(const T &x, const T &y, const T &r);
   const T& dotc(const T &x, const T &y, const T &r);
   const T& nrm2(const T &x, const T &r);
   const T& rot(const T &x, const T &y, const value_type &c = 1.0,

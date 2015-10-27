@@ -34,14 +34,5 @@ template class Linalg< FloatTensor >;
 template class Linalg< DoubleComplexTensor >;
 template class Linalg< FloatComplexTensor >;
 
-void swap() {
-  int n = 5;
-  double x[5];
-  int incy = 1;
-  double y[5];
-  int incx = 1;
-  dswap_(&n, x, &incx, y, &incy);
-}
-
 }  // namespace linalg
 }  // namespace thunder
