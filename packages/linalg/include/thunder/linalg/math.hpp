@@ -107,12 +107,6 @@ const typename L::tensor_type& swap(
 template < typename L >
 const typename L::size_tensor& iamax(
     L *l, const typename L::tensor_type &x, const typename L::size_tensor &r);
-template < typename L >
-const typename L::size_tensor& iamin(
-    L *l, const typename L::tensor_type &x, const typename L::size_tensor &r);
-template < typename L >
-const typename L::tensor_type& cabs1(
-    L *l, const typename L::tensor_type &x, const typename L::tensor_type &r);
 
 // BLAS level-2 routines
 template < typename L >

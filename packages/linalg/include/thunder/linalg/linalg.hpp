@@ -38,7 +38,7 @@ class Linalg {
   typedef typename T::value_type value_type;
   typedef typename T::size_type size_type;
   typedef typename T::size_storage size_storage;
-  typedef Tensor< Storage < size_type, allocator_type > > size_tensor;
+  typedef SizeTensor size_tensor;
 
   typedef cxxblas::Uplo Uplo;
   typedef cxxblas::Diag Diag;
@@ -100,8 +100,6 @@ class Linalg {
   const T& scal(const T &x, const value_type &a = 1.0);
   const T& swap(const T &x, const T &y);
   const size_tensor& iamax(const T &x, const size_tensor &r);
-  const size_tensor& iamin(const T &x, const size_tensor &r);
-  const T& cabs1(const T &x, const T &r);
 
   // Const result BLAS level-2 routines
   const T& gbmv(const T &a, const T &x, const T &y, size_type kl = 0,

@@ -1,5 +1,5 @@
 /*
- * \copyright Copyright 2014 Xiang Zhang All Rights Reserved.
+ * \copyright Copyright 2014-2015 Xiang Zhang All Rights Reserved.
  * \license @{
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,24 +17,26 @@
  * @}
  */
 
+#ifndef THUNDER_LINALG_COMPLEX_HPP_
+#define THUNDER_LINALG_COMPLEX_HPP_
 
 #include "thunder/linalg/linalg.hpp"
-
-#include "thunder/linalg/complex.hpp"
-#include "thunder/linalg/math.hpp"
+#include "thunder/storage.hpp"
 #include "thunder/tensor.hpp"
-
-#include "thunder/linalg/complex-inl.hpp"
-#include "thunder/linalg/linalg-inl.hpp"
-#include "thunder/linalg/math-inl.hpp"
 
 namespace thunder {
 namespace linalg {
+namespace math {
 
-template class Linalg< DoubleTensor >;
-template class Linalg< FloatTensor >;
-template class Linalg< DoubleComplexTensor >;
-template class Linalg< FloatComplexTensor >;
+template < typename D, typename A, typename H >
+const Tensor< Storage< ::std::complex< D >, A > >& rotm(
+    Linalg< Tensor< Storage < ::std::complex< D >, A > >, H > *l,
+    const Tensor< Storage< ::std::complex< D >, A > > &x,
+    const Tensor< Storage< ::std::complex< D >, A > > &y,
+    const Tensor< Storage< ::std::complex< D >, A > > &p);
 
+}  // namespace math
 }  // namespace linalg
 }  // namespace thunder
+
+#endif  // THUNDER_LINALG_COMPLEX_HPP_

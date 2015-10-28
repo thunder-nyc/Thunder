@@ -85,17 +85,6 @@ const typename Linalg< T, H >::size_tensor& Linalg< T, H >::iamax(
   return math::iamax(this, x, r);
 }
 
-template < typename T, typename H >
-const typename Linalg< T, H >::size_tensor& Linalg< T, H >::iamin(
-    const T &x, const size_tensor &r) {
-  return math::iamin(this, x, r);
-}
-
-template < typename T, typename H >
-const T& Linalg< T, H >::cabs1(const T &x, const T &r) {
-  return math::cabs1(this, x, r);
-}
-
 }  //  namespace linalg
 }  //  namespace thunder
 
