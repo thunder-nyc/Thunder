@@ -26,6 +26,7 @@
 #include <utility>
 
 #include "thunder/storage.hpp"
+#include "thunder/tensor/storage_type.hpp"
 
 namespace thunder {
 namespace tensor {
@@ -75,6 +76,7 @@ class Tensor {
   // Typedefs for tensor
   typedef Storage< size_type > size_storage;
   typedef Storage< difference_type > stride_storage;
+  typedef typename StorageType< S >::real_storage real_storage;
   typedef ::std::shared_ptr< S > storage_pointer;
   typedef typename size_storage::size_type dim_type;
 

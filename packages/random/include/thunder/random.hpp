@@ -30,7 +30,7 @@
 
 namespace thunder {
 
-template < typename T,
+template < typename T = DoubleTensor,
            typename G = typename random::TensorType< T >::generator_type,
            typename I = typename random::TensorType< T >::integer_type,
            typename F = typename random::TensorType< T >::float_type >

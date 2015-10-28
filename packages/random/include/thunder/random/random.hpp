@@ -24,11 +24,12 @@
 #include <random>
 
 #include "thunder/random/tensor_type.hpp"
+#include "thunder/tensor.hpp"
 
 namespace thunder {
 namespace random {
 
-template < typename T,
+template < typename T = DoubleTensor,
            typename G = typename TensorType< T >::generator_type,
            typename I = typename TensorType< T >::integer_type,
            typename F = typename TensorType< T >::float_type >

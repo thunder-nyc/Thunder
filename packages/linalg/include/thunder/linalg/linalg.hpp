@@ -28,7 +28,8 @@
 namespace thunder {
 namespace linalg {
 
-template < typename T, typename H = typename TensorType< T >::handle_type >
+template < typename T = DoubleTensor,
+           typename H = typename TensorType< T >::handle_type >
 class Linalg {
  public:
   typedef T tensor_type;
