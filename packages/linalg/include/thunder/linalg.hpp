@@ -22,12 +22,13 @@
 
 #include "thunder/linalg/linalg.hpp"
 
-#include "thunder/linalg/type.hpp"
+#include "thunder/linalg/tensor_type.hpp"
 #include "thunder/tensor.hpp"
 
 namespace thunder {
 
-template < typename T, typename H = typename linalg::type< T >::handle_type >
+template < typename T,
+           typename H = typename linalg::TensorType< T >::handle_type >
 using Linalg = linalg::Linalg< T, H >;
 
 typedef Linalg< DoubleTensor > DoubleLinalg;

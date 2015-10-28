@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_LINALG_TYPE_HPP_
-#define THUNDER_LINALG_TYPE_HPP_
+#ifndef THUNDER_LINALG_TENSOR_TYPE_HPP_
+#define THUNDER_LINALG_TENSOR_TYPE_HPP_
 
 #include "thunder/tensor.hpp"
 
@@ -26,7 +26,7 @@ namespace thunder {
 namespace linalg {
 
 template < typename T >
-class type {
+class TensorType {
  public:
   typedef T tensor_type;
   typedef int handle_type;
@@ -35,4 +35,4 @@ class type {
 }  // namespace linalg
 }  // namespace thunder
 
-#endif  // THUNDER_LINALG_TYPE_HPP_
+#endif  // THUNDER_LINALG_TENSOR_TYPE_HPP_

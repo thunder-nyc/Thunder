@@ -23,15 +23,15 @@
 #include <limits>
 #include <random>
 
-#include "thunder/random/type.hpp"
+#include "thunder/random/tensor_type.hpp"
 
 namespace thunder {
 namespace random {
 
 template < typename T,
-           typename G = typename type< T >::generator_type,
-           typename I = typename type< T >::integer_type,
-           typename F = typename type< T >::float_type >
+           typename G = typename TensorType< T >::generator_type,
+           typename I = typename TensorType< T >::integer_type,
+           typename F = typename TensorType< T >::float_type >
 class Random {
  public:
   typedef T tensor_type;

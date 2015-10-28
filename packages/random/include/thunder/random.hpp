@@ -25,15 +25,15 @@
 #include <ctime>
 #include <random>
 
-#include "thunder/random/type.hpp"
+#include "thunder/random/tensor_type.hpp"
 #include "thunder/tensor.hpp"
 
 namespace thunder {
 
 template < typename T,
-           typename G = typename random::type< T >::generator_type,
-           typename I = typename random::type< T >::integer_type,
-           typename F = typename random::type< T >::float_type >
+           typename G = typename random::TensorType< T >::generator_type,
+           typename I = typename random::TensorType< T >::integer_type,
+           typename F = typename random::TensorType< T >::float_type >
 using Random = random::Random< T, G, I, F >;
 
 typedef Random< DoubleTensor > DoubleRandom;

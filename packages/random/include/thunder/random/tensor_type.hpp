@@ -17,8 +17,8 @@
  * @}
  */
 
-#ifndef THUNDER_RANDOM_TYPE_HPP_
-#define THUNDER_RANDOM_TYPE_HPP_
+#ifndef THUNDER_RANDOM_TENSOR_TYPE_HPP_
+#define THUNDER_RANDOM_TENSOR_TYPE_HPP_
 
 #include <random>
 
@@ -28,7 +28,7 @@ namespace thunder {
 namespace random {
 
 template < typename T >
-class type {
+class TensorType {
  public:
   typedef T tensor_type;
   typedef ::std::mt19937 generator_type;
@@ -37,7 +37,7 @@ class type {
 };
 
 template < >
-class type< DoubleTensor > {
+class TensorType< DoubleTensor > {
  public:
   typedef DoubleTensor tensor_type;
   typedef ::std::mt19937 generator_type;
@@ -46,7 +46,7 @@ class type< DoubleTensor > {
 };
 
 template < >
-class type< FloatTensor > {
+class TensorType< FloatTensor > {
  public:
   typedef FloatTensor tensor_type;
   typedef ::std::mt19937 generator_type;
@@ -55,7 +55,7 @@ class type< FloatTensor > {
 };
 
 template < >
-class type< SizeTensor > {
+class TensorType< SizeTensor > {
  public:
   typedef SizeTensor tensor_type;
   typedef ::std::mt19937 generator_type;
@@ -66,4 +66,4 @@ class type< SizeTensor > {
 }  // namespace random
 }  // namespace thunder
 
-#endif  // THUNDER_RANDOM_TYPE_HPP_
+#endif  // THUNDER_RANDOM_TENSOR_TYPE_HPP_
