@@ -232,6 +232,22 @@ T1 permute(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y,
   return t;
 }
 
+template < typename D, typename A >
+typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewReal(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  typedef typename T::real_tensor R;
+  return R();
+}
+
+template < typename D, typename A >
+typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewImag(
+    const Tensor< Storage< ::std::complex< D >, A > > &x) {
+  typedef Tensor< Storage< ::std::complex< D >, A > > T;
+  typedef typename T::real_tensor R;
+  return R();
+}
+
 }  // namespace math
 }  // namespace tensor
 }  // namespace thunder

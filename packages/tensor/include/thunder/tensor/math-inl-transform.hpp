@@ -260,6 +260,17 @@ THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(getCnrm, norm);
 
 #undef THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM
 
+template < typename T >
+typename T::real_tensor viewReal(const T &x) {
+  return x;
+}
+
+template < typename T >
+typename T::real_tensor viewImag(const T &x) {
+  throw domain_error("Real tensor does not have imaginery part");
+  return x;
+}
+
 }  // namespace math
 }  // namespace tensor
 }  // namespace thunder

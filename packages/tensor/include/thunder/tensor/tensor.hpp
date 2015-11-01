@@ -76,9 +76,12 @@ class Tensor {
   // Typedefs for tensor
   typedef Storage< size_type > size_storage;
   typedef Storage< difference_type > stride_storage;
-  typedef typename StorageType< S >::real_storage real_storage;
   typedef ::std::shared_ptr< S > storage_pointer;
   typedef typename size_storage::size_type dim_type;
+
+  // Typedefs for complex number handling
+  typedef typename StorageType< S >::real_storage real_storage;
+  typedef Tensor< real_storage > real_tensor;
 
   // Constructors
   explicit Tensor(allocator_type alloc = allocator_type());
@@ -317,6 +320,8 @@ class Tensor {
   Tensor reshape(size_type sz0, size_type sz1, size_type sz2,
                          size_type sz3) const;
   Tensor reshape(size_storage sz) const;
+  real_tensor viewReal() const;
+  real_tensor viewImag() const;
 
   // Static subtensor or transformation extractors are delegated
   static Tensor narrow(const Tensor &x, dim_type dim, size_type pos,
@@ -344,6 +349,8 @@ class Tensor {
   static Tensor reshape(const Tensor &x, size_type sz0, size_type sz1,
                         size_type sz2, size_type sz3);
   static Tensor reshape(const Tensor &x, size_storage sz);
+  static real_tensor viewReal(const Tensor &x);
+  static real_tensor viewImag(const Tensor &x);
 
   // Type conversions
   template < typename T >

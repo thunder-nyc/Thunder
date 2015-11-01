@@ -37,6 +37,12 @@ T1 shuffle(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y);
 template < typename D, typename A, typename T1 >
 T1 permute(const T1 &x, const Tensor< Storage< ::std::complex< D >, A > > &y,
            typename T1::dim_type d);
+template < typename D, typename A >
+typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewReal(
+    const Tensor< Storage< ::std::complex< D >, A > > &x);
+template < typename D, typename A >
+typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewImag(
+    const Tensor< Storage< ::std::complex< D >, A > > &x);
 
 // Unary operations
 template < typename D, typename A >

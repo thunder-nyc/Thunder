@@ -398,6 +398,16 @@ Tensor< S > Tensor< S >::reshape(size_storage sz) const {
 }
 
 template < typename S >
+typename Tensor< S >::real_tensor Tensor< S >::viewReal() const {
+  return math::viewReal(*this);
+}
+
+template < typename S >
+typename Tensor< S >::real_tensor Tensor< S >::viewImag() const {
+  return math::viewReal(*this);
+}
+
+template < typename S >
 Tensor< S > Tensor< S >::narrow(const Tensor &x, dim_type dim, size_type pos,
                                 size_type size) {
   return x.narrow(dim, pos, size);
@@ -489,6 +499,16 @@ Tensor< S > Tensor< S >::reshape(const Tensor &x, size_type sz0, size_type sz1,
 template < typename S >
 Tensor< S > Tensor< S >::reshape(const Tensor &x, size_storage sz) {
   return x.reshape(sz);
+}
+
+template < typename S >
+typename Tensor< S >::real_tensor Tensor< S >::viewReal(const Tensor &x) {
+  return x.viewReal(x);
+}
+
+template < typename S >
+typename Tensor< S >::real_tensor Tensor< S >::viewImag(const Tensor &x) {
+  return x.viewReal(x);
 }
 
 }  // namespace tensor

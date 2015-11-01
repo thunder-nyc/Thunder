@@ -37,13 +37,17 @@ T1 shuffle(const T1 &x, const T2 &y);
 template < typename T1, typename T2 >
 T1 permute(const T1 &x, const T2 &y, typename T1::dim_type d);
 template < typename T1, typename T2 >
-T2 getReal(const T1 &x);
+T2 getReal(const T1 &x, typename T2::allocator_type alloc);
 template < typename T1, typename T2 >
-T2 getImag(const T1 &x);
+T2 getImag(const T1 &x, typename T2::allocator_type alloc);
 template < typename T1, typename T2 >
-T2 getArg(const T1 &x);
+T2 getArg(const T1 &x, typename T2::allocator_type alloc);
 template < typename T1, typename T2 >
-T2 getCnrm(const T1 &x);
+T2 getCnrm(const T1 &x, typename T2::allocator_type alloc);
+template < typename T >
+typename T::real_tensor viewReal(const T &x);
+template < typename T >
+typename T::real_tensor viewImag(const T &x);
 
 // Apply functions
 template < typename T >

@@ -28,7 +28,7 @@ namespace tensor {
 template < typename S >
 class StorageType {
  public:
-  typedef StorageType real_storage;
+  typedef S real_storage;
 };
 
 // A is a template allocator class, therefore a template template parameter.

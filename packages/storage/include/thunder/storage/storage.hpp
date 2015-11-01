@@ -40,6 +40,7 @@ class Storage {
   typedef typename A::size_type size_type;
   typedef typename ::std::allocator_traits< A >::pointer pointer;
   typedef typename ::std::allocator_traits< A >::const_pointer const_pointer;
+  typedef ::std::shared_ptr< typename A::value_type > shared_pointer;
 
   // Iterator definitions
   typedef pointer iterator;
@@ -61,6 +62,10 @@ class Storage {
   // Constructor from initializer_list
   Storage(::std::initializer_list< D > init, const A& alloc = A());
 
+  // Templated conversion constructor
+  template < typename Other_D, typename Other_A >
+  explicit Storage(const Storage< Other_D, Other_A > &other);
+
   // Destructor
   ~Storage();
 
@@ -73,9 +78,10 @@ class Storage {
   const_reference operator[](size_type pos) const;
 
   // Get raw pointer to data
-  pointer data();
-  // Get const raw pointer to data
-  const_pointer data() const;
+  pointer data() const;
+
+  // Get shared pointer to data
+  shared_pointer shared() const;
 
   // Get iterator to data
   iterator begin();
@@ -101,9 +107,12 @@ class Storage {
   // Get the allocator
   A allocator() const;
 
+  void deallocate(pointer p);
+
  private:
   A alloc_;
   size_type size_;
+  shared_pointer shared_;
   pointer data_;
 };
 
