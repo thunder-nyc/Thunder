@@ -228,8 +228,8 @@ T1 permute(const T1 &x, const T2 &y, typename T1::dim_type d) {
 
 #define THUNDER_TENSOR_MATH_DEFINE_STD_TRANSFORM(tfunc, sfunc)          \
   template < typename T1, typename T2 >                                 \
-  T2 tfunc(const T1 &x) {                                               \
-    T2 t(x.allocator());                                                \
+  T2 tfunc(const T1 &x, typename T2::allocator_type alloc) {            \
+    T2 t(alloc);                                                        \
     t.resizeAs(x);                                                      \
     typename T2::pointer t_pointer = t.data();                          \
     typename T2::difference_type t_step = t.stride(t.dimension() - 1);  \

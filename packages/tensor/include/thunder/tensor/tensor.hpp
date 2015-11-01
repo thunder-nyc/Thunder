@@ -253,13 +253,17 @@ class Tensor {
   template < typename T >
   Tensor permute(const T &y, dim_type d = 0) const;
   template < typename TR >
-  TR getReal() const;
+  TR getReal(
+      typename TR::allocator_type alloc = typename TR::allocator_type()) const;
   template < typename TR >
-  TR getImag() const;
+  TR getImag(
+      typename TR::allocator_type alloc = typename TR::allocator_type()) const;
   template < typename TR >
-  TR getArg() const;
+  TR getArg(
+      typename TR::allocator_type alloc = typename TR::allocator_type()) const;
   template < typename TR >
-  TR getCnrm() const;
+  TR getCnrm(
+      typename TR::allocator_type alloc = typename TR::allocator_type()) const;
 
 
   // Static templated subtensor extractors are delegated
@@ -276,13 +280,21 @@ class Tensor {
   template < typename T >
   static Tensor shuffle(const Tensor &x, const T &y);
   template < typename TR >
-  static TR getReal(const Tensor &x);
+  static TR getReal(
+      const Tensor &x,
+      typename TR::allocator_type alloc = typename TR::allocator_type());
   template < typename TR >
-  static TR getImag(const Tensor &x);
+  static TR getImag(
+      const Tensor &x,
+      typename TR::allocator_type alloc = typename TR::allocator_type());
   template < typename TR >
-  static TR getArg(const Tensor &x);
+  static TR getArg(
+      const Tensor &x,
+      typename TR::allocator_type alloc = typename TR::allocator_type());
   template < typename TR >
-  static TR getCnrm(const Tensor &x);
+  static TR getCnrm(
+      const Tensor &x,
+      typename TR::allocator_type alloc = typename TR::allocator_type());
 
   // Extract subtensors or transformations -- no need for non-const overload
   Tensor narrow(dim_type dim, size_type pos, size_type size) const;

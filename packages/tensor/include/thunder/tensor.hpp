@@ -186,18 +186,26 @@ THUNDER_TENSOR_EXPAND_BINARY_INCOMPATIBLE(
       const Tensor< S2 > &y) const;                                     \
   extern template Tensor< S1 > Tensor< S1 >::permute(                   \
       const Tensor< S2 > &y, typename Tensor< S1 >::dim_type d) const;  \
-  extern template Tensor< S2 > Tensor< S1 >::getReal() const;           \
-  extern template Tensor< S2 > Tensor< S1 >::getImag() const;           \
-  extern template Tensor< S2 > Tensor< S1 >::getArg() const;            \
-  extern template Tensor< S2 > Tensor< S1 >::getCnrm() const;           \
+  extern template Tensor< S2 > Tensor< S1 >::getReal(                   \
+      typename Tensor< S2 >::allocator_type) const;                     \
+  extern template Tensor< S2 > Tensor< S1 >::getImag(                   \
+      typename Tensor< S2 >::allocator_type) const;                     \
+  extern template Tensor< S2 > Tensor< S1 >::getArg(                    \
+      typename Tensor< S2 >::allocator_type) const;                     \
+  extern template Tensor< S2 > Tensor< S1 >::getCnrm(                   \
+      typename Tensor< S2 >::allocator_type) const;                     \
   extern template Tensor< S1 > Tensor< S1 >::extract(                   \
       const Tensor< S1 > &x, const Tensor< S2 > &y);                    \
   extern template Tensor< S1 > Tensor< S1 >::shuffle(                   \
       const Tensor< S1 > &x, const Tensor< S2 > &y);                    \
-  extern template Tensor< S2 > Tensor< S1 >::getReal(const Tensor< S1 > &x); \
-  extern template Tensor< S2 > Tensor< S1 >::getImag(const Tensor< S1 > &x); \
-  extern template Tensor< S2 > Tensor< S1 >::getArg(const Tensor< S1 > &x); \
-  extern template Tensor< S2 > Tensor< S1 >::getCnrm(const Tensor< S1 > &x); \
+  extern template Tensor< S2 > Tensor< S1 >::getReal(                   \
+      const Tensor< S1 > &x, typename Tensor< S2 >::allocator_type);    \
+  extern template Tensor< S2 > Tensor< S1 >::getImag(                   \
+      const Tensor< S1 > &x, typename Tensor< S2 >::allocator_type);    \
+  extern template Tensor< S2 > Tensor< S1 >::getArg(                    \
+      const Tensor< S1 > &x, typename Tensor< S2 >::allocator_type);    \
+  extern template Tensor< S2 > Tensor< S1 >::getCnrm(                   \
+      const Tensor< S1 > &x, typename Tensor< S2 >::allocator_type);    \
   extern template Tensor< S2 > Tensor< S1 >::type(                      \
       typename Tensor< S2 >::allocator_type alloc) const;               \
   extern template Tensor< S2 > Tensor< S1 >::type(                      \

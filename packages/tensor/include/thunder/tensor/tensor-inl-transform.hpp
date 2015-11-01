@@ -87,26 +87,26 @@ Tensor< S > Tensor< S >::permute(const T &y, dim_type d) const {
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getReal() const {
-  return math::getReal< Tensor, TR >(*this);
+TR Tensor< S >::getReal(typename TR::allocator_type alloc) const {
+  return math::getReal< Tensor, TR >(*this, alloc);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getImag() const {
-  return math::getImag< Tensor, TR >(*this);
+TR Tensor< S >::getImag(typename TR::allocator_type alloc) const {
+  return math::getImag< Tensor, TR >(*this, alloc);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getArg() const {
-  return math::getArg< Tensor, TR >(*this);
+TR Tensor< S >::getArg(typename TR::allocator_type alloc) const {
+  return math::getArg< Tensor, TR >(*this, alloc);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getCnrm() const {
-  return math::getCnrm< Tensor, TR >(*this);
+TR Tensor< S >::getCnrm(typename TR::allocator_type alloc) const {
+  return math::getCnrm< Tensor, TR >(*this, alloc);
 }
 
 
@@ -150,26 +150,26 @@ Tensor< S > Tensor< S >::shuffle(const Tensor &x, const T &y) {
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getReal(const Tensor &x) {
-  return x.getReal< TR >();
+TR Tensor< S >::getReal(const Tensor &x, typename TR::allocator_type alloc) {
+  return x.getReal< TR >(alloc);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getImag(const Tensor &x) {
-  return x.getImag< TR >();
+TR Tensor< S >::getImag(const Tensor &x, typename TR::allocator_type alloc) {
+  return x.getImag< TR >(alloc);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getArg(const Tensor &x) {
-  return x.getArg< TR >();
+TR Tensor< S >::getArg(const Tensor &x, typename TR::allocator_type alloc) {
+  return x.getArg< TR >(alloc);
 }
 
 template < typename S >
 template < typename TR >
-TR Tensor< S >::getCnrm(const Tensor &x) {
-  return x.getCnrm< TR >();
+TR Tensor< S >::getCnrm(const Tensor &x, typename TR::allocator_type alloc) {
+  return x.getCnrm< TR >(alloc);
 }
 
 template < typename S >
