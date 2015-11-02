@@ -24,6 +24,7 @@
 #include "thunder/tensor/complex-inl.hpp"
 
 #include <complex>
+#include <memory>
 
 #include "thunder/exception.hpp"
 #include "thunder/tensor/index_iterator.hpp"
@@ -237,7 +238,27 @@ typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewReal(
     const Tensor< Storage< ::std::complex< D >, A > > &x) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   typedef typename T::real_tensor R;
-  return R();
+  typedef typename T::real_storage S;
+
+  // Getting the size
+  typename R::size_storage size(x.dimension());
+  for (typename R::dim_type i = 0; size.size(); ++i) {
+    size[i] = static_cast< typename R::size_type >(x.size(i));
+  }
+  // Getting the stride
+  typename R::stride_storage stride(x.dimension());
+  for (typename R::dim_type i = 0; stride.size(); ++i) {
+    stride[i] = 2 * static_cast< typename R::difference_type >(x.stride(i));
+  }
+  // Getting the storage
+  S view = x.storage()->template view< S >();
+  typename R::storage_pointer storage =
+      ::std::make_shared< S >(view.shared(), view.size(), view.allocator());
+  // Getting the offset
+  typename R::size_type offset =
+      2 * static_cast< typename R::size_type >(x.offset());
+
+  return R(size, stride, storage, offset);
 }
 
 template < typename D, typename A >
@@ -245,7 +266,27 @@ typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewImag(
     const Tensor< Storage< ::std::complex< D >, A > > &x) {
   typedef Tensor< Storage< ::std::complex< D >, A > > T;
   typedef typename T::real_tensor R;
-  return R();
+  typedef typename T::real_storage S;
+
+  // Getting the size
+  typename R::size_storage size(x.dimension());
+  for (typename R::dim_type i = 0; size.size(); ++i) {
+    size[i] = static_cast< typename R::size_type >(x.size(i));
+  }
+  // Getting the stride
+  typename R::stride_storage stride(x.dimension());
+  for (typename R::dim_type i = 0; stride.size(); ++i) {
+    stride[i] = 2 * static_cast< typename R::difference_type >(x.stride(i));
+  }
+  // Getting the storage
+  S view = x.storage()->template view< S >();
+  typename R::storage_pointer storage =
+      ::std::make_shared< S >(view.shared(), view.size(), view.allocator());
+  // Getting the offset
+  typename R::size_type offset =
+      2 * static_cast< typename R::size_type >(x.offset()) + 1;
+
+  return R(size, stride, storage, offset);
 }
 
 }  // namespace math
