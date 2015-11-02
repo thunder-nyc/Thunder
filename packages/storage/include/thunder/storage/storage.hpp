@@ -49,22 +49,21 @@ class Storage {
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
   // Default Constructor
-  explicit Storage(const A &alloc = A());
+  explicit Storage(A alloc = A());
   // Constructor with given size
-  explicit Storage(size_type count, const A &alloc = A());
+  explicit Storage(size_type count, A alloc = A());
   // Constructor with given size and a default value
-  explicit Storage(size_type count, const_reference value,
-                   const A &alloc = A());
+  Storage(size_type count, const_reference value, A alloc = A());
+  // Constructor with given shared pointer
+  Storage(shared_pointer shared, size_type count, A alloc = A());
+  // Constructor with given pointer
+  Storage(pointer data, size_type count, A alloc = A());
   // Copy constructor
   Storage(const Storage &other);
   // Move constructor
   Storage(Storage &&other);
   // Constructor from initializer_list
-  Storage(::std::initializer_list< D > init, const A& alloc = A());
-
-  // Templated conversion constructor
-  template < typename Other_D, typename Other_A >
-  explicit Storage(const Storage< Other_D, Other_A > &other);
+  Storage(::std::initializer_list< D > init, A alloc = A());
 
   // Destructor
   ~Storage();
@@ -107,7 +106,9 @@ class Storage {
   // Get the allocator
   A allocator() const;
 
-  void deallocate(pointer p);
+  // Templated conversion viewer
+  template < typename S >
+  S view();
 
  private:
   A alloc_;

@@ -228,4 +228,24 @@ void serializeTest() {
 }
 TEST_ALL_TYPES(serializeTest);
 
+template < typename T >
+void viewTest() {
+  thunder::Storage< ::std::complex< T > > s1(10);
+  for (int i = 0; i < s1.size(); ++i) {
+    s1[i] = ::std::complex< T >(static_cast< T >(i), static_cast< T >(i - 3));
+  }
+  thunder::Storage< T > s2 = s1.template view< thunder::Storage< T > >();
+
+  EXPECT_EQ(s1.data(), reinterpret_cast< ::std::complex< T >* >(s2.data()));
+  EXPECT_EQ(2 * s1.size(), s2.size());
+  for (int i = 0; i < s1.size(); ++i) {
+    EXPECT_EQ(::std::real(s1[i]), s2[i * 2]);
+    EXPECT_EQ(::std::imag(s1[i]), s2[i * 2 + 1]);
+  }
+}
+TEST(StorageTest, viewTest) {
+  viewTest< double >();
+  viewTest< float >();
+}
+
 #undef TEST_ALL_TYPES

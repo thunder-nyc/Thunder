@@ -31,21 +31,21 @@ namespace thunder {
 namespace storage {
 
 template < typename D, typename A >
-Storage< D, A >::Storage(const A &alloc)
+Storage< D, A >::Storage(A alloc)
     : alloc_(alloc), size_(0), shared_(nullptr), data_(shared_.get()) {}
 
 template < typename D, typename A >
-Storage< D, A >::Storage(size_type count, const A &alloc)
+Storage< D, A >::Storage(size_type count, A alloc)
     : alloc_(alloc), size_(count),
-      shared_(size_ == 0 ? nullptr : alloc_.allocate(size_),
-              ::std::bind(&Storage::deallocate, this, std::placeholders::_1)),
+      shared_(size_ == 0 ? nullptr : alloc_.allocate(size_), ::std::bind(
+          &A::deallocate, &alloc_, std::placeholders::_1, size_)),
       data_(shared_.get()) {}
 
 template < typename D, typename A >
-Storage< D, A >::Storage(size_type count, const_reference value, const A &alloc)
+Storage< D, A >::Storage(size_type count, const_reference value, A alloc)
     : alloc_(alloc), size_(count),
-      shared_(size_ == 0 ? nullptr : alloc_.allocate(size_),
-              ::std::bind(&Storage::deallocate, this, std::placeholders::_1)),
+      shared_(size_ == 0 ? nullptr : alloc_.allocate(size_), ::std::bind(
+          &A::deallocate, &alloc_, std::placeholders::_1, size_)),
       data_(shared_.get()) {
   for (size_type i = 0; i < size_; ++i) {
     data_[i] = value;
@@ -53,10 +53,21 @@ Storage< D, A >::Storage(size_type count, const_reference value, const A &alloc)
 }
 
 template < typename D, typename A >
+Storage< D, A >::Storage(shared_pointer shared, size_type count, A alloc)
+    : alloc_(alloc), size_(count), shared_(shared), data_(shared_.get()){}
+
+template < typename D, typename A >
+Storage< D, A >::Storage(pointer data, size_type count, A alloc)
+    : alloc_(alloc), size_(count),
+      shared_(size_ == 0 ? nullptr : data, ::std::bind(
+          &A::deallocate, &alloc_, ::std::placeholders::_1, size_)),
+      data_(shared_.get()){}
+
+template < typename D, typename A >
 Storage< D, A >::Storage(const Storage &other)
     : alloc_(other.alloc_), size_(other.size_),
-      shared_(size_ == 0 ? nullptr : alloc_.allocate(size_),
-              ::std::bind(&Storage::deallocate, this, std::placeholders::_1)),
+      shared_(size_ == 0 ? nullptr : alloc_.allocate(size_), ::std::bind(
+          &A::deallocate, &alloc_, std::placeholders::_1, size_)),
       data_(shared_.get()) {
   pointer data_ = data();
   for (size_type i = 0; i < size_; ++i) {
@@ -71,24 +82,16 @@ Storage< D, A >::Storage(Storage &&other)
 }
 
 template < typename D, typename A >
-Storage< D, A >::Storage(::std::initializer_list< D > init, const A& alloc)
+Storage< D, A >::Storage(::std::initializer_list< D > init, A alloc)
     :alloc_(alloc), size_(init.size()),
-     shared_(size_ == 0 ? nullptr : alloc_.allocate(size_),
-             ::std::bind(&Storage::deallocate, this, std::placeholders::_1)),
+     shared_(size_ == 0 ? nullptr : alloc_.allocate(size_), ::std::bind(
+         &A::deallocate, &alloc_, std::placeholders::_1, size_)),
      data_(shared_.get()) {
   size_t i = 0;
   for (const D& value : init) {
     data_[i++] = value;
   }
 }
-
-template < typename D, typename A >
-template < typename Other_D, typename Other_A >
-Storage< D, A >::Storage(const Storage< Other_D, Other_A > &other)
-    :alloc_(other.allocator()),
-     size_(other.size() * sizeof(D) / sizeof(Other_D)),
-     shared_(other.shared(), static_cast< pointer >(other.shared().get())),
-     data_(shared_.get()) {}
 
 template < typename D, typename A >
 Storage< D, A >::~Storage() {}
@@ -155,9 +158,8 @@ void Storage< D, A >::resize(size_type count) {
   if (size_ != count) {
     shared_ = nullptr;
     if (count > 0) {
-      shared_.reset(
-          alloc_.allocate(count),
-          ::std::bind(&Storage::deallocate, this, std::placeholders::_1));
+      shared_.reset(alloc_.allocate(count), ::std::bind(
+          &A::deallocate, &alloc_, std::placeholders::_1, size_));
     }
     size_ = count;
     data_ = shared_.get();
@@ -183,10 +185,19 @@ A Storage< D, A >::allocator() const {
 }
 
 template < typename D, typename A >
-void Storage< D, A >::deallocate(pointer p) {
-  if (p != nullptr) {
-    alloc_.deallocate(p, size_);
-  }
+template < typename S >
+S Storage< D, A >::view() {
+  typedef typename S::shared_pointer other_shared;
+  typedef typename S::pointer other_pointer;
+  typedef typename S::size_type other_size;
+  typedef typename S::value_type other_value;
+  typedef typename S::allocator_type other_allocator;
+
+  // Using aliasing shared pointer.
+  return S(
+      other_shared(shared_, reinterpret_cast< other_pointer >(shared_.get())),
+      other_size(size_ * sizeof(D) / sizeof(other_value)),
+      other_allocator(alloc_));
 }
 
 }  // namespace storage

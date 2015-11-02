@@ -57,6 +57,11 @@ extern template class Storage< ::std::size_t >;
 extern template class Storage< ::std::ptrdiff_t >;
 extern template class Storage< ::std::pair< ::std::size_t, ::std::size_t > >;
 
+extern template Storage< double > Storage<
+  ::std::complex< double > >::template view< Storage< double > >();
+extern template Storage< float > Storage<
+  ::std::complex< float > >::template view< Storage< float > >();
+
 }  // namespace storage
 }  // namespace thunder
 

@@ -45,6 +45,11 @@ template class Storage< ::std::size_t >;
 template class Storage< ::std::ptrdiff_t >;
 template class Storage< ::std::pair< ::std::size_t, ::std::size_t > >;
 
+template Storage< double > Storage<
+  ::std::complex< double > >::template view< Storage< double > >();
+template Storage< float > Storage<
+  ::std::complex< float > >::template view< Storage< float > >();
+
 }  // namespace storage
 }  // namespace thunder
 
