@@ -19,9 +19,11 @@
 
 #include "thunder/tensor.hpp"
 
+#include <complex>
 #include <memory>
 
 #include "gtest/gtest.h"
+#include "thunder/exception.hpp"
 #include "thunder/storage.hpp"
 
 namespace thunder {
@@ -530,6 +532,54 @@ TEST(TensorTest, transformTest) {
   transformTest< FloatTensor >();
   transformTest< DoubleComplexTensor >();
   transformTest< FloatComplexTensor >();
+}
+
+template < typename T >
+void viewRealTest() {
+  typedef typename T::real_tensor R;
+  T t1(10, 20, 7);
+  int t1_val = 0;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++);
+  }
+
+  R t1_real = T::viewReal(t1);
+  EXPECT_EQ(t1.data(), reinterpret_cast< typename T::pointer >(t1_real.data()));
+  EXPECT_EQ(t1.dimension(), t1_real.dimension());
+  for (int i = 0; i < t1.dimension(); ++i) {
+    EXPECT_EQ(t1.size(i), t1_real.size(i));
+  }
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    EXPECT_FLOAT_EQ(::std::real(*begin), t1_real(begin.position()));
+  }
+}
+
+TEST(TensorTest, viewRealTest) {
+  viewRealTest< DoubleTensor >();
+  viewRealTest< FloatTensor >();
+  viewRealTest< DoubleComplexTensor >();
+  viewRealTest< FloatComplexTensor >();
+}
+
+template < typename T >
+void viewImagTest() {
+  typedef typename T::real_tensor R;
+  T t1(10, 20, 7);
+  int t1_val = 0;
+  for (typename T::reference_iterator begin = t1.reference_begin(),
+           end = t1.reference_end(); begin != end; ++begin) {
+    *begin = static_cast< typename T::value_type >(t1_val++);
+  }
+
+  R t1_imag;
+  EXPECT_THROW(t1_imag = t1.viewImag(), domain_error);
+}
+
+TEST(TensorTest, viewImagTest) {
+  viewImagTest< DoubleTensor >();
+  viewImagTest< FloatTensor >();
 }
 
 #define TEST_COMPLEX_TRANSFORM(tfunc, sfunc)                            \

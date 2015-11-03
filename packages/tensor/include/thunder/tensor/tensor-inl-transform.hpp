@@ -404,7 +404,7 @@ typename Tensor< S >::real_tensor Tensor< S >::viewReal() const {
 
 template < typename S >
 typename Tensor< S >::real_tensor Tensor< S >::viewImag() const {
-  return math::viewReal(*this);
+  return math::viewImag(*this);
 }
 
 template < typename S >
@@ -503,12 +503,12 @@ Tensor< S > Tensor< S >::reshape(const Tensor &x, size_storage sz) {
 
 template < typename S >
 typename Tensor< S >::real_tensor Tensor< S >::viewReal(const Tensor &x) {
-  return x.viewReal(x);
+  return x.viewReal();
 }
 
 template < typename S >
 typename Tensor< S >::real_tensor Tensor< S >::viewImag(const Tensor &x) {
-  return x.viewReal(x);
+  return x.viewImag();
 }
 
 }  // namespace tensor

@@ -242,12 +242,12 @@ typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewReal(
 
   // Getting the size
   typename R::size_storage size(x.dimension());
-  for (typename R::dim_type i = 0; size.size(); ++i) {
+  for (typename R::dim_type i = 0; i < size.size(); ++i) {
     size[i] = static_cast< typename R::size_type >(x.size(i));
   }
   // Getting the stride
   typename R::stride_storage stride(x.dimension());
-  for (typename R::dim_type i = 0; stride.size(); ++i) {
+  for (typename R::dim_type i = 0; i < stride.size(); ++i) {
     stride[i] = 2 * static_cast< typename R::difference_type >(x.stride(i));
   }
   // Getting the storage
@@ -270,12 +270,12 @@ typename Tensor< Storage< ::std::complex< D >, A > >::real_tensor viewImag(
 
   // Getting the size
   typename R::size_storage size(x.dimension());
-  for (typename R::dim_type i = 0; size.size(); ++i) {
+  for (typename R::dim_type i = 0; i < size.size(); ++i) {
     size[i] = static_cast< typename R::size_type >(x.size(i));
   }
   // Getting the stride
   typename R::stride_storage stride(x.dimension());
-  for (typename R::dim_type i = 0; stride.size(); ++i) {
+  for (typename R::dim_type i = 0; i < stride.size(); ++i) {
     stride[i] = 2 * static_cast< typename R::difference_type >(x.stride(i));
   }
   // Getting the storage

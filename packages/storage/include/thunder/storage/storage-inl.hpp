@@ -59,8 +59,7 @@ Storage< D, A >::Storage(shared_pointer shared, size_type count, A alloc)
 template < typename D, typename A >
 Storage< D, A >::Storage(pointer data, size_type count, A alloc)
     : alloc_(alloc), size_(count),
-      shared_(size_ == 0 ? nullptr : data, ::std::bind(
-          &A::deallocate, &alloc_, ::std::placeholders::_1, size_)),
+      shared_(size_ == 0 ? nullptr : data, [](pointer){}),
       data_(shared_.get()){}
 
 template < typename D, typename A >
@@ -119,6 +118,11 @@ typename Storage< D, A >::const_reference Storage< D, A >::operator[](
 template < typename D, typename A >
 typename Storage< D, A >::pointer Storage< D, A >::data() const {
   return data_;
+}
+
+template < typename D, typename A >
+typename Storage< D, A >::shared_pointer Storage< D, A >::shared() const {
+  return shared_;
 }
 
 template < typename D, typename A >

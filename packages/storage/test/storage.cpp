@@ -111,6 +111,26 @@ void constructorTest() {
   for (int i = 0; i < 5; ++i) {
     EXPECT_EQ(static_cast< T >(i + 3), init_storage.data()[i]);
   }
+
+  // Construct an storage using external data
+  thunder::Storage< T > data_storage(
+      init_storage.data(), init_storage.size());
+  EXPECT_EQ(5, data_storage.size());
+  EXPECT_NE(nullptr, data_storage.data());
+  EXPECT_EQ(init_storage.data(), data_storage.data());
+  for (int i = 0; i < 5; ++i) {
+    EXPECT_EQ(static_cast< T >(i + 3), data_storage.data()[i]);
+  }
+
+  // Construct a storage using external shared data
+  thunder::Storage< T > shared_storage(
+      init_storage.shared(), init_storage.size());
+  EXPECT_EQ(5, shared_storage.size());
+  EXPECT_NE(nullptr, shared_storage.data());
+  EXPECT_EQ(init_storage.data(), shared_storage.data());
+  for (int i = 0; i < 5; ++i) {
+    EXPECT_EQ(static_cast< T >(i + 3), shared_storage.data()[i]);
+  }
 }
 TEST_ALL_TYPES(constructorTest);
 

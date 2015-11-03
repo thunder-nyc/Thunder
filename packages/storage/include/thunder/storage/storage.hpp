@@ -78,7 +78,6 @@ class Storage {
 
   // Get raw pointer to data
   pointer data() const;
-
   // Get shared pointer to data
   shared_pointer shared() const;
 

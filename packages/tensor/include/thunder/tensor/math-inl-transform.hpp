@@ -267,7 +267,7 @@ typename T::real_tensor viewReal(const T &x) {
 
 template < typename T >
 typename T::real_tensor viewImag(const T &x) {
-  throw domain_error("Real tensor does not have imaginery part");
+  throw domain_error("Real tensor does not have an imaginery part");
   return x;
 }
 

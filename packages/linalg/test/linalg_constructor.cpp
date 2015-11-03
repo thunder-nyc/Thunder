@@ -41,20 +41,8 @@ namespace {
 
 template < typename T >
 T randomConstruct(T t) {
-  Random< T > random;
-  return random.uniform(t);
-}
-template < typename D >
-Tensor< Storage< ::std::complex< D > > > randomConstruct(
-    Tensor< Storage< ::std::complex< D > > > t) {
-  typedef ::std::complex< D > C;
-
-  ::std::mt19937 generator;
-  ::std::uniform_real_distribution< D > random(0.0, 1.0);
-  for (auto begin = t.reference_begin(), end = t.reference_end();
-       begin != end; ++begin) {
-    (*begin) = C(random(generator), random(generator));
-  }
+  Random< typename T::real_tensor > random;
+  random.uniform(t.zero().viewReal());
   return t;
 }
 
