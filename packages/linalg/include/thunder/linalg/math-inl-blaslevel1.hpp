@@ -566,6 +566,17 @@ const typename L::size_tensor& iamax(
 template < typename L >
 typename L::tensor_type* asum(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
+  typedef typename L::tensor_type T;
+  if (x.dimension() == 1) {
+    r->resize(1);
+  } else {
+    typename T::size_storage r_size(x.dimension() - 1);
+    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+      r_size[i] = x.size(i);
+    }
+    r->resize(r_size);
+  }
+  asum(l, x, *r);
   return r;
 }
 
@@ -573,12 +584,14 @@ template < typename L >
 typename L::tensor_type* axpy(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
     const typename L::value_type &a) {
+  axpy(l, x, y->resizeAs(x), a);
   return y;
 }
 
 template < typename L >
 typename L::tensor_type* copy(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
+  copy(l, x, r->resizeAs(x));
   return r;
 }
 
@@ -586,6 +599,17 @@ template < typename L >
 typename L::tensor_type* dot(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     typename L::tensor_type *r) {
+  typedef typename L::tensor_type T;
+  if (x.dimension() == 1) {
+    r->resize(1);
+  } else {
+    typename T::size_storage r_size(x.dimension() - 1);
+    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+      r_size[i] = x.size(i);
+    }
+    r->resize(r_size);
+  }
+  dot(l, x, y, *r);
   return r;
 }
 
@@ -593,12 +617,34 @@ template < typename L >
 typename L::tensor_type* dotc(
     L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
     typename L::tensor_type *r) {
+  typedef typename L::tensor_type T;
+  if (x.dimension() == 1) {
+    r->resize(1);
+  } else {
+    typename T::size_storage r_size(x.dimension() - 1);
+    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+      r_size[i] = x.size(i);
+    }
+    r->resize(r_size);
+  }
+  dotc(l, x, y, *r);
   return r;
 }
 
 template < typename L >
 typename L::tensor_type* nrm2(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
+  typedef typename L::tensor_type T;
+  if (x.dimension() == 1) {
+    r->resize(1);
+  } else {
+    typename T::size_storage r_size(x.dimension() - 1);
+    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+      r_size[i] = x.size(i);
+    }
+    r->resize(r_size);
+  }
+  nrm2(l, x, *r);
   return r;
 }
 
@@ -606,6 +652,7 @@ template < typename L >
 typename L::tensor_type* rot(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
     const typename L::value_type &c, const typename L::value_type &s) {
+  rot(l, x, y->resizeAs(x), c, s);
   return y;
 }
 
@@ -613,24 +660,36 @@ template < typename L >
 typename L::tensor_type* rotm(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
     const typename L::tensor_type &p) {
+  rotm(l, x, y->resizeAs(x), p);
   return y;
 }
 
 template < typename L >
 typename L::tensor_type* scal(
     L *l, typename L::tensor_type *x, const typename L::value_type &a) {
+  scal(l, *x, a);
   return x;
 }
 
 template < typename L >
 typename L::tensor_type* swap(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y) {
+  swap(l, x, y->resizeAs(x));
   return y;
 }
 
 template < typename L >
 typename L::size_tensor* iamax(
     L *l, const typename L::tensor_type &x, typename L::size_tensor *r) {
+  if (x.dimension() == 1) {
+    r->resize(1);
+  } else {
+    typename L::size_tensor::size_storage r_size(x.dimension() - 1);
+    for (typename L::size_tensor::dim_type i = 0; i < r->dimension(); ++i) {
+      r_size[i] = x.size(i);
+    }
+    r->resize(r_size);
+  }
   return r;
 }
 
