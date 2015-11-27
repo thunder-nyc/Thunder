@@ -563,6 +563,7 @@ const typename L::size_tensor& iamax(
   return r;
 }
 
+template < typename L >
 typename L::tensor_type* asum(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
   return r;
@@ -616,19 +617,19 @@ typename L::tensor_type* rotm(
 }
 
 template < typename L >
-typename L::tensor_type& scal(
+typename L::tensor_type* scal(
     L *l, typename L::tensor_type *x, const typename L::value_type &a) {
   return x;
 }
 
 template < typename L >
-typename L::tensor_type& swap(
+typename L::tensor_type* swap(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y) {
   return y;
 }
 
 template < typename L >
-typename L::size_tensor& iamax(
+typename L::size_tensor* iamax(
     L *l, const typename L::tensor_type &x, typename L::size_tensor *r) {
   return r;
 }

@@ -271,7 +271,7 @@ T Linalg< T, H >::swap(const T &x) {
 }
 
 template < typename T, typename H >
-T Linalg< T, H >::size_tensor iamax(const T &x) {
+typename Linalg< T, H >::size_tensor Linalg< T, H >::iamax(const T &x) {
   size_tensor r(x.allocator());
   iamax(x, &r);
   return r;
