@@ -584,14 +584,14 @@ template < typename L >
 typename L::tensor_type* axpy(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
     const typename L::value_type &a) {
-  axpy(l, x, y->resizeAs(x), a);
+  axpy(l, x, y->resizeAs(x).zero(), a);
   return y;
 }
 
 template < typename L >
 typename L::tensor_type* copy(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *r) {
-  copy(l, x, r->resizeAs(x));
+  copy(l, x, r->resizeAs(x).zero());
   return r;
 }
 
@@ -652,7 +652,7 @@ template < typename L >
 typename L::tensor_type* rot(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
     const typename L::value_type &c, const typename L::value_type &s) {
-  rot(l, x, y->resizeAs(x), c, s);
+  rot(l, x, y->resizeAs(x).zero(), c, s);
   return y;
 }
 
@@ -660,21 +660,21 @@ template < typename L >
 typename L::tensor_type* rotm(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
     const typename L::tensor_type &p) {
-  rotm(l, x, y->resizeAs(x), p);
+  rotm(l, x, y->resizeAs(x).zero(), p);
   return y;
 }
 
 template < typename L >
 typename L::tensor_type* scal(
     L *l, typename L::tensor_type *x, const typename L::value_type &a) {
-  scal(l, *x, a);
+  scal(l, x->zero(), a);
   return x;
 }
 
 template < typename L >
 typename L::tensor_type* swap(
     L *l, const typename L::tensor_type &x, typename L::tensor_type *y) {
-  swap(l, x, y->resizeAs(x));
+  swap(l, x, y->resizeAs(x).zero());
   return y;
 }
 
@@ -690,6 +690,7 @@ typename L::size_tensor* iamax(
     }
     r->resize(r_size);
   }
+  iamax(l, x, *r);
   return r;
 }
 
