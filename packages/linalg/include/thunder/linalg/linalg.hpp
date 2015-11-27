@@ -102,6 +102,47 @@ class Linalg {
   const T& swap(const T &x, const T &y);
   const size_tensor& iamax(const T &x, const size_tensor &r);
 
+  // Non-const result BLAS level-1 routines
+  T& asum(const T &x, T &r);
+  T& axpy(const T &x, T &y, const value_type &a = 1.0);
+  T& copy(const T &x, T &r);
+  T& dot(const T &x, const T &y, T &r);
+  T& dotc(const T &x, const T &y, T &r);
+  T& nrm2(const T &x, T &r);
+  T& rot(const T &x, T &y, const value_type &c = 1.0,
+         const value_type &s = 1.0);
+  T& rotm(const T &x, T &y, const T &p);
+  T& scal(T &x, const value_type &a = 1.0);
+  T& swap(const T &x, T &y);
+  size_tensor& iamax(const T &x, size_tensor &r);
+
+  // Pointer result BLAS level-1 routines
+  T* asum(const T &x, T *r);
+  T* axpy(const T &x, T *y, const value_type &a = 1.0);
+  T* copy(const T &x, T *r);
+  T* dot(const T &x, const T &y, T *r);
+  T* dotc(const T &x, const T &y, T *r);
+  T* nrm2(const T &x, T *r);
+  T* rot(const T &x, T *y, const value_type &c = 1.0,
+         const value_type &s = 1.0);
+  T* rotm(const T &x, T *y, const T &p);
+  T* scal(T *x, const value_type &a = 1.0);
+  T* swap(const T &x, T *y);
+  size_tensor* iamax(const T &x, size_tensor *r);
+
+  // Constructive result BLAS level-1 routines
+  T asum(const T &x);
+  T axpy(const T &x, const value_type &a = 1.0);
+  T copy(const T &x);
+  T dot(const T &x, const T &y);
+  T dotc(const T &x, const T &y);
+  T nrm2(const T &x);
+  T rot(const T &x, const value_type &c = 1.0, const value_type &s = 1.0);
+  T rotm(const T &x, const T &p);
+  T scal(const value_type &a = 1.0, allocator_type alloc = allocator_type());
+  T swap(const T &x);
+  size_tensor iamax(const T &x);
+
   // Const result BLAS level-2 routines
   const T& gbmv(const T &a, const T &x, const T &y, size_type kl = 0,
                 size_type ku = 0, const value_type &alpha = 1.0,

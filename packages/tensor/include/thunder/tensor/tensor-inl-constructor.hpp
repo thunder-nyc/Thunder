@@ -33,7 +33,8 @@ namespace tensor {
 
 template < typename S >
 Tensor< S >::Tensor(allocator_type alloc)
-    : size_(1, 1), stride_(1, 1), storage_(new S(1, alloc)), offset_(0) {}
+    : size_(1, 1), stride_(1, 1), storage_(::std::make_shared< S >(1, alloc)),
+      offset_(0) {}
 
 template < typename S >
 Tensor< S >::Tensor(size_storage sz, allocator_type alloc)

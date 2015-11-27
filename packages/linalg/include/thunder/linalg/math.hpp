@@ -107,6 +107,44 @@ const typename L::tensor_type& swap(
 template < typename L >
 const typename L::size_tensor& iamax(
     L *l, const typename L::tensor_type &x, const typename L::size_tensor &r);
+template < typename L >
+typename L::tensor_type* asum(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* axpy(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
+    const typename L::value_type &a);
+template < typename L >
+typename L::tensor_type* copy(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* dot(
+    L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
+    typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* dotc(
+    L *l, const typename L::tensor_type &x, const typename L::tensor_type &y,
+    typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* nrm2(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *r);
+template < typename L >
+typename L::tensor_type* rot(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
+    const typename L::value_type &c, const typename L::value_type &s);
+template < typename L >
+typename L::tensor_type* rotm(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *y,
+    const typename L::tensor_type &p);
+template < typename L >
+typename L::tensor_type* scal(
+    L *l, typename L::tensor_type *x, const typename L::value_type &a);
+template < typename L >
+typename L::tensor_type* swap(
+    L *l, const typename L::tensor_type &x, typename L::tensor_type *y);
+template < typename L >
+typename L::size_tensor* iamax(
+    L *l, const typename L::tensor_type &x, typename L::size_tensor *r);
 
 // BLAS level-2 routines
 template < typename L >

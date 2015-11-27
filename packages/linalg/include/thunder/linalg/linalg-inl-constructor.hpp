@@ -125,13 +125,13 @@ T* Linalg< T, H >::triu(const T &x, T *r) {
 template < typename T, typename H >
 T Linalg< T, H >::diag(const T &x) {
   T r(x.allocator());
-  return *(this->diag(x, &r));
+  return *diag(x, &r);
 }
 
 template < typename T, typename H >
 T Linalg< T, H >::eye(const typename T::size_storage &s, allocator_type alloc) {
   T r(alloc);
-  return *(this->eye(s, &r));
+  return *eye(s, &r);
 }
 
 template < typename T, typename H >
@@ -139,7 +139,7 @@ T Linalg< T, H >::linspace(
     const value_type &a, const value_type &b, size_type n,
     allocator_type alloc) {
   T r(alloc);
-  return *(this->linspace(a, b, n, &r));
+  return *linspace(a, b, n, &r);
 }
 
 template < typename T, typename H >
@@ -147,19 +147,19 @@ T Linalg< T, H >::logspace(
     const value_type &a, const value_type &b, size_type n,
     allocator_type alloc) {
   T r(alloc);
-  return *(this->logspace(a, b, n, &r));
+  return *logspace(a, b, n, &r);
 }
 
 template < typename T, typename H >
 T Linalg< T, H >::tril(const T &x) {
   T r(x.allocator());
-  return *(this->tril(x, &r));
+  return *tril(x, &r);
 }
 
 template < typename T, typename H >
 T Linalg< T, H >::triu(const T &x) {
   T r(x.allocator());
-  return *(this->triu(x, &r));
+  return *triu(x, &r);
 }
 
 }  //  namespace linalg
