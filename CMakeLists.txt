@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(Thunder)
 
 # Enable Fortran for blas/lapack interfaces
-enable_language (Fortran)
+enable_language(Fortran)
 
 # The version number
 set(THUNDER_VERSION_MAJOR 0)

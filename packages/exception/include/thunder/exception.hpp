@@ -24,7 +24,6 @@
 
 namespace thunder {
 
-using exception::exception;
 using exception::logic_error;
 using exception::runtime_error;
 using exception::invalid_argument;
