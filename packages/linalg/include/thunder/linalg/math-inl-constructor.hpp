@@ -408,7 +408,6 @@ typename L::tensor_type* diag(
 template < typename L >
 typename L::tensor_type* eye(
     L *l, const typename L::size_storage &s, typename L::tensor_type *r) {
-  typedef typename L::tensor_type T;
   if (s.size() == 1) {
     r->resize(s[0], s[0]);
   } else {

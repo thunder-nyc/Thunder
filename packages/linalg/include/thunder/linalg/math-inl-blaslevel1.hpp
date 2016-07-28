@@ -571,7 +571,7 @@ typename L::tensor_type* asum(
     r->resize(1);
   } else {
     typename T::size_storage r_size(x.dimension() - 1);
-    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+    for (typename T::dim_type i = 0; i < r_size.size(); ++i) {
       r_size[i] = x.size(i);
     }
     r->resize(r_size);
@@ -604,7 +604,7 @@ typename L::tensor_type* dot(
     r->resize(1);
   } else {
     typename T::size_storage r_size(x.dimension() - 1);
-    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+    for (typename T::dim_type i = 0; i < r_size.size(); ++i) {
       r_size[i] = x.size(i);
     }
     r->resize(r_size);
@@ -622,7 +622,7 @@ typename L::tensor_type* dotc(
     r->resize(1);
   } else {
     typename T::size_storage r_size(x.dimension() - 1);
-    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+    for (typename T::dim_type i = 0; i < r_size.size(); ++i) {
       r_size[i] = x.size(i);
     }
     r->resize(r_size);
@@ -639,7 +639,7 @@ typename L::tensor_type* nrm2(
     r->resize(1);
   } else {
     typename T::size_storage r_size(x.dimension() - 1);
-    for (typename T::dim_type i = 0; i < r->dimension(); ++i) {
+    for (typename T::dim_type i = 0; i < r_size.size(); ++i) {
       r_size[i] = x.size(i);
     }
     r->resize(r_size);
@@ -685,7 +685,7 @@ typename L::size_tensor* iamax(
     r->resize(1);
   } else {
     typename L::size_tensor::size_storage r_size(x.dimension() - 1);
-    for (typename L::size_tensor::dim_type i = 0; i < r->dimension(); ++i) {
+    for (typename L::size_tensor::dim_type i = 0; i < r_size.size(); ++i) {
       r_size[i] = x.size(i);
     }
     r->resize(r_size);

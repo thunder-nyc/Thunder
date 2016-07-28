@@ -17,6 +17,8 @@
  * @}
  */
 
+#include "thunder/linalg.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <complex>
@@ -24,7 +26,6 @@
 #include <random>
 
 #include "gtest/gtest.h"
-#include "thunder/linalg.hpp"
 #include "thunder/linalg/math.hpp"
 #include "thunder/linalg/linalg.hpp"
 #include "thunder/random.hpp"
