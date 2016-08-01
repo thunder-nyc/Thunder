@@ -9,7 +9,8 @@ The library just had its development began. Contribution is very welcomed! Pleas
 ## Installation
 
 Here is a list of prerequisites you need to have to make sure Thunder compiles
-* A compiler that supports C++11. Some examples are [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
+* A C++11 compiler. Some examples are [gcc](https://gcc.gnu.org) >= 4.8 and [llvm/clang](http://clang.llvm.org) >= 3.4.
+* BLAS library (e.g., libblas.so)
 
 ### Compile Thunder
 

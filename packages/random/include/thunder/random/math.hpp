@@ -110,4 +110,4 @@ const typename R::tensor_type& randperm(R *r, const typename R::tensor_type &t);
 }  // namespace random
 }  // namespace thunder
 
-#endif  // typename R::tensor_typeHUNDER_RANDOM_MATH_HPP_
+#endif  // THUNDER_RANDOM_MATH_HPP_
