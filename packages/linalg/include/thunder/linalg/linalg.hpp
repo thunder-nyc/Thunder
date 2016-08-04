@@ -37,6 +37,7 @@ class Linalg {
 
   typedef typename T::allocator_type allocator_type;
   typedef typename T::value_type value_type;
+  typedef typename T::real_type real_type;
   typedef typename T::size_type size_type;
   typedef typename T::size_storage size_storage;
   typedef SizeTensor size_tensor;
@@ -144,9 +145,9 @@ class Linalg {
   size_tensor iamax(const T &x);
 
   // Const result BLAS level-2 routines
-  const T& gbmv(const T &a, const T &x, const T &y, size_type kl = 0,
-                size_type ku = 0, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0);
+  const T& gbmv(const T &a, const T &x, const T &y,
+                const value_type &alpha = 1.0, const value_type &beta = 0.0,
+                size_type kl = 0, size_type ku = 0);
   const T& gemv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0);
   const T& ger(const T &x, const T &y, const T &a,
@@ -154,36 +155,36 @@ class Linalg {
   const T& gerc(const T &x, const T &y, const T &a,
                 const value_type &alpha = 1.0);
   const T& hbmv(const T &a, const T &x, const T &y,
-                const value_type &alpha = 1.0, size_type k = 0,
-                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+                const value_type &alpha = 1.0, const value_type &beta = 0.0,
+                size_type k = 0, Uplo uplo = Uplo::kUpper);
   const T& hemv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 Uplo uplo = Uplo::kUpper);
-  const T& her(const T &x, const T &a, const value_type &alpha = 1.0,
+  const T& her(const T &x, const T &a, const real_type &alpha = 1.0,
                Uplo uplo = Uplo::kUpper);
   const T& her2(const T &x, const T &y, const T &a,
                 const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& hpmv(const T &ap, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 Uplo uplo = Uplo::kUpper);
-  const T& hpr(const T &x, const T &ap, const value_type &alpha = 1.0,
+  const T& hpr(const T &x, const T &ap, const real_type &alpha = 1.0,
                Uplo uplo = Uplo::kUpper);
   const T& hpr2(const T &x, const T &y, const T &ap,
                 const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
   const T& sbmv(const T &a, const T &x, const T &y,
-                size_type k = 0, const value_type &alpha = 1.0,
-                const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+                const value_type &alpha = 1.0, const value_type &beta = 0.0,
+                size_type k = 0, Uplo uplo = Uplo::kUpper);
   const T& spmv(const T &ap, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 Uplo uplo = Uplo::kUpper);
-  const T& spr(const T &x, const T &ap, const value_type &alpha = 1.0,
+  const T& spr(const T &x, const T &ap, const real_type &alpha = 1.0,
                Uplo uplo = Uplo::kUpper);
   const T& spr2(const T &x, const T &y, const T &ap,
                 const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
-  const T& symv(const T &ap, const T &x, const T &y,
+  const T& symv(const T &a, const T &x, const T &y,
                 const value_type &alpha = 1.0, const value_type &beta = 0.0,
                 Uplo uplo = Uplo::kUpper);
-  const T& syr(const T &x, const T &a, const value_type &alpha = 1.0,
+  const T& syr(const T &x, const T &a, const real_type &alpha = 1.0,
                Uplo uplo = Uplo::kUpper);
   const T& syr2(const T &x, const T &y, const T &a,
                 const value_type &alpha = 1.0, Uplo uplo = Uplo::kUpper);
@@ -199,6 +200,156 @@ class Linalg {
                 Diag diag = Diag::kNonUnit);
   const T& trsv(const T &a, const T &x, Uplo uplo = Uplo::kUpper,
                 Diag diag = Diag::kNonUnit);
+
+  // Non-const result BLAS level-2 routines
+  T& gbmv(const T &a, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, size_type kl = 0, size_type ku = 0);
+  T& gemv(const T &a, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0);
+  T& ger(const T &x, const T &y, T &a, const value_type &alpha = 1.0);
+  T& gerc(const T &x, const T &y, T &a, const value_type &alpha = 1.0);
+  T& hbmv(const T &a, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, size_type k = 0,
+          Uplo uplo = Uplo::kUpper);
+  T& hemv(const T &a, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& her(const T &x, T &a, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T& her2(const T &x, const T &y, T &a, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T& hpmv(const T &ap, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& hpr(const T &x, T &ap, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T& hpr2(const T &x, const T &y, T &ap, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T& sbmv(const T &a, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, size_type k = 0,
+          Uplo uplo = Uplo::kUpper);
+  T& spmv(const T &ap, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& spr(const T &x, T &ap, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T& spr2(const T &x, const T &y, T &ap, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T& symv(const T &a, const T &x, T &y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& syr(const T &x, T &a, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T& syr2(const T &x, const T &y, T &a, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T& tbmv(const T &a, T &x, size_type k = 0, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T& tbsv(const T &a, T &x, size_type k = 0, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T& tpmv(const T &ap, T &x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T& tpsv(const T &ap, T &x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T& trmv(const T &a, T &x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T& trsv(const T &a, T &x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+
+  // Pointer result BLAS level-2 routines
+  T* gbmv(const T &a, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, size_type kl = 0, size_type ku = 0);
+  T* gemv(const T &a, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0);
+  T* ger(const T &x, const T &y, T* a, const value_type &alpha = 1.0);
+  T* gerc(const T &x, const T &y, T* a, const value_type &alpha = 1.0);
+  T* hbmv(const T &a, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, size_type k = 0,
+          Uplo uplo = Uplo::kUpper);
+  T* hemv(const T &a, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* her(const T &x, T* a, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T* her2(const T &x, const T &y, T* a, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T* hpmv(const T &ap, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* hpr(const T &x, T* ap, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T* hpr2(const T &x, const T &y, T* ap, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T* sbmv(const T &a, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, size_type k = 0,
+          Uplo uplo = Uplo::kUpper);
+  T* spmv(const T &ap, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* spr(const T &x, T* ap, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T* spr2(const T &x, const T &y, T* ap, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T* symv(const T &a, const T &x, T* y, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* syr(const T &x, T* a, const real_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T* syr2(const T &x, const T &y, T* a, const value_type &alpha = 1.0,
+          Uplo uplo = Uplo::kUpper);
+  T* tbmv(const T &a, T* x, size_type k = 0, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T* tbsv(const T &a, T* x, size_type k = 0, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T* tpmv(const T &ap, T* x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T* tpsv(const T &ap, T* x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T* trmv(const T &a, T* x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T* trsv(const T &a, T* x, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+
+  // Constructive result level 2 BLAS routines
+  T gbmv(const T &a, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, size_type kl = 0, size_type ku = 0);
+  T gemv(const T &a, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0);
+  T ger(const T &x, const T &y, const value_type &alpha = 1.0);
+  T gerc(const T &x, const T &y, const value_type &alpha = 1.0);
+  T hbmv(const T &a, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, size_type k = 0,
+         Uplo uplo = Uplo::kUpper);
+  T hemv(const T &a, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T her(const T &x, const real_type &alpha = 1.0,
+        Uplo uplo = Uplo::kUpper);
+  T her2(const T &x, const T &y, const value_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T hpmv(const T &ap, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T hpr(const T &x, const real_type &alpha = 1.0,
+        Uplo uplo = Uplo::kUpper);
+  T hpr2(const T &x, const T &y, const value_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T sbmv(const T &a, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, size_type k = 0,
+         Uplo uplo = Uplo::kUpper);
+  T spmv(const T &ap, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T spr(const T &x, const real_type &alpha = 1.0,
+        Uplo uplo = Uplo::kUpper);
+  T spr2(const T &x, const T &y, const value_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T symv(const T &a, const T &x, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T syr(const T &x, const real_type &alpha = 1.0,
+        Uplo uplo = Uplo::kUpper);
+  T syr2(const T &x, const T &y, const value_type &alpha = 1.0,
+         Uplo uplo = Uplo::kUpper);
+  T tbmv(const T &a, size_type k = 0, Uplo uplo = Uplo::kUpper,
+         Diag diag = Diag::kNonUnit);
+  T tbsv(const T &a, size_type k = 0, Uplo uplo = Uplo::kUpper,
+         Diag diag = Diag::kNonUnit);
+  T tpmv(const T &ap, Uplo uplo = Uplo::kUpper,
+         Diag diag = Diag::kNonUnit);
+  T tpsv(const T &ap, Uplo uplo = Uplo::kUpper,
+         Diag diag = Diag::kNonUnit);
+  T trmv(const T &a, Uplo uplo = Uplo::kUpper,
+         Diag diag = Diag::kNonUnit);
+  T trsv(const T &a, Uplo uplo = Uplo::kUpper,
+         Diag diag = Diag::kNonUnit);
 
   // Const result level-3 BLAS routines
   const T& gemm(const T &a, const T &b, const T &c,

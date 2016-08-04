@@ -82,6 +82,7 @@ class Tensor {
   // Typedefs for complex number handling
   typedef typename StorageType< S >::real_storage real_storage;
   typedef Tensor< real_storage > real_tensor;
+  typedef typename real_storage::value_type real_type;
 
   // Constructors
   explicit Tensor(allocator_type alloc = allocator_type());
