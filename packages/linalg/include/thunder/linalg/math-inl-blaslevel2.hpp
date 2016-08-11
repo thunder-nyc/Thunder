@@ -1713,7 +1713,7 @@ typename L::tensor_type* hpr(
   }
   ap_size[ap_size.size() - 1] =
       (x.size(x.dimension() - 1) + 1) * x.size(x.dimension() - 1) / 2;
-  hpr(l, x, ap->resize(ap_size), alpha, uplo);
+  hpr(l, x, ap->resize(ap_size).zero(), alpha, uplo);
   return ap;
 }
 
@@ -1729,7 +1729,7 @@ typename L::tensor_type* hpr2(
   }
   ap_size[ap_size.size() - 1] =
       (x.size(x.dimension() - 1) + 1) * x.size(x.dimension() - 1) / 2;
-  hpr2(l, x, y, ap->resize(ap_size), alpha, uplo);
+  hpr2(l, x, y, ap->resize(ap_size).zero(), alpha, uplo);
   return ap;
 }
 
@@ -1771,7 +1771,7 @@ typename L::tensor_type* spr(
   }
   ap_size[ap_size.size() - 1] =
       (x.size(x.dimension() - 1) + 1) * x.size(x.dimension() - 1) / 2;
-  spr(l, x, ap->resize(ap_size), alpha, uplo);
+  spr(l, x, ap->resize(ap_size).zero(), alpha, uplo);
   return ap;
 }
 
@@ -1787,7 +1787,7 @@ typename L::tensor_type* spr2(
   }
   ap_size[ap_size.size() - 1] =
       (x.size(x.dimension() - 1) + 1) * x.size(x.dimension() - 1) / 2;
-  spr2(l, x, y, ap->resize(ap_size), alpha, uplo);
+  spr2(l, x, y, ap->resize(ap_size).zero(), alpha, uplo);
   return ap;
 }
 

@@ -2,7 +2,7 @@
 file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "include/thunder/*.hpp")
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
 file(GLOB_RECURSE FORTRAN_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.f")
-file(GLOB_RECURSE TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/*.cpp")
+file(GLOB_RECURSE TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/linalg_*.cpp")
 
 # Create the library
 add_library(thunder_linalg ${HEADERS} ${SOURCES} ${FORTRAN_SOURCES})
@@ -16,6 +16,19 @@ install(DIRECTORY include/thunder DESTINATION include FILES_MATCHING PATTERN "*.
 # Create tests
 if(BUILD_THUNDER_TESTS)
   foreach(TEST_SOURCE ${TESTS})
+    string(REPLACE ".cpp" "" TEST_TARGET ${TEST_SOURCE})
+    string(REPLACE "test/" "" TEST_TARGET ${TEST_TARGET})
+    add_executable(${TEST_TARGET} ${TEST_SOURCE})
+    target_link_libraries(${TEST_TARGET} thunder_exception thunder_serializer thunder_storage thunder_tensor thunder_random thunder_linalg gtest gtest_main)
+    add_test(${TEST_TARGET} ${TEST_TARGET})
+  endforeach()
+endif()
+
+# Create tests for CXXBLAS
+file(GLOB_RECURSE CXXBLAS_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "test/cxxblas_*.cpp")
+option(BUILD_THUNDER_LINALG_CXXBLAS_TESTS "Whether to build cxxblas tests in thunder::linalg")
+if(BUILD_THUNDER_LINALG_CXXBLAS_TESTS)
+  foreach(TEST_SOURCE ${CXXBLAS_TESTS})
     string(REPLACE ".cpp" "" TEST_TARGET ${TEST_SOURCE})
     string(REPLACE "test/" "" TEST_TARGET ${TEST_TARGET})
     add_executable(${TEST_TARGET} ${TEST_SOURCE})
