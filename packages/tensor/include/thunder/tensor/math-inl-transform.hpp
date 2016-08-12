@@ -182,7 +182,7 @@ T1 permute(const T1 &x, const T2 &y, typename T1::dim_type d) {
     typename T1::pointer t_pointer = t.data();
     typename T1::difference_type t_left_step = d > 0 ? t.stride(d - 1) : 0;
     typename T1::difference_type t_right_step = t.stride(t.dimension() - 1);
-    typename T1::difference_type t_length = t.size(d);
+    typename T1::size_type t_length = t.size(d);
     typename T1::difference_type t_step = t.stride(d);
     typename T2::pointer y_pointer = y.data();
     typename T2::difference_type y_step = y.stride(y.dimension() - 1);
