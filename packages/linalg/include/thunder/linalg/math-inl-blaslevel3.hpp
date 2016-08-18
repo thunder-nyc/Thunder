@@ -113,7 +113,7 @@ const typename L::tensor_type& hemm(
       throw out_of_range("Tensor size does not match.");
     }
   }
-  if (c.size(c.dimension() - 1) != c.size(c.dimension() - 2)) {
+  if (a.size(a.dimension() - 1) != a.size(a.dimension() - 2)) {
     throw out_of_range("Matrix size is not symmetric.");
   }
   if (side == L::Side::kLeft) {
@@ -323,7 +323,7 @@ const typename L::tensor_type& symm(
       throw out_of_range("Tensor size does not match.");
     }
   }
-  if (c.size(c.dimension() - 1) != c.size(c.dimension() - 2)) {
+  if (a.size(a.dimension() - 1) != a.size(a.dimension() - 2)) {
     throw out_of_range("Matrix size is not symmetric.");
   }
   if (side == L::Side::kLeft) {
