@@ -359,7 +359,7 @@ class Linalg {
                 Side side = Side::kLeft, Uplo uplo = Uplo::kUpper);
   const T& herk(const T &a, const T &c, const real_type &alpha = 1.0,
                 const real_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
-  const T& herk2(const T &a, const T &b, const T &c,
+  const T& her2k(const T &a, const T &b, const T &c,
                  const value_type &alpha = 1.0, const real_type &beta = 0.0,
                  Uplo uplo = Uplo::kUpper);
   const T& symm(const T &a, const T &b, const T &c,
@@ -367,15 +367,85 @@ class Linalg {
                 Side side = Side::kLeft, Uplo uplo = Uplo::kUpper);
   const T& syrk(const T &a, const T &c, const value_type &alpha = 1.0,
                 const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
-  const T& syrk2(const T &a, const T&b, const T &c,
+  const T& syr2k(const T &a, const T &b, const T &c,
                  const value_type &alpha = 1.0, const value_type &beta = 0.0,
                  Uplo uplo = Uplo::kUpper);
-  const T& trmm(const T &a, const T&b, const value_type &alpha = 1.0,
+  const T& trmm(const T &a, const T &b, const value_type &alpha = 1.0,
                 Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
                 Diag diag = Diag::kNonUnit);
   const T& trsm(const T &a, const T &b, const value_type &alpha = 1.0,
                 Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
                 Diag diag = Diag::kNonUnit);
+
+  // Non-const result level-3 BLAS routines
+  T& gemm(const T &a, const T &b, T &c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0);
+  T& hemm(const T &a, const T &b, T &c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Side side = Side::kLeft,
+          Uplo uplo = Uplo::kUpper);
+  T& herk(const T &a, T &c, const real_type &alpha = 1.0,
+          const real_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& her2k(const T &a, const T &b, T &c, const value_type &alpha = 1.0,
+           const real_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& symm(const T &a, const T &b, T &c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Side side = Side::kLeft,
+          Uplo uplo = Uplo::kUpper);
+  T& syrk(const T &a, T &c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& syr2k(const T &a, const T &b, T &c, const value_type &alpha = 1.0,
+           const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T& trmm(const T &a, T &b, const value_type &alpha = 1.0,
+          Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T& trsm(const T &a, T &b, const value_type &alpha = 1.0,
+          Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+
+  // Pointer result level-3 BLAS routines
+  T* gemm(const T &a, const T &b, T *c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0);
+  T* hemm(const T &a, const T &b, T *c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Side side = Side::kLeft,
+          Uplo uplo = Uplo::kUpper);
+  T* herk(const T &a, T *c, const real_type &alpha = 1.0,
+          const real_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* her2k(const T &a, const T &b, T *c, const value_type &alpha = 1.0,
+           const real_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* symm(const T &a, const T &b, T *c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Side side = Side::kLeft,
+          Uplo uplo = Uplo::kUpper);
+  T* syrk(const T &a, T *c, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* syr2k(const T &a, const T &b, T *c, const value_type &alpha = 1.0,
+           const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T* trmm(const T &a, T *b, const value_type &alpha = 1.0,
+          Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+  T* trsm(const T &a, T *b, const value_type &alpha = 1.0,
+          Side side = Side::kLeft, Uplo uplo = Uplo::kUpper,
+          Diag diag = Diag::kNonUnit);
+
+  // Constructive result level-3 BLAS routines
+  T gemm(const T &a, const T &b, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0);
+  T hemm(const T &a, const T &b, const value_type &alpha = 1.0,
+         const value_type &beta = 0.0, Side side = Side::kLeft,
+         Uplo uplo = Uplo::kUpper);
+  T herk(const T &a, const real_type &alpha = 1.0, const real_type &beta = 0.0,
+         Uplo uplo = Uplo::kUpper);
+  T her2k(const T &a, const T &b, const value_type &alpha = 1.0,
+           const real_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T symm(const T &a, const T &b, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Side side = Side::kLeft,
+          Uplo uplo = Uplo::kUpper);
+  T syrk(const T &a, const value_type &alpha = 1.0,
+          const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T syr2k(const T &a, const T &b, const value_type &alpha = 1.0,
+           const value_type &beta = 0.0, Uplo uplo = Uplo::kUpper);
+  T trmm(const T &a, const value_type &alpha = 1.0, Side side = Side::kLeft,
+         Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
+  T trsm(const T &a, const value_type &alpha = 1.0, Side side = Side::kLeft,
+         Uplo uplo = Uplo::kUpper, Diag diag = Diag::kNonUnit);
 
  private:
   H handle_;

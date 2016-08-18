@@ -19,10 +19,6 @@
 
 #include "thunder/linalg.hpp"
 
-#include <complex>
-#include <memory>
-#include <random>
-
 #include "gtest/gtest.h"
 #include "thunder/exception.hpp"
 #include "thunder/linalg/cxxblas.hpp"
@@ -40,7 +36,7 @@ const T& uniformDist(const T& t) {
   try {
     r.uniform(t.viewImag());
   } catch (const domain_error &e) {
-    // Do nothing for an real tensor type
+    // Do nothing for a real tensor type
   }
   return t;
 }
