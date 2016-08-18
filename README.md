@@ -4,8 +4,6 @@ Thunder is a [C++11](http://en.wikipedia.org/wiki/C%2B%2B11) library to provide 
 
 Thunder is largely inspired by [Torch 7](http://torch.ch), Facebook's [TH++](http://github.com/facebook/thpp), and [EBLearn](http://eblearn.sourceforge.net)'s [libidx](http://eblearn.sourceforge.net/libidx.html). In fact, the name "Thunder" came from "TH--" if "under" could be interpreted as "--".
 
-The library just had its development began. Contribution is very welcomed! Please contact Xiang Zhang (xiang.zhang [at] nyu.edu) for details.
-
 ## Installation
 
 Here is a list of prerequisites you need to have to make sure Thunder compiles
