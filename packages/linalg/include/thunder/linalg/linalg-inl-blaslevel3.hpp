@@ -38,13 +38,13 @@ const T& Linalg< T, H >::gemm(
 template < typename T, typename H >
 const T& Linalg< T, H >::hemm(
     const T &a, const T &b, const T &c, const value_type &alpha,
-    const value_type &beta, Uplo uplo) {
-  return math::hemm(this, a, b, c, alpha, beta, uplo);
+    const value_type &beta, Side side, Uplo uplo) {
+  return math::hemm(this, a, b, c, alpha, beta, side, uplo);
 }
 
 template < typename T, typename H >
 const T& Linalg< T, H >::herk(
-    const T &a, const T &c, const value_type &alpha, const value_type &beta,
+    const T &a, const T &c, const real_type &alpha, const real_type &beta,
     Uplo uplo) {
   return math::herk(this, a, c, alpha, beta, uplo);
 }
@@ -52,15 +52,15 @@ const T& Linalg< T, H >::herk(
 template < typename T, typename H >
 const T& Linalg< T, H >::herk2(
     const T &a, const T &b, const T &c, const value_type &alpha,
-    const value_type &beta, Uplo uplo) {
+    const real_type &beta, Uplo uplo) {
   return math::herk2(this, a, b, c, alpha, beta, uplo);
 }
 
 template < typename T, typename H >
 const T& Linalg< T, H >::symm(
     const T &a, const T &b, const T &c, const value_type &alpha,
-    const value_type &beta, Uplo uplo) {
-  return math::symm(this, a, b, c, alpha, beta, uplo);
+    const value_type &beta, Side side, Uplo uplo) {
+  return math::symm(this, a, b, c, alpha, beta, side, uplo);
 }
 
 template < typename T, typename H >
@@ -79,9 +79,9 @@ const T& Linalg< T, H >::syrk2(
 
 template < typename T, typename H >
 const T& Linalg< T, H >::trmm(
-    const T &a, const T&b, const T &c, const value_type &alpha,
-    const value_type &beta, Uplo uplo, Diag diag) {
-  return math::trmm(this, a, b, c, alpha, beta, uplo, diag);
+    const T &a, const T&b, const value_type &alpha, Side side, Uplo uplo,
+    Diag diag) {
+  return math::trmm(this, a, b, alpha, side, uplo, diag);
 }
 
 template < typename T, typename H >

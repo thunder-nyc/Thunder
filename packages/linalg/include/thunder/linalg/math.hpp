@@ -384,22 +384,24 @@ template < typename L >
 const typename L::tensor_type& hemm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo);
+    const typename L::value_type &beta, typename L::Side side,
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& herk(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &c,
-    const typename L::value_type &alpha, const typename L::value_type &beta,
+    const typename L::real_type &alpha, const typename L::real_type &beta,
     typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& herk2(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo);
+    const typename L::real_type &beta, typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& symm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo);
+    const typename L::value_type &beta, typename L::Side side,
+    typename L::Uplo uplo);
 template < typename L >
 const typename L::tensor_type& syrk(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &c,
@@ -413,9 +415,8 @@ const typename L::tensor_type& syrk2(
 template < typename L >
 const typename L::tensor_type& trmm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
-    const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo,
-    typename L::Diag diag);
+    const typename L::value_type &alpha, typename L::Side side,
+    typename L::Uplo uplo, typename L::Diag diag);
 template < typename L >
 const typename L::tensor_type& trsm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &b,

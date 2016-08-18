@@ -23,6 +23,8 @@
 #include "thunder/linalg/math.hpp"
 #include "thunder/linalg/math-inl.hpp"
 
+#include "thunder/exception.hpp"
+#include "thunder/linalg/cxxblas.hpp"
 #include "thunder/tensor.hpp"
 
 namespace thunder {
@@ -34,6 +36,65 @@ const typename L::tensor_type& gemm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
     const typename L::value_type &beta) {
+  typedef typename L::tensor_type T;
+  if (a.dimension() != b.dimension() || a.dimension() != c.dimension()) {
+    throw out_of_range("Tensor dimension does not match.");
+  }
+  for (typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+    if (a.size(i) != b.size(i) || a.size(i) != c.size(i)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (a.size(a.dimension() - 2) != c.size(c.dimension() - 2) ||
+      a.size(a.dimension() - 1) != b.size(b.dimension() - 2) ||
+      b.size(b.dimension() - 1) != c.size(c.dimension() - 1)) {
+    throw out_of_range("Tensor size does not match.");
+  }
+  if (a.stride(a.dimension() - 1) != 1 || b.stride(b.dimension() - 1) != 1 ||
+      c.stride(c.dimension() - 1) != 1) {
+    throw contiguity_error("Last dimension of matrix is not contiguous.");
+  }
+
+  int m = static_cast< int >(c.size(c.dimension() - 2));
+  int n = static_cast< int >(c.size(c.dimension() - 1));
+  int k = static_cast< int >(a.size(a.dimension() - 1));
+  int a_step = static_cast< int >(a.stride(a.dimension() - 2));
+  int b_step = static_cast< int >(b.stride(b.dimension() - 2));
+  int c_step = static_cast< int >(c.stride(c.dimension() - 2));
+
+  if (a.dimension() == 2) {
+    typename T::pointer a_pointer = a.data();
+    typename T::pointer b_pointer = b.data();
+    typename T::pointer c_pointer = c.data();
+    cxxblas::gemm(m, n, k, a_pointer, b_pointer, c_pointer, alpha, beta, a_step,
+                  b_step, c_step);
+  } else if (a.partialContiguity(0, a.dimension() - 3) &&
+             b.partialContiguity(0, b.dimension() - 3) &&
+             c.partialContiguity(0, c.dimension() - 3)) {
+    typename T::size_type batch_size = 1;
+    for(typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+      batch_size = batch_size * a.size(i);
+    }
+    typename T::pointer a_pointer = a.data();
+    typename T::difference_type a_batch = a.stride(a.dimension() - 3);
+    typename T::pointer b_pointer = b.data();
+    typename T::difference_type b_batch = b.stride(b.dimension() - 3);
+    typename T::pointer c_pointer = c.data();
+    typename T::difference_type c_batch = c.stride(c.dimension() - 3);
+    for (typename T::size_type i = 0; i < batch_size; ++i) {
+      cxxblas::gemm(m, n, k, &a_pointer[i * a_batch], &b_pointer[i * b_batch],
+                    &c_pointer[i * c_batch], alpha, beta, a_step, b_step,
+                    c_step);
+    }
+  } else {
+    T a_select = a.select(a.dimension() - 1, 0).select(a.dimension() - 2, 0);
+    for (typename T::reference_iterator a_begin = a_select.reference_begin(),
+             a_end = a_select.reference_end(); a_begin != a_end; ++a_begin) {
+      cxxblas::gemm(m, n, k, &(*a_begin), b[a_begin.position()].data(),
+                    c[a_begin.position()].data(), alpha, beta, a_step, b_step,
+                    c_step);
+    }
+  }
   return c;
 }
 
@@ -41,15 +102,139 @@ template < typename L >
 const typename L::tensor_type& hemm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo) {
+    const typename L::value_type &beta, typename L::Side side,
+    typename L::Uplo uplo) {
+  typedef typename L::tensor_type T;
+  if (a.dimension() != b.dimension() || a.dimension() != c.dimension()) {
+    throw out_of_range("Tensor dimension does not match.");
+  }
+  for (typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+    if (a.size(i) != b.size(i) || a.size(i) != c.size(i)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (c.size(c.dimension() - 1) != c.size(c.dimension() - 2)) {
+    throw out_of_range("Matrix size is not symmetric.");
+  }
+  if (side == L::Side::kLeft) {
+    if (a.size(a.dimension() - 2) != c.size(c.dimension() - 2) ||
+        a.size(a.dimension() - 1) != b.size(b.dimension() - 2) ||
+        b.size(b.dimension() - 1) != c.size(c.dimension() - 1)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  } else {
+    if (a.size(a.dimension() - 2) != b.size(b.dimension() - 1) ||
+        a.size(a.dimension() - 1) != c.size(b.dimension() - 1) ||
+        b.size(b.dimension() - 2) != c.size(c.dimension() - 2)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (a.stride(a.dimension() - 1) != 1 || b.stride(b.dimension() - 1) != 1 ||
+      c.stride(c.dimension() - 1) != 1) {
+    throw contiguity_error("Last dimension of matrix is not contiguous.");
+  }
+
+  int m = static_cast< int >(c.size(c.dimension() - 2));
+  int n = static_cast< int >(c.size(c.dimension() - 1));
+  int a_step = static_cast< int >(a.stride(a.dimension() - 2));
+  int b_step = static_cast< int >(b.stride(b.dimension() - 2));
+  int c_step = static_cast< int >(c.stride(c.dimension() - 2));
+
+  if (a.dimension() == 2) {
+    typename T::pointer a_pointer = a.data();
+    typename T::pointer b_pointer = b.data();
+    typename T::pointer c_pointer = c.data();
+    cxxblas::hemm(m, n, a_pointer, b_pointer, c_pointer, alpha, beta, a_step,
+                  b_step, c_step, cxxblas::Order::kRowMajor, side, uplo);
+  } else if (a.partialContiguity(0, a.dimension() - 3) &&
+             b.partialContiguity(0, b.dimension() - 3) &&
+             c.partialContiguity(0, c.dimension() - 3)) {
+    typename T::size_type batch_size = 1;
+    for(typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+      batch_size = batch_size * a.size(i);
+    }
+    typename T::pointer a_pointer = a.data();
+    typename T::difference_type a_batch = a.stride(a.dimension() - 3);
+    typename T::pointer b_pointer = b.data();
+    typename T::difference_type b_batch = b.stride(b.dimension() - 3);
+    typename T::pointer c_pointer = c.data();
+    typename T::difference_type c_batch = c.stride(c.dimension() - 3);
+    for (typename T::size_type i = 0; i < batch_size; ++i) {
+      cxxblas::hemm(m, n, &a_pointer[i * a_batch], &b_pointer[i * b_batch],
+                    &c_pointer[i * c_batch], alpha, beta, a_step, b_step,
+                    c_step, cxxblas::Order::kRowMajor, side, uplo);
+    }
+  } else {
+    T a_select = a.select(a.dimension() - 1, 0).select(a.dimension() - 2, 0);
+    for (typename T::reference_iterator a_begin = a_select.reference_begin(),
+             a_end = a_select.reference_end(); a_begin != a_end; ++a_begin) {
+      cxxblas::hemm(m, n, &(*a_begin), b[a_begin.position()].data(),
+                    c[a_begin.position()].data(), alpha, beta, a_step, b_step,
+                    c_step, cxxblas::Order::kRowMajor, side, uplo);
+    }
+  }
+
   return c;
 }
 
 template < typename L >
 const typename L::tensor_type& herk(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &c,
-    const typename L::value_type &alpha, const typename L::value_type &beta,
+    const typename L::real_type &alpha, const typename L::real_type &beta,
     typename L::Uplo uplo) {
+  typedef typename L::tensor_type T;
+  if (a.dimension() != c.dimension()) {
+    throw out_of_range("Tensor dimension does not match.");
+  }
+  for (typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+    if (a.size(i) != c.size(i)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (c.size(c.dimension() - 1) != c.size(c.dimension() - 2)) {
+    throw out_of_range("Matrix size is not symmetric.");
+  }
+  if (a.size(a.dimension() - 2) != c.size(c.dimension() - 2)) {
+    throw out_of_range("Tensor size does not match.");
+  }
+  if (a.stride(a.dimension() - 1) != 1 || c.stride(c.dimension() - 1) != 1) {
+    throw contiguity_error("Last dimension of matrix is not contiguous.");
+  }
+
+  int n = static_cast< int >(c.size(c.dimension() - 1));
+  int k = static_cast< int >(a.size(a.dimension() - 1));
+  int a_step = static_cast< int >(a.stride(a.dimension() - 2));
+  int c_step = static_cast< int >(c.stride(c.dimension() - 2));
+
+  if (a.dimension() == 2) {
+    typename T::pointer a_pointer = a.data();
+    typename T::pointer c_pointer = c.data();
+    cxxblas::herk(n, k, a_pointer, c_pointer, alpha, beta, a_step, c_step,
+                  cxxblas::Order::kRowMajor, uplo);
+  } else if (a.partialContiguity(0, a.dimension() - 3) &&
+             c.partialContiguity(0, c.dimension() - 3)) {
+    typename T::size_type batch_size = 1;
+    for(typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+      batch_size = batch_size * a.size(i);
+    }
+    typename T::pointer a_pointer = a.data();
+    typename T::difference_type a_batch = a.stride(a.dimension() - 3);
+    typename T::pointer c_pointer = c.data();
+    typename T::difference_type c_batch = c.stride(c.dimension() - 3);
+    for (typename T::size_type i = 0; i < batch_size; ++i) {
+      cxxblas::herk(n, k, &a_pointer[i * a_batch], &c_pointer[i * c_batch],
+                    alpha, beta, a_step, c_step, cxxblas::Order::kRowMajor,
+                    uplo);
+    }
+  } else {
+    T a_select = a.select(a.dimension() - 1, 0).select(a.dimension() - 2, 0);
+    for (typename T::reference_iterator a_begin = a_select.reference_begin(),
+             a_end = a_select.reference_end(); a_begin != a_end; ++a_begin) {
+      cxxblas::herk(n, k, &(*a_begin), c[a_begin.position()].data(), alpha,
+                    beta, a_step, c_step, cxxblas::Order::kRowMajor, uplo);
+    }
+  }
+
   return c;
 }
 
@@ -57,7 +242,7 @@ template < typename L >
 const typename L::tensor_type& herk2(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo) {
+    const typename L::real_type &beta, typename L::Uplo uplo) {
   return c;
 }
 
@@ -65,7 +250,78 @@ template < typename L >
 const typename L::tensor_type& symm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
     const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo) {
+    const typename L::value_type &beta, typename L::Side side,
+    typename L::Uplo uplo) {
+  typedef typename L::tensor_type T;
+  if (a.dimension() != b.dimension() || a.dimension() != c.dimension()) {
+    throw out_of_range("Tensor dimension does not match.");
+  }
+  for (typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+    if (a.size(i) != b.size(i) || a.size(i) != c.size(i)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (c.size(c.dimension() - 1) != c.size(c.dimension() - 2)) {
+    throw out_of_range("Matrix size is not symmetric.");
+  }
+  if (side == L::Side::kLeft) {
+    if (a.size(a.dimension() - 2) != c.size(c.dimension() - 2) ||
+        a.size(a.dimension() - 1) != b.size(b.dimension() - 2) ||
+        b.size(b.dimension() - 1) != c.size(c.dimension() - 1)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  } else {
+    if (a.size(a.dimension() - 2) != b.size(b.dimension() - 1) ||
+        a.size(a.dimension() - 1) != c.size(b.dimension() - 1) ||
+        b.size(b.dimension() - 2) != c.size(c.dimension() - 2)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (a.stride(a.dimension() - 1) != 1 || b.stride(b.dimension() - 1) != 1 ||
+      c.stride(c.dimension() - 1) != 1) {
+    throw contiguity_error("Last dimension of matrix is not contiguous.");
+  }
+
+  int m = static_cast< int >(c.size(c.dimension() - 2));
+  int n = static_cast< int >(c.size(c.dimension() - 1));
+  int a_step = static_cast< int >(a.stride(a.dimension() - 2));
+  int b_step = static_cast< int >(b.stride(b.dimension() - 2));
+  int c_step = static_cast< int >(c.stride(c.dimension() - 2));
+
+  if (a.dimension() == 2) {
+    typename T::pointer a_pointer = a.data();
+    typename T::pointer b_pointer = b.data();
+    typename T::pointer c_pointer = c.data();
+    cxxblas::symm(m, n, a_pointer, b_pointer, c_pointer, alpha, beta, a_step,
+                  b_step, c_step, cxxblas::Order::kRowMajor, side, uplo);
+  } else if (a.partialContiguity(0, a.dimension() - 3) &&
+             b.partialContiguity(0, b.dimension() - 3) &&
+             c.partialContiguity(0, c.dimension() - 3)) {
+    typename T::size_type batch_size = 1;
+    for(typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+      batch_size = batch_size * a.size(i);
+    }
+    typename T::pointer a_pointer = a.data();
+    typename T::difference_type a_batch = a.stride(a.dimension() - 3);
+    typename T::pointer b_pointer = b.data();
+    typename T::difference_type b_batch = b.stride(b.dimension() - 3);
+    typename T::pointer c_pointer = c.data();
+    typename T::difference_type c_batch = c.stride(c.dimension() - 3);
+    for (typename T::size_type i = 0; i < batch_size; ++i) {
+      cxxblas::symm(m, n, &a_pointer[i * a_batch], &b_pointer[i * b_batch],
+                    &c_pointer[i * c_batch], alpha, beta, a_step, b_step,
+                    c_step, cxxblas::Order::kRowMajor, side, uplo);
+    }
+  } else {
+    T a_select = a.select(a.dimension() - 1, 0).select(a.dimension() - 2, 0);
+    for (typename T::reference_iterator a_begin = a_select.reference_begin(),
+             a_end = a_select.reference_end(); a_begin != a_end; ++a_begin) {
+      cxxblas::symm(m, n, &(*a_begin), b[a_begin.position()].data(),
+                    c[a_begin.position()].data(), alpha, beta, a_step, b_step,
+                    c_step, cxxblas::Order::kRowMajor, side, uplo);
+    }
+  }
+
   return c;
 }
 
@@ -74,6 +330,59 @@ const typename L::tensor_type& syrk(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type &c,
     const typename L::value_type &alpha, const typename L::value_type &beta,
     typename L::Uplo uplo) {
+  typedef typename L::tensor_type T;
+  if (a.dimension() != c.dimension()) {
+    throw out_of_range("Tensor dimension does not match.");
+  }
+  for (typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+    if (a.size(i) != c.size(i)) {
+      throw out_of_range("Tensor size does not match.");
+    }
+  }
+  if (c.size(c.dimension() - 1) != c.size(c.dimension() - 2)) {
+    throw out_of_range("Matrix size is not symmetric.");
+  }
+  if (a.size(a.dimension() - 2) != c.size(c.dimension() - 2)) {
+    throw out_of_range("Tensor size does not match.");
+  }
+  if (a.stride(a.dimension() - 1) != 1 || c.stride(c.dimension() - 1) != 1) {
+    throw contiguity_error("Last dimension of matrix is not contiguous.");
+  }
+
+  int n = static_cast< int >(c.size(c.dimension() - 1));
+  int k = static_cast< int >(a.size(a.dimension() - 1));
+  int a_step = static_cast< int >(a.stride(a.dimension() - 2));
+  int c_step = static_cast< int >(c.stride(c.dimension() - 2));
+
+  if (a.dimension() == 2) {
+    typename T::pointer a_pointer = a.data();
+    typename T::pointer c_pointer = c.data();
+    cxxblas::syrk(n, k, a_pointer, c_pointer, alpha, beta, a_step, c_step,
+                  cxxblas::Order::kRowMajor, uplo);
+  } else if (a.partialContiguity(0, a.dimension() - 3) &&
+             c.partialContiguity(0, c.dimension() - 3)) {
+    typename T::size_type batch_size = 1;
+    for(typename T::dim_type i = 0; i < a.dimension() - 2; ++i) {
+      batch_size = batch_size * a.size(i);
+    }
+    typename T::pointer a_pointer = a.data();
+    typename T::difference_type a_batch = a.stride(a.dimension() - 3);
+    typename T::pointer c_pointer = c.data();
+    typename T::difference_type c_batch = c.stride(c.dimension() - 3);
+    for (typename T::size_type i = 0; i < batch_size; ++i) {
+      cxxblas::syrk(n, k, &a_pointer[i * a_batch], &c_pointer[i * c_batch],
+                    alpha, beta, a_step, c_step, cxxblas::Order::kRowMajor,
+                    uplo);
+    }
+  } else {
+    T a_select = a.select(a.dimension() - 1, 0).select(a.dimension() - 2, 0);
+    for (typename T::reference_iterator a_begin = a_select.reference_begin(),
+             a_end = a_select.reference_end(); a_begin != a_end; ++a_begin) {
+      cxxblas::syrk(n, k, &(*a_begin), c[a_begin.position()].data(), alpha,
+                    beta, a_step, c_step, cxxblas::Order::kRowMajor, uplo);
+    }
+  }
+
   return c;
 }
 
@@ -88,10 +397,9 @@ const typename L::tensor_type& syrk2(
 template < typename L >
 const typename L::tensor_type& trmm(
     L *l, const typename L::tensor_type &a, const typename L::tensor_type&b,
-    const typename L::tensor_type &c, const typename L::value_type &alpha,
-    const typename L::value_type &beta, typename L::Uplo uplo,
-    typename L::Diag diag) {
-  return c;
+    const typename L::value_type &alpha, typename L::Side side,
+    typename L::Uplo uplo, typename L::Diag diag) {
+  return b;
 }
 
 template < typename L >
