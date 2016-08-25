@@ -1,0 +1,35 @@
+site_name: Thunder
+site_url: http://thunder.nyc
+site_description: C++11 Tensor Library
+site_author: Xiang Zhang
+
+repo_url: https://github.com/thunder-nyc/Thunder
+
+theme: cerulean
+
+pages:
+- Home: index.md
+- Tutorial:
+    - Build and Install: tutorial/install.md
+    - Beginner's Guide: tutorial/beginner.md
+- Reference:
+    - Exception: reference/exception.md
+    - Serializer: reference/serializer.md
+    - Storage: reference/storage.md
+    - Tensor: reference/tensor.md
+    - Random: reference/random.md
+    - Linalg: reference/linalg.md
+- Special Topics:
+    - Reference Semantics: special/reference.md
+    - Partial Contiguity: special/contiguity.md
+    - Constant Tensors: special/constant.md
+    - Thread-safety: special/thread.md
+- Examples:
+    - Linear MNIST Classifier: example/linear_mnist.md
+- About:
+    - Release Notes: about/release.md
+    - Constributing: about/contributing.md
+    - License: about/license.md
+
+copyright: Copyright &copy; 2014-2016 <a href="http://xzh.me">Xiang Zhang</a>.
+google_analytics: ['UA-56015701-1', 'thunder.nyc']
