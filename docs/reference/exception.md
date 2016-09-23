@@ -60,8 +60,6 @@ Constructs the exception object with what_arg as explanatory string that can be 
 | virtual ~exception();             | Destructs the exception object. |
 | virtual const char* what() const; | Returns the explanatory string. |
 
-Returns the explanatory string.
-
 # class thunder::runtime_error;
 
 A typedef of [std::runtime_error](http://en.cppreference.com/w/cpp/error/runtime_error). It reports errors that are due to events beyond the scope of the program and can not be easily predicted.
