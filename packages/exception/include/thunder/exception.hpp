@@ -30,10 +30,10 @@ using exception::invalid_argument;
 using exception::domain_error;
 using exception::length_error;
 using exception::out_of_range;
+using exception::contiguity_error;
 using exception::range_error;
 using exception::overflow_error;
 using exception::underflow_error;
-using exception::contiguity_error;
 
 }  // namespace thunder
 

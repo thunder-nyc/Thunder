@@ -27,7 +27,7 @@
 namespace thunder {
 namespace exception {
 
-class contiguity_error : public runtime_error {
+class contiguity_error : public logic_error {
  public:
   explicit contiguity_error(const std::string& what_arg);
   explicit contiguity_error(const char* what_arg);
