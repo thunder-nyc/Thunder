@@ -34,7 +34,12 @@ namespace serializer {
 
 template < typename M >
 template < typename... G >
-TextProtocol< M >::TextProtocol(G... g) : stream_(g...) {}
+TextProtocol< M >::TextProtocol(G... g) : stream_(g...) {
+  // Throw exceptions on failure.
+  stream_.exceptions(
+      ::std::ios_base::badbit | ::std::ios_base::failbit |
+      ::std::ios_base::eofbit);
+}
 
 template < typename M >
 const typename TextProtocol< M >::stream_type&

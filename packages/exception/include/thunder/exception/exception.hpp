@@ -21,6 +21,7 @@
 #define THUNDER_EXCEPTION_EXCEPTION_HPP_
 
 #include <exception>
+#include <ios>
 #include <stdexcept>
 #include <system_error>
 
@@ -37,6 +38,7 @@ using ::std::out_of_range;
 using ::std::range_error;
 using ::std::overflow_error;
 using ::std::underflow_error;
+using stream_failure = ::std::ios_base::failure;
 
 }  // namespace exception
 }  // namespace thunder

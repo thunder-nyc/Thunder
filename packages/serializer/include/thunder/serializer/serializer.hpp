@@ -35,6 +35,15 @@ class Serializer {
  public:
   typedef P protocol_type;
   typedef typename P::stream_type stream_type;
+  typedef typename P::openmode openmode;
+
+  // Introducing openmode constants
+  static constexpr openmode app = P::app;
+  static constexpr openmode binary = P::binary;
+  static constexpr openmode in = P::in;
+  static constexpr openmode out = P::out;
+  static constexpr openmode trunc = P::trunc;
+  static constexpr openmode ate = P::ate;
 
   template < typename... G >
   explicit Serializer(G... g);

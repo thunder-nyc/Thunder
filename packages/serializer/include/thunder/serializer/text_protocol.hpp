@@ -29,6 +29,15 @@ template < typename M = ::std::stringstream >
 class TextProtocol {
  public:
   typedef M stream_type;
+  typedef typename M::openmode openmode;
+
+  // Introducing openmode constants
+  static constexpr openmode app = M::app;
+  static constexpr openmode binary = M::binary;
+  static constexpr openmode in = M::in;
+  static constexpr openmode out = M::out;
+  static constexpr openmode trunc = M::trunc;
+  static constexpr openmode ate = M::ate;
 
   template < typename... G >
   explicit TextProtocol(G... g);

@@ -35,7 +35,12 @@ namespace serializer {
 
 template < typename M >
 template < typename... G >
-BinaryProtocol< M >::BinaryProtocol(G... g) : stream_(g...) {}
+BinaryProtocol< M >::BinaryProtocol(G... g) : stream_(g...) {
+  // Throw exceptions on failure.
+  stream_.exceptions(
+      ::std::ios_base::badbit | ::std::ios_base::failbit |
+      ::std::ios_base::eofbit);
+}
 
 template < typename M >
 const typename BinaryProtocol< M >::stream_type&

@@ -34,6 +34,7 @@ using exception::contiguity_error;
 using exception::range_error;
 using exception::overflow_error;
 using exception::underflow_error;
+using exception::stream_failure;
 
 }  // namespace thunder
 

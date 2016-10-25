@@ -29,7 +29,7 @@ namespace serializer {
 
 template < typename T >
 void charTest() {
-  BinaryProtocol< ::std::stringstream> t;
+  BinaryProtocol< ::std::stringstream > t;
 
   T single_saved = 'A';
   t.save(&single_saved, single_saved);
@@ -61,7 +61,7 @@ TEST(BinaryProtocolTest, charTest) {
 
 template < typename T >
 void intTest() {
-  BinaryProtocol< ::std::stringstream> t;
+  BinaryProtocol< ::std::stringstream > t;
 
   T single_saved = 9;
   t.save(&single_saved, single_saved);
@@ -95,7 +95,7 @@ TEST(BinaryProtocolTest, intTest) {
 
 template < typename T >
 void floatTest() {
-  BinaryProtocol< ::std::stringstream> t;
+  BinaryProtocol< ::std::stringstream > t;
 
   T single_saved = 9.1154684568;
   t.save(&single_saved, single_saved);
