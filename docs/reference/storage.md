@@ -148,3 +148,15 @@ Resize the storage and initialize them with `value`.
 #### template < typename S > S view();
 
 View the storage as a different storage by applying `reinterpret_cast` to the underlying data pointer. The new storage still shares the underlying space. This is used in Thunder-Tensor to view a complex tensor as a non-complex one.
+
+### Serialization functions in namespace ::thunder::serializer
+
+The following functions are implemented in namespace `::thunder::serializer` for serialization.
+
+#### template < typename S, typename D, typename A > void save(S *s, Storage< D, A > &t);
+
+Save the storage object `t` to the serializer `s`.
+
+#### template < typename S, typename D, typename A > void load(S \*s, Storage< D, A > *t);
+
+Load a storage object to location `t` from the serializer `s`.
