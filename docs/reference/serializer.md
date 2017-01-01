@@ -57,7 +57,7 @@ As a user, you do not need to bother with these details, no matter you are just 
 For example
 
 ```c++
-FileBinarySerializer serializer("/tmp/file.tnd", FileBinarySerializer::in | FileBinarySerializer::out);
+FileBinarySerializer serializer("/tmp/file.tdb", FileBinarySerializer::in | FileBinarySerializer::out);
 ```
 
 ### template < typename... G > Serializer(G... g);
@@ -334,7 +334,7 @@ Save some data of type `T` to serializer `s`. If `T` is a basic data type, it pu
 
 As a result, to implement saving for your own class, you only need to implement a template specialization of the function `::thunder::serializer::save(s, t)`.
 
-#### template < typename S, typename T > void load(S *s, T *t);
+#### template < typename S, typename T > void load(S \*s, T *t);
 
 Load some data of type `T` from serializer `s`. If `T` is a basic data type, it reads the underlying data from the associated stream. Otherwise, it calls the static function `::thunder::serializer::load(s, t)`.
 
@@ -363,7 +363,7 @@ The following basic data types are saved and loaded directly in `TextProtocol`.
 * `long double`
 
 ### template < typename S, typename T > void save(S *s, const T &t);
-### template < typename S, typename T > void load(S *s, T *t);
+### template < typename S, typename T > void load(S \*s, T *t);
 
 Static functions used by `BinaryProtocol` or `TextProtocol` to serialize non-basic classes. One can specialize the class type `T` of these functions to implement serialization for their own classes.
 
