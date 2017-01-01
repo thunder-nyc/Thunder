@@ -19,6 +19,7 @@
 
 #include "thunder/serializer/serializer.hpp"
 
+#include <exception>
 #include <ios>
 #include <memory>
 #include <sstream>
@@ -206,6 +207,30 @@ void pointerTest() {
 
 TEST(SerializerTest, pointerTest) {
   pointerTest< StringTextSerializer, int >();
+}
+
+// For libstdc++ we can only capture ::std::exception here due to ABI
+// imcompatibility between C++98 and C++11.
+// Reference: https://gcc.gnu.org/PR66145
+template < typename S, typename T >
+void exceptionTest() {
+  T saved = 9;
+  T loaded = 0;
+
+  S s1(S::in);
+  EXPECT_THROW({
+      s1.save(saved);
+    }, ::std::exception);
+
+  S s2(S::out);
+  s2.save(saved);
+  EXPECT_THROW({
+      s2.load(&loaded);
+    }, ::std::exception);
+}
+
+TEST(SerializerTest, exceptionTest) {
+  exceptionTest< StringTextSerializer, int >();
 }
 
 }  // namespace serializer

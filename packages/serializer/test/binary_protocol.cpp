@@ -19,9 +19,12 @@
 
 #include "thunder/serializer/binary_protocol.hpp"
 
+#include <ios>
 #include <sstream>
 
 #include "gtest/gtest.h"
+#include "thunder/exception.hpp"
+
 #include "thunder/serializer/binary_protocol-inl.hpp"
 
 namespace thunder {
@@ -120,6 +123,31 @@ TEST(BinaryProtocolTest, floatTest) {
   floatTest< float >();
   floatTest< double >();
   floatTest< long double >();
+}
+
+// For libstdc++ we can only capture ::std::exception here due to ABI
+// imcompatibility between C++98 and C++11.
+// Reference: https://gcc.gnu.org/PR66145
+template < typename T >
+void exceptionTest() {
+  typedef BinaryProtocol< ::std::stringstream > P;
+  T saved = 9;
+  T loaded = 0;
+
+  P p1(P::in);
+  EXPECT_THROW({
+      p1.save(&saved, saved);
+    }, ::std::exception);
+
+  P p2(P::out);
+  p2.save(&saved, saved);
+  EXPECT_THROW({
+      p2.load(&saved, &loaded);
+    }, ::std::exception);
+}
+
+TEST(BinaryProtocolTest, exceptionTest) {
+  exceptionTest< int >();
 }
 
 }  // namespace serializer

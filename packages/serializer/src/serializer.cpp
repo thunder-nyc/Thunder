@@ -47,10 +47,10 @@ template class Serializer< TextProtocol< ::std::fstream > >;
 
 #define THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(P)      \
   template Serializer< P >::Serializer();                               \
-  template Serializer< P >::Serializer(::std::ios_base::openmode mode); \
+  template Serializer< P >::Serializer(openmode mode);                  \
   template Serializer< P >::Serializer(const ::std::string &str);       \
   template Serializer< P >::Serializer(                                 \
-      const ::std::string &str, ::std::ios_base::openmode mode);
+      const ::std::string &str, openmode mode);
 
 THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
     BinaryProtocol< ::std::stringstream >);
@@ -62,11 +62,10 @@ THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
 #define THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(P)           \
   template Serializer< P >::Serializer();                               \
   template Serializer< P >::Serializer(const char * filename);          \
-  template Serializer< P >::Serializer(                                 \
-      const char * filename, ::std::ios_base::openmode mode);           \
+  template Serializer< P >::Serializer(const char * filename, openmode mode); \
   template Serializer< P >::Serializer(const ::std::string &filename);  \
   template Serializer< P >::Serializer(                                 \
-      const ::std::string &filename, ::std::ios_base::openmode mode);
+      const ::std::string &filename, openmode mode);
 
 THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
     BinaryProtocol< ::std::fstream >);
