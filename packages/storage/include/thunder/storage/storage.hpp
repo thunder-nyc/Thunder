@@ -45,8 +45,6 @@ class Storage {
   // Iterator definitions
   typedef pointer iterator;
   typedef const_pointer const_iterator;
-  typedef std::reverse_iterator<iterator> reverse_iterator;
-  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
   // Default Constructor
   explicit Storage(A alloc = A());
