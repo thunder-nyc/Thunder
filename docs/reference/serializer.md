@@ -7,7 +7,7 @@ The Thunder-Serializer package is a package used by many other Thunder packages 
 * Dynamic serialization of pointers that bind polymorphic types.
 * Providing a non-intrusive interface for user-defined classes.
 
-The current Thunder-Serializer implementation is only experimental, in that polymorphic serialization is not yet implemented. However, further development of Thunder-Serializer will ensure backward compatibility of the interfaces.
+The current Thunder-Serializer implementation is only experimental, in that polymorphic serialization is not yet implemented. That said, further development of Thunder-Serializer will ensure backward compatibility.
 
 ## Using Thunder-Serializer
 
@@ -33,37 +33,17 @@ The template classes `BinaryProtocol` and `TextProtocol` are two protocol classe
 
 As a user, you do not need to bother with these details, no matter you are just using Thunder-Serializer for serializing Thunder data types, or making your own classes serializable through Thunder-Serializer. Using the four explicit serializer classes above is enough for normal uses.
 
-### Symbols defined in `Serializer`
+### Symbols defined in Serializer
 
 | Symbol               | Description                                                                                       |
 |----------------------|---------------------------------------------------------------------------------------------------|
 | protocol_type        | The protocol class type used to specialize the serializer class.                                  |
 | stream_type          | The stream class type used to specialize the protocol class associated with the serializer class. |
+| openmode             | The type for stream opening mode.                                                                 |
 
-### template < typename... G > Serializer(G... g)
+### Constants defined in Serializer
 
-Construct a new serializer instance with parameter pack `g` delegated to the constructor of its protocol, which is in turn delegated to the constructor of the stream class used to specialize either `BinaryProtocol` or `TextProtocol`.
-
-The following constructors are template-instantiated for string streams and can be used with `StringBinarySerializer` or `StringTextSerializer`.
-
-| Template Specialization                                              | Description                                                                                                                |
-|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| Serializer()                                                         | Default constructor. An empty string stream is created with stream mode `in | out`.                                         |
-| Serializer(::std::ios_base::openmode mode)                           | Construct the serializer using an empty string stream and set the stream mode.                                              |
-| Serializer(const ::std::string &str)                                 | Construct the serializer by creating a string stream copying the contents of the given string with stream mode `in  | out`. |
-| Serializer(const ::std::string &str, ::std::ios_base::openmode mode) | Construct the serializer by creating a string stream copying the contents of the given string and setting the stream mode.  |
-
-The following constructors are template-instantiated for file streams and can be used with `FileBinarySerializer` or `FileTextSerializer`.
-
-| Template Specialization                                              | Description                                                                                                                                                 |
-|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Serializer()                                                         | Default constructor. A stream that is not associated with a file is created. One must obtain the stream and open a file with it before using the serializer object. |
-| Serializer(const char *filename)                                     | Construct the serializer by opening a file with stream mode `in | out`.                                                                                             |
-| Serializer(const char *filename, ::std::ios_base::openmode mode)     | Construct the serializer by opening a file and setting the stream mode.                                                                                             |
-| Serializer(const ::std::string &filename)                            | Construct the serializer by opening a file with strea mode `in | out`..                                                                                             |
-| Serializer(const ::std::string &str, ::std::ios_base::openmode mode) | Construct the serializer by opening a file and setting the stream mode.                                                                                             |
-
-[`::std::ios_base::openmode`](http://en.cppreference.com/w/cpp/io/ios_base/openmode) contains the following constants for specifying file open modes via the `|` operator.
+`Serializer` contains the following constants for specifying file open modes via the `|` operator. They are the same as those in [`::std::ios_base::openmode`](http://en.cppreference.com/w/cpp/io/ios_base/openmode).
 
 | Constant  | Description                                      |
 |-----------|--------------------------------------------------|
@@ -77,11 +57,68 @@ The following constructors are template-instantiated for file streams and can be
 For example
 
 ```c++
-FileBinarySerializer serializer("/tmp/file.tnd", ::std::ios_base::in | ::std::ios_base::out);
+FileBinarySerializer serializer("/tmp/file.tnd", FileBinarySerializer::in | FileBinarySerializer::out);
 ```
 
-### const protocol_type& protocol() const
-### protocol_type& protocol()
+### template < typename... G > Serializer(G... g);
+
+Construct a new serializer instance with parameter pack `g` delegated to the constructor of its protocol, which is in turn delegated to the constructor of the stream class used to specialize either `BinaryProtocol` or `TextProtocol`.
+
+The following constructors are template-instantiated for string streams and can be used with `StringBinarySerializer` or `StringTextSerializer`.
+
+| Template Specialization                                              | Description                                                                                                                |
+|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| Serializer()                                                         | Default constructor. An empty string stream is created with stream mode `in | out`.                                         |
+| Serializer(openmode mode)                                            | Construct the serializer using an empty string stream and set the stream mode.                                              |
+| Serializer(const ::std::string &str)                                 | Construct the serializer by creating a string stream copying the contents of the given string with stream mode `in  | out`. |
+| Serializer(const ::std::string &str, openmode mode)                  | Construct the serializer by creating a string stream copying the contents of the given string and setting the stream mode.  |
+
+The following constructors are template-instantiated for file streams and can be used with `FileBinarySerializer` or `FileTextSerializer`.
+
+| Template Specialization                                              | Description                                                                                                                                                 |
+|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Serializer()                                                         | Default constructor. A stream that is not associated with a file is created. One must obtain the stream and open a file with it before using the serializer object. |
+| Serializer(const char *filename)                                     | Construct the serializer by opening a file with stream mode `in | out`.                                                                                             |
+| Serializer(const char *filename, openmode mode)                      | Construct the serializer by opening a file and setting the stream mode.                                                                                             |
+| Serializer(const ::std::string &filename)                            | Construct the serializer by opening a file with strea mode `in | out`..                                                                                             |
+| Serializer(const ::std::string &str, openmode mode)            | Construct the serializer by opening a file and setting the stream mode.                                                                                             |
+
+### Serializer(const Serializer &s) = delete;
+
+Disabled copy-constructor.
+
+### Serializer& operator=(Serializer s) = delete;
+
+Disabled assignment operator.
+
+### const protocol_type& protocol() const;
+### protocol_type& protocol();
+
+Obtain the underlying protocol associated with the serializer.
+
+### template < typename T > void save(const T &t);
+
+Save object `t` of type `T` in the serializer.
+
+### template < typename T > void load(T *t);
+
+Load object of type `T` to the location pointed to by `t`.
+
+### template < typename T > void save(T* const &t);
+
+Save the object of type `T` at the location pointed to by `t`. If the object at location `t` is already saved, it will reuse previously saved space to avoid duplicated saving.
+
+### template < typename T > void load(T* *t);
+
+Load the object of type `T` and make `*t` point to it. If the object was already loaded, it will make `*t` point to the previous location to avoid duplicated loading.
+
+### template < typename T > void save(const ::std::shared_ptr< T > &t);
+
+Save the object of type `T` at the location pointed to by `t`. If the object at location `t` is already saved, it will reuse previously saved space to avoid duplicated saving.
+
+### template < typename T > void load(::std::shared_ptr< T > *t);
+
+Load the object of type `T` and make `*t` a shared pointer to it. If the object was already loaded as a `::std::shared_ptr< T >`, it will point to the same location as before and share the pointer.
 
 ## Make your own classes serializable
 
@@ -165,9 +202,174 @@ Note that in the implementation above you have to implement string serialization
 
 ## Internal details in thunder::serialize namespace
 
-### template < typename P > class Serializer
+Internally, Thunder-Serializer is implemented via the following templated classes and functions.
 
-### template < typename M > class BinaryProtocol
+### template < typename P > class Serializer;
 
-### template < typename M > class TextProtocol
+The `Serializer` class handles the logic of serialization, such as dynamic binding, pointer semantics and shared pointer serialization. The template parameter `P` is an instantiation of either `BinaryProtocol` or `TextProtocol` class. For its symbols, constants and member functions, please refer to the previous sections.
 
+Other than these serialization logic, the `Serializer` class does not actually save data. Rather, it delegate actual serialization of data to either `BinaryProtocol` or `TextProtocol`, depending on which is used for the template instantiation.
+
+### template < typename M > class BinaryProtocol;
+
+The protocol class that serializes data in binary format. It dumps basic data types as a sequence of bytes in memory, therefore the serialization result may not be compatible with a different machine architecture.
+
+#### Symbols defined in BinaryProtocol
+
+| Symbol               | Description                                                                                       |
+|----------------------|---------------------------------------------------------------------------------------------------|
+| stream_type          | The stream class type used to instantiate the protocol class.                                     |
+| char_type            | The type of character that the stream accepts as basic units.                                     |
+| openmode             | The type for stream opening mode.                                                                 |
+
+#### Constants defined in BinaryProtocol
+
+`BinaryProtocol` contains the following constants for specifying file open modes via the `|` operator. They are the same as those in [`::std::ios_base::openmode`](http://en.cppreference.com/w/cpp/io/ios_base/openmode).
+
+| Constant  | Description                                      |
+|-----------|--------------------------------------------------|
+| app       | Seek to the end of stream before each write      |
+| binary    | Open in binary mode                              |
+| in        | Open for reading                                 |
+| out       | Open for writing                                 |
+| trunc     | Discard the contents of the stream when opening  |
+| ate       | Seek to the end of stream immediately after open |
+
+#### template < typename... G > explicit BinaryProtocol(G... g);
+
+Construct a new `BinaryProtocol` instance with parameter pack `g` delegated to the constructor of its stream class.
+
+#### BinaryProtocol(const BinaryProtocol &p) = delete;
+
+Disabled copy-constructor.
+
+#### BinaryProtocol& operator=(BinaryProtocol p) = delete;
+
+Disabled assignment operator.
+
+#### const stream_type &stream() const;
+#### stream_type & stream();
+
+Get the stream associated with the protocol.
+
+#### template < typename S, typename T > void save(S *s, const T &t);
+
+Save some data of type `T` to serializer `s`. If `T` is a basic data type, it puts the underlying data into the associated stream. Otherwise, it calls the static function `::thunder::serializer::save(s, t)`.
+
+As a result, to implement saving for your own class, you only need to implement a template specialization of the function `::thunder::serializer::save(s, t)`.
+
+#### template < typename S, typename T > void load(S *s, T *t);
+
+Load some data of type `T` from serializer `s`. If `T` is a basic data type, it reads the underlying data from the associated stream. Otherwise, it calls the static function `::thunder::serializer::load(s, t)`.
+
+As a result, to implement loading for your own class, you only need to implement a template specialization of the function `::thunder::serializer::load(s, t)`.
+
+#### Basic data types
+
+The following basic data types are saved and loaded directly in `BinaryProtocol`.
+
+* `char`
+* `signed char`
+* `unsigned char`
+* `wchar_t`
+* `char16_t`
+* `char32_t`
+* `short`
+* `unsigned short`
+* `int`
+* `unsigned int`
+* `long`
+* `unsigned long`
+* `long long`
+* `unsigned long long`
+* `float`
+* `double`
+* `long double`
+
+### template < typename M > class TextProtocol;
+
+The protocol class that serializes data in text format. It dumps basic data types as a sequence of bytes in memory, therefore the serialization result may not be compatible with a different machine architecture.
+
+#### Symbols defined in TextProtocol
+
+| Symbol               | Description                                                                                       |
+|----------------------|---------------------------------------------------------------------------------------------------|
+| stream_type          | The stream class type used to instantiate the protocol class.                                     |
+| char_type            | The type of character that the stream accepts as basic units.                                     |
+| openmode             | The type for stream opening mode.                                                                 |
+
+#### Constants defined in TextProtocol
+
+`TextProtocol` contains the following constants for specifying file open modes via the `|` operator. They are the same as those in [`::std::ios_base::openmode`](http://en.cppreference.com/w/cpp/io/ios_base/openmode).
+
+| Constant  | Description                                      |
+|-----------|--------------------------------------------------|
+| app       | Seek to the end of stream before each write      |
+| binary    | Open in binary mode                              |
+| in        | Open for reading                                 |
+| out       | Open for writing                                 |
+| trunc     | Discard the contents of the stream when opening  |
+| ate       | Seek to the end of stream immediately after open |
+
+#### template < typename... G > explicit TextProtocol(G... g);
+
+Construct a new `TextProtocol` instance with parameter pack `g` delegated to the constructor of its stream class.
+
+#### TextProtocol(const TextProtocol &p) = delete;
+
+Disabled copy-constructor.
+
+#### TextProtocol& operator=(TextProtocol p) = delete;
+
+Disabled assignment operator.
+
+#### const stream_type &stream() const;
+#### stream_type & stream();
+
+Get the stream associated with the protocol.
+
+#### template < typename S, typename T > void save(S *s, const T &t);
+
+Save some data of type `T` to serializer `s`. If `T` is a basic data type, it puts the underlying data into the associated stream. Otherwise, it calls the static function `::thunder::serializer::save(s, t)`.
+
+As a result, to implement saving for your own class, you only need to implement a template specialization of the function `::thunder::serializer::save(s, t)`.
+
+#### template < typename S, typename T > void load(S *s, T *t);
+
+Load some data of type `T` from serializer `s`. If `T` is a basic data type, it reads the underlying data from the associated stream. Otherwise, it calls the static function `::thunder::serializer::load(s, t)`.
+
+As a result, to implement loading for your own class, you only need to implement a template specialization of the function `::thunder::serializer::load(s, t)`.
+
+#### Basic data types
+
+The following basic data types are saved and loaded directly in `TextProtocol`.
+
+* `char`
+* `signed char`
+* `unsigned char`
+* `wchar_t`
+* `char16_t`
+* `char32_t`
+* `short`
+* `unsigned short`
+* `int`
+* `unsigned int`
+* `long`
+* `unsigned long`
+* `long long`
+* `unsigned long long`
+* `float`
+* `double`
+* `long double`
+
+### template < typename S, typename T > void save(S *s, const T &t);
+### template < typename S, typename T > void load(S *s, T *t);
+
+Static functions used by `BinaryProtocol` or `TextProtocol` to serialize non-basic classes. One can specialize the class type `T` of these functions to implement serialization for their own classes.
+
+#### Specialized standard template classes
+
+The following template classes have their `save` and `load` functions implemented in Thunder-Serializer. More will be implemented in the future.
+
+* `template < typename T > ::std::complex< T >`
+* `template < typename T1, typename T2 > ::std::pair< T1, T2>`
