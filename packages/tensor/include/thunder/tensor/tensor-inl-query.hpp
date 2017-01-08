@@ -61,7 +61,7 @@ typename Tensor< S >::size_storage Tensor< S >::size() const {
 template < typename S >
 typename Tensor< S >::size_type Tensor< S >::size(dim_type dim) const {
   if (dim >= size_.size()) {
-    throw invalid_argument("Argument exceeds tensor dimension.");
+    throw out_of_range("Argument exceeds tensor dimension.");
   }
   return size_[dim];
 }
@@ -83,7 +83,7 @@ typename Tensor< S >::stride_storage Tensor< S >::stride() const {
 template < typename S >
 typename Tensor< S >::difference_type Tensor< S >::stride(dim_type dim) const {
   if (dim >= stride_.size()) {
-    throw invalid_argument("Argument exceeds tensor dimension.");
+    throw out_of_range("Argument exceeds tensor dimension.");
   }
   return stride_[dim];
 }
