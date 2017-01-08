@@ -297,6 +297,38 @@ None except in `lambda`.
 
 ## Property query
 
+```cpp
+#include <cstdio>
+#include <thunder/tensor.hpp>
+using namespace std;
+using namespace thunder;
+
+// Create a tensor of size 3 x 9 x 7
+DoubleTensor x(3, 9, 7);
+
+// Print a set of properties
+printf("Dimension: %ld\n", x.dimension());
+printf("Size: %ld x %ld x %ld\n", x.size(0), x.size(1), x.size(2));
+printf("Length: %ld\n", x.length());
+printf("Stride: %ld x %ld x %ld\n", x.stride(0), x.stride(1), x.stride(2));
+printf("Offset: %ld\n", x.offset());
+printf("Data: %p\n", x.data());
+printf("Value at {2, 5, 3}: %f\n", x.get(2, 5, 3));
+printf("Contiguity: %s\n", x.isContiguous() ? "true" : "false");
+printf("Unique: %s\n", x.isUnique() ? "true" : "false");
+
+// The same thing using static functions
+printf("Dimension: %ld\n", DoubleTensor::dimension(x));
+printf("Size: %ld x %ld x %ld\n", DoubleTensor::size(x, 0), DoubleTensor::size(x, 1), DoubleTensor::size(x, 2));
+printf("Length: %ld\n", DoubleTensor::length(x));
+printf("Stride: %ld x %ld x %ld\n", DoubleTensor::stride(x, 0), DoubleTensor::stride(x, 1), DoubleTensor::stride(x, 2));
+printf("Offset: %ld\n", DoubleTensor::offset(x));
+printf("Data: %p\n", DoubleTensor::data(x));
+printf("Value at {2, 5, 3}: %f\n", DoubleTensor::get(x, 2, 5, 3));
+printf("Contiguity: %s\n", DoubleTensor::isContiguous(x) ? "true" : "false");
+printf("Unique: %s\n", DoubleTensor::isUnique(x) ? "true" : "false");
+```
+
 ### template < typename T > bool isSameSizeAs(const T &y) const;
 
 Return whether this tensor as the same size as the tensor `y`.
