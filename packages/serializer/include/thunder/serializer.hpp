@@ -63,7 +63,10 @@ extern template class Serializer< TextProtocol< ::std::fstream > >;
   extern template Serializer< P >::Serializer(openmode mode);           \
   extern template Serializer< P >::Serializer(const ::std::string &str); \
   extern template Serializer< P >::Serializer(                          \
-      const ::std::string &str, openmode mode);
+      const ::std::string &str, openmode mode);                         \
+  extern template Serializer< P >::Serializer(::std::string str);       \
+  extern template Serializer< P >::Serializer(                          \
+      ::std::string str, openmode mode);
 
 THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
     BinaryProtocol< ::std::stringstream >);
@@ -79,7 +82,10 @@ THUNDER_SERIALIZER_INSTANTIATE_STRINGSTREAM_CONSTRUCTOR(
       const char * filename, openmode mode);                            \
   extern template Serializer< P >::Serializer(const ::std::string &filename); \
   extern template Serializer< P >::Serializer(                          \
-      const ::std::string &filename, openmode mode);
+      const ::std::string &filename, openmode mode);                    \
+  extern template Serializer< P >::Serializer(::std::string filename);  \
+  extern template Serializer< P >::Serializer(                          \
+      ::std::string filename, openmode mode);
 
 THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
     BinaryProtocol< ::std::fstream >);
@@ -87,6 +93,53 @@ THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR(
     TextProtocol< ::std::fstream >);
 
 #undef THUNDER_SERIALIZER_INSTANTIATE_FSTREAM_CONSTRUCTOR
+
+#define THUNDER_SERIALIZER_INSTANTIATE_BASIC_SERIALIZE(P)               \
+  extern template void Serializer< P >::save(const char &t);            \
+  extern template void Serializer< P >::load(char *t);                  \
+  extern template void Serializer< P >::save(const signed char &t);     \
+  extern template void Serializer< P >::load(signed char *t);           \
+  extern template void Serializer< P >::save(const unsigned char &t);   \
+  extern template void Serializer< P >::load(unsigned char *t);         \
+  extern template void Serializer< P >::save(const wchar_t &t);         \
+  extern template void Serializer< P >::load(wchar_t *t);               \
+  extern template void Serializer< P >::save(const char16_t &t);        \
+  extern template void Serializer< P >::load(char16_t *t);              \
+  extern template void Serializer< P >::save(const char32_t &t);        \
+  extern template void Serializer< P >::load(char32_t *t);              \
+  extern template void Serializer< P >::save(const short &t);           \
+  extern template void Serializer< P >::load(short *t);                 \
+  extern template void Serializer< P >::save(const unsigned short &t);  \
+  extern template void Serializer< P >::load(unsigned short *t);        \
+  extern template void Serializer< P >::save(const int &t);             \
+  extern template void Serializer< P >::load(int *t);                   \
+  extern template void Serializer< P >::save(const unsigned int &t);    \
+  extern template void Serializer< P >::load(unsigned int *t);          \
+  extern template void Serializer< P >::save(const long &t);            \
+  extern template void Serializer< P >::load(long *t);                  \
+  extern template void Serializer< P >::save(const unsigned long &t);   \
+  extern template void Serializer< P >::load(unsigned long *t);         \
+  extern template void Serializer< P >::save(const long long &t);       \
+  extern template void Serializer< P >::load(long long *t);             \
+  extern template void Serializer< P >::save(const unsigned long long &t); \
+  extern template void Serializer< P >::load(unsigned long long *t);    \
+  extern template void Serializer< P >::save(const float &t);           \
+  extern template void Serializer< P >::load(float *t);                 \
+  extern template void Serializer< P >::save(const double &t);          \
+  extern template void Serializer< P >::load(double *t);                \
+  extern template void Serializer< P >::save(const long double &t);     \
+  extern template void Serializer< P >::load(long double *t);
+
+THUNDER_SERIALIZER_INSTANTIATE_BASIC_SERIALIZE(
+    BinaryProtocol< ::std::stringstream >);
+THUNDER_SERIALIZER_INSTANTIATE_BASIC_SERIALIZE(
+    BinaryProtocol< ::std::fstream >);
+THUNDER_SERIALIZER_INSTANTIATE_BASIC_SERIALIZE(
+    TextProtocol< ::std::stringstream >);
+THUNDER_SERIALIZER_INSTANTIATE_BASIC_SERIALIZE(
+    TextProtocol< ::std::fstream >);
+
+#undef THUNDER_SERIALIZER_INSTANTIATE_BASIC_SERIALIZE
 
 }  // namespace serializer
 }  // namespace thunder
