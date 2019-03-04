@@ -45,14 +45,16 @@ typedef Random< SizeTensor > SizeRandom;
 namespace thunder {
 namespace random {
 
-#define THUNDER_RANDOM_INSTANTIATE(T)                             \
-  extern template class Random< T >;                              \
-  extern template Random< T >::Random();                          \
-  extern template Random< T >::Random(                            \
-      typename ::std::mt19937::result_type val);                  \
-  extern template Random< T >::Random(int val);                   \
-  extern template Random< T >::Random(::std::time_t val);       \
-  extern template Random< T >::Random(::std::seed_seq q);
+#define THUNDER_RANDOM_INSTANTIATE(T)                                   \
+  extern template class Random< T >;                                    \
+  extern template Random< T >::Random();                                \
+  extern template Random< T >::Random(                                  \
+      typename Random< T >::generator_type::result_type val);           \
+  extern template Random< T >::Random(int val);                         \
+  extern template Random< T >::Random(::std::time_t val);               \
+  extern template Random< T >::Random(::std::seed_seq q);               \
+  extern template Random< T >::Random(                                  \
+    ::std::random_device::result_type val)
 
 THUNDER_RANDOM_INSTANTIATE(DoubleTensor);
 THUNDER_RANDOM_INSTANTIATE(FloatTensor);

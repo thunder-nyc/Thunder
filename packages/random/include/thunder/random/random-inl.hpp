@@ -22,6 +22,8 @@
 
 #include "thunder/random/random.hpp"
 
+#include <random>
+
 #include "thunder/random/math.hpp"
 
 namespace thunder {

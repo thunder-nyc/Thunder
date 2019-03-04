@@ -37,7 +37,8 @@ namespace random {
   template Random< T >::Random(typename ::std::mt19937::result_type val); \
   template Random< T >::Random(int val);                                \
   template Random< T >::Random(::std::time_t val);                      \
-  template Random< T >::Random(::std::seed_seq q);
+  template Random< T >::Random(::std::seed_seq q);                      \
+  template Random< T >::Random(::std::random_device::result_type val)
 
 // int and double are default types
 THUNDER_RANDOM_INSTANTIATE(DoubleTensor);
