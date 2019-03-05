@@ -46,6 +46,11 @@ extern template class Linalg< FloatTensor >;
 extern template class Linalg< DoubleComplexTensor >;
 extern template class Linalg< FloatComplexTensor >;
 
+extern template Linalg< DoubleTensor >::Linalg();
+extern template Linalg< FloatTensor >::Linalg();
+extern template Linalg< DoubleComplexTensor >::Linalg();
+extern template Linalg< FloatComplexTensor >::Linalg();
+
 }  // namespace linalg
 }  // namespace thunder
 

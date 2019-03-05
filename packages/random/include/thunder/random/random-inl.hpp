@@ -30,17 +30,27 @@ namespace thunder {
 namespace random {
 
 template < typename T, typename G, typename I, typename F >
+Random< T, G, I, F >::Random() :
+    generator_(static_cast< typename G::result_type >(
+        ::std::random_device()())) {}
+
+template < typename T, typename G, typename I, typename F >
 template < typename... U >
 Random< T, G, I, F >::Random(U... u) : generator_(u...) {}
 
 template < typename T, typename G, typename I, typename F >
-const G& Random< T, G, I, F >::generator() const {
+G Random< T, G, I, F >::generator() const {
   return generator_;
 }
 
 template < typename T, typename G, typename I, typename F >
-G& Random< T, G, I, F >::generator() {
-  return const_cast< G& >(const_cast< const Random* >(this)->generator());
+void Random< T, G, I, F >::set_generator(const G &g) {
+  generator_ = g;
+}
+
+template < typename T, typename G, typename I, typename F >
+G * Random< T, G, I, F >::generatorPointer() {
+  return &generator_;
 }
 
 template < typename T, typename G, typename I, typename F >

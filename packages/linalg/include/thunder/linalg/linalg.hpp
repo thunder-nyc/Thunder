@@ -46,10 +46,8 @@ class Linalg {
   typedef cxxblas::Diag Diag;
   typedef cxxblas::Side Side;
 
-  Linalg();
   template < typename... G >
   explicit Linalg(G... g);
-  ~Linalg();
 
   // Accessors
   H handle();

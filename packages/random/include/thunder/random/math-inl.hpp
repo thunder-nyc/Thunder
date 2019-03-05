@@ -43,13 +43,13 @@ const typename R::tensor_type& random(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -68,13 +68,13 @@ const typename R::tensor_type& uniform(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -91,13 +91,13 @@ const typename R::tensor_type& bernoulli(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -116,13 +116,13 @@ const typename R::tensor_type& binomial(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -141,13 +141,13 @@ const typename R::tensor_type& negativeBinomial(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -165,13 +165,13 @@ const typename R::tensor_type& geometric(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -189,13 +189,13 @@ const typename R::tensor_type& poisson(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -213,13 +213,13 @@ const typename R::tensor_type& exponential(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -238,13 +238,13 @@ const typename R::tensor_type& gamma(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -263,13 +263,13 @@ const typename R::tensor_type& weibull(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -288,13 +288,13 @@ const typename R::tensor_type& extremeValue(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -313,13 +313,13 @@ const typename R::tensor_type& normal(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -338,13 +338,13 @@ const typename R::tensor_type& logNormal(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -362,13 +362,13 @@ const typename R::tensor_type& chiSquared(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -387,13 +387,13 @@ const typename R::tensor_type& cauchy(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -412,13 +412,13 @@ const typename R::tensor_type& fisherF(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -436,13 +436,13 @@ const typename R::tensor_type& studentT(
     typename T::difference_type t_step = t.stride(t.dimension() - 1);
     for (typename T::size_type i = 0; i < t_length; ++i) {
       t_pointer[i * t_step] = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   } else {
     for (typename T::reference_iterator t_begin = t.reference_begin(),
              t_end = t.reference_end(); t_begin != t_end; ++t_begin) {
       *t_begin = static_cast< typename T::value_type >(
-          distribution(r->generator()));
+          distribution(*(r->generatorPointer())));
     }
   }
   return t;
@@ -463,7 +463,8 @@ const typename R::tensor_type& randperm(
   }
   for (typename T::size_type i = 0; i < t_length; ++i) {
     ::std::swap(t_pointer[i * t_step],
-                t_pointer[(r->generator()() % (t_length - i) + i) * t_step]);
+                t_pointer[((*(r->generatorPointer()))() %
+                           (t_length - i)) + i * t_step]);
   }
   return t;
 }

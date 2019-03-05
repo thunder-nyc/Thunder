@@ -44,11 +44,13 @@ class Random {
   typedef typename T::size_storage size_storage;
   typedef typename T::size_type size_type;
 
+  Random();
   template < typename... U >
   explicit Random(U... u);
 
-  const G& generator() const;
-  G& generator();
+  G generator() const;
+  void set_generator(const G &g);
+  G* generatorPointer();
 
   const T& random(const T &t, I a = 0, I b = ::std::numeric_limits< I >::max());
   T& random(T &t, I a = 0, I b = ::std::numeric_limits< I >::max());

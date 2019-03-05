@@ -47,7 +47,6 @@ namespace random {
 
 #define THUNDER_RANDOM_INSTANTIATE(T)                                   \
   extern template class Random< T >;                                    \
-  extern template Random< T >::Random();                                \
   extern template Random< T >::Random(                                  \
       typename Random< T >::generator_type::result_type val);           \
   extern template Random< T >::Random(int val);                         \

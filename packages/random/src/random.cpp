@@ -33,7 +33,6 @@ namespace random {
 
 #define THUNDER_RANDOM_INSTANTIATE(T)                                   \
   template class Random< T >;                                           \
-  template Random< T >::Random();                                       \
   template Random< T >::Random(typename ::std::mt19937::result_type val); \
   template Random< T >::Random(int val);                                \
   template Random< T >::Random(::std::time_t val);                      \

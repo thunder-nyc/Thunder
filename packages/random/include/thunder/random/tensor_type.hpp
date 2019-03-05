@@ -31,7 +31,7 @@ template < typename T >
 class TensorType {
  public:
   typedef T tensor_type;
-  typedef ::std::mt19937 generator_type;
+  typedef ::std::mt19937_64 generator_type;
   typedef int integer_type;
   typedef double float_type;
 };
@@ -40,7 +40,7 @@ template < >
 class TensorType< DoubleTensor > {
  public:
   typedef DoubleTensor tensor_type;
-  typedef ::std::mt19937 generator_type;
+  typedef ::std::mt19937_64 generator_type;
   typedef int integer_type;
   typedef typename DoubleTensor::value_type float_type;
 };
@@ -49,7 +49,7 @@ template < >
 class TensorType< FloatTensor > {
  public:
   typedef FloatTensor tensor_type;
-  typedef ::std::mt19937 generator_type;
+  typedef ::std::mt19937_64 generator_type;
   typedef int integer_type;
   typedef typename FloatTensor::value_type float_type;
 };
@@ -58,7 +58,7 @@ template < >
 class TensorType< SizeTensor > {
  public:
   typedef SizeTensor tensor_type;
-  typedef ::std::mt19937 generator_type;
+  typedef ::std::mt19937_64 generator_type;
   typedef typename SizeTensor::value_type integer_type;
   typedef double float_type;
 };

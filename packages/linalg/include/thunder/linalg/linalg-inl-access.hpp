@@ -27,14 +27,8 @@ namespace thunder {
 namespace linalg {
 
 template < typename T, typename H >
-Linalg< T, H >::Linalg() {}
-
-template < typename T, typename H >
 template < typename... G >
 Linalg< T, H >::Linalg(G ...g) : handle_(g...) {}
-
-template < typename T, typename H >
-Linalg< T, H >::~Linalg() {}
 
 template < typename T, typename H >
 H Linalg< T, H >::handle() {
