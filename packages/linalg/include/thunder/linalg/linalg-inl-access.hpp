@@ -31,13 +31,18 @@ template < typename... G >
 Linalg< T, H >::Linalg(G ...g) : handle_(g...) {}
 
 template < typename T, typename H >
-H Linalg< T, H >::handle() {
+H Linalg< T, H >::handle() const {
   return handle_;
 }
 
 template < typename T, typename H >
-void Linalg< T, H >::handle(H h) {
+void Linalg< T, H >::set_handle(const H &h) {
   handle_ = h;
+}
+
+template < typename T, typename H >
+H* Linalg< T, H >::handlePointer() {
+  return &handle_;
 }
 
 }  //  namespace linalg

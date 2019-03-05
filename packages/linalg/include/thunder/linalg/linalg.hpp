@@ -50,8 +50,9 @@ class Linalg {
   explicit Linalg(G... g);
 
   // Accessors
-  H handle();
-  void handle(H h);
+  H handle() const;
+  void set_handle(const H &h);
+  H* handlePointer();
 
   // Const linear algebra constructors
   const T& diag(const T &x, const T &r);
