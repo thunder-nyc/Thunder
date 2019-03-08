@@ -69,45 +69,45 @@ namespace thunder {
 namespace serializer {
 
 #define THUNDER_STORAGE_INSTANTIATE_SERIALIZE(D)                \
-  extern template void save(                                           \
+  extern template void save(                                    \
       StringBinarySerializer *s,                                \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void StringBinarySerializer::save(                   \
+  extern template void StringBinarySerializer::save(            \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void load(                                           \
+  extern template void load(                                    \
       StringBinarySerializer *s,                                \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void StringBinarySerializer::load(                   \
+  extern template void StringBinarySerializer::load(            \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void save(                                           \
+  extern template void save(                                    \
       FileBinarySerializer *s,                                  \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void FileBinarySerializer::save(                     \
+  extern template void FileBinarySerializer::save(              \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void load(                                           \
+  extern template void load(                                    \
       FileBinarySerializer *s,                                  \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void FileBinarySerializer::load(                     \
+  extern template void FileBinarySerializer::load(              \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void save(                                           \
+  extern template void save(                                    \
       StringTextSerializer *s,                                  \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void StringTextSerializer::save(                     \
+  extern template void StringTextSerializer::save(              \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void load(                                           \
+  extern template void load(                                    \
       StringTextSerializer *s,                                  \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void StringTextSerializer::load(                     \
+  extern template void StringTextSerializer::load(              \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void save(                                           \
+  extern template void save(                                    \
       FileTextSerializer *s,                                    \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void FileTextSerializer::save(                       \
+  extern template void FileTextSerializer::save(                \
       const ::thunder::storage::Storage< D > &t);               \
-  extern template void load(                                           \
+  extern template void load(                                    \
       FileTextSerializer *s,                                    \
       ::thunder::storage::Storage< D > *t);                     \
-  extern template void FileTextSerializer::load(                       \
+  extern template void FileTextSerializer::load(                \
       ::thunder::storage::Storage< D > *t);
 
 
