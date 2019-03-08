@@ -50,7 +50,7 @@ class Linalg {
   explicit Linalg(G... g);
 
   // Accessors
-  H handle() const;
+  const H &handle() const;
   void set_handle(const H &h);
   H* handlePointer();
 

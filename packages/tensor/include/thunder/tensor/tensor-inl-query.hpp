@@ -54,7 +54,7 @@ typename Tensor< S >::dim_type Tensor< S >::dimension() const {
 }
 
 template < typename S >
-typename Tensor< S >::size_storage Tensor< S >::size() const {
+const typename Tensor< S >::size_storage &Tensor< S >::size() const {
   return size_;
 }
 
@@ -76,7 +76,7 @@ typename Tensor< S >::size_type Tensor< S >::length() const {
 }
 
 template < typename S >
-typename Tensor< S >::stride_storage Tensor< S >::stride() const {
+const typename Tensor< S >::stride_storage &Tensor< S >::stride() const {
   return stride_;
 }
 

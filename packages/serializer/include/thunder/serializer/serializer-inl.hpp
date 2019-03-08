@@ -33,15 +33,9 @@ Serializer< P >::Serializer(G ...g) :
     protocol_(g...), saved_count_(0) {}
 
 template < typename P >
-const typename Serializer< P >::protocol_type&
-Serializer< P >::protocol() const {
+const typename Serializer< P >::protocol_type& Serializer< P >::protocol()
+    const {
   return protocol_;
-}
-
-template < typename P >
-typename Serializer< P >::protocol_type& Serializer< P >::protocol() {
-  return const_cast< protocol_type& >(
-      const_cast< const Serializer* >(this)->protocol());
 }
 
 template < typename P >

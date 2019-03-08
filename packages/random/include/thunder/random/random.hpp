@@ -48,7 +48,7 @@ class Random {
   template < typename... U >
   explicit Random(U... u);
 
-  G generator() const;
+  const G &generator() const;
   void set_generator(const G &g);
   G* generatorPointer();
 

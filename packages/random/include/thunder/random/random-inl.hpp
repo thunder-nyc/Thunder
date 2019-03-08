@@ -39,7 +39,7 @@ template < typename... U >
 Random< T, G, I, F >::Random(U... u) : generator_(u...) {}
 
 template < typename T, typename G, typename I, typename F >
-G Random< T, G, I, F >::generator() const {
+const G &Random< T, G, I, F >::generator() const {
   return generator_;
 }
 

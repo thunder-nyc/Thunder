@@ -31,7 +31,7 @@ template < typename... G >
 Linalg< T, H >::Linalg(G ...g) : handle_(g...) {}
 
 template < typename T, typename H >
-H Linalg< T, H >::handle() const {
+const H &Linalg< T, H >::handle() const {
   return handle_;
 }
 

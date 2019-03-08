@@ -121,10 +121,10 @@ class Tensor {
 
   // Property queries
   dim_type dimension() const;
-  size_storage size() const;
+  const size_storage &size() const;
   size_type size(dim_type dim) const;
   size_type length() const;
-  stride_storage stride() const;
+  const stride_storage &stride() const;
   difference_type stride(dim_type dim) const;
   storage_pointer storage() const;
   size_type offset() const;

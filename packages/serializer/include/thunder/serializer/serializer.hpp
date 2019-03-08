@@ -53,7 +53,6 @@ class Serializer {
   Serializer& operator=(Serializer s) = delete;
 
   const protocol_type& protocol() const;
-  protocol_type& protocol();
 
   template < typename T >
   void save(const T &t);
